@@ -1,0 +1,76 @@
+name: E2E tests
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      blockscout_image:
+        description: 'Blockscout image:tag to test'     
+        required: true
+        default: 'blockscout/blockscout:latest' 
+        type: string
+      environment:
+        description: 'Environment to run tests against'
+        required: true
+        type: choice
+        default: 'test'
+        options:
+        - prod
+        - test
+  workflow_call:
+    inputs:
+      blockscout_image:
+        description: 'Blockscout image:tag to test'     
+        required: true
+        default: 'blockscout/blockscout:latest' 
+        type: string
+      environment:
+        description: 'Environment to run tests against'
+        required: true
+        type: string
+        default: 'test'
+jobs:
+  test:
+    name: E2E tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: v14.17.0
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Install deps
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Build contracts
+        working-directory: ./tests/contracts
+        run: |
+          # gyp build from root
+          npm config set user 0
+          npm ci
+          npm run build
+      - name: Run playwright
+        run: |
+          npx playwright install-deps chrome firefox
+          npm run test:prod:smoke
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: report
+          path: tests/e2e/html-report/index.html
+defaults:
+  run:
+    shell: bash
+    working-directory: ./tests/e2e

@@ -1,0 +1,57 @@
+{
+  "name": "blockscout-e2e-tests",
+  "version": "0.0.1",
+  "description": "Blockscout E2E tests",
+  "main": "index.js",
+  "scripts": {
+    "install-deps": "npx playwright install msedge",
+    "test": "npx playwright test",
+    "report": "npx playwright show-report html-report",
+    "test:prod:smoke:debug": "PWDEBUG=1 npx cross-env ENV=prod npx playwright test Home.test.ts --project=Chrome",
+    "test:prod:serial": "npx cross-env ENV=prod npx playwright test --workers=1",
+    "test:prod:smoke": "npx cross-env ENV=prod npx playwright test --grep=@Smoke",
+    "test:prod:geth": "npx cross-env ENV=prod npx playwright test --grep=@Geth --project=Chrome",
+    "test:test:smoke:debug": "PWDEBUG=1 npx cross-env ENV=test npx playwright test Home.test.ts --project=Chrome",
+    "test:test:smoke": "npx cross-env ENV=test npx playwright test --grep=@Smoke",
+    "test:test:geth": "npx cross-env ENV=test npx playwright test --grep=@Geth --project=Chrome",
+    "test:test:geth:debug": "PWDEBUG=1 npx cross-env ENV=prod npx playwright test Geth.test.ts --project=Chrome",
+    "test:api": "npx playwright test --grep @API --workers=1 --project=Chrome",
+    "test:db": "npx playwright test DB.test.ts --project=DB",
+    "test:record": "npx playwright codegen",
+    "test:visual": "npx playwright test visualComparision.test.ts --project=Chrome",
+    "allureReport": "allure serve",
+    "lighthouse": "node lighthouse.js",
+    "lint": "eslint --ext .ts ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akshayp7/playwright-typescipt-playwright-test.git"
+  },
+  "author": "Sergei Kudasov",
+  "license": "MIT",
+  "dependencies": {
+    "@playwright/test": "^1.22.1",
+    "@typechain/ethers-v5": "^10.0.0",
+    "@types/adm-zip": "^0.5.0",
+    "@types/crypto-js": "^4.1.1",
+    "adm-zip": "^0.5.9",
+    "cross-env": "^7.0.3",
+    "crypto-js": "^4.1.1",
+    "ethers": "^5.6.2",
+    "exceljs": "^4.3.0",
+    "experimental-allure-playwright": "0.0.3",
+    "hardhat": "^2.9.2",
+    "lighthouse": "^9.6.1",
+    "pg": "^8.7.3",
+    "playwright": "^1.22.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.6.4"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint": "^8.15.0",
+    "eslint-plugin-import": "^2.26.0",
+    "@typescript-eslint/eslint-plugin": "^5.25.0",
+    "@typescript-eslint/parser": "^5.25.0"
+  }
+}

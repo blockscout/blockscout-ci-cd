@@ -1,0 +1,50 @@
+version: '3.8'
+
+networks:
+  loki:
+  grafana:
+  timescaledb:
+
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg12
+    command: postgres -c shared_preload_libraries=timescaledb
+    networks:
+      - loki
+      - grafana
+      - timescaledb
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    environment:
+      - PGDATA=/var/lib/postgresql/data/timescaledb
+      - POSTGRES_DB=k6
+      - POSTGRES_USER=k6
+      - POSTGRES_PASSWORD=k6
+  loki:
+    image: grafana/loki:2.5.0
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - loki
+      - grafana
+      - timescaledb
+
+  grafana:
+    image: grafana/grafana:8.2.6
+    networks:
+      - grafana
+      - timescaledb
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_BASIC_ENABLED=false
+    volumes:
+      - ./grafana-datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - ./dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./k6_test_view.json:/var/lib/grafana/dashboards/k6_test_view.json
+      - ./k6_tests.json:/var/lib/grafana/dashboards/k6_tests.json

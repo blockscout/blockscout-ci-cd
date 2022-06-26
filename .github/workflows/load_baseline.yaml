@@ -1,0 +1,92 @@
+name: Load baseline
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      blockscout_image:
+        description: 'Blockscout image:tag to test'     
+        required: true
+        default: 'blockscout/blockscout:latest' 
+        type: string
+      environment:
+        description: 'Environment to run tests against'
+        required: true
+        type: choice
+        default: 'test'
+        options:
+        - prod
+        - test
+  workflow_call:
+    inputs:
+      blockscout_image:
+        description: 'Blockscout image:tag to test'     
+        required: true
+        default: 'blockscout/blockscout:latest' 
+        type: string
+      environment:
+        description: 'Environment to run tests against'
+        type: string
+        required: true
+        default: 'test'
+jobs:
+  test_load_baseline:
+    name: Check load baseline
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout github repo (+ download lfs dependencies)
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+      - name: Checkout LFS objects
+        run: git lfs checkout
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: v14.17.0
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Install deps
+        run: npm ci
+      - name: Lint
+        working-directory: ./tests/load
+        run: npm run lint
+      - name: Run warm-up
+        env:
+          K6_TEST_ID: warm_up_baseline_rpc
+          BASE_URL: https://blockscout.com/poa/core
+          TIMEOUT: 20000
+          SCENARIO: warmUp
+          # K6_OUT: json
+          # K6_LOG_OUTPUT_STRING: stdout
+          # LOKI_GUN_DEBUG: "meta"
+        run: |
+          npm run test:ci
+      - name: Run baseline load test
+        # even if warm-up failed some thresholds we still would like to see the baseline
+        if: always()
+        env:
+          # label in TimescaleDB to differentiate test runs
+          K6_TEST_ID: baseline_rpc
+          BASE_URL: https://blockscout.com/poa/core
+          TIMEOUT: 20000
+          SCENARIO: baseline
+          # K6_OUT: json
+          # label in Loki to store debug logs stream
+          # K6_LOG_OUTPUT_STRING: stdout
+          # LOKI_GUN_DEBUG: "meta"
+        run: |
+          npm run test:ci
+defaults:
+  run:
+    shell: bash
+    working-directory: ./tests/load

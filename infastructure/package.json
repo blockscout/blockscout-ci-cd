@@ -1,0 +1,33 @@
+{
+  "name": "eks-cdk-js",
+  "version": "0.2.0",
+  "bin": {
+    "eks-cdk-js": "bin/eks-cdk-js.js"
+  },
+  "scripts": {
+    "build": "npm run lint && tsc",
+    "watch": "tsc -w",
+    "cdk": "npm run lint && cdk",
+    "lint": "eslint -c .eslintrc.js ./bin/*.ts ./lib/*.ts --fix"
+  },
+  "devDependencies": {
+    "@types/node": "^10.17.27",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
+    "eslint": "^7.31.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "ts-node": "^9.0.0"
+  },
+  "dependencies": {
+    "@types/js-yaml": "^4.0.1",
+    "aws-cdk-lib": "^2.0.0",
+    "constructs": "^10.0.0",
+    "js-yaml": "^4.1.0",
+    "prettier": "^2.5.1",
+    "typescript": "~3.9.7"
+  }
+}

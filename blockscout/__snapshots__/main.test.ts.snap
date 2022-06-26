@@ -1,0 +1,514 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`E2E mode Chaos mode ( stateful set ) 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "labels": Object {
+        "type": "blockscout-e2e-test",
+      },
+      "name": "",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "name": "service",
+      "namespace": "",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 4000,
+          "targetPort": 4000,
+        },
+      ],
+      "selector": Object {
+        "app": "blockscout-e2e",
+      },
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "labels": Object {
+        "app": "blockscout",
+      },
+      "name": "deployment",
+      "namespace": "",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "app": "blockscout-e2e",
+        },
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "app": "blockscout-e2e",
+          },
+          "name": "pod",
+        },
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "args": Array [
+                "-c",
+                "mix ecto.create && mix ecto.migrate && mix phx.server",
+              ],
+              "command": Array [
+                "/bin/bash",
+              ],
+              "env": Array [
+                Object {
+                  "name": "MIX_ENV",
+                  "value": "prod",
+                },
+                Object {
+                  "name": "ECTO_USE_SSL",
+                  "value": "'false'",
+                },
+                Object {
+                  "name": "COIN",
+                  "value": "DAI",
+                },
+                Object {
+                  "name": "ETHEREUM_JSONRPC_VARIANT",
+                  "value": "geth",
+                },
+                Object {
+                  "name": "ETHEREUM_JSONRPC_HTTP_URL",
+                  "value": "",
+                },
+                Object {
+                  "name": "ETHEREUM_JSONRPC_WS_URL",
+                  "value": "",
+                },
+                Object {
+                  "name": "DATABASE_URL",
+                  "value": "postgresql://postgres:@localhost:5432/blockscout?ssl=false",
+                },
+              ],
+              "image": "blockscout/blockscout:latest",
+              "imagePullPolicy": "Always",
+              "name": "node",
+              "ports": Array [
+                Object {
+                  "containerPort": 4000,
+                },
+              ],
+              "readinessProbe": Object {
+                "httpGet": Object {
+                  "path": "/",
+                  "port": 4000,
+                },
+                "initialDelaySeconds": 10,
+                "periodSeconds": 2,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "500m",
+                  "memory": "500Mi",
+                },
+                "requests": Object {
+                  "cpu": "500m",
+                  "memory": "500Mi",
+                },
+              },
+            },
+            Object {
+              "env": Array [
+                Object {
+                  "name": "POSTGRES_PASSWORD",
+                  "value": "postgres",
+                },
+                Object {
+                  "name": "POSTGRES_DB",
+                  "value": "explorer_test",
+                },
+              ],
+              "image": "postgres:13.6",
+              "name": "postgres",
+              "ports": Array [
+                Object {
+                  "containerPort": 5432,
+                  "name": "postgres",
+                },
+              ],
+              "readinessProbe": Object {
+                "exec": Object {
+                  "command": Array [
+                    "pg_isready",
+                    "-U",
+                    "postgres",
+                  ],
+                },
+                "initialDelaySeconds": 10,
+                "periodSeconds": 2,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "500m",
+                  "memory": "500Mi",
+                },
+                "requests": Object {
+                  "cpu": "500m",
+                  "memory": "500Mi",
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`E2E mode E2E mode 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "labels": Object {
+        "type": "blockscout-e2e-test",
+      },
+      "name": "",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "name": "service",
+      "namespace": "",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 4000,
+          "targetPort": 4000,
+        },
+      ],
+      "selector": Object {
+        "app": "blockscout-e2e",
+      },
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "labels": Object {
+        "app": "blockscout",
+      },
+      "name": "deployment",
+      "namespace": "",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "app": "blockscout-e2e",
+        },
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "app": "blockscout-e2e",
+          },
+          "name": "pod",
+        },
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "args": Array [
+                "-c",
+                "mix ecto.create && mix ecto.migrate && mix phx.server",
+              ],
+              "command": Array [
+                "/bin/bash",
+              ],
+              "env": Array [
+                Object {
+                  "name": "MIX_ENV",
+                  "value": "prod",
+                },
+                Object {
+                  "name": "ECTO_USE_SSL",
+                  "value": "'false'",
+                },
+                Object {
+                  "name": "COIN",
+                  "value": "DAI",
+                },
+                Object {
+                  "name": "ETHEREUM_JSONRPC_VARIANT",
+                  "value": "geth",
+                },
+                Object {
+                  "name": "ETHEREUM_JSONRPC_HTTP_URL",
+                  "value": "",
+                },
+                Object {
+                  "name": "ETHEREUM_JSONRPC_WS_URL",
+                  "value": "",
+                },
+                Object {
+                  "name": "DATABASE_URL",
+                  "value": "postgresql://postgres:@localhost:5432/blockscout?ssl=false",
+                },
+              ],
+              "image": "blockscout/blockscout:latest",
+              "imagePullPolicy": "Always",
+              "name": "node",
+              "ports": Array [
+                Object {
+                  "containerPort": 4000,
+                },
+              ],
+              "readinessProbe": Object {
+                "httpGet": Object {
+                  "path": "/",
+                  "port": 4000,
+                },
+                "initialDelaySeconds": 10,
+                "periodSeconds": 2,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "500m",
+                  "memory": "500Mi",
+                },
+                "requests": Object {
+                  "cpu": "500m",
+                  "memory": "500Mi",
+                },
+              },
+            },
+            Object {
+              "env": Array [
+                Object {
+                  "name": "POSTGRES_PASSWORD",
+                  "value": "postgres",
+                },
+                Object {
+                  "name": "POSTGRES_DB",
+                  "value": "explorer_test",
+                },
+              ],
+              "image": "postgres:13.6",
+              "name": "postgres",
+              "ports": Array [
+                Object {
+                  "containerPort": 5432,
+                  "name": "postgres",
+                },
+              ],
+              "readinessProbe": Object {
+                "exec": Object {
+                  "command": Array [
+                    "pg_isready",
+                    "-U",
+                    "postgres",
+                  ],
+                },
+                "initialDelaySeconds": 10,
+                "periodSeconds": 2,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "500m",
+                  "memory": "500Mi",
+                },
+                "requests": Object {
+                  "cpu": "500m",
+                  "memory": "500Mi",
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`E2E mode Load mode 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "labels": Object {
+        "type": "blockscout-e2e-test",
+      },
+      "name": "",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "name": "service",
+      "namespace": "",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 4000,
+          "targetPort": 4000,
+        },
+      ],
+      "selector": Object {
+        "app": "blockscout-e2e",
+      },
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "labels": Object {
+        "app": "blockscout",
+      },
+      "name": "deployment",
+      "namespace": "",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "app": "blockscout-e2e",
+        },
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "app": "blockscout-e2e",
+          },
+          "name": "pod",
+        },
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "args": Array [
+                "-c",
+                "mix ecto.create && mix ecto.migrate && mix phx.server",
+              ],
+              "command": Array [
+                "/bin/bash",
+              ],
+              "env": Array [
+                Object {
+                  "name": "MIX_ENV",
+                  "value": "prod",
+                },
+                Object {
+                  "name": "ECTO_USE_SSL",
+                  "value": "'false'",
+                },
+                Object {
+                  "name": "COIN",
+                  "value": "DAI",
+                },
+                Object {
+                  "name": "ETHEREUM_JSONRPC_VARIANT",
+                  "value": "geth",
+                },
+                Object {
+                  "name": "ETHEREUM_JSONRPC_HTTP_URL",
+                  "value": "",
+                },
+                Object {
+                  "name": "ETHEREUM_JSONRPC_WS_URL",
+                  "value": "",
+                },
+                Object {
+                  "name": "DATABASE_URL",
+                  "value": "postgresql://postgres:@localhost:5432/blockscout?ssl=false",
+                },
+              ],
+              "image": "blockscout/blockscout:latest",
+              "imagePullPolicy": "Always",
+              "name": "node",
+              "ports": Array [
+                Object {
+                  "containerPort": 4000,
+                },
+              ],
+              "readinessProbe": Object {
+                "httpGet": Object {
+                  "path": "/",
+                  "port": 4000,
+                },
+                "initialDelaySeconds": 10,
+                "periodSeconds": 2,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "500m",
+                  "memory": "500Mi",
+                },
+                "requests": Object {
+                  "cpu": "500m",
+                  "memory": "500Mi",
+                },
+              },
+            },
+            Object {
+              "env": Array [
+                Object {
+                  "name": "POSTGRES_PASSWORD",
+                  "value": "postgres",
+                },
+                Object {
+                  "name": "POSTGRES_DB",
+                  "value": "explorer_test",
+                },
+              ],
+              "image": "postgres:13.6",
+              "name": "postgres",
+              "ports": Array [
+                Object {
+                  "containerPort": 5432,
+                  "name": "postgres",
+                },
+              ],
+              "readinessProbe": Object {
+                "exec": Object {
+                  "command": Array [
+                    "pg_isready",
+                    "-U",
+                    "postgres",
+                  ],
+                },
+                "initialDelaySeconds": 10,
+                "periodSeconds": 2,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "500m",
+                  "memory": "500Mi",
+                },
+                "requests": Object {
+                  "cpu": "500m",
+                  "memory": "500Mi",
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
