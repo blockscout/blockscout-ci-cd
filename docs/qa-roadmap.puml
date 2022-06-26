@@ -1,0 +1,56 @@
+@startgantt
+
+Project starts the 1st of june 2022
+
+[Подготовка бойлера для E2E и нагрузки + CI] as [boiler] lasts 7 days
+[Базовый деплоймент blockscout для внешних сетей] as [app_deployment] lasts 7 days
+[boiler] is 100% completed
+[Деплой кластера EKS для CI и E2E/Load тестов] as [eks] lasts 7 days
+[eks] is 90% complete
+[Определение требований] as [req] lasts 7 days
+note bottom
+  Определение скоупа проекта, что тестируем в blockscout в первую очередь
+  пока определились что UI/API тесты в приоритете + тесты на живых окружениях пока нет кластера и доступов
+end note
+[req] is 70% completed
+[boiler]->[req]
+
+[Написание E2E UI тестов для уже готовых окружений] as [e2e_prod] lasts 30 days
+[req]->[e2e_prod]
+[e2e_prod] links to [[https://www.notion.so/798c57dade7f48ee9aba8c1f2273b920?v=b592bb1164c247c9b91e28930c0c54c5&p=231853b7822c41d094e97e203985bb7e{open ticket} ticket]]
+[e2e_prod] is 5% complete
+
+[Создание деплоймента для Ethereum] as [dep_eth] lasts 3 days
+[eks]->[dep_eth]
+[dep_eth] links to [[https://www.notion.so/798c57dade7f48ee9aba8c1f2273b920?v=b592bb1164c247c9b91e28930c0c54c5&p=838790d8e3f8479da407fb87b8dc3098{open ticket} ticket]]
+[dep_eth] is 0% complete
+
+[Написание E2E UI тестов для Ethereum] as [e2e_UI] lasts 30 days
+[dep_eth]->[e2e_UI]
+[e2e_UI] links to [[https://www.notion.so/798c57dade7f48ee9aba8c1f2273b920?v=b592bb1164c247c9b91e28930c0c54c5&p=e2493067342b4e8c947bdab3c540222f{open ticket} ticket]]
+[e2e_UI] is 0% complete
+
+[Написание E2E API тестов для Ethereum] as [e2e_API] lasts 30 days
+[dep_eth]->[e2e_API]
+[e2e_API] is 0% complete
+
+[Подключить blockscout к blockscout-ci-cd] as [pipeline] lasts 2 day
+[dep_eth]->[pipeline]
+[pipeline] links to [[https://www.notion.so/798c57dade7f48ee9aba8c1f2273b920?v=b592bb1164c247c9b91e28930c0c54c5&p=7e067191046d4a21aec985ea023b226d{open ticket} ticket]]
+[pipeline] is 50% complete
+
+[Написание нагрузочных baseline тестов] as [load_inbound_eth] lasts 30 days
+[eks]->[load_inbound_eth]
+[load_inbound_eth] links to [[https://www.notion.so/798c57dade7f48ee9aba8c1f2273b920?v=b592bb1164c247c9b91e28930c0c54c5&p=2cfe1e6186f34fe897d0f6e9de9ed5bd{open ticket} ticket]]
+[load_inbound_eth] is 0% complete
+
+[Написание soak pipeline для Ethereum mainnet] as [soak_outbound_eth] lasts 30 days
+[eks]->[soak_outbound_eth]
+[soak_outbound_eth] links to [[https://www.notion.so/798c57dade7f48ee9aba8c1f2273b920?v=b592bb1164c247c9b91e28930c0c54c5&p=e411620f9a5340319ff97b7645bdc0bd{open ticket} ticket]]
+[soak_outbound_eth] is 0% complete
+
+[Написание chaos тестов для Ethereum mainnet] as [chaos] lasts 10 days
+[eks]->[chaos]
+[chaos] links to [[https://www.notion.so/798c57dade7f48ee9aba8c1f2273b920?v=b592bb1164c247c9b91e28930c0c54c5&p=e411620f9a5340319ff97b7645bdc0bd{open ticket} ticket]]
+[chaos] is 0% complete
+@endgantt

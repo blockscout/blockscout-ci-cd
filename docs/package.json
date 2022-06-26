@@ -1,0 +1,16 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "### QA manual process (WIP, it's an example flow that describes only manual part)",
+  "main": "upload.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "notion-client": "^6.12.9",
+    "ts-node": "^10.8.1"
+  }
+}
