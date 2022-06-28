@@ -30,6 +30,6 @@ jobs:
         ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
         eval `ssh-agent -s`
         ssh-add - <<< "$BASTION_SSH_KEY"
-        sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/host
+        sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
         ssh -fN -v -L $LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
         kubectl get svc
