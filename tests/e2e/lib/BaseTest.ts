@@ -2,7 +2,7 @@ import { test as baseTest } from '@playwright/test'
 import { HomePage } from '@pages/Home'
 import { BlocksPage } from '@pages/Blocks'
 import Contracts from './Contracts'
-import { testConfig } from '../testConfig'
+import testConfig from '../testConfig'
 
 const test = baseTest.extend<{
     homePage: HomePage,

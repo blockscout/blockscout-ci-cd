@@ -1,5 +1,33 @@
 name: E2E K8s
-on: [push]
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      blockscout_image:
+        description: 'Blockscout image:tag to test'     
+        required: true
+        default: 'blockscout/blockscout:latest' 
+        type: string
+      environment:
+        description: 'Environment to run tests against'
+        required: true
+        type: choice
+        default: 'test'
+        options:
+        - prod
+        - test
+  workflow_call:
+    inputs:
+      blockscout_image:
+        description: 'Blockscout image:tag to test'     
+        required: true
+        default: 'blockscout/blockscout:latest' 
+        type: string
+      environment:
+        description: 'Environment to run tests against'
+        required: true
+        type: string
+        default: 'test'
 
 env:
   K8S_HOST: ${{ secrets.K8S_HOST }}
@@ -10,11 +38,15 @@ env:
   BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  IMAGE: blockscout/blockscout:latest
+  IMAGE: ${{ inputs.blockscout_image }}
   VARIANT: geth
   HTTP_URL: ${{ secrets.MAINNET_INFURA_HTTP }}
   WS_URL: ${{ secrets.MAINNET_INFURA_WS }}
   RESOURCE_MODE: e2e
+
+  NETWORK_URL: http://localhost:8544
+  WALLET: ${{ secrets.WALLET }}
+  WALLET_JSON: ${{ secrets.WALLET_JSON }}
 
 jobs:
   deploy:
@@ -81,7 +113,7 @@ jobs:
       working-directory: ./tests/e2e
       run: |
         npx playwright install-deps chrome firefox
-        npm run test:test:smoke
+        npm run test:test:geth
     - uses: actions/upload-artifact@v3
       if: always()
       with:
