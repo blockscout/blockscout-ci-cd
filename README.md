@@ -1,6 +1,7 @@
 # Blockscout infrastructure and E2E testing
 
-[![E2E tests](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e.yaml/badge.svg)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e.yaml)
+[![E2E Prod tests](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e.yaml/badge.svg)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e.yaml)
+[![E2E K8s](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_k8s.yaml/badge.svg)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_k8s.yaml)
 [![Load baseline](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/load_baseline.yaml/badge.svg)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/load_baseline.yaml)
 
 The goal of this repository is to contain:
