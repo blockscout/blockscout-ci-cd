@@ -15,6 +15,8 @@ import {
 
 const defaultCmd = `mix ecto.create && mix ecto.migrate && mix phx.server`
 
+// const NETWORK_HTTP_PORT = 8545
+// const NETWORK_WS_PORT = 85456
 const PG_PORT = 5432
 const APP_PORT = 4000
 
@@ -67,6 +69,26 @@ const selectResources = (mode: ResourceMode): [ResourceRequirements, ResourceReq
     }
     return [resourcesBS, resourcesDB]
 }
+
+// const gethContainer = (resources: ResourceRequirements): Container => ({
+//     name: `geth`,
+//     image: `ethereum/client-go:v1.10.17`,
+//     ports: [
+//         { name: `http`, containerPort: NETWORK_HTTP_PORT },
+//         { name: `ws`, containerPort: NETWORK_WS_PORT },
+//     ],
+//     env: [
+//         {
+//             name: `POSTGRES_PASSWORD`,
+//             value: `postgres`,
+//         },
+//         {
+//             name: `POSTGRES_DB`,
+//             value: `explorer_test`,
+//         },
+//     ],
+//     resources,
+// })
 
 const pgContainer = (resources: ResourceRequirements): Container => ({
     name: `postgres`,
