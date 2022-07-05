@@ -12,7 +12,7 @@
     "deploy": "tsc && node main.js",
     "start": "npm run deploy && npm run forward",
     "stop": "kubectl delete namespace $NAMESPACE_NAME && pkill -f kubectl",
-    "forward": "kubectl --namespace $NAMESPACE_NAME port-forward deployments/deployment 4000:4000 5432:5432 &",
+    "forward": "kubectl --namespace $NAMESPACE_NAME port-forward deployments/deployment 4000:4000 5432:5432 8544:8544 8546:8546 &",
     "compile": "tsc",
     "watch": "tsc -w",
     "test": "jest",

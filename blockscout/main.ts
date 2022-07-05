@@ -12,6 +12,8 @@ const chart = new BlockscoutChart(
         // TODO: do spread with a prefix for env vars
         image: env.IMAGE || `blockscout/blockscout:latest`,
         namespaceName: env.NAMESPACE_NAME,
+        wallet: env.WALLET,
+        walletJSON: env.WALLET_JSON,
         httpURL: env.HTTP_URL,
         wsURL: env.WS_URL,
         variant: env.VARIANT,
