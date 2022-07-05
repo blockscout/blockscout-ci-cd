@@ -30,7 +30,7 @@ on:
         default: 'test'
 
 env:
-  LOCAL_PORT: ${{ secrets.LOCAL_PORT }}
+  K8S_LOCAL_PORT: ${{ secrets.LOCAL_PORT }}
   K8S_HOST: ${{ secrets.K8S_HOST }}
   BASTION_HOST: ${{ secrets.BASTION_HOST }}
   K8S_PORT: ${{ secrets.K8S_PORT }}
@@ -106,7 +106,7 @@ jobs:
         eval `ssh-agent -s`
         ssh-add - <<< "$BASTION_SSH_KEY"
         sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
-        ssh -fN -v -L $LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+        ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
         npm ci
         npm run start
     - name: Run playwright
@@ -127,5 +127,5 @@ jobs:
       run: |
         eval `ssh-agent -s`
         ssh-add - <<< "$BASTION_SSH_KEY"
-        ssh -fN -v -L $LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+        ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
         npm run stop

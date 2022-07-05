@@ -10,10 +10,11 @@ npm install
 ```
 Set env vars
 ```
+export K8S_LOCAL_PORT=...
 export NAMESPACE_NAME=e2e-test
 export VARIANT=geth
-export HTTP_URL=""
-export WS_URL=""
+export HTTP_URL=...
+export WS_URL=...
 export NETWORK_URL="http://localhost:8544"
 export WALLET="use default hardhat"
 export WALLET_JSON="use default hardhat"
