@@ -10,10 +10,14 @@ npm install
 ```
 Set env vars
 ```
+export K8S_LOCAL_PORT=...
 export NAMESPACE_NAME=e2e-test
 export VARIANT=geth
-export HTTP_URL=""
-export WS_URL=""
+export HTTP_URL=...
+export WS_URL=...
+export NETWORK_URL="http://localhost:8544"
+export WALLET="use default hardhat"
+export WALLET_JSON="use default hardhat"
 # e2e - non-stateful compact resources mode, just for e2e testing
 # chaos - stateful set with compact resources
 # load - non-stateful with more resources for load/soak/stress tests
@@ -27,6 +31,8 @@ Default ports are now forwarded
 ```
 app: localhost:4000
 db: localhost:5432
+network_http: 8544
+network_ws: 8545
 ```
 Then shutdown
 ```
