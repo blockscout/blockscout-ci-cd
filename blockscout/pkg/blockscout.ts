@@ -57,8 +57,8 @@ const selectResources = (mode: ResourceMode): [ResourceRequirements, ResourceReq
     let resourcesNetwork: ResourceRequirements
     switch (mode) {
     case ResourceMode.E2E:
-        resourcesDB = guaranteedResources(`250m`, `1024Mi`)
-        resourcesBS = guaranteedResources(`250m`, `1024Mi`)
+        resourcesDB = guaranteedResources(`1000m`, `1024Mi`)
+        resourcesBS = guaranteedResources(`1000m`, `1024Mi`)
         resourcesNetwork = guaranteedResources(`250m`, `500Mi`)
         break
     case ResourceMode.Load:
@@ -129,14 +129,18 @@ const gethContainer = (resources: ResourceRequirements, cm: ConfigMap): Containe
         `--http.addr`,
         `0.0.0.0`,
         `--http.port=8544`,
+        `--http.api`,
+        `eth,net,web3,debug,txpool`,
         `--ws`,
         `--ws.origins`,
         `*`,
         `--ws.addr`,
         `0.0.0.0`,
         `--ws.port=8546`,
+        `--ws.api`,
+        `eth,net,web3,debug,txpool`,
         `--graphql`,
-        `-graphql.corsdomain`,
+        `--graphql.corsdomain`,
         `*`,
         `--allow-insecure-unlock`,
         `--rpc.allow-unprotected-txs`,

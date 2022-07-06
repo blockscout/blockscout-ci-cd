@@ -100,6 +100,10 @@ export class HomePage {
         await actions.navigateToURL(`/`)
     }
 
+    async delay(amount: number): Promise<void> {
+        await actions.delay(amount)
+    }
+
     async verifyComponents(ctx: BrowserContext): Promise<void> {
         await actions.verifyElementIsDisplayed(this.po.LOGO, `no logo have been found`)
         await actions.verifyElementIsDisplayed(this.po.SIGN_IN, `no sign in have been found`)

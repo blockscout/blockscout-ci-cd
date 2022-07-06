@@ -10,11 +10,11 @@
     "test:prod:smoke:debug": "PWDEBUG=1 npx cross-env ENV=prod npx playwright test Home.test.ts --project=Chrome",
     "test:prod:serial": "npx cross-env ENV=prod npx playwright test --workers=1",
     "test:prod:smoke": "npx cross-env ENV=prod npx playwright test --grep=@Smoke",
-    "test:prod:geth": "npx cross-env ENV=prod npx playwright test --grep=@Geth --project=Chrome",
-    "test:test:smoke:debug": "PWDEBUG=1 npx cross-env ENV=test npx playwright test Home.test.ts --project=Chrome",
-    "test:test:smoke": "npx cross-env ENV=test npx playwright test --grep=@Smoke",
-    "test:test:geth": "npx cross-env ENV=test npx playwright test --grep=@Geth --project=Chrome",
-    "test:test:geth:debug": "PWDEBUG=1 npx cross-env ENV=prod npx playwright test Geth.test.ts --project=Chrome",
+    "test:prod:ethereum": "npx cross-env ENV=prod npx playwright test --grep=@Ethereum --project=Chrome",
+    "test:smoke:debug": "PWDEBUG=1 npx cross-env ENV=test npx playwright test Home.test.ts --project=Chrome",
+    "test:smoke": "npx cross-env ENV=test npx playwright test --grep=@Smoke",
+    "test:ethereum": "npx cross-env ENV=test npx playwright test --grep=@Ethereum",
+    "test:ethereum:debug": "PWDEBUG=1 npx cross-env ENV=test npx playwright test --grep=@Ethereum --project=Chrome",
     "test:api": "npx playwright test --grep @API --workers=1 --project=Chrome",
     "test:db": "npx playwright test DB.test.ts --project=DB",
     "test:record": "npx playwright codegen",
@@ -48,10 +48,11 @@
     "typescript": "^4.6.4"
   },
   "devDependencies": {
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint": "^8.15.0",
-    "eslint-plugin-import": "^2.26.0",
+    "@ethersproject/experimental": "^5.6.3",
     "@typescript-eslint/eslint-plugin": "^5.25.0",
-    "@typescript-eslint/parser": "^5.25.0"
+    "@typescript-eslint/parser": "^5.25.0",
+    "eslint": "^8.15.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.26.0"
   }
 }
