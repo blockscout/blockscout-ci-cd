@@ -19,4 +19,9 @@ contract TestToken is ERC20, AccessControl {
         require(hasRole(MINTER_ROLE, msg.sender), "Only minter can mint");
         _mint(to, amount);
     }
+
+    function alwaysReverts() external returns (bool) {
+        require(false, "I'm always reverting with an error");
+        return false;
+    }
 }

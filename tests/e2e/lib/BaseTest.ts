@@ -1,18 +1,18 @@
 import { test as baseTest } from '@playwright/test'
 import { HomePage } from '@pages/Home'
 import { BlocksPage } from '@pages/Blocks'
-import CommonElements from '@pages/Common'
+import TransactionPage from '@pages/Transaction'
 import Contracts from './Contracts'
 import testConfig from '../testConfig'
 
 const test = baseTest.extend<{
-    common: CommonElements,
+    transactionPage: TransactionPage,
     homePage: HomePage,
     blocksPage: BlocksPage,
     contracts: Contracts,
 }>({
-    common: async ({ page }, use) => {
-        await use(new CommonElements(page))
+    transactionPage: async ({ page }, use) => {
+        await use(new TransactionPage(page))
     },
     homePage: async ({ page }, use) => {
         await use(new HomePage(page))
