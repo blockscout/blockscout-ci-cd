@@ -44,6 +44,7 @@ env:
   WS_URL: ws://localhost:8546
   RESOURCE_MODE: e2e
 
+  ENV: test
   NETWORK_URL: http://localhost:8544
   WALLET: ${{ secrets.WALLET }}
 
@@ -112,7 +113,7 @@ jobs:
       working-directory: ./tests/e2e
       run: |
         npx playwright install-deps chrome firefox
-        npm run test:ethereum
+        npm run test:smoke
     - uses: actions/upload-artifact@v3
       if: always()
       with:

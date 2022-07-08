@@ -6,36 +6,26 @@ npm install
 npm install-deps
 ```
 
-## Local tests (WIP)
+## Run tests
 Spin up an environment in k8s as described [here](../../blockscout/README.md)
 
-Debug mode, only Chrome
+Run tests for prod
 ```
-npm run test:test:smoke:debug
+ENV=prod npm run test:prod:smoke 
 ```
-The whole suite
+Run tests for k8s with generating contracts data
 ```
-npm run test:test:smoke
-```
-Network oriented tests, network + k8s
-```
-WALLET="..." npm run test:test:geth
-```
-And then
-```
-npm run report
-```
+export NETWORK_URL="http://localhost:8544"
+export WALLET="0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
 
-## Prod tests (WIP)
-Debug mode, only Chrome
+ENV=test npm run test:smoke
 ```
-npm run test:prod:smoke:debug
+You can also skip creating contracts data and load it from `contracts_data.env` after first run, add `LOAD_CONTRACTS_DATA=1`
 ```
-The whole suite
+export LOAD_CONTRACTS_DATA=1 
+ENV=test npm run test:smoke
 ```
-npm run test:prod:smoke
-```
-And then
+Show report
 ```
 npm run report
 ```

@@ -39,7 +39,6 @@ export default class Contracts {
         await contract.deployed()
         console.log(`deployed contract:\nName: ${instanceName}\nArtifact:${artifact.contractName}\nAddress:${contract.address}`)
         this.deployedContracts[instanceName] = contract
-        process.env.TestTokenDeployTX = contract.deployTransaction.hash
         return contract
     }
 }

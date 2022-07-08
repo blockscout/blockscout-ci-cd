@@ -28,6 +28,8 @@ on:
         required: true
         type: string
         default: 'test'
+env:
+  ENV: prod
 jobs:
   test:
     name: E2E tests

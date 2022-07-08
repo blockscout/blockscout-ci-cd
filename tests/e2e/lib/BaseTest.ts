@@ -3,7 +3,6 @@ import { HomePage } from '@pages/Home'
 import { BlocksPage } from '@pages/Blocks'
 import TransactionPage from '@pages/Transaction'
 import Contracts from './Contracts'
-import testConfig from '../testConfig'
 
 const test = baseTest.extend<{
     transactionPage: TransactionPage,
@@ -19,9 +18,6 @@ const test = baseTest.extend<{
     },
     blocksPage: async ({ page }, use) => {
         await use(new BlocksPage(page))
-    },
-    contracts: async ({ page }, use) => {
-        await use(new Contracts(testConfig.networkURL))
     },
 })
 

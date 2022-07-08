@@ -1,7 +1,8 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable guard-for-in */
 import { WebActions } from "@lib/WebActions"
-import type { Locator, Page } from 'playwright'
+import type { Page } from 'playwright'
+import { CommonPage } from "./Common"
 
 export interface TXProps {
     name: string
@@ -50,12 +51,13 @@ export interface TXDescriptionProps {
     nonce: string[],
 }
 
-export default class TransactionPage {
+export default class TransactionPage extends CommonPage {
     readonly page: Page
 
     readonly actions: WebActions
 
     constructor(page: Page) {
+        super(page)
         this.page = page
         this.actions = new WebActions(this.page)
     }
@@ -86,20 +88,8 @@ export default class TransactionPage {
 
     TX_RAW_TRACE_TAB = `text=Raw Trace`
 
-    async delay(amount: number): Promise<void> {
-        await this.actions.delay(amount)
-    }
-
-    async waitTXStatus(status: string): Promise<void> {
-        await this.actions.waitWithReload(`text=${status}`)
-    }
-
     async open(hash: string): Promise<void> {
         await this.actions.navigateToURL(`tx/${hash}`)
-    }
-
-    tx_num(num: number): string {
-        return `${this.TX} >> nth=${num}`
     }
 
     async select_logs_tab(): Promise<void> {
@@ -108,6 +98,10 @@ export default class TransactionPage {
 
     async select_trace_tab(): Promise<void> {
         await this.actions.clickElement(this.TX_RAW_TRACE_TAB)
+    }
+
+    tx_num(num: number): string {
+        return `${this.TX} >> nth=${num}`
     }
 
     // checks tx fields across different pages

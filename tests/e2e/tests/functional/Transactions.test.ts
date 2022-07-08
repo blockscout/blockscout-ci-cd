@@ -4,13 +4,10 @@ import {
     TXDescriptionProps, TXLogProps, TXProps, TXTokenProps,
 } from '@pages/Transaction'
 
-test(`@Ethereum @Transactions Transaction type cheks`, async ({
-    transactionPage,
-    contracts,
-}) => {
+test(`@Ethereum @Transactions @Data @k8s Transaction type cheks`, async ({ transactionPage }) => {
     await test.step(`Check contract creation props`, async () => {
         await transactionPage.open(process.env.TestTokenDeployTX)
-        await transactionPage.waitTXStatus(`Success`)
+        await transactionPage.waitTextReload(`Success`)
         await transactionPage.check_tx_description({
             transactionsHash: [`Transaction Hash`, `0x`],
             result: [`Result`, `Success`],
@@ -55,7 +52,7 @@ test(`@Ethereum @Transactions Transaction type cheks`, async ({
 
     await test.step(`Check mint tx props`, async () => {
         await transactionPage.open(process.env.DATA_TX_1)
-        await transactionPage.waitTXStatus(`Success`)
+        await transactionPage.waitTextReload(`Success`)
         await transactionPage.check_tx_description({
             transactionsHash: [`Transaction Hash`, `0x`],
             result: [`Result`, `Success`],
@@ -95,7 +92,7 @@ test(`@Ethereum @Transactions Transaction type cheks`, async ({
 
     await test.step(`Check reverted tx props`, async () => {
         await transactionPage.open(process.env.DATA_TX_2)
-        await transactionPage.waitTXStatus(`Error: execution reverted`)
+        await transactionPage.waitTextReload(`Error: execution reverted`)
         await transactionPage.check_tx_description({
             transactionsHash: [`Transaction Hash`, `0x`],
             result: [`Result`, `Error: execution reverted`],

@@ -1,13 +1,12 @@
-import { devices } from 'playwright'
 import { PlaywrightTestConfig } from '@playwright/test'
 import testConfig from './testConfig'
 
 const { ENV } = process.env
 
-if (!ENV || ![`prod`, `test`].includes(ENV)) {
-    console.log(`Please provide a correct environment value like "npx cross-env ENV=qa|dev|qaApi|devApi"`)
-    process.exit()
-}
+// if (!ENV || ![`prod`, `test`].includes(ENV)) {
+//     console.log(`Please provide a correct environment value like "npx cross-env ENV=prod|test"`)
+//     process.exit()
+// }
 
 const config: PlaywrightTestConfig = {
 

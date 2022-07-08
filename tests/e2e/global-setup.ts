@@ -1,14 +1,33 @@
+import { readFileSync, writeFileSync, promises as fsPromises } from 'fs'
 import testConfig from './testConfig'
 import Contracts from './lib/Contracts'
 import { TestToken } from '../contracts/typechain/contracts/TestToken'
 
+const CONTRACTS_DATA_FILE = `contracts_data.env`
+
+// shareData shares contracts data with both env for current test run and dumps to a file
+const shareData = (data: Object) => {
+    Object.assign(process.env, process.env, data)
+    writeFileSync(CONTRACTS_DATA_FILE, JSON.stringify(data))
+}
+
+// setupContracts sets test contracts up
 const setupContracts = async (): Promise<void> => {
     const contracts = new Contracts(testConfig.networkURL)
+    console.log(`deploying ERC20 contract`)
     const token = await contracts.deploy(`TestToken`, `erc20`) as TestToken
+    console.log(`minting tokens`)
     const tx1 = await token.mint(contracts.wallet.address, 1)
-    process.env.DATA_TX_1 = tx1.hash
+    const receipt1 = await tx1.wait()
+    console.log(`creating reverted tx`)
     const tx2 = await token.alwaysReverts({ gasLimit: 250000 })
-    process.env.DATA_TX_2 = tx2.hash
+
+    shareData({
+        TestTokenDeployTX: token.deployTransaction.hash,
+        DATA_TX_1: tx1.hash,
+        DATA_TX_1_BLOCK_NUMBER: receipt1.blockNumber.toString(),
+        DATA_TX_2: tx2.hash,
+    })
 }
 
 async function globalSetup(): Promise<void> {
@@ -20,8 +39,13 @@ async function globalSetup(): Promise<void> {
     //    In developer mode genesis is partially ignored, for example alloc clause, so we can't fund the keys
     // 4. We are exposing it using env vars because tests are running in different processes
     if (process.env.WALLET) {
-        console.log(`setting up contracts and transactions`)
-        await setupContracts()
+        if (process.env.LOAD_CONTRACTS_DATA === `1`) {
+            console.log(`loading contracts data`)
+            Object.assign(process.env, process.env, JSON.parse(readFileSync(CONTRACTS_DATA_FILE).toString()))
+        } else {
+            console.log(`setting up contracts and transactions`)
+            await setupContracts()
+        }
     }
 }
 export default globalSetup
