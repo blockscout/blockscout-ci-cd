@@ -1,3 +1,5 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-await-in-loop */
 import fs from 'fs'
 import type { Page } from 'playwright'
 import { BrowserContext, expect } from '@playwright/test'
@@ -13,12 +15,24 @@ export class WebActions {
         this.page = page
     }
 
-    async navigateToURL(url: string) {
-        this.page.goto(url)
+    async navigateToURL(url: string): Promise<void> {
+        await this.page.goto(url)
     }
 
     async waitForElementAttached(locator: string): Promise<void> {
         await this.page.waitForSelector(locator)
+    }
+
+    async waitWithReload(locator: string): Promise<void> {
+        for (let i = 0; i < 20; i++) {
+            await this.page.reload()
+            const here = await this.page.locator(locator).count()
+            if (here) {
+                return
+            }
+            await this.delay(1000)
+        }
+        throw Error(`timeout waiting element with reload: ${locator}`)
     }
 
     async waitForPageNavigation(event: string): Promise<void> {
@@ -125,7 +139,7 @@ export class WebActions {
 
     async verifyElementContainsText(locator: string, text: string): Promise<void> {
         await this.waitForElementAttached(locator)
-        await expect(this.page.locator(locator)).toContainText(text)
+        await expect(this.page.locator(locator)).toContainText(text.trim())
     }
 
     async verifyJSElementValue(locator: string, text: string): Promise<void> {

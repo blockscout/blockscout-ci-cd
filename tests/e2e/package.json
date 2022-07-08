@@ -7,19 +7,17 @@
     "install-deps": "npx playwright install msedge",
     "test": "npx playwright test",
     "report": "npx playwright show-report html-report",
-    "test:prod:smoke:debug": "PWDEBUG=1 npx cross-env ENV=prod npx playwright test Home.test.ts --project=Chrome",
-    "test:prod:serial": "npx cross-env ENV=prod npx playwright test --workers=1",
-    "test:prod:smoke": "npx cross-env ENV=prod npx playwright test --grep=@Smoke",
-    "test:prod:geth": "npx cross-env ENV=prod npx playwright test --grep=@Geth --project=Chrome",
-    "test:test:smoke:debug": "PWDEBUG=1 npx cross-env ENV=test npx playwright test Home.test.ts --project=Chrome",
-    "test:test:smoke": "npx cross-env ENV=test npx playwright test --grep=@Smoke",
-    "test:test:geth": "npx cross-env ENV=test npx playwright test --grep=@Geth --project=Chrome",
-    "test:test:geth:debug": "PWDEBUG=1 npx cross-env ENV=prod npx playwright test Geth.test.ts --project=Chrome",
+    "test:prod:smoke:debug": "PWDEBUG=1 npx playwright test Home.test.ts --project=Chrome",
+    "test:prod:smoke": "npx playwright test --grep=@Smoke",
+    "test:smoke:debug": "PWDEBUG=1 npx playwright test Home.test.ts --project=Chrome",
+    "test:smoke": "npx playwright test --grep=@k8s",
+    "test:transactions": "npx playwright test --grep=@Transactions",
+    "test:transactions:debug": "PWDEBUG=1 npx playwright test --grep=@Transactions",
+    "test:blocks": "npx playwright test --grep=@Blocks",
+    "test:blocks:debug": "PWDEBUG=1 npx playwright test --grep=@Blocks",
     "test:api": "npx playwright test --grep @API --workers=1 --project=Chrome",
-    "test:db": "npx playwright test DB.test.ts --project=DB",
     "test:record": "npx playwright codegen",
     "test:visual": "npx playwright test visualComparision.test.ts --project=Chrome",
-    "allureReport": "allure serve",
     "lighthouse": "node lighthouse.js",
     "lint": "eslint --ext .ts ."
   },
@@ -48,10 +46,11 @@
     "typescript": "^4.6.4"
   },
   "devDependencies": {
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint": "^8.15.0",
-    "eslint-plugin-import": "^2.26.0",
+    "@ethersproject/experimental": "^5.6.3",
     "@typescript-eslint/eslint-plugin": "^5.25.0",
-    "@typescript-eslint/parser": "^5.25.0"
+    "@typescript-eslint/parser": "^5.25.0",
+    "eslint": "^8.15.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.26.0"
   }
 }

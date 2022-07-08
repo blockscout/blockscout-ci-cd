@@ -17,7 +17,6 @@ export HTTP_URL=...
 export WS_URL=...
 export NETWORK_URL="http://localhost:8544"
 export WALLET="use default hardhat"
-export WALLET_JSON="use default hardhat"
 # e2e - non-stateful compact resources mode, just for e2e testing
 # chaos - stateful set with compact resources
 # load - non-stateful with more resources for load/soak/stress tests

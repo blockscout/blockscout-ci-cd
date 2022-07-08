@@ -31,7 +31,6 @@ interface BlockscoutProps {
     image: string
     namespaceName: string
     wallet: string
-    walletJSON: string
     httpURL: string
     wsURL: string
     variant: string
@@ -57,19 +56,19 @@ const selectResources = (mode: ResourceMode): [ResourceRequirements, ResourceReq
     let resourcesNetwork: ResourceRequirements
     switch (mode) {
     case ResourceMode.E2E:
-        resourcesDB = guaranteedResources(`250m`, `1024Mi`)
-        resourcesBS = guaranteedResources(`250m`, `1024Mi`)
-        resourcesNetwork = guaranteedResources(`250m`, `500Mi`)
+        resourcesDB = guaranteedResources(`1000m`, `1024Mi`)
+        resourcesBS = guaranteedResources(`1000m`, `1024Mi`)
+        resourcesNetwork = guaranteedResources(`1000m`, `2Gi`)
         break
     case ResourceMode.Load:
         resourcesDB = guaranteedResources(`1000m`, `4Gi`)
         resourcesBS = guaranteedResources(`1000m`, `4Gi`)
-        resourcesNetwork = guaranteedResources(`250m`, `500Mi`)
+        resourcesNetwork = guaranteedResources(`1000m`, `2Gi`)
         break
     case ResourceMode.Chaos:
         resourcesDB = guaranteedResources(`250m`, `1024Mi`)
         resourcesBS = guaranteedResources(`250m`, `1024Mi`)
-        resourcesNetwork = guaranteedResources(`250m`, `500Mi`)
+        resourcesNetwork = guaranteedResources(`250m`, `2Gi`)
         break
     default:
         throw Error(`unknown resource mode`)
@@ -79,7 +78,7 @@ const selectResources = (mode: ResourceMode): [ResourceRequirements, ResourceReq
 
 const gethContainer = (resources: ResourceRequirements, cm: ConfigMap): Container => ({
     name: `geth`,
-    image: `ethereum/client-go:v1.10.17`,
+    image: `ethereum/client-go:v1.10.18`,
     ports: [
         { name: `http`, containerPort: NETWORK_HTTP_PORT },
         { name: `ws`, containerPort: NETWORK_WS_PORT },
@@ -92,51 +91,56 @@ const gethContainer = (resources: ResourceRequirements, cm: ConfigMap): Containe
         },
         {
             name: cm.name,
-            mountPath: `/root/config`,
+            mountPath: `/root/genesis.json`,
+            subPath: `genesis.json`,
         },
         {
             name: cm.name,
-            mountPath: `/root/.ethereum/devchain/keystore/key1`,
-            subPath: `key1`,
-        },
-        {
-            name: cm.name,
-            mountPath: `/root/.ethereum/devchain/keystore/key2`,
-            subPath: `key2`,
-        },
-        {
-            name: cm.name,
-            mountPath: `/root/.ethereum/devchain/keystore/key3`,
-            subPath: `key3`,
+            mountPath: `/root/password.txt`,
+            subPath: `password.txt`,
         },
     ],
     command: [`sh`, `./root/init.sh`],
     args: [
+        `--fakepow`,
         `--dev`,
-        `--password`,
-        `/root/config/password.txt`,
+        `--dev.period`,
+        `1`,
         `--datadir`,
-        `/root/.ethereum/devchain`,
+        `/root/.ethereum/devnet`,
+        `--keystore`,
+        `/root/.ethereum/devnet/keystore`,
+        `--password`,
+        `/root/password.txt`,
         `--unlock`,
-        `0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266`,
+        `0`,
+        `--unlock`,
+        `1`,
         `--mine`,
+        `--miner.threads`,
+        `1`,
         `--miner.etherbase`,
         `0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266`,
-        `--ipcdisable`,
+        `--ipcpath`,
+        `/root/geth.ipc`,
         `--http`,
         `--http.vhosts`,
         `*`,
         `--http.addr`,
         `0.0.0.0`,
         `--http.port=8544`,
+        `--http.api`,
+        `eth,net,web3,debug,txpool`,
         `--ws`,
         `--ws.origins`,
         `*`,
         `--ws.addr`,
         `0.0.0.0`,
         `--ws.port=8546`,
+        `--ws.api`,
+        `eth,net,web3,debug,txpool`,
         `--graphql`,
-        `-graphql.corsdomain`,
+        `--graphql.corsdomain`,
         `*`,
         `--allow-insecure-unlock`,
         `--rpc.allow-unprotected-txs`,
@@ -146,14 +150,6 @@ const gethContainer = (resources: ResourceRequirements, cm: ConfigMap): Containe
         `--networkid=1337`,
         `--rpc.txfeecap`,
         `0`,
-        `--dev.period`,
-        `2`,
-        `--miner.threads`,
-        `1`,
-        `--miner.gasprice`,
-        `10000000000`,
-        `--miner.gastarget`,
-        `80000000000`,
     ],
     resources,
 })
@@ -273,17 +269,20 @@ export class BlockscoutChart extends Chart {
             },
             // those are the same as default static hardhat keys but in JSON form, it's known publicly so it's safe to keep it here
             data: {
-                key1: bsProps.walletJSON,
-                'init.sh': `    #!/bin/bash
-                if [ ! -d /root/.ethereum/keystore ]; then
-                    echo "/root/.ethereum/keystore not found, running 'geth init'..."
-                    geth init /root/ethconfig/genesis.json
-                    echo "...done!"
-                fi
+                'init.sh': `#!/bin/bash
+                echo "/root/.ethereum/keystore not found, running 'geth init'..."
+                rm -rf /root/.ethereum/keystore
+                echo ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 >> priv1.txt
+                echo 59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d >> priv2.txt
+                geth account import --keystore /root/.ethereum/devnet/keystore --password /root/password.txt ./priv1.txt
+                geth account import --keystore /root/.ethereum/devnet/keystore --password /root/password.txt ./priv2.txt
+                geth --datadir /root/.ethereum/devnet init /root/genesis.json
+                echo "...done!"
             
-                geth "$@"`,
+                geth "$@"
+                `,
                 'password.txt': ``,
-                'genesis.json': `    {
+                'genesis.json': `{
                     "config": {
                       "chainId": 1337,
                       "homesteadBlock": 0,
@@ -297,7 +296,11 @@ export class BlockscoutChart extends Chart {
                       "istanbulBlock": 0,
                       "muirGlacierBlock": 0,
                       "berlinBlock": 0,
-                      "londonBlock": 0
+                      "londonBlock": 0,
+                      "clique":{
+                        "blockperiodseconds": 1,
+                        "epochlength":30000
+                      }
                     },
                     "nonce": "0x0000000000000042",
                     "mixhash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -307,9 +310,8 @@ export class BlockscoutChart extends Chart {
                     "extraData": "0x",
                     "gasLimit": "8000000000",
                     "alloc": {
-                      "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266": {
-                        "balance": "20000000000000000000000"
-                      },
+                        "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266": { "balance": "20000000000000000000000" },
+                        "0x70997970C51812dc3A010C7d01b50e0d17dc79C8": { "balance": "20000000000000000000000" }
                     }
                   }`,
             },
@@ -332,9 +334,21 @@ export class BlockscoutChart extends Chart {
                         matchLabels: label,
                     },
                     template: {
-                        metadata: { labels: label },
+                        metadata: {
+                            name: `pod`,
+                            labels: label,
+                        },
                         spec: {
+                            volumes: [
+                                {
+                                    name: cm.name,
+                                    configMap: {
+                                        name: cm.name,
+                                    },
+                                },
+                            ],
                             containers: [
+                                gethContainer(net, cm),
                                 bsContainer(bsProps, bs),
                                 pgContainer(db),
                             ],

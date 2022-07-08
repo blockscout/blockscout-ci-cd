@@ -40,17 +40,17 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   IMAGE: ${{ inputs.blockscout_image }}
   VARIANT: geth
-  HTTP_URL: ${{ secrets.MAINNET_INFURA_HTTP }}
-  WS_URL: ${{ secrets.MAINNET_INFURA_WS }}
+  HTTP_URL: http://localhost:8544
+  WS_URL: ws://localhost:8546
   RESOURCE_MODE: e2e
 
+  ENV: test
   NETWORK_URL: http://localhost:8544
   WALLET: ${{ secrets.WALLET }}
-  WALLET_JSON: ${{ secrets.WALLET_JSON }}
 
 jobs:
-  deploy:
-    name: Deploy
+  test:
+    name: Test E2E contract interaction
     runs-on: ubuntu-latest
     steps:
     - name: checkout
@@ -113,7 +113,7 @@ jobs:
       working-directory: ./tests/e2e
       run: |
         npx playwright install-deps chrome firefox
-        npm run test:test:geth
+        npm run test:smoke
     - uses: actions/upload-artifact@v3
       if: always()
       with:

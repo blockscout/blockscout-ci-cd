@@ -1,13 +1,12 @@
-import { devices } from 'playwright'
 import { PlaywrightTestConfig } from '@playwright/test'
 import testConfig from './testConfig'
 
 const { ENV } = process.env
 
-if (!ENV || ![`prod`, `test`].includes(ENV)) {
-    console.log(`Please provide a correct environment value like "npx cross-env ENV=qa|dev|qaApi|devApi"`)
-    process.exit()
-}
+// if (!ENV || ![`prod`, `test`].includes(ENV)) {
+//     console.log(`Please provide a correct environment value like "npx cross-env ENV=prod|test"`)
+//     process.exit()
+// }
 
 const config: PlaywrightTestConfig = {
 
@@ -37,31 +36,31 @@ const config: PlaywrightTestConfig = {
                 viewport: { width: 1500, height: 730 },
                 ignoreHTTPSErrors: true,
                 acceptDownloads: true,
-                screenshot: `only-on-failure`,
+                screenshot: `on`,
                 video: `retain-on-failure`,
-                trace: `retain-on-failure`,
+                trace: `on`,
                 launchOptions: {
                     slowMo: 0,
                 },
             },
         },
-        {
-            name: `Firefox`,
-            use: {
-                browserName: `firefox`,
-                baseURL: testConfig[process.env.ENV],
-                headless: true,
-                viewport: { width: 1500, height: 730 },
-                ignoreHTTPSErrors: true,
-                acceptDownloads: true,
-                screenshot: `only-on-failure`,
-                video: `retain-on-failure`,
-                trace: `retain-on-failure`,
-                launchOptions: {
-                    slowMo: 0,
-                },
-            },
-        },
+        // {
+        //     name: `Firefox`,
+        //     use: {
+        //         browserName: `firefox`,
+        //         baseURL: testConfig[process.env.ENV],
+        //         headless: true,
+        //         viewport: { width: 1500, height: 730 },
+        //         ignoreHTTPSErrors: true,
+        //         acceptDownloads: true,
+        //         screenshot: `on`,
+        //         video: `retain-on-failure`,
+        //         trace: `on`,
+        //         launchOptions: {
+        //             slowMo: 0,
+        //         },
+        //     },
+        // },
     // {
     //   name: `Edge`,
     //   use: {

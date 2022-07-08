@@ -1,34 +1,43 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable guard-for-in */
 import { WebActions } from "@lib/WebActions"
 import type { Page } from 'playwright'
-import testConfig from '../testConfig'
+import { CommonPage } from "./Common"
 
-let actions: WebActions
-
-export class BlocksPageObjects {
-    BLOCK_TILES = `[class="tile-label"]`
-
-    FIRST_BLOCK_TILE = `:nth-match(:text("#"), 1)`
+export interface BlockDescriptionProps {
+    blockHeight: string[]
 }
 
-export class BlocksPage {
+export class BlocksPage extends CommonPage {
     readonly page: Page
 
+    actions: WebActions
+
+    TX_DESC_FIELDS = `[class='card-body fs-14'] >> dt`
+
+    TX_DESC_VALUES = `[class='card-body fs-14'] >> dd`
+
     constructor(page: Page) {
+        super(page)
         this.page = page
-        actions = new WebActions(this.page)
+        this.actions = new WebActions(this.page)
     }
 
-    po = new BlocksPageObjects()
-
-    async open(): Promise<void> {
-        await actions.navigateToURL(`/blocks`)
+    async open(bn: string): Promise<void> {
+        await this.actions.navigateToURL(`block/${bn}/transactions`)
     }
 
-    async getAllBlockTiles(): Promise<void> {
-        await actions.getTextFromWebElements(this.po.BLOCK_TILES)
-    }
-
-    async clickFirstBlockTile(): Promise<void> {
-        await actions.clickElement(this.po.FIRST_BLOCK_TILE)
+    async check_block_description(p: BlockDescriptionProps): Promise<void> {
+        let row = 0
+        for (const field in p) {
+            const [name, ...assertions] = p[field]
+            console.log(`field: ${field}`)
+            await this.actions.verifyElementContainsText(`${this.TX_DESC_FIELDS} >> nth=${row}`, p[field][0])
+            for (const a of assertions) {
+                console.log(`assertion: ${a}`)
+                await this.actions.verifyElementContainsText(`${this.TX_DESC_VALUES} >> nth=${row}`, a)
+            }
+            row += 1
+        }
     }
 }

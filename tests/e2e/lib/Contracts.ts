@@ -10,9 +10,11 @@ export default class Contracts {
 
     readonly provider: providers.JsonRpcProvider
 
-    readonly wallet: Wallet
+    deployedContracts: Map<string, Contract> = new Map()
 
-    readonly deployedContracts: Map<string, Contract> = new Map()
+    data: Map<string, string> = new Map()
+
+    wallet: Wallet
 
     constructor(providerURL: string) {
         this.providerURL = providerURL
@@ -24,19 +26,6 @@ export default class Contracts {
             throw Error(`please, set WALLET=... env var to your root network wallet: ${e}`)
         }
         this.wallet = new ethers.Wallet(walletAddr, this.provider)
-    }
-
-    get(instance: string): Contract {
-        try {
-            return this.deployedContracts[instance]
-        } catch (e) {
-            throw Error(`contract instance named ${instance} is not found: ${e}`)
-        }
-    }
-
-    async deployDefaultSuite() {
-        await this.deploy(`TestToken`, `token1`)
-        await this.deploy(`TestToken`, `token2`)
     }
 
     async deploy(contractName: string, instanceName: string) {
