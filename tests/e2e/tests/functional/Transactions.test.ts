@@ -1,18 +1,15 @@
+/* eslint-disable dot-notation */
 import test from '@lib/BaseTest'
 import {
     TXDescriptionProps, TXLogProps, TXProps, TXTokenProps,
 } from '@pages/Transaction'
-import { expect } from '@playwright/test'
-import { TestToken } from '../../../contracts/typechain/contracts/TestToken'
 
 test(`@Ethereum @Transactions Transaction type cheks`, async ({
-    context,
     transactionPage,
     contracts,
 }) => {
     await test.step(`Check contract creation props`, async () => {
-        const contract = await contracts.deploy(`TestToken`, `erc20`) as TestToken
-        await transactionPage.open(contract.deployTransaction.hash)
+        await transactionPage.open(process.env.TestTokenDeployTX)
         await transactionPage.waitTXStatus(`Success`)
         await transactionPage.check_tx_description({
             transactionsHash: [`Transaction Hash`, `0x`],
@@ -57,9 +54,7 @@ test(`@Ethereum @Transactions Transaction type cheks`, async ({
     })
 
     await test.step(`Check mint tx props`, async () => {
-        const token = contracts.get(`erc20`) as TestToken
-        const tx = await token.mint(contracts.wallet.address, 1)
-        await transactionPage.open(tx.hash)
+        await transactionPage.open(process.env.DATA_TX_1)
         await transactionPage.waitTXStatus(`Success`)
         await transactionPage.check_tx_description({
             transactionsHash: [`Transaction Hash`, `0x`],
@@ -99,9 +94,7 @@ test(`@Ethereum @Transactions Transaction type cheks`, async ({
     })
 
     await test.step(`Check reverted tx props`, async () => {
-        const token = contracts.get(`erc20`) as TestToken
-        const tx = await token.alwaysReverts({ gasLimit: 250000 })
-        await transactionPage.open(tx.hash)
+        await transactionPage.open(process.env.DATA_TX_2)
         await transactionPage.waitTXStatus(`Error: execution reverted`)
         await transactionPage.check_tx_description({
             transactionsHash: [`Transaction Hash`, `0x`],

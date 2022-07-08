@@ -10,9 +10,11 @@ export default class Contracts {
 
     readonly provider: providers.JsonRpcProvider
 
-    readonly wallet: Wallet
+    deployedContracts: Map<string, Contract> = new Map()
 
-    readonly deployedContracts: Map<string, Contract> = new Map()
+    data: Map<string, string> = new Map()
+
+    wallet: Wallet
 
     constructor(providerURL: string) {
         this.providerURL = providerURL
@@ -26,19 +28,6 @@ export default class Contracts {
         this.wallet = new ethers.Wallet(walletAddr, this.provider)
     }
 
-    get(instance: string): Contract {
-        try {
-            return this.deployedContracts[instance]
-        } catch (e) {
-            throw Error(`contract instance named ${instance} is not found: ${e}`)
-        }
-    }
-
-    async deployDefaultSuite() {
-        await this.deploy(`TestToken`, `token1`)
-        await this.deploy(`TestToken`, `token2`)
-    }
-
     async deploy(contractName: string, instanceName: string) {
         const artifactPath = `${ARTIFACTS_PATH}/${contractName}.sol/${contractName}.json`
         console.log(`reading artifact: ${artifactPath}`)
@@ -50,6 +39,7 @@ export default class Contracts {
         await contract.deployed()
         console.log(`deployed contract:\nName: ${instanceName}\nArtifact:${artifact.contractName}\nAddress:${contract.address}`)
         this.deployedContracts[instanceName] = contract
+        process.env.TestTokenDeployTX = contract.deployTransaction.hash
         return contract
     }
 }

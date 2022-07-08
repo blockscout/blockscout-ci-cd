@@ -46,7 +46,6 @@ env:
 
   NETWORK_URL: http://localhost:8544
   WALLET: ${{ secrets.WALLET }}
-  WALLET_JSON: ${{ secrets.WALLET_JSON }}
 
 jobs:
   test:

@@ -50,13 +50,6 @@ export interface TXDescriptionProps {
     nonce: string[],
 }
 
-// export interface TXRevertDescription {
-//     transactionsHash: string[]
-//     result: string[]
-//     status: string[]
-//     revertReason: string[]
-// }
-
 export default class TransactionPage {
     readonly page: Page
 
