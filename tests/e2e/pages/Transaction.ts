@@ -2,15 +2,7 @@
 /* eslint-disable guard-for-in */
 import { WebActions } from "@lib/WebActions"
 import type { Page } from 'playwright'
-import { CommonPage } from "./Common"
-
-export interface TXProps {
-    name: string
-    status: string
-    from1: string
-    to1: string
-    nativeAmount: string
-}
+import { CommonPage, TXProps } from "./Common"
 
 export interface TXTokenProps {
     name: string
@@ -62,8 +54,6 @@ export default class TransactionPage extends CommonPage {
         this.actions = new WebActions(this.page)
     }
 
-    TX = `[data-test='chain_transaction']`
-
     TOKEN_TILES = `[class='tile tile-type-token-transfer fade-in']`
 
     TX_INTERNAL = `[data-test='internal_transaction']`
@@ -98,24 +88,6 @@ export default class TransactionPage extends CommonPage {
 
     async select_trace_tab(): Promise<void> {
         await this.actions.clickElement(this.TX_RAW_TRACE_TAB)
-    }
-
-    tx_num(num: number): string {
-        return `${this.TX} >> nth=${num}`
-    }
-
-    // checks tx fields across different pages
-    async check_tx_in_list(num: number, p: TXProps): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.tx_num(num)} >> text=${p.name}`, `header text is wrong`)
-        await this.actions.verifyElementIsDisplayed(`${this.tx_num(num)} >> ${this.TX_STATUS} >> text=${p.status}`, `status is wrong`)
-        await this.actions.verifyElementIsDisplayed(`${this.tx_num(num)} >> ${this.TX_HASH}`, `no tx hash link`)
-        await this.actions.verifyElementIsDisplayed(`${this.tx_num(num)} >> ${this.TX_ADDR_BAR} >> nth=0 `, `no tx addr from link`)
-        await this.actions.verifyElementContainsText(`${this.tx_num(num)} >> ${this.TX_ADDR_BAR} >> nth=0`, p.from1)
-        await this.actions.verifyElementIsDisplayed(`${this.tx_num(num)} >> ${this.TX_ADDR_BAR} >> nth=1`, `no tx addr to link`)
-        await this.actions.verifyElementIsDisplayed(`${this.tx_num(num)} >> ${this.TX_ADDR_BAR} >> nth=1 >> text=${p.to1} >> nth=0`, `no contract name in receive block`)
-        await this.actions.verifyElementContainsText(`${this.tx_num(num)} >> text=Ether`, p.nativeAmount)
-        await this.actions.verifyElementContainsText(`${this.tx_num(num)} >> text=TX Fee`, `0`)
-        await this.actions.verifyElementContainsText(this.tx_num(num), `Block`)
     }
 
     async check_token_txs_list(num: number, p: TXTokenProps): Promise<void> {

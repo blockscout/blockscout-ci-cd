@@ -6,6 +6,20 @@ import { CommonPage } from "./Common"
 
 export interface BlockDescriptionProps {
     blockHeight: string[]
+    timestamp: string[]
+    transactions: string[]
+    miner: string[]
+    size: string[]
+    hash: string[]
+    parentHash: string[]
+    difficulty: string[]
+    totalDifficulty: string[]
+    gasUsed: string[]
+    gasLimit: string[]
+    nonce: string[]
+    baseFeePerGas: string[]
+    burntFees: string[]
+    priorityFeeTip: string[]
 }
 
 export class BlocksPage extends CommonPage {
