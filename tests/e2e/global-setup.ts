@@ -30,8 +30,14 @@ const waitReceiptWithBlock = async (provider: JsonRpcProvider, hash: string): Pr
 // setupContracts sets test contracts up
 const setupContracts = async (): Promise<void> => {
     const contracts = new Contracts(testConfig.networkURL)
+
     console.log(`deploying ERC20 contract`)
-    const token = await contracts.deploy(`TestToken`, `erc20`) as TestToken
+    const contractName = `TestToken`
+    const tokenName = `EPIC`
+    const tokenSymbol = `EPC`
+    const token = await contracts.deploy(tokenName, tokenSymbol, contractName) as TestToken
+    const receipt0 = await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
+
     console.log(`minting tokens`)
     const tx1 = await token.mint(contracts.wallet.address, 1)
     const receipt1 = await tx1.wait()
@@ -41,11 +47,17 @@ const setupContracts = async (): Promise<void> => {
     const receipt2 = await waitReceiptWithBlock(contracts.provider, tx2.hash)
 
     shareData({
-        TestTokenDeployTX: token.deployTransaction.hash,
-        DATA_TX_1: tx1.hash,
-        DATA_TX_1_BLOCK_NUMBER: receipt1.blockNumber.toString(),
-        DATA_TX_2: tx2.hash,
-        DATA_TX_2_BLOCK_NUMBER: receipt2.blockNumber.toString(),
+        MinerAddress: `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`,
+        TestTokenHolder: contracts.wallet.address,
+        TestTokenAddress: token.address,
+        TestTokenName: tokenName,
+        TestTokenSymbol: tokenSymbol,
+        TestTokenDeployTXHash: token.deployTransaction.hash,
+        TestTokenDeployTXBlockNumber: receipt0.blockNumber,
+        TestTokenTXMintHash: tx1.hash,
+        TestTokenTXMintBlockNumber: receipt1.blockNumber.toString(),
+        TestTokenTXRevertHash: tx2.hash,
+        TestTokenTXRevertBlockNumber: receipt2.blockNumber.toString(),
     })
 }
 
