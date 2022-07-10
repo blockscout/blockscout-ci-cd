@@ -1,4 +1,8 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-await-in-loop */
 import { readFileSync, writeFileSync, promises as fsPromises } from 'fs'
+import { TransactionResponse } from '@ethersproject/abstract-provider'
+import { JsonRpcProvider } from '@ethersproject/providers'
 import testConfig from './testConfig'
 import Contracts from './lib/Contracts'
 import { TestToken } from '../contracts/typechain/contracts/TestToken'
@@ -6,27 +10,54 @@ import { TestToken } from '../contracts/typechain/contracts/TestToken'
 const CONTRACTS_DATA_FILE = `contracts_data.env`
 
 // shareData shares contracts data with both env for current test run and dumps to a file
-const shareData = (data: Object) => {
+const shareData = (data: Object): void => {
     Object.assign(process.env, process.env, data)
     writeFileSync(CONTRACTS_DATA_FILE, JSON.stringify(data))
+}
+
+// waitReceiptWithBlock waits for tx receipt even if tx is reverted until it has block assigned
+// safe tx.wait(), because original throws
+const waitReceiptWithBlock = async (provider: JsonRpcProvider, hash: string): Promise<TransactionResponse> => {
+    for (let i = 0; i < 100; i++) {
+        const r = await provider.getTransaction(hash)
+        if (r.blockNumber) {
+            return r
+        }
+    }
+    throw Error(`tx ${hash} is not mined in any block`)
 }
 
 // setupContracts sets test contracts up
 const setupContracts = async (): Promise<void> => {
     const contracts = new Contracts(testConfig.networkURL)
+
     console.log(`deploying ERC20 contract`)
-    const token = await contracts.deploy(`TestToken`, `erc20`) as TestToken
+    const contractName = `TestToken`
+    const tokenName = `EPIC`
+    const tokenSymbol = `EPC`
+    const token = await contracts.deploy(tokenName, tokenSymbol, contractName) as TestToken
+    const receipt0 = await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
+
     console.log(`minting tokens`)
     const tx1 = await token.mint(contracts.wallet.address, 1)
     const receipt1 = await tx1.wait()
+
     console.log(`creating reverted tx`)
     const tx2 = await token.alwaysReverts({ gasLimit: 250000 })
+    const receipt2 = await waitReceiptWithBlock(contracts.provider, tx2.hash)
 
     shareData({
-        TestTokenDeployTX: token.deployTransaction.hash,
-        DATA_TX_1: tx1.hash,
-        DATA_TX_1_BLOCK_NUMBER: receipt1.blockNumber.toString(),
-        DATA_TX_2: tx2.hash,
+        MinerAddress: `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`,
+        TestTokenHolder: contracts.wallet.address,
+        TestTokenAddress: token.address,
+        TestTokenName: tokenName,
+        TestTokenSymbol: tokenSymbol,
+        TestTokenDeployTXHash: token.deployTransaction.hash,
+        TestTokenDeployTXBlockNumber: receipt0.blockNumber,
+        TestTokenTXMintHash: tx1.hash,
+        TestTokenTXMintBlockNumber: receipt1.blockNumber.toString(),
+        TestTokenTXRevertHash: tx2.hash,
+        TestTokenTXRevertBlockNumber: receipt2.blockNumber.toString(),
     })
 }
 

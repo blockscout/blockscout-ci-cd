@@ -10,10 +10,6 @@ export default class Contracts {
 
     readonly provider: providers.JsonRpcProvider
 
-    deployedContracts: Map<string, Contract> = new Map()
-
-    data: Map<string, string> = new Map()
-
     wallet: Wallet
 
     constructor(providerURL: string) {
@@ -28,17 +24,16 @@ export default class Contracts {
         this.wallet = new ethers.Wallet(walletAddr, this.provider)
     }
 
-    async deploy(contractName: string, instanceName: string) {
-        const artifactPath = `${ARTIFACTS_PATH}/${contractName}.sol/${contractName}.json`
+    async deploy(contractName: string, symbol: string, contractFileName: string): Promise<Contract> {
+        const artifactPath = `${ARTIFACTS_PATH}/${contractFileName}.sol/${contractFileName}.json`
         console.log(`reading artifact: ${artifactPath}`)
         const content = await readFile(artifactPath)
         const artifact = JSON.parse(content.toString())
 
         const factory = new ContractFactory(artifact.abi, artifact.bytecode, this.wallet)
-        const contract = await factory.deploy()
-        await contract.deployed()
-        console.log(`deployed contract:\nName: ${instanceName}\nArtifact:${artifact.contractName}\nAddress:${contract.address}`)
-        this.deployedContracts[instanceName] = contract
+        const d = await factory.deploy(contractName, symbol)
+        const contract = await d.deployed()
+        console.log(`deployed contract:\nName: ${contractName}\nArtifact: ${contractFileName}\nAddress: ${contract.address}\nSymbol: ${symbol}`)
         return contract
     }
 }

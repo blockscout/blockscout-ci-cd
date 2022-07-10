@@ -4,28 +4,26 @@ import { WebActions } from "@lib/WebActions"
 import type { Page } from 'playwright'
 import { CommonPage } from "./Common"
 
-export interface BlockDescriptionProps {
-    blockHeight: string[]
-    timestamp: string[]
+export interface AddressProps {
+    token: string[]
+    creator: string[]
+    balance: string[]
+    tokens: string[]
     transactions: string[]
-    miner: string[]
-    size: string[]
-    hash: string[]
-    parentHash: string[]
-    difficulty: string[]
-    totalDifficulty: string[]
+    transfers: string[]
     gasUsed: string[]
-    gasLimit: string[]
-    nonce: string[]
-    baseFeePerGas: string[]
-    burntFees: string[]
-    priorityFeeTip: string[]
+    lastBalanceUpdate: string[]
 }
 
-export class BlocksPage extends CommonPage {
+export class AddressPage extends CommonPage {
     readonly page: Page
 
     actions: WebActions
+
+    // overriding, non-consistent attributes on some pages for tabs
+    TX_LOGS_TAB = `text=Logs`
+
+    TX_LOG = `[data-test='address_log']`
 
     constructor(page: Page) {
         super(page)
@@ -33,11 +31,16 @@ export class BlocksPage extends CommonPage {
         this.actions = new WebActions(this.page)
     }
 
-    async open(bn: string): Promise<void> {
-        await this.actions.navigateToURL(`block/${bn}/transactions`)
+    async open(addr: string): Promise<void> {
+        await this.actions.navigateToURL(`address/${addr}`)
     }
 
-    async check_block_description(p: BlockDescriptionProps): Promise<void> {
+    // overriding, non-consistent attributes on some pages for tabs
+    async select_logs_tab(): Promise<void> {
+        await this.actions.clickElement(this.TX_LOGS_TAB)
+    }
+
+    async check_address_description(p: AddressProps): Promise<void> {
         let row = 0
         for (const field in p) {
             const [name, ...assertions] = p[field]
