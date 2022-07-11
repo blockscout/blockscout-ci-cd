@@ -41,12 +41,13 @@ export class Ekstack extends cdk.Stack {
     const vpc = this.getOrCreateVpc(this);
     // Locked Down Bastion Host Security Group to only allow outbound access to port 443.
     const bastionHostLinuxSecurityGroup = new SecurityGroup(this, 'bastionHostSecurityGroup', {
-      allowAllOutbound: false,
+      allowAllOutbound: true,
       securityGroupName: this.getOrCreateEksName(this) + '-bastionSecurityGroup',
       vpc: vpc,
     });
     // Recommended to use connections to manage ingress/egress for security groups
-    bastionHostLinuxSecurityGroup.connections.allowTo(Peer.anyIpv4(), Port.tcp(443), 'Outbound to 443 only');
+    // bastionHostLinuxSecurityGroup.connections.allowTo(Peer.anyIpv4(), Port.tcp(443), 'Outbound to 443 only');
+    // bastionHostLinuxSecurityGroup.connections.allowFrom(Peer.anyIpv4(), Port.tcp(22), 'Inbound to 22 only');
     // Create Custom IAM Role and Policies for Bastion Host
     // https://docs.aws.amazon.com/eks/latest/userguide/security_iam_id-based-policy-examples.html#policy_example3
     const bastionHostPolicy = new ManagedPolicy(this, 'bastionHostManagedPolicy');

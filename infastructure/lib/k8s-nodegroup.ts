@@ -32,8 +32,8 @@ export class K8snodegroups extends cdk.Stack {
     });
     const nodeType = new CfnParameter(this, 'nodegroupInstanceType', {
       type: 'String',
-      description: 'Instance Type to be used with nodegroup ng-1',
-      default: 't3.medium',
+      description: 'Instance Type to be used with nodegroup ng-3',
+      default: 't3.xlarge',
     });
     const nodeAMIVersion = new CfnParameter(this, 'nodeAMIVersion', {
       type: 'String',
@@ -86,16 +86,16 @@ export class K8snodegroups extends cdk.Stack {
           ],
         }],
       },
-      launchTemplateName: Fn.join('-', ['ng-1', props.eksCluster.clusterName]),
+      launchTemplateName: Fn.join('-', ['ng-3', props.eksCluster.clusterName]),
 
     });
     props.nodeGroupRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
 
-    (() => new Nodegroup(this, 'ng-1', {
+    (() => new Nodegroup(this, 'ng-3', {
       cluster: props.eksCluster,
       // https://docs.aws.amazon.com/eks/latest/userguide/eks-linux-ami-versions.html
       releaseVersion: nodeAMIVersion.valueAsString,
-      nodegroupName: 'ng-1',
+      nodegroupName: 'ng-3',
       // Require specific order of max,desired,min or generated CDK Tokens fail desired>min check
       // https://github.com/aws/aws-cdk/issues/15485
       nodeRole: props.nodeGroupRole,
