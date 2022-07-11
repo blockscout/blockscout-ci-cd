@@ -4,25 +4,20 @@ import { WebActions } from "@lib/WebActions"
 import type { Page } from 'playwright'
 import { CommonPage } from "./Common"
 
-export interface BlockDescriptionProps {
-    blockHeight: string[]
-    timestamp: string[]
-    transactions: string[]
-    miner: string[]
-    size: string[]
-    hash: string[]
-    parentHash: string[]
-    difficulty: string[]
-    totalDifficulty: string[]
-    gasUsed: string[]
-    gasLimit: string[]
-    nonce: string[]
-    baseFeePerGas: string[]
-    burntFees: string[]
-    priorityFeeTip: string[]
+export interface TokenProps {
+    contract: string[]
+    totalSupply: string[]
+    holders: string[]
+    transfers: string[]
+    decimals: string[]
+    tokenType: string[]
 }
 
-export class BlocksPage extends CommonPage {
+export interface NativeCurrencyRowProps {
+
+}
+
+export class TokenPage extends CommonPage {
     readonly page: Page
 
     actions: WebActions
@@ -33,11 +28,11 @@ export class BlocksPage extends CommonPage {
         this.actions = new WebActions(this.page)
     }
 
-    async open(bn: string): Promise<void> {
-        await this.actions.navigateToURL(`block/${bn}/transactions`)
+    async open(addr: string): Promise<void> {
+        await this.actions.navigateToURL(`token/${addr}/token-transfers`)
     }
 
-    async check_block_description(p: BlockDescriptionProps): Promise<void> {
+    async check_token(p: TokenProps): Promise<void> {
         let row = 0
         for (const field in p) {
             const [name, ...assertions] = p[field]

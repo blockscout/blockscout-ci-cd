@@ -8,6 +8,7 @@ describe(`E2E mode`, () => {
         const chart = new BlockscoutChart(app, `test`, {}, {
             image: ``,
             namespaceName: ``,
+            wallet: ``,
             wsURL: ``,
             httpURL: ``,
             variant: `geth`,
@@ -22,6 +23,7 @@ describe(`E2E mode`, () => {
         const chart = new BlockscoutChart(app, `test`, {}, {
             image: ``,
             namespaceName: ``,
+            wallet: ``,
             wsURL: ``,
             httpURL: ``,
             variant: `geth`,
@@ -36,6 +38,7 @@ describe(`E2E mode`, () => {
         const chart = new BlockscoutChart(app, `test`, {}, {
             image: ``,
             namespaceName: ``,
+            wallet: ``,
             wsURL: ``,
             httpURL: ``,
             variant: `geth`,

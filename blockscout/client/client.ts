@@ -65,7 +65,7 @@ export class K8sClient {
 
     // deploys or changes current manifest deployment
     async deploy() {
-        K8sClient.execCmd(`kubectl create -f dist`)
+        K8sClient.execCmd(`kubectl --insecure-skip-tls-verify -s https://localhost:${process.env.K8S_LOCAL_PORT} create -f dist`)
         await this.allPodsReady()
     }
 }

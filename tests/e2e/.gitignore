@@ -7,3 +7,5 @@ html-report/
 Downloads/
 html-report.zip
 LighthouseReport.html
+.env
+contracts_data.env

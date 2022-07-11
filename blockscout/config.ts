@@ -7,6 +7,7 @@ require(`dotenv`).config()
 export const env = cleanEnv(process.env, {
     IMAGE: str(),
     NAMESPACE_NAME: str(),
+    WALLET: str(),
     HTTP_URL: str(),
     WS_URL: str({}),
     VARIANT: str({ choices: [`geth`, `parity`] }),
