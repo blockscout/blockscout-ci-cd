@@ -51,8 +51,8 @@ const selectResources = (mode: ResourceMode): [ResourceRequirements, ResourceReq
     let resourcesBS: ResourceRequirements
     switch (mode) {
     case ResourceMode.E2E:
-        resourcesDB = guaranteedResources(`500m`, `500Mi`)
-        resourcesBS = guaranteedResources(`500m`, `500Mi`)
+        resourcesDB = guaranteedResources(`500m`, `1024Mi`)
+        resourcesBS = guaranteedResources(`500m`, `1024Mi`)
         break
     case ResourceMode.Load:
         resourcesDB = guaranteedResources(`2000m`, `4Gi`)

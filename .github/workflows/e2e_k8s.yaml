@@ -1,0 +1,90 @@
+name: E2E K8s
+on: [push]
+
+jobs:
+  deploy:
+    env:
+      K8S_HOST: ${{ secrets.K8S_HOST }}
+      BASTION_HOST: ${{ secrets.BASTION_HOST }}
+      K8S_PORT: ${{ secrets.K8S_PORT }}
+      LOCAL_PORT: ${{ secrets.LOCAL_PORT }}
+      USERNAME: ${{ secrets.USERNAME }}
+      BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      NAMESPACE_NAME: e2e-ci-test
+      IMAGE: blockscout/blockscout:latest
+      VARIANT: geth
+      HTTP_URL: ${{ secrets.MAINNET_INFURA_HTTP }}
+      WS_URL: ${{ secrets.MAINNET_INFURA_WS }}
+      RESOURCE_MODE: e2e
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: Setup node
+      uses: actions/setup-node@v3
+      with:
+        node-version: v14.17.0
+    - name: Cache node modules
+      id: cache-npm
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+    - name: Install deps
+      working-directory: ./tests/e2e
+      run: npm ci
+    - name: Lint
+      working-directory: ./tests/e2e
+      run: npm run lint
+    - name: Build contracts
+      working-directory: ./tests/contracts
+      run: |
+        # gyp build from root
+        npm config set user 0
+        npm ci
+        npm run build
+    - name: Set Kubernetes Context
+      uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.KUBE_CONFIG }}
+    - name: Deploy to k8s
+      shell: bash
+      working-directory: blockscout
+      # port forwarding works only inside the step, consider refactoring as TS action
+      run: |
+        mkdir ~/.ssh
+        ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
+        eval `ssh-agent -s`
+        ssh-add - <<< "$BASTION_SSH_KEY"
+        sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
+        ssh -fN -v -L $LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+        npm ci
+        npm run start
+    - name: Run playwright
+      working-directory: ./tests/e2e
+      run: |
+        npx playwright install-deps chrome firefox
+        npm run test:test:smoke
+    - uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: report
+        path: tests/e2e/html-report/index.html
+    - name: Remove namespace
+      if: always()
+      working-directory: blockscout
+      run: |
+        eval `ssh-agent -s`
+        ssh-add - <<< "$BASTION_SSH_KEY"
+        ssh -fN -v -L $LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+        npm run stop
