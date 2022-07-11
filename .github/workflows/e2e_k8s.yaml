@@ -106,7 +106,12 @@ jobs:
         eval `ssh-agent -s`
         ssh-add - <<< "$BASTION_SSH_KEY"
         sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
-        ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+        lsof -i tcp@localhost:$K8S_LOCAL_PORT > /dev/null
+        if [ $? -eq 1 ]
+        then
+          echo ' > You missing ssh tunnel. Creating one..'
+          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+        fi
         npm ci
         npm run start
     - name: Run playwright
@@ -127,5 +132,10 @@ jobs:
       run: |
         eval `ssh-agent -s`
         ssh-add - <<< "$BASTION_SSH_KEY"
-        ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+        lsof -i tcp@localhost:$K8S_LOCAL_PORT > /dev/null
+        if [ $? -eq 1 ]
+        then
+          echo ' > You missing ssh tunnel. Creating one..'
+          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+        fi
         npm run stop
