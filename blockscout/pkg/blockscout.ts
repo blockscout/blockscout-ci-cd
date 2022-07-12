@@ -4,6 +4,7 @@
 import { Construct } from 'constructs'
 import { Chart, ChartProps } from 'cdk8s'
 import { ConfigMap } from 'cdk8s-plus-22'
+import { KubeIngress } from 'cdk8s-plus-22/lib/imports/k8s'
 import {
     KubeDeployment,
     KubeService,
@@ -25,6 +26,7 @@ export enum ResourceMode {
     E2E = `e2e`,
     Load = `load`,
     Chaos = `chaos`,
+    MainnetTest = `mainnet`
 }
 
 interface BlockscoutProps {
@@ -33,10 +35,29 @@ interface BlockscoutProps {
     wallet: string
     httpURL: string
     wsURL: string
+    httpTraceURL?: string
     variant: string
+    resourceMode: string
+    port?: string
     coin?: string
-    resourceMode: ResourceMode
     command?: string
+    // mainnet vars
+    firstBlock?: string
+    lastBlock?: string
+    auth0Domain?: string
+    auth0clientID?: string
+    auth0clientSecret?: string
+    auth0CallbackURL?: string
+    auth0LogoutReturnURL?: string
+    auth0LogoutURL?: string
+    sendGridAPIKey?: string
+    sendGridSender?: string
+    sendGridTemplate?: string
+    publicTagsAirtable?: string
+    publicTagsAirtableAPIKey?: string
+    socketRoot?: string
+    networkPath?: string
+    secretKeyBase?: string
 }
 
 const guaranteedResources = (cpu: string, memory: string) => ({
@@ -50,11 +71,16 @@ const guaranteedResources = (cpu: string, memory: string) => ({
     },
 })
 
-const selectResources = (mode: ResourceMode): [ResourceRequirements, ResourceRequirements, ResourceRequirements] => {
+const selectResources = (mode: string): [ResourceRequirements, ResourceRequirements, ResourceRequirements] => {
     let resourcesDB: ResourceRequirements
     let resourcesBS: ResourceRequirements
     let resourcesNetwork: ResourceRequirements
     switch (mode) {
+    case ResourceMode.MainnetTest:
+        resourcesDB = guaranteedResources(`1000m`, `1024Mi`)
+        resourcesBS = guaranteedResources(`1000m`, `1024Mi`)
+        resourcesNetwork = guaranteedResources(`1000m`, `2Gi`)
+        break
     case ResourceMode.E2E:
         resourcesDB = guaranteedResources(`1000m`, `1024Mi`)
         resourcesBS = guaranteedResources(`1000m`, `1024Mi`)
@@ -178,53 +204,131 @@ const pgContainer = (resources: ResourceRequirements): Container => ({
     resources,
 })
 
-const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements): Container => ({
-    name: `node`,
-    image: bsProps.image,
-    command: [`/bin/bash`],
-    args: [`-c`, bsProps.command || defaultCmd],
-    imagePullPolicy: `Always`,
-    ports: [{ containerPort: APP_PORT }],
-    readinessProbe: {
-        httpGet: {
-            path: `/`,
-            port: { value: APP_PORT },
+const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements): Container => {
+    const container = {
+        name: `node`,
+        image: bsProps.image,
+        command: [`/bin/bash`],
+        args: [`-c`, bsProps.command || defaultCmd],
+        imagePullPolicy: `Always`,
+        ports: [{ containerPort: APP_PORT }],
+        readinessProbe: {
+            httpGet: {
+                path: `/`,
+                port: { value: APP_PORT },
+            },
+            initialDelaySeconds: 10,
+            periodSeconds: 2,
         },
-        initialDelaySeconds: 10,
-        periodSeconds: 2,
-    },
-    env: [
+        env: [
+            {
+                name: `MIX_ENV`,
+                value: `prod`,
+            },
+            {
+                name: `ECTO_USE_SSL`,
+                value: `'false'`,
+            },
+            {
+                name: `COIN`,
+                value: bsProps.coin,
+            },
+            {
+                name: `ETHEREUM_JSONRPC_VARIANT`,
+                value: bsProps.variant,
+            },
+            {
+                name: `ETHEREUM_JSONRPC_HTTP_URL`,
+                value: bsProps.httpURL,
+            },
+            {
+                name: `ETHEREUM_JSONRPC_TRACE_URL`,
+                value: bsProps.httpTraceURL,
+            },
+            {
+                name: `ETHEREUM_JSONRPC_WS_URL`,
+                value: bsProps.wsURL,
+            },
+            {
+                name: `DATABASE_URL`,
+                value: `postgresql://postgres:@localhost:${PG_PORT}/blockscout?ssl=false`,
+            },
+        ],
+        resources,
+    }
+    if (bsProps.resourceMode === ResourceMode.MainnetTest) {
+        container.env.push(...[{
+            name: `FIRST_BLOCK`,
+            value: bsProps.firstBlock!,
+        },
         {
-            name: `MIX_ENV`,
-            value: `prod`,
+            name: `LAST_BLOCK`,
+            value: bsProps.lastBlock!,
         },
         {
-            name: `ECTO_USE_SSL`,
-            value: `'false'`,
+            name: `PORT`,
+            value: bsProps.port!,
         },
         {
-            name: `COIN`,
-            value: bsProps.coin || `DAI`,
+            name: `AUTH0_DOMAIN`,
+            value: bsProps.auth0Domain!,
         },
         {
-            name: `ETHEREUM_JSONRPC_VARIANT`,
-            value: bsProps.variant,
+            name: `AUTH0_CLIENT_ID`,
+            value: bsProps.auth0clientID!,
         },
         {
-            name: `ETHEREUM_JSONRPC_HTTP_URL`,
-            value: bsProps.httpURL,
+            name: `AUTH0_CLIENT_SECRET`,
+            value: bsProps.auth0clientSecret!,
         },
         {
-            name: `ETHEREUM_JSONRPC_WS_URL`,
-            value: bsProps.wsURL,
+            name: `AUTH0_CALLBACK_URL`,
+            value: bsProps.auth0CallbackURL!,
         },
         {
-            name: `DATABASE_URL`,
-            value: `postgresql://postgres:@localhost:${PG_PORT}/blockscout?ssl=false`,
+            name: `AUTH0_LOGOUT_RETURN_URL`,
+            value: bsProps.auth0LogoutReturnURL!,
         },
-    ],
-    resources,
-})
+        {
+            name: `AUTH0_LOGOUT_URL`,
+            value: bsProps.auth0LogoutURL!,
+        },
+        {
+            name: `SENDGRID_API_KEY`,
+            value: bsProps.sendGridAPIKey!,
+        },
+        {
+            name: `SENDGRID_SENDER`,
+            value: bsProps.sendGridSender!,
+        },
+        {
+            name: `SENDGRID_TEMPLATE`,
+            value: bsProps.sendGridTemplate!,
+        },
+        {
+            name: `PUBLIC_TAGS_AIRTABLE_URL`,
+            value: bsProps.publicTagsAirtable!,
+        },
+        {
+            name: `PUBLIC_TAGS_AIRTABLE_API_KEY`,
+            value: bsProps.publicTagsAirtableAPIKey!,
+        },
+        {
+            name: `SOCKET_ROOT`,
+            value: bsProps.socketRoot!,
+        },
+        {
+            name: `NETWORK_PATH`,
+            value: bsProps.networkPath!,
+        },
+        {
+            name: `SECRET_KEY_BASE`,
+            value: bsProps.secretKeyBase!,
+        },
+        ])
+    }
+    return container
+}
 
 export class BlockscoutChart extends Chart {
     namespaceName: string
@@ -250,16 +354,69 @@ export class BlockscoutChart extends Chart {
         })
         this.namespaceName = ns.name
 
-        const svc = new KubeService(this, `svc`, {
-            metadata: {
-                name: `service`,
-                namespace: ns.name,
-            },
-            spec: {
-                ports: [{ port: APP_PORT, targetPort: IntOrString.fromNumber(APP_PORT) }],
-                selector: label,
-            },
-        })
+        let svc: KubeService
+
+        if (bsProps.resourceMode === ResourceMode.MainnetTest) {
+            svc = new KubeService(this, `svc`, {
+                metadata: {
+                    name: `service`,
+                    namespace: ns.name,
+                    annotations: {
+                        'service.beta.kubernetes.io/aws-load-balancer-nlb-target-type': `ip`,
+                        'service.beta.kubernetes.io/aws-load-balancer-scheme': `internet-facing`,
+                        'service.beta.kubernetes.io/aws-load-balancer-type': `external`,
+                    },
+                },
+                spec: {
+                    type: `LoadBalancer`,
+                    ports: [{ port: APP_PORT, targetPort: IntOrString.fromNumber(APP_PORT) }],
+                    selector: label,
+                },
+            })
+            new KubeIngress(this, `ingress`, {
+                metadata: {
+                    namespace: ns.name,
+                    name: `blockscout-ingress`,
+                    annotations: {
+                        'nginx.ingress.kubernetes.io/rewrite-target': `/`,
+                    },
+                },
+                spec: {
+                    rules: [
+                        {
+                            host: `blockscout.test.static`,
+                            http: {
+                                paths: [
+                                    {
+                                        path: `/eth`,
+                                        pathType: `Prefix`,
+                                        backend: {
+                                            service: {
+                                                name: `svc`,
+                                                port: {
+                                                    number: APP_PORT,
+                                                },
+                                            },
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                },
+            })
+        } else {
+            svc = new KubeService(this, `svc`, {
+                metadata: {
+                    name: `service`,
+                    namespace: ns.name,
+                },
+                spec: {
+                    ports: [{ port: APP_PORT, targetPort: IntOrString.fromNumber(APP_PORT) }],
+                    selector: label,
+                },
+            })
+        }
 
         const [bs, db, net] = selectResources(bsProps.resourceMode)
 
@@ -357,6 +514,7 @@ export class BlockscoutChart extends Chart {
                 },
             })
             break
+        case ResourceMode.MainnetTest:
         case ResourceMode.E2E:
         case ResourceMode.Load:
             new KubeDeployment(this, `deployment`, {
