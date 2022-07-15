@@ -20,7 +20,7 @@ const config: PlaywrightTestConfig = {
     retries: 0,
 
     // Reporters
-    reporter: [[`list`], [`html`, { outputFolder: `html-report`, open: `never` }]],
+    reporter: [[`list`], [`html`, { outputFolder: `html-report`, open: `never` }], [`junit`, { outputFile: `results.xml` }]],
 
     projects: [
         {

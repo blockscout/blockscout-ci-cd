@@ -72,10 +72,8 @@ jobs:
           ${{ runner.os }}-build-
           ${{ runner.os }}-
     - name: Install deps
-      working-directory: ./tests/e2e
       run: npm ci
     - name: Lint
-      working-directory: ./tests/e2e
       run: npm run lint
     - name: Build contracts
       working-directory: ./tests/contracts
@@ -110,7 +108,6 @@ jobs:
         npm ci
         npm run start
     - name: Run playwright
-      working-directory: ./tests/e2e
       run: |
         npx playwright install-deps chrome firefox
         npm run test:smoke
@@ -119,6 +116,12 @@ jobs:
       with:
         name: report
         path: tests/e2e/html-report/index.html
+    - name: Foresight Test Report Uploader
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-result-junit
+        path: ./tests/e2e/results.xml
     - name: Remove namespace
       if: always()
       working-directory: blockscout
@@ -129,3 +132,7 @@ jobs:
         ssh-add - <<< "$BASTION_SSH_KEY"
         ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
         npm run stop
+defaults:
+  run:
+    shell: bash
+    working-directory: ./tests/e2e
