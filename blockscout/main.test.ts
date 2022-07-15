@@ -12,6 +12,7 @@ describe(`E2E mode`, () => {
             wsURL: ``,
             httpURL: ``,
             variant: `geth`,
+            port: 80,
             resourceMode: ResourceMode.E2E,
         })
         const results = Testing.synth(chart)
@@ -27,6 +28,7 @@ describe(`E2E mode`, () => {
             wsURL: ``,
             httpURL: ``,
             variant: `geth`,
+            port: 80,
             resourceMode: ResourceMode.E2E,
         })
         const results = Testing.synth(chart)
@@ -42,6 +44,7 @@ describe(`E2E mode`, () => {
             wsURL: ``,
             httpURL: ``,
             variant: `geth`,
+            port: 80,
             resourceMode: ResourceMode.E2E,
         })
         const results = Testing.synth(chart)

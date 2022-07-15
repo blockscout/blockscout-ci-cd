@@ -21,7 +21,7 @@ const chart = new BlockscoutChart(
         // mainnet vars
         firstBlock: process.env.FIRST_BLOCK,
         lastBlock: process.env.LAST_BLOCK,
-        port: process.env.PORT,
+        port: Number(process.env.PORT) || 4000,
         auth0Domain: process.env.AUTH0_DOMAIN,
         auth0clientID: process.env.AUTH0_CLIENT_ID,
         auth0clientSecret: process.env.AUTH0_CLIENT_SECRET,
