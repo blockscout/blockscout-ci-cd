@@ -15,12 +15,11 @@ import {
     KubeStatefulSet,
 } from '../imports/k8s'
 
-const defaultCmd = `mix ecto.create && mix ecto.migrate && mix phx.server`
+const defaultCmd = `mix compile && mix ecto.create && mix ecto.migrate && mix phx.server`
 
 const NETWORK_HTTP_PORT = 8544
 const NETWORK_WS_PORT = 8546
 const PG_PORT = 5432
-const APP_PORT = 4000
 
 export enum ResourceMode {
     E2E = `e2e`,
@@ -38,7 +37,7 @@ interface BlockscoutProps {
     httpTraceURL?: string
     variant: string
     resourceMode: string
-    port?: string
+    port: number
     coin?: string
     command?: string
     // mainnet vars
@@ -211,11 +210,11 @@ const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements):
         command: [`/bin/bash`],
         args: [`-c`, bsProps.command || defaultCmd],
         imagePullPolicy: `Always`,
-        ports: [{ containerPort: APP_PORT }],
+        ports: [{ containerPort: bsProps.port }],
         readinessProbe: {
             httpGet: {
                 path: `/`,
-                port: { value: APP_PORT },
+                port: { value: bsProps.port },
             },
             initialDelaySeconds: 10,
             periodSeconds: 2,
@@ -267,7 +266,7 @@ const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements):
         },
         {
             name: `PORT`,
-            value: bsProps.port!,
+            value: bsProps.port.toString()!,
         },
         {
             name: `AUTH0_DOMAIN`,
@@ -340,7 +339,7 @@ export class BlockscoutChart extends Chart {
     // eslint-disable-next-line default-param-last
     constructor(scope: Construct, id: string, props: ChartProps = {}, bsProps: BlockscoutProps) {
         super(scope, id, props)
-        this.ports.push(APP_PORT, PG_PORT)
+        this.ports.push(bsProps.port, PG_PORT)
         const label = { app: `blockscout-e2e` }
         this.readySelector = `app=${label.app}`
 
@@ -369,7 +368,7 @@ export class BlockscoutChart extends Chart {
                 },
                 spec: {
                     type: `LoadBalancer`,
-                    ports: [{ port: APP_PORT, targetPort: IntOrString.fromNumber(APP_PORT) }],
+                    ports: [{ port: bsProps.port, targetPort: IntOrString.fromNumber(bsProps.port) }],
                     selector: label,
                 },
             })
@@ -394,7 +393,7 @@ export class BlockscoutChart extends Chart {
                                             service: {
                                                 name: `svc`,
                                                 port: {
-                                                    number: APP_PORT,
+                                                    number: bsProps.port,
                                                 },
                                             },
                                         },
@@ -412,7 +411,7 @@ export class BlockscoutChart extends Chart {
                     namespace: ns.name,
                 },
                 spec: {
-                    ports: [{ port: APP_PORT, targetPort: IntOrString.fromNumber(APP_PORT) }],
+                    ports: [{ port: bsProps.port, targetPort: IntOrString.fromNumber(bsProps.port) }],
                     selector: label,
                 },
             })
