@@ -108,9 +108,19 @@ jobs:
         ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
         npm ci
         npm run start
+    - name: Cache playwright binaries
+      uses: actions/cache@v2
+      id: playwright-cache
+      with:
+        path: |
+          ~/.cache/ms-playwright
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
+    - name: Install Playwright
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      run: npx playwright install --with-deps
     - name: Run playwright
       run: |
-        npx playwright install-deps chrome firefox
         npm run test:smoke
     - uses: actions/upload-artifact@v3
       if: always()
