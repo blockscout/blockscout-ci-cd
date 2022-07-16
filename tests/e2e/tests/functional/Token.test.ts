@@ -5,7 +5,7 @@ import { TokenPage, TokenProps } from '@pages/Token'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@Ethereum @TokenPage @Data @k8s Check token page`, async ({ tokenPage }) => {
+test(`@Ethereum @TokenPage @Data @PublicImage @AccountImage Check token page`, async ({ tokenPage }) => {
     await test.step(`Check token page`, async () => {
         const { TestTokenSymbol, TestTokenAddress, TestTokenHolder } = process.env
         await tokenPage.open(TestTokenAddress)

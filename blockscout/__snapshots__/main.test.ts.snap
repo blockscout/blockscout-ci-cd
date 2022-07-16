@@ -22,8 +22,8 @@ Array [
     "spec": Object {
       "ports": Array [
         Object {
-          "port": 4000,
-          "targetPort": 4000,
+          "port": 80,
+          "targetPort": 80,
         },
       ],
       "selector": Object {
@@ -34,7 +34,7 @@ Array [
   Object {
     "apiVersion": "v1",
     "data": Object {
-      "genesis.json": "    {
+      "genesis.json": "{
                     \\"config\\": {
                       \\"chainId\\": 1337,
                       \\"homesteadBlock\\": 0,
@@ -48,7 +48,11 @@ Array [
                       \\"istanbulBlock\\": 0,
                       \\"muirGlacierBlock\\": 0,
                       \\"berlinBlock\\": 0,
-                      \\"londonBlock\\": 0
+                      \\"londonBlock\\": 0,
+                      \\"clique\\":{
+                        \\"blockperiodseconds\\": 1,
+                        \\"epochlength\\":30000
+                      }
                     },
                     \\"nonce\\": \\"0x0000000000000042\\",
                     \\"mixhash\\": \\"0x0000000000000000000000000000000000000000000000000000000000000000\\",
@@ -58,28 +62,22 @@ Array [
                     \\"extraData\\": \\"0x\\",
                     \\"gasLimit\\": \\"8000000000\\",
                     \\"alloc\\": {
-                      \\"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266\\": {
-                        \\"balance\\": \\"20000000000000000000000\\"
-                      },
-                      \\"0x70997970C51812dc3A010C7d01b50e0d17dc79C8\\": {
-                        \\"balance\\": \\"20000000000000000000000\\"
-                      },
-                      \\"0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC\\": {
-                        \\"balance\\": \\"20000000000000000000000\\"
-                      }
+                        \\"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266\\": { \\"balance\\": \\"20000000000000000000000\\" },
+                        \\"0x70997970C51812dc3A010C7d01b50e0d17dc79C8\\": { \\"balance\\": \\"20000000000000000000000\\" }
                     }
                   }",
-      "init.sh": "    #!/bin/bash
-                if [ ! -d /root/.ethereum/keystore ]; then
-                    echo \\"/root/.ethereum/keystore not found, running 'geth init'...\\"
-                    geth init /root/ethconfig/genesis.json
-                    echo \\"...done!\\"
-                fi
+      "init.sh": "#!/bin/bash
+                echo \\"/root/.ethereum/keystore not found, running 'geth init'...\\"
+                rm -rf /root/.ethereum/keystore
+                echo ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 >> priv1.txt
+                echo 59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d >> priv2.txt
+                geth account import --keystore /root/.ethereum/devnet/keystore --password /root/password.txt ./priv1.txt
+                geth account import --keystore /root/.ethereum/devnet/keystore --password /root/password.txt ./priv2.txt
+                geth --datadir /root/.ethereum/devnet init /root/genesis.json
+                echo \\"...done!\\"
             
-                geth \\"$@\\"",
-      "key1": "{\\"address\\":\\"f39fd6e51aad88f6f4ce6ab8827279cfffb92266\\",\\"crypto\\":{\\"cipher\\":\\"aes-128-ctr\\",\\"ciphertext\\":\\"c36afd6e60b82d6844530bd6ab44dbc3b85a53e826c3a7f6fc6a75ce38c1e4c6\\",\\"cipherparams\\":{\\"iv\\":\\"f69d2bb8cd0cb6274535656553b61806\\"},\\"kdf\\":\\"scrypt\\",\\"kdfparams\\":{\\"dklen\\":32,\\"n\\":262144,\\"p\\":1,\\"r\\":8,\\"salt\\":\\"80d5f5e38ba175b6b89acfc8ea62a6f163970504af301292377ff7baafedab53\\"},\\"mac\\":\\"f2ecec2c4d05aacc10eba5235354c2fcc3776824f81ec6de98022f704efbf065\\"},\\"id\\":\\"e5c124e9-e280-4b10-a27b-d7f3e516b408\\",\\"version\\":3}",
-      "key2": "{\\"address\\":\\"70997970c51812dc3a010c7d01b50e0d17dc79c8\\",\\"crypto\\":{\\"cipher\\":\\"aes-128-ctr\\",\\"ciphertext\\":\\"f8183fa00bc112645d3e23e29a233e214f7c708bf49d72750c08af88ad76c980\\",\\"cipherparams\\":{\\"iv\\":\\"796d08e3e1f71bde89ed826abda96cda\\"},\\"kdf\\":\\"scrypt\\",\\"kdfparams\\":{\\"dklen\\":32,\\"n\\":262144,\\"p\\":1,\\"r\\":8,\\"salt\\":\\"03c864a22a1f7b06b1da12d8b93e024ac144f898285907c58b2abc135fc8a35c\\"},\\"mac\\":\\"5fe91b1a1821c0d9f85dfd582354ead9612e9a7e9adc38b06a2beff558c119ac\\"},\\"id\\":\\"d2cab765-5e30-42ae-bb91-f090d9574fae\\",\\"version\\":3}",
-      "key3": "{\\"address\\":\\"3c44cdddb6a900fa2b585dd299e03d12fa4293bc\\",\\"crypto\\":{\\"cipher\\":\\"aes-128-ctr\\",\\"ciphertext\\":\\"2cd6ab87086c47f343f2c4d957eace7986f3b3c87fc35a2aafbefb57a06d9f1c\\",\\"cipherparams\\":{\\"iv\\":\\"4e16b6cd580866c1aa642fb4d7312c9b\\"},\\"kdf\\":\\"scrypt\\",\\"kdfparams\\":{\\"dklen\\":32,\\"n\\":262144,\\"p\\":1,\\"r\\":8,\\"salt\\":\\"0cabde93877f6e9a59070f9992f7a01848618263124835c90d4d07a0041fc57c\\"},\\"mac\\":\\"94b7776ea95b0ecd8406c7755acf17b389b7ebe489a8942e32082dfdc1f04f57\\"},\\"id\\":\\"ade1484b-a3bb-426f-9223-a1f5e3bde2e8\\",\\"version\\":3}",
+                geth \\"$@\\"
+                ",
       "password.txt": "",
     },
     "immutable": false,
@@ -117,35 +115,45 @@ Array [
           "containers": Array [
             Object {
               "args": Array [
+                "--fakepow",
                 "--dev",
-                "--password",
-                "/root/config/password.txt",
+                "--dev.period",
+                "1",
                 "--datadir",
-                "/root/.ethereum/devchain",
+                "/root/.ethereum/devnet",
+                "--keystore",
+                "/root/.ethereum/devnet/keystore",
+                "--password",
+                "/root/password.txt",
                 "--unlock",
-                "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "0",
                 "--unlock",
-                "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-                "--unlock",
-                "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+                "1",
                 "--mine",
+                "--miner.threads",
+                "1",
                 "--miner.etherbase",
                 "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
-                "--ipcdisable",
+                "--ipcpath",
+                "/root/geth.ipc",
                 "--http",
                 "--http.vhosts",
                 "*",
                 "--http.addr",
                 "0.0.0.0",
                 "--http.port=8544",
+                "--http.api",
+                "eth,net,web3,debug,txpool",
                 "--ws",
                 "--ws.origins",
                 "*",
                 "--ws.addr",
                 "0.0.0.0",
                 "--ws.port=8546",
+                "--ws.api",
+                "eth,net,web3,debug,txpool",
                 "--graphql",
-                "-graphql.corsdomain",
+                "--graphql.corsdomain",
                 "*",
                 "--allow-insecure-unlock",
                 "--rpc.allow-unprotected-txs",
@@ -155,20 +163,12 @@ Array [
                 "--networkid=1337",
                 "--rpc.txfeecap",
                 "0",
-                "--dev.period",
-                "2",
-                "--miner.threads",
-                "1",
-                "--miner.gasprice",
-                "10000000000",
-                "--miner.gastarget",
-                "80000000000",
               ],
               "command": Array [
                 "sh",
                 "./root/init.sh",
               ],
-              "image": "ethereum/client-go:v1.10.17",
+              "image": "ethereum/client-go:v1.10.18",
               "name": "geth",
               "ports": Array [
                 Object {
@@ -182,12 +182,12 @@ Array [
               ],
               "resources": Object {
                 "limits": Object {
-                  "cpu": "250m",
-                  "memory": "500Mi",
+                  "cpu": "1000m",
+                  "memory": "2Gi",
                 },
                 "requests": Object {
-                  "cpu": "250m",
-                  "memory": "500Mi",
+                  "cpu": "1000m",
+                  "memory": "2Gi",
                 },
               },
               "volumeMounts": Array [
@@ -197,30 +197,21 @@ Array [
                   "subPath": "init.sh",
                 },
                 Object {
-                  "mountPath": "/root/config",
+                  "mountPath": "/root/genesis.json",
                   "name": "test-geth-cm-c84725b6",
+                  "subPath": "genesis.json",
                 },
                 Object {
-                  "mountPath": "/root/.ethereum/devchain/keystore/key1",
+                  "mountPath": "/root/password.txt",
                   "name": "test-geth-cm-c84725b6",
-                  "subPath": "key1",
-                },
-                Object {
-                  "mountPath": "/root/.ethereum/devchain/keystore/key2",
-                  "name": "test-geth-cm-c84725b6",
-                  "subPath": "key2",
-                },
-                Object {
-                  "mountPath": "/root/.ethereum/devchain/keystore/key3",
-                  "name": "test-geth-cm-c84725b6",
-                  "subPath": "key3",
+                  "subPath": "password.txt",
                 },
               ],
             },
             Object {
               "args": Array [
                 "-c",
-                "mix ecto.create && mix ecto.migrate && mix phx.server",
+                "mix compile && mix ecto.create && mix ecto.migrate && mix phx.server",
               ],
               "command": Array [
                 "/bin/bash",
@@ -236,7 +227,6 @@ Array [
                 },
                 Object {
                   "name": "COIN",
-                  "value": "DAI",
                 },
                 Object {
                   "name": "ETHEREUM_JSONRPC_VARIANT",
@@ -245,6 +235,9 @@ Array [
                 Object {
                   "name": "ETHEREUM_JSONRPC_HTTP_URL",
                   "value": "",
+                },
+                Object {
+                  "name": "ETHEREUM_JSONRPC_TRACE_URL",
                 },
                 Object {
                   "name": "ETHEREUM_JSONRPC_WS_URL",
@@ -260,24 +253,24 @@ Array [
               "name": "node",
               "ports": Array [
                 Object {
-                  "containerPort": 4000,
+                  "containerPort": 80,
                 },
               ],
               "readinessProbe": Object {
                 "httpGet": Object {
                   "path": "/",
-                  "port": 4000,
+                  "port": 80,
                 },
                 "initialDelaySeconds": 10,
                 "periodSeconds": 2,
               },
               "resources": Object {
                 "limits": Object {
-                  "cpu": "250m",
+                  "cpu": "1000m",
                   "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "250m",
+                  "cpu": "1000m",
                   "memory": "1024Mi",
                 },
               },
@@ -314,11 +307,11 @@ Array [
               },
               "resources": Object {
                 "limits": Object {
-                  "cpu": "250m",
+                  "cpu": "1000m",
                   "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "250m",
+                  "cpu": "1000m",
                   "memory": "1024Mi",
                 },
               },
@@ -361,8 +354,8 @@ Array [
     "spec": Object {
       "ports": Array [
         Object {
-          "port": 4000,
-          "targetPort": 4000,
+          "port": 80,
+          "targetPort": 80,
         },
       ],
       "selector": Object {
@@ -373,7 +366,7 @@ Array [
   Object {
     "apiVersion": "v1",
     "data": Object {
-      "genesis.json": "    {
+      "genesis.json": "{
                     \\"config\\": {
                       \\"chainId\\": 1337,
                       \\"homesteadBlock\\": 0,
@@ -387,7 +380,11 @@ Array [
                       \\"istanbulBlock\\": 0,
                       \\"muirGlacierBlock\\": 0,
                       \\"berlinBlock\\": 0,
-                      \\"londonBlock\\": 0
+                      \\"londonBlock\\": 0,
+                      \\"clique\\":{
+                        \\"blockperiodseconds\\": 1,
+                        \\"epochlength\\":30000
+                      }
                     },
                     \\"nonce\\": \\"0x0000000000000042\\",
                     \\"mixhash\\": \\"0x0000000000000000000000000000000000000000000000000000000000000000\\",
@@ -397,28 +394,22 @@ Array [
                     \\"extraData\\": \\"0x\\",
                     \\"gasLimit\\": \\"8000000000\\",
                     \\"alloc\\": {
-                      \\"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266\\": {
-                        \\"balance\\": \\"20000000000000000000000\\"
-                      },
-                      \\"0x70997970C51812dc3A010C7d01b50e0d17dc79C8\\": {
-                        \\"balance\\": \\"20000000000000000000000\\"
-                      },
-                      \\"0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC\\": {
-                        \\"balance\\": \\"20000000000000000000000\\"
-                      }
+                        \\"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266\\": { \\"balance\\": \\"20000000000000000000000\\" },
+                        \\"0x70997970C51812dc3A010C7d01b50e0d17dc79C8\\": { \\"balance\\": \\"20000000000000000000000\\" }
                     }
                   }",
-      "init.sh": "    #!/bin/bash
-                if [ ! -d /root/.ethereum/keystore ]; then
-                    echo \\"/root/.ethereum/keystore not found, running 'geth init'...\\"
-                    geth init /root/ethconfig/genesis.json
-                    echo \\"...done!\\"
-                fi
+      "init.sh": "#!/bin/bash
+                echo \\"/root/.ethereum/keystore not found, running 'geth init'...\\"
+                rm -rf /root/.ethereum/keystore
+                echo ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 >> priv1.txt
+                echo 59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d >> priv2.txt
+                geth account import --keystore /root/.ethereum/devnet/keystore --password /root/password.txt ./priv1.txt
+                geth account import --keystore /root/.ethereum/devnet/keystore --password /root/password.txt ./priv2.txt
+                geth --datadir /root/.ethereum/devnet init /root/genesis.json
+                echo \\"...done!\\"
             
-                geth \\"$@\\"",
-      "key1": "{\\"address\\":\\"f39fd6e51aad88f6f4ce6ab8827279cfffb92266\\",\\"crypto\\":{\\"cipher\\":\\"aes-128-ctr\\",\\"ciphertext\\":\\"c36afd6e60b82d6844530bd6ab44dbc3b85a53e826c3a7f6fc6a75ce38c1e4c6\\",\\"cipherparams\\":{\\"iv\\":\\"f69d2bb8cd0cb6274535656553b61806\\"},\\"kdf\\":\\"scrypt\\",\\"kdfparams\\":{\\"dklen\\":32,\\"n\\":262144,\\"p\\":1,\\"r\\":8,\\"salt\\":\\"80d5f5e38ba175b6b89acfc8ea62a6f163970504af301292377ff7baafedab53\\"},\\"mac\\":\\"f2ecec2c4d05aacc10eba5235354c2fcc3776824f81ec6de98022f704efbf065\\"},\\"id\\":\\"e5c124e9-e280-4b10-a27b-d7f3e516b408\\",\\"version\\":3}",
-      "key2": "{\\"address\\":\\"70997970c51812dc3a010c7d01b50e0d17dc79c8\\",\\"crypto\\":{\\"cipher\\":\\"aes-128-ctr\\",\\"ciphertext\\":\\"f8183fa00bc112645d3e23e29a233e214f7c708bf49d72750c08af88ad76c980\\",\\"cipherparams\\":{\\"iv\\":\\"796d08e3e1f71bde89ed826abda96cda\\"},\\"kdf\\":\\"scrypt\\",\\"kdfparams\\":{\\"dklen\\":32,\\"n\\":262144,\\"p\\":1,\\"r\\":8,\\"salt\\":\\"03c864a22a1f7b06b1da12d8b93e024ac144f898285907c58b2abc135fc8a35c\\"},\\"mac\\":\\"5fe91b1a1821c0d9f85dfd582354ead9612e9a7e9adc38b06a2beff558c119ac\\"},\\"id\\":\\"d2cab765-5e30-42ae-bb91-f090d9574fae\\",\\"version\\":3}",
-      "key3": "{\\"address\\":\\"3c44cdddb6a900fa2b585dd299e03d12fa4293bc\\",\\"crypto\\":{\\"cipher\\":\\"aes-128-ctr\\",\\"ciphertext\\":\\"2cd6ab87086c47f343f2c4d957eace7986f3b3c87fc35a2aafbefb57a06d9f1c\\",\\"cipherparams\\":{\\"iv\\":\\"4e16b6cd580866c1aa642fb4d7312c9b\\"},\\"kdf\\":\\"scrypt\\",\\"kdfparams\\":{\\"dklen\\":32,\\"n\\":262144,\\"p\\":1,\\"r\\":8,\\"salt\\":\\"0cabde93877f6e9a59070f9992f7a01848618263124835c90d4d07a0041fc57c\\"},\\"mac\\":\\"94b7776ea95b0ecd8406c7755acf17b389b7ebe489a8942e32082dfdc1f04f57\\"},\\"id\\":\\"ade1484b-a3bb-426f-9223-a1f5e3bde2e8\\",\\"version\\":3}",
+                geth \\"$@\\"
+                ",
       "password.txt": "",
     },
     "immutable": false,
@@ -456,35 +447,45 @@ Array [
           "containers": Array [
             Object {
               "args": Array [
+                "--fakepow",
                 "--dev",
-                "--password",
-                "/root/config/password.txt",
+                "--dev.period",
+                "1",
                 "--datadir",
-                "/root/.ethereum/devchain",
+                "/root/.ethereum/devnet",
+                "--keystore",
+                "/root/.ethereum/devnet/keystore",
+                "--password",
+                "/root/password.txt",
                 "--unlock",
-                "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "0",
                 "--unlock",
-                "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-                "--unlock",
-                "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+                "1",
                 "--mine",
+                "--miner.threads",
+                "1",
                 "--miner.etherbase",
                 "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
-                "--ipcdisable",
+                "--ipcpath",
+                "/root/geth.ipc",
                 "--http",
                 "--http.vhosts",
                 "*",
                 "--http.addr",
                 "0.0.0.0",
                 "--http.port=8544",
+                "--http.api",
+                "eth,net,web3,debug,txpool",
                 "--ws",
                 "--ws.origins",
                 "*",
                 "--ws.addr",
                 "0.0.0.0",
                 "--ws.port=8546",
+                "--ws.api",
+                "eth,net,web3,debug,txpool",
                 "--graphql",
-                "-graphql.corsdomain",
+                "--graphql.corsdomain",
                 "*",
                 "--allow-insecure-unlock",
                 "--rpc.allow-unprotected-txs",
@@ -494,20 +495,12 @@ Array [
                 "--networkid=1337",
                 "--rpc.txfeecap",
                 "0",
-                "--dev.period",
-                "2",
-                "--miner.threads",
-                "1",
-                "--miner.gasprice",
-                "10000000000",
-                "--miner.gastarget",
-                "80000000000",
               ],
               "command": Array [
                 "sh",
                 "./root/init.sh",
               ],
-              "image": "ethereum/client-go:v1.10.17",
+              "image": "ethereum/client-go:v1.10.18",
               "name": "geth",
               "ports": Array [
                 Object {
@@ -521,12 +514,12 @@ Array [
               ],
               "resources": Object {
                 "limits": Object {
-                  "cpu": "250m",
-                  "memory": "500Mi",
+                  "cpu": "1000m",
+                  "memory": "2Gi",
                 },
                 "requests": Object {
-                  "cpu": "250m",
-                  "memory": "500Mi",
+                  "cpu": "1000m",
+                  "memory": "2Gi",
                 },
               },
               "volumeMounts": Array [
@@ -536,30 +529,21 @@ Array [
                   "subPath": "init.sh",
                 },
                 Object {
-                  "mountPath": "/root/config",
+                  "mountPath": "/root/genesis.json",
                   "name": "test-geth-cm-c84725b6",
+                  "subPath": "genesis.json",
                 },
                 Object {
-                  "mountPath": "/root/.ethereum/devchain/keystore/key1",
+                  "mountPath": "/root/password.txt",
                   "name": "test-geth-cm-c84725b6",
-                  "subPath": "key1",
-                },
-                Object {
-                  "mountPath": "/root/.ethereum/devchain/keystore/key2",
-                  "name": "test-geth-cm-c84725b6",
-                  "subPath": "key2",
-                },
-                Object {
-                  "mountPath": "/root/.ethereum/devchain/keystore/key3",
-                  "name": "test-geth-cm-c84725b6",
-                  "subPath": "key3",
+                  "subPath": "password.txt",
                 },
               ],
             },
             Object {
               "args": Array [
                 "-c",
-                "mix ecto.create && mix ecto.migrate && mix phx.server",
+                "mix compile && mix ecto.create && mix ecto.migrate && mix phx.server",
               ],
               "command": Array [
                 "/bin/bash",
@@ -575,7 +559,6 @@ Array [
                 },
                 Object {
                   "name": "COIN",
-                  "value": "DAI",
                 },
                 Object {
                   "name": "ETHEREUM_JSONRPC_VARIANT",
@@ -584,6 +567,9 @@ Array [
                 Object {
                   "name": "ETHEREUM_JSONRPC_HTTP_URL",
                   "value": "",
+                },
+                Object {
+                  "name": "ETHEREUM_JSONRPC_TRACE_URL",
                 },
                 Object {
                   "name": "ETHEREUM_JSONRPC_WS_URL",
@@ -599,24 +585,24 @@ Array [
               "name": "node",
               "ports": Array [
                 Object {
-                  "containerPort": 4000,
+                  "containerPort": 80,
                 },
               ],
               "readinessProbe": Object {
                 "httpGet": Object {
                   "path": "/",
-                  "port": 4000,
+                  "port": 80,
                 },
                 "initialDelaySeconds": 10,
                 "periodSeconds": 2,
               },
               "resources": Object {
                 "limits": Object {
-                  "cpu": "250m",
+                  "cpu": "1000m",
                   "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "250m",
+                  "cpu": "1000m",
                   "memory": "1024Mi",
                 },
               },
@@ -653,11 +639,11 @@ Array [
               },
               "resources": Object {
                 "limits": Object {
-                  "cpu": "250m",
+                  "cpu": "1000m",
                   "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "250m",
+                  "cpu": "1000m",
                   "memory": "1024Mi",
                 },
               },
@@ -700,8 +686,8 @@ Array [
     "spec": Object {
       "ports": Array [
         Object {
-          "port": 4000,
-          "targetPort": 4000,
+          "port": 80,
+          "targetPort": 80,
         },
       ],
       "selector": Object {
@@ -712,7 +698,7 @@ Array [
   Object {
     "apiVersion": "v1",
     "data": Object {
-      "genesis.json": "    {
+      "genesis.json": "{
                     \\"config\\": {
                       \\"chainId\\": 1337,
                       \\"homesteadBlock\\": 0,
@@ -726,7 +712,11 @@ Array [
                       \\"istanbulBlock\\": 0,
                       \\"muirGlacierBlock\\": 0,
                       \\"berlinBlock\\": 0,
-                      \\"londonBlock\\": 0
+                      \\"londonBlock\\": 0,
+                      \\"clique\\":{
+                        \\"blockperiodseconds\\": 1,
+                        \\"epochlength\\":30000
+                      }
                     },
                     \\"nonce\\": \\"0x0000000000000042\\",
                     \\"mixhash\\": \\"0x0000000000000000000000000000000000000000000000000000000000000000\\",
@@ -736,28 +726,22 @@ Array [
                     \\"extraData\\": \\"0x\\",
                     \\"gasLimit\\": \\"8000000000\\",
                     \\"alloc\\": {
-                      \\"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266\\": {
-                        \\"balance\\": \\"20000000000000000000000\\"
-                      },
-                      \\"0x70997970C51812dc3A010C7d01b50e0d17dc79C8\\": {
-                        \\"balance\\": \\"20000000000000000000000\\"
-                      },
-                      \\"0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC\\": {
-                        \\"balance\\": \\"20000000000000000000000\\"
-                      }
+                        \\"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266\\": { \\"balance\\": \\"20000000000000000000000\\" },
+                        \\"0x70997970C51812dc3A010C7d01b50e0d17dc79C8\\": { \\"balance\\": \\"20000000000000000000000\\" }
                     }
                   }",
-      "init.sh": "    #!/bin/bash
-                if [ ! -d /root/.ethereum/keystore ]; then
-                    echo \\"/root/.ethereum/keystore not found, running 'geth init'...\\"
-                    geth init /root/ethconfig/genesis.json
-                    echo \\"...done!\\"
-                fi
+      "init.sh": "#!/bin/bash
+                echo \\"/root/.ethereum/keystore not found, running 'geth init'...\\"
+                rm -rf /root/.ethereum/keystore
+                echo ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 >> priv1.txt
+                echo 59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d >> priv2.txt
+                geth account import --keystore /root/.ethereum/devnet/keystore --password /root/password.txt ./priv1.txt
+                geth account import --keystore /root/.ethereum/devnet/keystore --password /root/password.txt ./priv2.txt
+                geth --datadir /root/.ethereum/devnet init /root/genesis.json
+                echo \\"...done!\\"
             
-                geth \\"$@\\"",
-      "key1": "{\\"address\\":\\"f39fd6e51aad88f6f4ce6ab8827279cfffb92266\\",\\"crypto\\":{\\"cipher\\":\\"aes-128-ctr\\",\\"ciphertext\\":\\"c36afd6e60b82d6844530bd6ab44dbc3b85a53e826c3a7f6fc6a75ce38c1e4c6\\",\\"cipherparams\\":{\\"iv\\":\\"f69d2bb8cd0cb6274535656553b61806\\"},\\"kdf\\":\\"scrypt\\",\\"kdfparams\\":{\\"dklen\\":32,\\"n\\":262144,\\"p\\":1,\\"r\\":8,\\"salt\\":\\"80d5f5e38ba175b6b89acfc8ea62a6f163970504af301292377ff7baafedab53\\"},\\"mac\\":\\"f2ecec2c4d05aacc10eba5235354c2fcc3776824f81ec6de98022f704efbf065\\"},\\"id\\":\\"e5c124e9-e280-4b10-a27b-d7f3e516b408\\",\\"version\\":3}",
-      "key2": "{\\"address\\":\\"70997970c51812dc3a010c7d01b50e0d17dc79c8\\",\\"crypto\\":{\\"cipher\\":\\"aes-128-ctr\\",\\"ciphertext\\":\\"f8183fa00bc112645d3e23e29a233e214f7c708bf49d72750c08af88ad76c980\\",\\"cipherparams\\":{\\"iv\\":\\"796d08e3e1f71bde89ed826abda96cda\\"},\\"kdf\\":\\"scrypt\\",\\"kdfparams\\":{\\"dklen\\":32,\\"n\\":262144,\\"p\\":1,\\"r\\":8,\\"salt\\":\\"03c864a22a1f7b06b1da12d8b93e024ac144f898285907c58b2abc135fc8a35c\\"},\\"mac\\":\\"5fe91b1a1821c0d9f85dfd582354ead9612e9a7e9adc38b06a2beff558c119ac\\"},\\"id\\":\\"d2cab765-5e30-42ae-bb91-f090d9574fae\\",\\"version\\":3}",
-      "key3": "{\\"address\\":\\"3c44cdddb6a900fa2b585dd299e03d12fa4293bc\\",\\"crypto\\":{\\"cipher\\":\\"aes-128-ctr\\",\\"ciphertext\\":\\"2cd6ab87086c47f343f2c4d957eace7986f3b3c87fc35a2aafbefb57a06d9f1c\\",\\"cipherparams\\":{\\"iv\\":\\"4e16b6cd580866c1aa642fb4d7312c9b\\"},\\"kdf\\":\\"scrypt\\",\\"kdfparams\\":{\\"dklen\\":32,\\"n\\":262144,\\"p\\":1,\\"r\\":8,\\"salt\\":\\"0cabde93877f6e9a59070f9992f7a01848618263124835c90d4d07a0041fc57c\\"},\\"mac\\":\\"94b7776ea95b0ecd8406c7755acf17b389b7ebe489a8942e32082dfdc1f04f57\\"},\\"id\\":\\"ade1484b-a3bb-426f-9223-a1f5e3bde2e8\\",\\"version\\":3}",
+                geth \\"$@\\"
+                ",
       "password.txt": "",
     },
     "immutable": false,
@@ -795,35 +779,45 @@ Array [
           "containers": Array [
             Object {
               "args": Array [
+                "--fakepow",
                 "--dev",
-                "--password",
-                "/root/config/password.txt",
+                "--dev.period",
+                "1",
                 "--datadir",
-                "/root/.ethereum/devchain",
+                "/root/.ethereum/devnet",
+                "--keystore",
+                "/root/.ethereum/devnet/keystore",
+                "--password",
+                "/root/password.txt",
                 "--unlock",
-                "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "0",
                 "--unlock",
-                "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-                "--unlock",
-                "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+                "1",
                 "--mine",
+                "--miner.threads",
+                "1",
                 "--miner.etherbase",
                 "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
-                "--ipcdisable",
+                "--ipcpath",
+                "/root/geth.ipc",
                 "--http",
                 "--http.vhosts",
                 "*",
                 "--http.addr",
                 "0.0.0.0",
                 "--http.port=8544",
+                "--http.api",
+                "eth,net,web3,debug,txpool",
                 "--ws",
                 "--ws.origins",
                 "*",
                 "--ws.addr",
                 "0.0.0.0",
                 "--ws.port=8546",
+                "--ws.api",
+                "eth,net,web3,debug,txpool",
                 "--graphql",
-                "-graphql.corsdomain",
+                "--graphql.corsdomain",
                 "*",
                 "--allow-insecure-unlock",
                 "--rpc.allow-unprotected-txs",
@@ -833,20 +827,12 @@ Array [
                 "--networkid=1337",
                 "--rpc.txfeecap",
                 "0",
-                "--dev.period",
-                "2",
-                "--miner.threads",
-                "1",
-                "--miner.gasprice",
-                "10000000000",
-                "--miner.gastarget",
-                "80000000000",
               ],
               "command": Array [
                 "sh",
                 "./root/init.sh",
               ],
-              "image": "ethereum/client-go:v1.10.17",
+              "image": "ethereum/client-go:v1.10.18",
               "name": "geth",
               "ports": Array [
                 Object {
@@ -860,12 +846,12 @@ Array [
               ],
               "resources": Object {
                 "limits": Object {
-                  "cpu": "250m",
-                  "memory": "500Mi",
+                  "cpu": "1000m",
+                  "memory": "2Gi",
                 },
                 "requests": Object {
-                  "cpu": "250m",
-                  "memory": "500Mi",
+                  "cpu": "1000m",
+                  "memory": "2Gi",
                 },
               },
               "volumeMounts": Array [
@@ -875,30 +861,21 @@ Array [
                   "subPath": "init.sh",
                 },
                 Object {
-                  "mountPath": "/root/config",
+                  "mountPath": "/root/genesis.json",
                   "name": "test-geth-cm-c84725b6",
+                  "subPath": "genesis.json",
                 },
                 Object {
-                  "mountPath": "/root/.ethereum/devchain/keystore/key1",
+                  "mountPath": "/root/password.txt",
                   "name": "test-geth-cm-c84725b6",
-                  "subPath": "key1",
-                },
-                Object {
-                  "mountPath": "/root/.ethereum/devchain/keystore/key2",
-                  "name": "test-geth-cm-c84725b6",
-                  "subPath": "key2",
-                },
-                Object {
-                  "mountPath": "/root/.ethereum/devchain/keystore/key3",
-                  "name": "test-geth-cm-c84725b6",
-                  "subPath": "key3",
+                  "subPath": "password.txt",
                 },
               ],
             },
             Object {
               "args": Array [
                 "-c",
-                "mix ecto.create && mix ecto.migrate && mix phx.server",
+                "mix compile && mix ecto.create && mix ecto.migrate && mix phx.server",
               ],
               "command": Array [
                 "/bin/bash",
@@ -914,7 +891,6 @@ Array [
                 },
                 Object {
                   "name": "COIN",
-                  "value": "DAI",
                 },
                 Object {
                   "name": "ETHEREUM_JSONRPC_VARIANT",
@@ -923,6 +899,9 @@ Array [
                 Object {
                   "name": "ETHEREUM_JSONRPC_HTTP_URL",
                   "value": "",
+                },
+                Object {
+                  "name": "ETHEREUM_JSONRPC_TRACE_URL",
                 },
                 Object {
                   "name": "ETHEREUM_JSONRPC_WS_URL",
@@ -938,24 +917,24 @@ Array [
               "name": "node",
               "ports": Array [
                 Object {
-                  "containerPort": 4000,
+                  "containerPort": 80,
                 },
               ],
               "readinessProbe": Object {
                 "httpGet": Object {
                   "path": "/",
-                  "port": 4000,
+                  "port": 80,
                 },
                 "initialDelaySeconds": 10,
                 "periodSeconds": 2,
               },
               "resources": Object {
                 "limits": Object {
-                  "cpu": "250m",
+                  "cpu": "1000m",
                   "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "250m",
+                  "cpu": "1000m",
                   "memory": "1024Mi",
                 },
               },
@@ -992,11 +971,11 @@ Array [
               },
               "resources": Object {
                 "limits": Object {
-                  "cpu": "250m",
+                  "cpu": "1000m",
                   "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "250m",
+                  "cpu": "1000m",
                   "memory": "1024Mi",
                 },
               },

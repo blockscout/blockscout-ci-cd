@@ -43,6 +43,7 @@ env:
   HTTP_URL: http://localhost:8544
   WS_URL: ws://localhost:8546
   RESOURCE_MODE: e2e
+  PUBLIC: false
 
   ENV: test
   NETWORK_URL: http://localhost:8544
@@ -120,7 +121,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v2
       with:
-        name: test-result-junit
+        name: test-result-junit-public-imaage
         path: ./tests/e2e/results.xml
     - name: Remove namespace
       if: always()
