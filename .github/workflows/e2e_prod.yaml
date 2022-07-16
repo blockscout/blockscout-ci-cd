@@ -67,6 +67,12 @@ jobs:
         run: |
           npx playwright install-deps chrome firefox
           npm run test:prod:smoke
+      - name: Foresight Test Report Uploader
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-result-junit-prod
+          path: ./tests/e2e/results.xml
       - uses: actions/upload-artifact@v3
         if: always()
         with:

@@ -5,7 +5,7 @@ import { TXProps } from '@pages/Common'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@Ethereum @Blocks @Data @k8s Block with a create tx`, async ({ blocksPage }) => {
+test(`@Ethereum @Blocks @Data @PublicImage @AccountImage Block with a create tx`, async ({ blocksPage }) => {
     await test.step(`Check block info for create tx`, async () => {
         const { TestTokenDeployTXBlockNumber } = process.env
         await blocksPage.open(TestTokenDeployTXBlockNumber)
@@ -36,7 +36,7 @@ test(`@Ethereum @Blocks @Data @k8s Block with a create tx`, async ({ blocksPage 
     })
 })
 
-test(`@Ethereum @Blocks @Data @k8s Block with a mint tx`, async ({ blocksPage }) => {
+test(`@Ethereum @Blocks @Data @PublicImageBlock @AccountImage with a mint tx`, async ({ blocksPage }) => {
     await test.step(`Check block info for mint tx`, async () => {
         const { TestTokenTXMintBlockNumber } = process.env
         await blocksPage.open(TestTokenTXMintBlockNumber)
@@ -67,7 +67,7 @@ test(`@Ethereum @Blocks @Data @k8s Block with a mint tx`, async ({ blocksPage })
     })
 })
 
-test(`@Ethereum @Blocks @Data @k8s Check block info with reverted tx`, async ({ blocksPage }) => {
+test(`@Ethereum @Blocks @Data @PublicImageheck @AccountImage Block info with reverted tx`, async ({ blocksPage }) => {
     await test.step(`Check block info with reverted tx`, async () => {
         const { TestTokenTXRevertBlockNumber } = process.env
         await blocksPage.open(TestTokenTXRevertBlockNumber)

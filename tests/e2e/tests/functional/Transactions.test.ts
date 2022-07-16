@@ -7,7 +7,7 @@ import { TXLogProps, TXProps, TXTokenProps } from '@pages/Common'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@Ethereum @Transactions @Data @k8s Check contract creation tx props`, async ({ transactionPage }) => {
+test(`@Ethereum @Transactions @Data @PublicImage Check contract creation tx props`, async ({ transactionPage }) => {
     await test.step(`Check contract creation props`, async () => {
         const { TestTokenDeployTXHash } = process.env
         await transactionPage.open(TestTokenDeployTXHash)
@@ -56,7 +56,7 @@ test(`@Ethereum @Transactions @Data @k8s Check contract creation tx props`, asyn
     })
 })
 
-test(`@Ethereum @Transactions @Data @k8s Check mint tx props`, async ({ transactionPage }) => {
+test(`@Ethereum @Transactions @Data @PublicImage Check mint tx props`, async ({ transactionPage }) => {
     await test.step(`Check mint tx props`, async () => {
         const { TestTokenTXMintHash, TestTokenName, TestTokenSymbol } = process.env
         await transactionPage.open(TestTokenTXMintHash)
@@ -99,7 +99,7 @@ test(`@Ethereum @Transactions @Data @k8s Check mint tx props`, async ({ transact
     })
 })
 
-test(`@Ethereum @Transactions @Data @k8s Check reverted tx props`, async ({ transactionPage }) => {
+test(`@Ethereum @Transactions @Data @PublicImage Check reverted tx props`, async ({ transactionPage }) => {
     await test.step(`Check reverted tx props`, async () => {
         const { TestTokenTXRevertHash } = process.env
         await transactionPage.open(TestTokenTXRevertHash)

@@ -25,7 +25,7 @@ export enum ResourceMode {
     E2E = `e2e`,
     Load = `load`,
     Chaos = `chaos`,
-    MainnetTest = `mainnet`
+    MainnetTest = `account`
 }
 
 interface BlockscoutProps {
@@ -40,6 +40,7 @@ interface BlockscoutProps {
     port: number
     coin?: string
     command?: string
+    public: string,
     // mainnet vars
     firstBlock?: string
     lastBlock?: string
@@ -355,7 +356,7 @@ export class BlockscoutChart extends Chart {
 
         let svc: KubeService
 
-        if (bsProps.resourceMode === ResourceMode.MainnetTest) {
+        if (bsProps.public === `true`) {
             svc = new KubeService(this, `svc`, {
                 metadata: {
                     name: `service`,

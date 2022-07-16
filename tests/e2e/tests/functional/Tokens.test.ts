@@ -4,7 +4,7 @@ import { NativeCurrencyProps, TokenRowProps } from '@pages/Tokens'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@Ethereum @Tokens @Data @k8s Search token by the name`, async ({ tokensPage }) => {
+test(`@Ethereum @Tokens @Data @PublicImage @AccountImage Search token by the name`, async ({ tokensPage }) => {
     await test.step(`Search token by the name`, async () => {
         const { TestTokenName, TestTokenSymbol } = process.env
         await tokensPage.open()
@@ -20,7 +20,7 @@ test(`@Ethereum @Tokens @Data @k8s Search token by the name`, async ({ tokensPag
     })
 })
 
-test(`@Ethereum @Tokens @Data @k8s Search a token by the symbol`, async ({ tokensPage }) => {
+test(`@Ethereum @Tokens @Data @PublicImage @AccountImage Search a token by the symbol`, async ({ tokensPage }) => {
     await test.step(`Search a token by the symbol`, async () => {
         const { TestTokenName, TestTokenSymbol } = process.env
         await tokensPage.open()
@@ -36,7 +36,7 @@ test(`@Ethereum @Tokens @Data @k8s Search a token by the symbol`, async ({ token
     })
 })
 
-test(`@Ethereum @Tokens @Data @k8s Check native currency list`, async ({ tokensPage }) => {
+test(`@Ethereum @Tokens @Data @PublicImage Check native currency list`, async ({ tokensPage }) => {
     await test.step(`Check native currency list`, async () => {
         const { MinerAddress } = process.env
         await tokensPage.openAccounts()
