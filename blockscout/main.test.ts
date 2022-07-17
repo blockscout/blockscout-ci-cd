@@ -13,6 +13,9 @@ describe(`E2E mode`, () => {
             httpURL: ``,
             variant: `geth`,
             port: 80,
+            portPG: 5432,
+            portNetworkHTTP: 8545,
+            portNetworkWS: 8546,
             public: `false`,
             resourceMode: ResourceMode.E2E,
         })
@@ -30,6 +33,9 @@ describe(`E2E mode`, () => {
             httpURL: ``,
             variant: `geth`,
             port: 80,
+            portPG: 5432,
+            portNetworkHTTP: 8545,
+            portNetworkWS: 8546,
             public: `false`,
             resourceMode: ResourceMode.E2E,
         })
@@ -47,6 +53,9 @@ describe(`E2E mode`, () => {
             httpURL: ``,
             variant: `geth`,
             port: 80,
+            portPG: 5432,
+            portNetworkHTTP: 8545,
+            portNetworkWS: 8546,
             public: `false`,
             resourceMode: ResourceMode.E2E,
         })

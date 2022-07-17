@@ -8,6 +8,7 @@ import Contracts from './lib/Contracts'
 import { TestToken } from '../contracts/typechain/contracts/TestToken'
 
 const CONTRACTS_DATA_FILE = `contracts_data.env`
+const RECEIPT_RETRIES = 100
 
 // shareData shares contracts data with both env for current test run and dumps to a file
 const shareData = (data: Object): void => {
@@ -18,7 +19,7 @@ const shareData = (data: Object): void => {
 // waitReceiptWithBlock waits for tx receipt even if tx is reverted until it has block assigned
 // safe tx.wait(), because original throws
 const waitReceiptWithBlock = async (provider: JsonRpcProvider, hash: string): Promise<TransactionResponse> => {
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < RECEIPT_RETRIES; i++) {
         const r = await provider.getTransaction(hash)
         if (r.blockNumber) {
             return r
