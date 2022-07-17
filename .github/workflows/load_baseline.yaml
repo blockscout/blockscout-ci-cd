@@ -1,48 +1,51 @@
 name: Load baseline
 on:
-  workflow_dispatch:
-    inputs:
-      blockscout_image:
-        description: 'Blockscout image:tag to test'     
-        required: true
-        default: 'blockscout/blockscout:latest' 
-        type: string
-      environment:
-        description: 'Environment to run tests against'
-        required: true
-        type: choice
-        default: 'test'
-        options:
-        - prod
-        - test
-  workflow_call:
-    inputs:
-      blockscout_image:
-        description: 'Blockscout image:tag to test'     
-        required: true
-        default: 'blockscout/blockscout:latest' 
-        type: string
-      environment:
-        description: 'Environment to run tests against'
-        type: string
-        required: true
-        default: 'test'
+  push:
 env:
   K8S_LOCAL_PORT: ${{ secrets.LOCAL_PORT }}
   K8S_HOST: ${{ secrets.K8S_HOST }}
   BASTION_HOST: ${{ secrets.BASTION_HOST }}
   K8S_PORT: ${{ secrets.K8S_PORT }}
   USERNAME: ${{ secrets.USERNAME }}
-  BASTION_SSH_KEY: ${{ secrets.BASTION_SSH_KEY }}
+  BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  IMAGE: ${{ inputs.blockscout_image }}
-  VARIANT: geth
-  HTTP_URL: http://localhost:8544
-  WS_URL: ws://localhost:8546
-  RESOURCE_MODE: load
 
-  NETWORK_URL: http://localhost:8544
+  RESOURCE_MODE: account
+  PUBLIC: false
+
+  PORT: 4003
+  PORT_PG: 7432
+  PORT_NETWORK_HTTP: 8545
+  PORT_NETWORK_WS: 9000
+
+  ACCOUNT_USERNAME: ${{ secrets.ACCOUNT_USERNAME }}
+  ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
+
+  IMAGE: blockscout/blockscout-xdai-testnet:latest
+  VARIANT: parity
+  HTTP_URL: ${{ secrets.PARITY_1_HTTP_URL }}
+  WS_URL: ${{ secrets.PARITY_1_WS_URL }}
+  ETHEREUM_JSONRPC_TRACE_URL: ${{ secrets.PARITY_1_HTTP_URL }}
+  COIN: DAI
+
+  AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
+  AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
+  AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+  AUTH0_CALLBACK_URL: ${{ secrets.AUTH0_CALLBACK_URL }}
+  AUTH0_LOGOUT_RETURN_URL: ${{ secrets.AUTH0_LOGOUT_RETURN_URL }}
+  AUTH0_LOGOUT_URL: ${{ secrets.AUTH0_LOGOUT_URL }}
+  SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+  SENDGRID_SENDER: ${{ secrets.SENDGRID_SENDER }}
+  SENDGRID_TEMPLATE: ${{ secrets.SENDGRID_TEMPLATE }}
+  PUBLIC_TAGS_AIRTABLE_URL: ${{ secrets.PUBLIC_TAGS_AIRTABLE_URL }}
+  PUBLIC_TAGS_AIRTABLE_API_KEY: ${{ secrets.PUBLIC_TAGS_AIRTABLE_API_KEY }}
+  SOCKET_ROOT: "/"
+  NETWORK_PATH: "/"
+  SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+
+  ENV: test
+  NETWORK_URL: http://localhost:8545
   WALLET: ${{ secrets.WALLET }}
 
 jobs:
@@ -77,15 +80,19 @@ jobs:
       - name: Lint
         working-directory: ./tests/load
         run: npm run lint
+      - name: Set Kubernetes Context
+        uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
       - name: Generate namespace name
         id: generate
         uses: filipstefansson/uuid-action@v1
         with:
-          name: nsname
+          name: ${{ github.sha }}-3
       - name: Deploy to k8s
         shell: bash
         working-directory: blockscout
-        # port forwarding works only inside the step, consider refactoring as TS action
         env:
           NAMESPACE_NAME: e2e-geth-${{ steps.generate.outputs.uuid }}
         run: |
@@ -100,7 +107,7 @@ jobs:
       - name: Run warm-up
         env:
           K6_TEST_ID: warm_up_baseline_rpc
-          BASE_URL: http://localhost:4000
+          BASE_URL: http://localhost:4003
           TIMEOUT: 20000
           SCENARIO: warmUp
           # K6_OUT: json
@@ -114,7 +121,7 @@ jobs:
         env:
           # label in TimescaleDB to differentiate test runs
           K6_TEST_ID: baseline_rpc
-          BASE_URL: http://localhost:4000
+          BASE_URL: http://localhost:4003
           TIMEOUT: 20000
           SCENARIO: baseline
           # K6_OUT: json
