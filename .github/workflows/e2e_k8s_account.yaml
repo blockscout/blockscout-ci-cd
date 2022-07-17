@@ -1,4 +1,4 @@
-name: E2E K8s
+name: E2E K8s Account
 on:
   push:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
       blockscout_image:
         description: 'Blockscout image:tag to test'     
         required: true
-        default: 'blockscout/blockscout:latest' 
+        default: 'blockscout/blockscout-xdai-testnet:latest' 
         type: string
       environment:
         description: 'Environment to run tests against'
@@ -21,7 +21,7 @@ on:
       blockscout_image:
         description: 'Blockscout image:tag to test'     
         required: true
-        default: 'blockscout/blockscout:latest' 
+        default: 'blockscout/blockscout-xdai-testnet:latest' 
         type: string
       environment:
         description: 'Environment to run tests against'
@@ -39,23 +39,38 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-  RESOURCE_MODE: e2e
+  RESOURCE_MODE: account
   PUBLIC: false
+
+  PORT: 4000
+  PORT_PG: 6432
+  PORT_NETWORK_HTTP: 9544
+  PORT_NETWORK_WS: 9546
 
   ACCOUNT_USERNAME: ${{ secrets.ACCOUNT_USERNAME }}
   ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
 
-  PORT: 4001
-  PORT_PG: 5432
-  PORT_NETWORK_HTTP: 8544
-  PORT_NETWORK_WS: 8546
-
-  IMAGE: ${{ inputs.blockscout_image }}
+  IMAGE: blockscout/blockscout-xdai-testnet:latest
   VARIANT: geth
-  HTTP_URL: http://localhost:8544
-  WS_URL: ws://localhost:8546
-  ETHEREUM_JSONRPC_TRACE_URL: http://localhost:8544
+  HTTP_URL: http://localhost:9544
+  WS_URL: ws://localhost:9546
+  ETHEREUM_JSONRPC_TRACE_URL: http://localhost:9544
   COIN: DAI
+
+  AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
+  AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
+  AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+  AUTH0_CALLBACK_URL: ${{ secrets.AUTH0_CALLBACK_URL }}
+  AUTH0_LOGOUT_RETURN_URL: ${{ secrets.AUTH0_LOGOUT_RETURN_URL }}
+  AUTH0_LOGOUT_URL: ${{ secrets.AUTH0_LOGOUT_URL }}
+  SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+  SENDGRID_SENDER: ${{ secrets.SENDGRID_SENDER }}
+  SENDGRID_TEMPLATE: ${{ secrets.SENDGRID_TEMPLATE }}
+  PUBLIC_TAGS_AIRTABLE_URL: ${{ secrets.PUBLIC_TAGS_AIRTABLE_URL }}
+  PUBLIC_TAGS_AIRTABLE_API_KEY: ${{ secrets.PUBLIC_TAGS_AIRTABLE_API_KEY }}
+  SOCKET_ROOT: "/"
+  NETWORK_PATH: "/"
+  SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
 
   ENV: test
   NETWORK_URL: http://localhost:8544
@@ -104,7 +119,7 @@ jobs:
       id: generate
       uses: filipstefansson/uuid-action@v1
       with:
-        name: ${{ github.sha }}-2
+        name: ${{ github.sha }}
     - name: Deploy to k8s
       shell: bash
       working-directory: blockscout
@@ -133,7 +148,7 @@ jobs:
       run: npx playwright install --with-deps
     - name: Run playwright
       run: |
-        npm run test:smoke
+        npm run test:smoke:account
     - uses: actions/upload-artifact@v3
       if: always()
       with:

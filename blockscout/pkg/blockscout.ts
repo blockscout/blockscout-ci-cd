@@ -17,10 +17,6 @@ import {
 
 const defaultCmd = `mix compile && mix ecto.create && mix ecto.migrate && mix phx.server`
 
-const NETWORK_HTTP_PORT = 8544
-const NETWORK_WS_PORT = 8546
-const PG_PORT = 5432
-
 export enum ResourceMode {
     E2E = `e2e`,
     Load = `load`,
@@ -37,10 +33,14 @@ interface BlockscoutProps {
     httpTraceURL?: string
     variant: string
     resourceMode: string
-    port: number
     coin?: string
     command?: string
     public: string,
+    // ports
+    port: number,
+    portPG: number,
+    portNetworkHTTP: number,
+    portNetworkWS: number,
     // mainnet vars
     firstBlock?: string
     lastBlock?: string
@@ -102,12 +102,12 @@ const selectResources = (mode: string): [ResourceRequirements, ResourceRequireme
     return [resourcesBS, resourcesDB, resourcesNetwork]
 }
 
-const gethContainer = (resources: ResourceRequirements, cm: ConfigMap): Container => ({
+const gethContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements, cm: ConfigMap): Container => ({
     name: `geth`,
     image: `ethereum/client-go:v1.10.18`,
     ports: [
-        { name: `http`, containerPort: NETWORK_HTTP_PORT },
-        { name: `ws`, containerPort: NETWORK_WS_PORT },
+        { name: `http`, containerPort: bsProps.portNetworkHTTP },
+        { name: `ws`, containerPort: bsProps.portNetworkWS },
     ],
     volumeMounts: [
         {
@@ -154,7 +154,7 @@ const gethContainer = (resources: ResourceRequirements, cm: ConfigMap): Containe
         `*`,
         `--http.addr`,
         `0.0.0.0`,
-        `--http.port=8544`,
+        `--http.port=${bsProps.portNetworkHTTP}`,
         `--http.api`,
         `eth,net,web3,debug,txpool`,
         `--ws`,
@@ -162,7 +162,7 @@ const gethContainer = (resources: ResourceRequirements, cm: ConfigMap): Containe
         `*`,
         `--ws.addr`,
         `0.0.0.0`,
-        `--ws.port=8546`,
+        `--ws.port=${bsProps.portNetworkWS}`,
         `--ws.api`,
         `eth,net,web3,debug,txpool`,
         `--graphql`,
@@ -180,10 +180,10 @@ const gethContainer = (resources: ResourceRequirements, cm: ConfigMap): Containe
     resources,
 })
 
-const pgContainer = (resources: ResourceRequirements): Container => ({
+const pgContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements): Container => ({
     name: `postgres`,
     image: `postgres:13.6`,
-    ports: [{ name: `postgres`, containerPort: PG_PORT }],
+    ports: [{ name: `postgres`, containerPort: bsProps.portPG }],
     readinessProbe: {
         exec: {
             command: [`pg_isready`, `-U`, `postgres`],
@@ -199,6 +199,10 @@ const pgContainer = (resources: ResourceRequirements): Container => ({
         {
             name: `POSTGRES_DB`,
             value: `explorer_test`,
+        },
+        {
+            name: `PGPORT`,
+            value: bsProps.portPG.toString(),
         },
     ],
     resources,
@@ -226,6 +230,10 @@ const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements):
                 value: `prod`,
             },
             {
+                name: `PORT`,
+                value: bsProps.port.toString()!,
+            },
+            {
                 name: `ECTO_USE_SSL`,
                 value: `'false'`,
             },
@@ -251,7 +259,7 @@ const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements):
             },
             {
                 name: `DATABASE_URL`,
-                value: `postgresql://postgres:@localhost:${PG_PORT}/blockscout?ssl=false`,
+                value: `postgresql://postgres:@localhost:${bsProps.portPG}/blockscout?ssl=false`,
             },
         ],
         resources,
@@ -264,10 +272,6 @@ const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements):
         {
             name: `LAST_BLOCK`,
             value: bsProps.lastBlock!,
-        },
-        {
-            name: `PORT`,
-            value: bsProps.port.toString()!,
         },
         {
             name: `AUTH0_DOMAIN`,
@@ -340,7 +344,7 @@ export class BlockscoutChart extends Chart {
     // eslint-disable-next-line default-param-last
     constructor(scope: Construct, id: string, props: ChartProps = {}, bsProps: BlockscoutProps) {
         super(scope, id, props)
-        this.ports.push(bsProps.port, PG_PORT)
+        this.ports.push(bsProps.port, bsProps.portPG)
         const label = { app: `blockscout-e2e` }
         this.readySelector = `app=${label.app}`
 
@@ -424,7 +428,6 @@ export class BlockscoutChart extends Chart {
             metadata: {
                 namespace: ns.name,
             },
-            // those are the same as default static hardhat keys but in JSON form, it's known publicly so it's safe to keep it here
             data: {
                 'init.sh': `#!/bin/bash
                 echo "/root/.ethereum/keystore not found, running 'geth init'..."
@@ -505,9 +508,9 @@ export class BlockscoutChart extends Chart {
                                 },
                             ],
                             containers: [
-                                gethContainer(net, cm),
+                                gethContainer(bsProps, net, cm),
                                 bsContainer(bsProps, bs),
-                                pgContainer(db),
+                                pgContainer(bsProps, db),
                             ],
                         },
                     },
@@ -545,9 +548,9 @@ export class BlockscoutChart extends Chart {
                                 },
                             ],
                             containers: [
-                                gethContainer(net, cm),
+                                gethContainer(bsProps, net, cm),
                                 bsContainer(bsProps, bs),
-                                pgContainer(db),
+                                pgContainer(bsProps, db),
                             ],
                         },
                     },

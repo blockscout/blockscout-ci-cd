@@ -21,9 +21,13 @@ import { BlockscoutChart, ResourceMode } from './pkg/blockscout'
             coin: process.env.COIN || `DAI`,
             resourceMode: process.env.RESOURCE_MODE || ResourceMode.E2E,
 
+            port: Number(process.env.PORT) || 4000,
+            portPG: Number(process.env.PORT_PG) || 5432,
+            portNetworkHTTP: Number(process.env.PORT_NETWORK_HTTP) || 8544,
+            portNetworkWS: Number(process.env.PORT_NETWORK_WS) || 8546,
+
             firstBlock: process.env.FIRST_BLOCK,
             lastBlock: process.env.LAST_BLOCK,
-            port: Number(process.env.PORT) || 4000,
             auth0Domain: process.env.AUTH0_DOMAIN,
             auth0clientID: process.env.AUTH0_CLIENT_ID,
             auth0clientSecret: process.env.AUTH0_CLIENT_SECRET,

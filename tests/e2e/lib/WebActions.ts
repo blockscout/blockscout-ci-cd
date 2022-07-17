@@ -15,8 +15,8 @@ export class WebActions {
         this.page = page
     }
 
-    async navigateToURL(url: string): Promise<void> {
-        await this.page.goto(url)
+    async navigateToURL(url: string, options?: Object): Promise<void> {
+        await this.page.goto(url, options)
     }
 
     async waitForElementAttached(locator: string): Promise<void> {

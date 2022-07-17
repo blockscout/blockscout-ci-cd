@@ -5,9 +5,11 @@ import { TransactionPage } from '@pages/Transaction'
 import { TokensPage } from '@pages/Tokens'
 import { TokenPage } from '@pages/Token'
 import { AddressPage } from '@pages/Address'
+import { LoginPage } from '@pages/Login'
 
 const test = baseTest.extend<{
     homePage: HomePage,
+    loginPage: LoginPage,
     transactionPage: TransactionPage,
     blocksPage: BlocksPage,
     tokensPage: TokensPage
@@ -16,6 +18,9 @@ const test = baseTest.extend<{
 }>({
     homePage: async ({ page }, use) => {
         await use(new HomePage(page))
+    },
+    loginPage: async ({ page }, use) => {
+        await use(new LoginPage(page))
     },
     transactionPage: async ({ page }, use) => {
         await use(new TransactionPage(page))
