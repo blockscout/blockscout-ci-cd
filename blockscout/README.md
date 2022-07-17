@@ -8,30 +8,33 @@ Install deps
 ```
 npm install
 ```
-Set env vars
-```
-export K8S_LOCAL_PORT=...
-export NAMESPACE_NAME=e2e-test
-export VARIANT=geth
-export HTTP_URL=...
-export WS_URL=...
-export NETWORK_URL="http://localhost:8544"
-export WALLET="use default hardhat"
-# e2e - non-stateful compact resources mode, just for e2e testing
-# chaos - stateful set with compact resources
-# load - non-stateful with more resources for load/soak/stress tests
-export RESOURCE_MODE=e2e
-```
 ## Local usage
 ```
+export NAMESPACE_NAME=e2e-test-local
+export RESOURCE_MODE=e2e
+export PUBLIC=false
+
+export PORT=4001
+export PORT_PG=5432
+export PORT_NETWORK_HTTP=8544
+export PORT_NETWORK_WS=8546
+
+export ACCOUNT_USERNAME=fahrbss@gmail.com
+export ACCOUNT_PASSWORD=318zceqadwx8N372
+
+export IMAGE=blockscout/blockscout:latest
+export VARIANT=geth
+export HTTP_URL=http://localhost:${PORT_NETWORK_HTTP}
+export WS_URL=ws://localhost:${PORT_NETWORK_WS}
+export ETHEREUM_JSONRPC_TRACE_URL=http://localhost:${PORT_NETWORK_HTTP}
+export COIN=DAI
+
+export K8S_LOCAL_PORT=9443 
+export NETWORK_URL=http://localhost:${PORT_NETWORK_HTTP}
+// default Geth devmode key
+export WALLET="0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+
 npm run start
-```
-Default ports are now forwarded
-```
-app: localhost:4000
-db: localhost:5432
-network_http: 8544
-network_ws: 8545
 ```
 Then shutdown
 ```
