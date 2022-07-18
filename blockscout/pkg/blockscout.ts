@@ -82,14 +82,14 @@ const selectResources = (mode: string): [ResourceRequirements, ResourceRequireme
         resourcesNetwork = guaranteedResources(`1000m`, `2Gi`)
         break
     case ResourceMode.E2E:
-        resourcesDB = guaranteedResources(`1000m`, `1024Mi`)
-        resourcesBS = guaranteedResources(`1000m`, `1024Mi`)
-        resourcesNetwork = guaranteedResources(`1000m`, `2Gi`)
+        resourcesDB = guaranteedResources(`250m`, `1024Mi`)
+        resourcesBS = guaranteedResources(`250m`, `1024Mi`)
+        resourcesNetwork = guaranteedResources(`250m`, `1024Mi`)
         break
     case ResourceMode.Load:
-        resourcesDB = guaranteedResources(`1000m`, `4Gi`)
-        resourcesBS = guaranteedResources(`1000m`, `4Gi`)
-        resourcesNetwork = guaranteedResources(`1000m`, `2Gi`)
+        resourcesDB = guaranteedResources(`250m`, `1Gi`)
+        resourcesBS = guaranteedResources(`250m`, `1Gi`)
+        resourcesNetwork = guaranteedResources(`250m`, `1Gi`)
         break
     case ResourceMode.Chaos:
         resourcesDB = guaranteedResources(`250m`, `1024Mi`)
