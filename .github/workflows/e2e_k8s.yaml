@@ -50,7 +50,7 @@ env:
   PORT_NETWORK_HTTP: 8544
   PORT_NETWORK_WS: 8546
 
-  IMAGE: ${{ inputs.blockscout_image }}
+  IMAGE: blockscout/blockscout:latest
   VARIANT: geth
   HTTP_URL: http://localhost:8544
   WS_URL: ws://localhost:8546

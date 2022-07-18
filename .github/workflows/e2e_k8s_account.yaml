@@ -158,7 +158,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v2
       with:
-        name: test-result-junit-public-imaage
+        name: test-result-junit-account
         path: ./tests/e2e/results.xml
     - name: Remove namespace
       if: always()
