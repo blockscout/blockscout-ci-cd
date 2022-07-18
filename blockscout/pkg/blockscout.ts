@@ -42,6 +42,7 @@ interface BlockscoutProps {
     portNetworkHTTP: number,
     portNetworkWS: number,
     // mainnet vars
+    disableRealtimeIndexer?: string,
     firstBlock?: string
     lastBlock?: string
     auth0Domain?: string
@@ -266,6 +267,10 @@ const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements):
     }
     if (bsProps.resourceMode === ResourceMode.MainnetTest) {
         container.env.push(...[{
+            name: `DISABLE_REALTIME_INDEXER`,
+            value: bsProps.disableRealtimeIndexer!,
+        },
+        {
             name: `FIRST_BLOCK`,
             value: bsProps.firstBlock!,
         },
