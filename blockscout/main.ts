@@ -26,6 +26,7 @@ import { BlockscoutChart, ResourceMode } from './pkg/blockscout'
             portNetworkHTTP: Number(process.env.PORT_NETWORK_HTTP) || 8544,
             portNetworkWS: Number(process.env.PORT_NETWORK_WS) || 8546,
 
+            disableRealtimeIndexer: process.env.DISABLE_REALTIME_INDEXER,
             firstBlock: process.env.FIRST_BLOCK,
             lastBlock: process.env.LAST_BLOCK,
             auth0Domain: process.env.AUTH0_DOMAIN,
