@@ -59,6 +59,7 @@ interface BlockscoutProps {
     socketRoot?: string
     networkPath?: string
     secretKeyBase?: string
+    secretKeyGuardian?: string,
 }
 
 const guaranteedResources = (cpu: string, memory: string) => ({
@@ -333,6 +334,10 @@ const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements):
         {
             name: `SECRET_KEY_BASE`,
             value: bsProps.secretKeyBase!,
+        },
+        {
+            name: `SECRET_KEY_GUARDIAN`,
+            value: bsProps.secretKeyGuardian,
         },
         ])
     }
