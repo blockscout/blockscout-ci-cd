@@ -3,6 +3,8 @@
 import { readFileSync, writeFileSync, promises as fsPromises } from 'fs'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { JsonRpcProvider } from '@ethersproject/providers'
+import { chromium } from 'playwright'
+import { LoginPage } from '@pages/Login'
 import testConfig from './testConfig'
 import Contracts from './lib/Contracts'
 import { TestToken } from '../contracts/typechain/contracts/TestToken'
@@ -72,12 +74,27 @@ async function globalSetup(): Promise<void> {
     // 4. We are exposing it using env vars because tests are running in different processes
     if (process.env.WALLET) {
         if (process.env.LOAD_CONTRACTS_DATA === `1`) {
-            console.log(`loading contracts data`)
+            console.log(`loading contracts data from: ${CONTRACTS_DATA_FILE}`)
             Object.assign(process.env, process.env, JSON.parse(readFileSync(CONTRACTS_DATA_FILE).toString()))
         } else {
             console.log(`setting up contracts and transactions`)
             await setupContracts()
         }
+    }
+    if (process.env.RESOURCE_MODE === `account`) {
+        const storageStateFile = `state.json`
+        console.log(`creating authorization context for: ${storageStateFile}`)
+        const browser = await chromium.launch()
+        const ctx = await browser.newContext({ baseURL: testConfig[process.env.ENV] })
+        const page = await ctx.newPage()
+        const loginPage = new LoginPage(page)
+        const {
+            ACCOUNT_USERNAME, ACCOUNT_PASSWORD, TestTokenHolder,
+        } = process.env
+        await loginPage.signIn(ACCOUNT_USERNAME, ACCOUNT_PASSWORD)
+        await ctx.storageState({ path: `state.json` })
+        console.log(`authorization context saved: ${storageStateFile}`)
+        await browser.close()
     }
 }
 export default globalSetup
