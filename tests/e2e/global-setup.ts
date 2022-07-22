@@ -1,8 +1,10 @@
+/* eslint-disable import/no-mutable-exports */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
 import { readFileSync, writeFileSync, promises as fsPromises } from 'fs'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { JsonRpcProvider } from '@ethersproject/providers'
+import { MailSlurp } from 'mailslurp-client'
 import { chromium } from 'playwright'
 import { LoginPage } from '@pages/Login'
 import testConfig from './testConfig'
@@ -81,19 +83,21 @@ async function globalSetup(): Promise<void> {
             await setupContracts()
         }
     }
-    if (process.env.RESOURCE_MODE === `account`) {
-        const storageStateFile = `state.json`
+    const storageStateFile = `state.json`
+    if (process.env.RESOURCE_MODE === `account` && process.env.LOAD_AUTH_CTX === `0`) {
         console.log(`creating authorization context for: ${storageStateFile}`)
         const browser = await chromium.launch()
         const ctx = await browser.newContext({ baseURL: testConfig[process.env.ENV] })
         const page = await ctx.newPage()
-        const loginPage = new LoginPage(page)
+        const loginPage = new LoginPage(page, null)
         const { ACCOUNT_USERNAME, ACCOUNT_PASSWORD } = process.env
         await loginPage.open()
         await loginPage.signIn(ACCOUNT_USERNAME, ACCOUNT_PASSWORD)
         await ctx.storageState({ path: `state.json` })
         console.log(`authorization context saved: ${storageStateFile}`)
         await browser.close()
+    } else {
+        console.log(`authorization context loaded from: ${storageStateFile}`)
     }
 }
 export default globalSetup

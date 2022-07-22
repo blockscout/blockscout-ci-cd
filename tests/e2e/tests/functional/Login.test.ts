@@ -8,6 +8,7 @@ test.describe.configure({ mode: `parallel` })
 test(`@AccountImage @Authorized @SignUp Sign up`, async ({ commonPage }) => {
     const randomEmail = faker.internet.email()
     const securePwd = `sa1djfhSKDJFH28372!@#`
+    // TODO: figure out mailslurp limit to check the newly create inbox mails
     await commonPage.signUp(randomEmail, securePwd)
     await commonPage.isSignedIn()
 })
@@ -15,6 +16,8 @@ test(`@AccountImage @Authorized @SignUp Sign up`, async ({ commonPage }) => {
 test(`@AccountImage @Authorized Check profile info`, async ({ loginPage }) => {
     await loginPage.openAccount()
     await loginPage.checkProfile()
+    // const emails = await loginPage.ms.getEmails(process.env.MAILSLURP_EMAIL_ID)
+    // console.log(`emails: ${emails}`)
 })
 
 test(`@AccountImage @Authorized Check invalid address not allowed`, async ({ loginPage }) => {
@@ -66,5 +69,4 @@ test(`@AccountImage @Authorized Check not a personal address`, async ({ loginPag
 //         name: `test-token-1`,
 //     } as WatchListSpec)
 //     await loginPage.checkWatchListRow([`test-token-1`, `0xf39`, `1.158E+59 Ether`, `Edit`])
-//     await loginPage.delay(9999999)
 // })
