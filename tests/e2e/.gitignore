@@ -10,3 +10,4 @@ LighthouseReport.html
 .env
 contracts_data.env
 results.xml
+state.json

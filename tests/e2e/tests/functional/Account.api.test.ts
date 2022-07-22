@@ -12,10 +12,10 @@ test(`@AccountImage @API Test API`, async ({ loginPage }) => {
         const userInfo = await apiCtx.get(`api/account/v1/user/info`)
         const body = (await userInfo.body()).toString()
         expect(JSON.parse(body)).toMatchObject({
-            avatar: `https://s.gravatar.com/avatar/1ae0442cd257387f9c1b77cda29eb243?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Ffa.png`,
-            email: `fahrbss@gmail.com`,
-            name: `fahrbss@gmail.com`,
-            nickname: `fahrbss`,
+            avatar: `https://s.gravatar.com/avatar/a979a010b450d801bef3eb9f1e687b8c?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2F3c.png`,
+            email: `3cad691b-44e3-4613-bab2-c3ef59ae1f03@mailslurp.com`,
+            name: `3cad691b-44e3-4613-bab2-c3ef59ae1f03@mailslurp.com`,
+            nickname: `3cad691b-44e3-4613-bab2-c3ef59ae1f03`,
         })
         // TODO: add API tests when there will be different public API than we use in UI
     })

@@ -2,6 +2,7 @@
 /* eslint-disable guard-for-in */
 import { APIRequestContext, request } from "@playwright/test"
 import { WebActions } from "@lib/WebActions"
+import { MailSlurp } from "mailslurp-client"
 import type { Page } from 'playwright'
 import testConfig from "../testConfig"
 import { CommonPage } from "./Common"
@@ -33,6 +34,8 @@ export interface WatchListSpec {
 
 export class LoginPage extends CommonPage {
     readonly page: Page
+
+    readonly ms: MailSlurp
 
     actions: WebActions
 
@@ -74,9 +77,10 @@ export class LoginPage extends CommonPage {
 
     WARN_ADDRESS_INVALID = `text=is invalid`
 
-    constructor(page: Page) {
+    constructor(page: Page, ms: MailSlurp) {
         super(page)
         this.page = page
+        this.ms = ms
         this.actions = new WebActions(this.page)
     }
 
@@ -113,9 +117,9 @@ export class LoginPage extends CommonPage {
     async checkProfile(): Promise<void> {
         await this.actions.clickElement(this.ACCOUNT_MENU)
         await this.actions.clickElement(this.ACCOUNT_MENU_PROFILE)
-        await this.actions.verifyElementAttribute(this.PROFILE_NAME, `value`, `fahrbss@gmail.com`)
-        await this.actions.verifyElementAttribute(this.PROFILE_NICKNAME, `value`, `fahrbss`)
-        await this.actions.verifyElementAttribute(this.PROFILE_EMAIL, `value`, `fahrbss@gmail.com`)
+        await this.actions.verifyElementAttribute(this.PROFILE_NAME, `value`, `3cad691b-44e3-4613-bab2-c3ef59ae1f03@mailslurp.com`)
+        await this.actions.verifyElementAttribute(this.PROFILE_NICKNAME, `value`, `3cad691b-44e3-4613-bab2-c3ef59ae1f03`)
+        await this.actions.verifyElementAttribute(this.PROFILE_EMAIL, `value`, `3cad691b-44e3-4613-bab2-c3ef59ae1f03@mailslurp.com`)
     }
 
     async checkWatchListRow(data: string[]): Promise<void> {
@@ -161,7 +165,7 @@ export class LoginPage extends CommonPage {
     }
 
     async checkValidationWarn(asserts: string[]): Promise<void> {
-        for (const a in asserts) {
+        for (const a of asserts) {
             await this.actions.verifyElementIsDisplayed(`text=${a}`, `validation warning not found`)
         }
     }
