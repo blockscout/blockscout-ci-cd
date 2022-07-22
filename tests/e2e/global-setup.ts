@@ -88,9 +88,8 @@ async function globalSetup(): Promise<void> {
         const ctx = await browser.newContext({ baseURL: testConfig[process.env.ENV] })
         const page = await ctx.newPage()
         const loginPage = new LoginPage(page)
-        const {
-            ACCOUNT_USERNAME, ACCOUNT_PASSWORD, TestTokenHolder,
-        } = process.env
+        const { ACCOUNT_USERNAME, ACCOUNT_PASSWORD } = process.env
+        await loginPage.open()
         await loginPage.signIn(ACCOUNT_USERNAME, ACCOUNT_PASSWORD)
         await ctx.storageState({ path: `state.json` })
         console.log(`authorization context saved: ${storageStateFile}`)
