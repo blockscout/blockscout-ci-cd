@@ -5,14 +5,16 @@ import { TransactionPage } from '@pages/Transaction'
 import { TokensPage } from '@pages/Tokens'
 import { TokenPage } from '@pages/Token'
 import { AddressPage } from '@pages/Address'
-import { LoginPage } from '@pages/Login'
+import { AuthorizedArea } from '@pages/Login'
 import { CommonPage } from '@pages/Common'
 import MailSlurp from 'mailslurp-client'
+import Contracts from './Contracts'
+import testConfig from '../testConfig'
 
 const test = baseTest.extend<{
     commonPage: CommonPage,
     homePage: HomePage,
-    loginPage: LoginPage,
+    authorized: AuthorizedArea,
     transactionPage: TransactionPage,
     blocksPage: BlocksPage,
     tokensPage: TokensPage
@@ -25,10 +27,10 @@ const test = baseTest.extend<{
     homePage: async ({ page }, use) => {
         await use(new HomePage(page))
     },
-    loginPage: async ({ browser }, use) => {
+    authorized: async ({ browser }, use) => {
         const ctx = await browser.newContext({ storageState: `state.json` })
         const page = await ctx.newPage()
-        await use(new LoginPage(page, new MailSlurp({ apiKey: process.env.MAILSLURP_API_KEY })))
+        await use(new AuthorizedArea(page, new MailSlurp({ apiKey: process.env.MAILSLURP_API_KEY }), new Contracts(testConfig.networkURL)))
     },
     transactionPage: async ({ page }, use) => {
         await use(new TransactionPage(page))

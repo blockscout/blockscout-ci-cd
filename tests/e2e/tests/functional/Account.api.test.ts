@@ -4,7 +4,7 @@ import { expect } from '@playwright/test'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@AccountImage @API Test API`, async ({ loginPage }) => {
+test(`@AccountImage @API Test API`, async ({ authorized: loginPage }) => {
     await test.step(`Sign in`, async () => {
         const { ACCOUNT_USERNAME, ACCOUNT_PASSWORD } = process.env
         const apiCtx = await loginPage.newAPIContext(ACCOUNT_USERNAME, ACCOUNT_PASSWORD)

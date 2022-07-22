@@ -4,6 +4,7 @@ import { APIRequestContext, request } from "@playwright/test"
 import { WebActions } from "@lib/WebActions"
 import { MailSlurp } from "mailslurp-client"
 import type { Page } from 'playwright'
+import Contracts from "@lib/Contracts"
 import testConfig from "../testConfig"
 import { CommonPage } from "./Common"
 
@@ -32,10 +33,12 @@ export interface WatchListSpec {
     excludeNotifications: boolean
 }
 
-export class LoginPage extends CommonPage {
+export class AuthorizedArea extends CommonPage {
     readonly page: Page
 
     readonly ms: MailSlurp
+
+    readonly contracts: Contracts
 
     actions: WebActions
 
@@ -77,10 +80,11 @@ export class LoginPage extends CommonPage {
 
     WARN_ADDRESS_INVALID = `text=is invalid`
 
-    constructor(page: Page, ms: MailSlurp) {
+    constructor(page: Page, ms: MailSlurp, contracts: Contracts) {
         super(page)
         this.page = page
         this.ms = ms
+        this.contracts = contracts
         this.actions = new WebActions(this.page)
     }
 
@@ -122,9 +126,9 @@ export class LoginPage extends CommonPage {
         await this.actions.verifyElementAttribute(this.PROFILE_EMAIL, `value`, `3cad691b-44e3-4613-bab2-c3ef59ae1f03@mailslurp.com`)
     }
 
-    async checkWatchListRow(data: string[]): Promise<void> {
+    async checkWatchListRow(num: number, data: string[]): Promise<void> {
         for (const idx in data) {
-            await this.actions.verifyElementContainsText(`tbody >> tr >> nth=0 >> td >> nth=${idx}`, data[idx])
+            await this.actions.verifyElementContainsText(`tbody >> tr >> nth=${num} >> td >> nth=${idx}`, data[idx])
         }
     }
 

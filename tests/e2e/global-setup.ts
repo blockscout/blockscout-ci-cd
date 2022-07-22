@@ -4,12 +4,12 @@
 import { readFileSync, writeFileSync, promises as fsPromises } from 'fs'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { JsonRpcProvider } from '@ethersproject/providers'
-import { MailSlurp } from 'mailslurp-client'
 import { chromium } from 'playwright'
-import { LoginPage } from '@pages/Login'
+import { AuthorizedArea } from '@pages/Login'
 import testConfig from './testConfig'
 import Contracts from './lib/Contracts'
 import { TestToken } from '../contracts/typechain/contracts/TestToken'
+import { TestNFT } from '../contracts/typechain/contracts/TestNFT'
 
 const CONTRACTS_DATA_FILE = `contracts_data.env`
 const RECEIPT_RETRIES = 100
@@ -44,12 +44,23 @@ const setupContracts = async (): Promise<void> => {
     const receipt0 = await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
 
     console.log(`minting tokens`)
-    const tx1 = await token.mint(contracts.wallet.address, 1)
+    const tx1 = await token.mint(contracts.wallet.address, 10000)
     const receipt1 = await tx1.wait()
 
     console.log(`creating reverted tx`)
     const tx2 = await token.alwaysReverts({ gasLimit: 250000 })
     const receipt2 = await waitReceiptWithBlock(contracts.provider, tx2.hash)
+
+    console.log(`deploying NFT contract`)
+    const contractNameNFT = `TestNFT`
+    const tokenNameNFT = `NFT`
+    const tokenSymbolNFT = `NFT`
+    const nft = await contracts.deploy(tokenNameNFT, tokenSymbolNFT, contractNameNFT) as TestNFT
+    const receiptNFT = await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
+
+    console.log(`minting NFT`)
+    const txNFT1 = await nft.mintNFT(contracts.wallet.address, ``)
+    const receiptNFT1 = await txNFT1.wait()
 
     shareData({
         MinerAddress: `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`,
@@ -63,6 +74,14 @@ const setupContracts = async (): Promise<void> => {
         TestTokenTXMintBlockNumber: receipt1.blockNumber.toString(),
         TestTokenTXRevertHash: tx2.hash,
         TestTokenTXRevertBlockNumber: receipt2.blockNumber.toString(),
+
+        TestNFTAddress: nft.address,
+        TestNFTName: tokenNameNFT,
+        TestNFTSymbol: tokenSymbolNFT,
+        TestNFTDeployTXHash: nft.deployTransaction.hash,
+        TestNFTDeployTXBlockNumber: receiptNFT.blockNumber,
+        TestNFTTXMintHash: txNFT1.hash,
+        TestNFTTXMintBlockNumber: receiptNFT1.blockNumber.toString(),
     })
 }
 
@@ -89,7 +108,7 @@ async function globalSetup(): Promise<void> {
         const browser = await chromium.launch()
         const ctx = await browser.newContext({ baseURL: testConfig[process.env.ENV] })
         const page = await ctx.newPage()
-        const loginPage = new LoginPage(page, null)
+        const loginPage = new AuthorizedArea(page, null, null)
         const { ACCOUNT_USERNAME, ACCOUNT_PASSWORD } = process.env
         await loginPage.open()
         await loginPage.signIn(ACCOUNT_USERNAME, ACCOUNT_PASSWORD)

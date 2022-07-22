@@ -84,8 +84,8 @@ const selectResources = (mode: string): [ResourceRequirements, ResourceRequireme
         resourcesNetwork = guaranteedResources(`1000m`, `2Gi`)
         break
     case ResourceMode.E2E:
-        resourcesDB = guaranteedResources(`250m`, `1024Mi`)
-        resourcesBS = guaranteedResources(`250m`, `1024Mi`)
+        resourcesDB = guaranteedResources(`500m`, `1024Mi`)
+        resourcesBS = guaranteedResources(`500m`, `1024Mi`)
         resourcesNetwork = guaranteedResources(`250m`, `1024Mi`)
         break
     case ResourceMode.Load:
