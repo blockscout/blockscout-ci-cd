@@ -12,7 +12,7 @@ test(`@Ethereum @Address @Data @PublicImage Check address page`, async ({ addres
         await addressPage.check_address_description({
             token: [`Token`, `${TestTokenName} (${TestTokenSymbol})`],
             creator: [`Creator`, `0x`, `at`],
-            balance: [`Balance`, `Ether`, `USD`],
+            balance: [`Balance`, `Ether`],
             tokens: [`Tokens`, `tokens`],
             transactions: [`Transactions`, `Transactions`],
             transfers: [`Transfers`, `Transfers`],

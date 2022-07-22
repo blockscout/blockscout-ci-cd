@@ -18,7 +18,6 @@ export interface NativeCurrencyProps {
     position: string
     address: string
     balance: string
-    percentage: string
     txnCount: string
 }
 
