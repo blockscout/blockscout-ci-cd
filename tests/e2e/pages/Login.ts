@@ -92,7 +92,6 @@ export class LoginPage extends CommonPage {
 
     async newAPIContext(username: string, password: string, options?: Object): Promise<APIRequestContext> {
         await this.actions.navigateToURL(`/auth/auth0_api`, options)
-        await this.signIn(username, password)
         const content = await this.page.textContent(`html`)
         const token = JSON.parse(content).auth_token
         console.log(`token: ${token}`)
@@ -105,7 +104,6 @@ export class LoginPage extends CommonPage {
     }
 
     async signIn(email: string, password: string): Promise<void> {
-        await this.actions.navigateToURL(`/`)
         await this.actions.clickElement(this.SIGN_IN)
         await this.actions.enterElementText(this.AUTH0_INPUT_USERNAME, email)
         await this.actions.enterElementText(this.AUTH0_INPUT_PASSWORD, password)
