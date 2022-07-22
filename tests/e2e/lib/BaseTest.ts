@@ -6,8 +6,11 @@ import { TokensPage } from '@pages/Tokens'
 import { TokenPage } from '@pages/Token'
 import { AddressPage } from '@pages/Address'
 import { LoginPage } from '@pages/Login'
+import { CommonPage } from '@pages/Common'
+import MailSlurp from 'mailslurp-client'
 
 const test = baseTest.extend<{
+    commonPage: CommonPage,
     homePage: HomePage,
     loginPage: LoginPage,
     transactionPage: TransactionPage,
@@ -16,11 +19,16 @@ const test = baseTest.extend<{
     tokenPage: TokenPage,
     addressPage: AddressPage,
 }>({
+    commonPage: async ({ page }, use) => {
+        await use(new CommonPage(page))
+    },
     homePage: async ({ page }, use) => {
         await use(new HomePage(page))
     },
-    loginPage: async ({ page }, use) => {
-        await use(new LoginPage(page))
+    loginPage: async ({ browser }, use) => {
+        const ctx = await browser.newContext({ storageState: `state.json` })
+        const page = await ctx.newPage()
+        await use(new LoginPage(page, new MailSlurp({ apiKey: process.env.MAILSLURP_API_KEY })))
     },
     transactionPage: async ({ page }, use) => {
         await use(new TransactionPage(page))

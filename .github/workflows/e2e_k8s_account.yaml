@@ -47,8 +47,11 @@ env:
   PORT_NETWORK_HTTP: 9544
   PORT_NETWORK_WS: 9546
 
+  LOAD_AUTH_CTX: 0
   ACCOUNT_USERNAME: ${{ secrets.ACCOUNT_USERNAME }}
   ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
+  MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
+  MAILSLURP_EMAIL_ID: ${{ secrets.MAILSLURP_EMAIL_ID }}
 
   IMAGE: blockscout/blockscout-xdai-testnet:latest
   VARIANT: geth
