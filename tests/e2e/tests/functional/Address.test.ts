@@ -12,7 +12,7 @@ test(`@Ethereum @Address @Data @PublicImage Check address page`, async ({ addres
         await addressPage.check_address_description({
             token: [`Token`, `${TestTokenName} (${TestTokenSymbol})`],
             creator: [`Creator`, `0x`, `at`],
-            balance: [`Balance`, `Ether`, `USD`],
+            balance: [`Balance`, `Ether`],
             tokens: [`Tokens`, `tokens`],
             transactions: [`Transactions`, `Transactions`],
             transfers: [`Transfers`, `Transfers`],
@@ -52,7 +52,7 @@ test(`@Ethereum @Address @Data @PublicImage Check address page`, async ({ addres
         await addressPage.check_tx_logs(0, {
             address: [`Transaction`, `0x`],
             topics: [`Topics`, `[0]`, `[1]`, `[2]`],
-            data: [`Data`, `0x0000000000000000000000000000000000000000000000000000000000000001`],
+            data: [`Data`, `0x0000000000000000000000000000000000000000000000000000000000002710`],
         } as TXLogProps)
         await addressPage.check_tx_logs(1, {
             address: [`Transaction`, `0x`],

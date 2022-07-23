@@ -11,7 +11,7 @@ test(`@Ethereum @TokenPage @Data @PublicImage @AccountImage Check token page`, a
         await tokenPage.open(TestTokenAddress)
         await tokenPage.check_token({
             contract: [`Contract`, TestTokenAddress.toLowerCase()],
-            totalSupply: [`Total supply`, `0.000000000000000001 ${TestTokenSymbol}`],
+            totalSupply: [`Total supply`, `0.00000000000001 ${TestTokenSymbol}`],
             holders: [`Holders`, `1 Addresses`],
             transfers: [`Transfers`, `1 Transfers`],
             decimals: [`Decimals`, `18`],
@@ -21,13 +21,13 @@ test(`@Ethereum @TokenPage @Data @PublicImage @AccountImage Check token page`, a
             name: `Token Minting`,
             from1: `0x`,
             to1: `0x`,
-            tokenAmount: `0.000000000000000001`,
+            tokenAmount: `0.00000000000001`,
             tokenSymbol: TestTokenSymbol,
         } as TXTokenProps)
         await tokenPage.select_token_holders_tab()
         await tokenPage.check_token_holders(0, {
             holder: [TestTokenHolder],
-            value: [`0.000000000000000001 ${TestTokenSymbol}`, `100.0000%`],
+            value: [`0.00000000000001 ${TestTokenSymbol}`, `100.0000%`],
         } as TokenHoldersProps)
     })
 })

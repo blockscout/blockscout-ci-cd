@@ -43,6 +43,7 @@ import { BlockscoutChart, ResourceMode } from './pkg/blockscout'
             socketRoot: process.env.SOCKET_ROOT,
             networkPath: process.env.NETWORK_PATH,
             secretKeyBase: process.env.SECRET_KEY_BASE,
+            secretKeyGuardian: process.env.SECRET_KEY_GUARDIAN,
         },
     )
     app.synth()

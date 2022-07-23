@@ -14,7 +14,7 @@ test(`@Ethereum @Tokens @Data @PublicImage @AccountImage Search token by the nam
             fill: ``,
             name: `${TestTokenName} (${TestTokenSymbol})`,
             address: [TestTokenName, `0x`],
-            totalSupply: `0.000000000000000001 ${TestTokenSymbol}`,
+            totalSupply: `0.00000000000001 ${TestTokenSymbol}`,
             holdersCount: `1`,
         } as TokenRowProps)
     })
@@ -30,7 +30,7 @@ test(`@Ethereum @Tokens @Data @PublicImage @AccountImage Search a token by the s
             fill: ``,
             name: `${TestTokenName} (${TestTokenSymbol})`,
             address: [TestTokenName, `0x`],
-            totalSupply: `0.000000000000000001 ${TestTokenSymbol}`,
+            totalSupply: `0.00000000000001 ${TestTokenSymbol}`,
             holdersCount: `1`,
         } as TokenRowProps)
     })
@@ -44,7 +44,6 @@ test(`@Ethereum @Tokens @Data @PublicImage Check native currency list`, async ({
             position: `1`,
             address: MinerAddress,
             balance: `Ether`,
-            percentage: `% Market Cap`,
             txnCount: `Transactions sent`,
         } as NativeCurrencyProps)
     })

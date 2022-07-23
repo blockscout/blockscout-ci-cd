@@ -1,11 +1,15 @@
+/* eslint-disable import/no-mutable-exports */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
 import { readFileSync, writeFileSync, promises as fsPromises } from 'fs'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { JsonRpcProvider } from '@ethersproject/providers'
+import { chromium } from 'playwright'
+import { AuthorizedArea } from '@pages/Login'
 import testConfig from './testConfig'
 import Contracts from './lib/Contracts'
 import { TestToken } from '../contracts/typechain/contracts/TestToken'
+import { TestNFT } from '../contracts/typechain/contracts/TestNFT'
 
 const CONTRACTS_DATA_FILE = `contracts_data.env`
 const RECEIPT_RETRIES = 100
@@ -40,12 +44,23 @@ const setupContracts = async (): Promise<void> => {
     const receipt0 = await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
 
     console.log(`minting tokens`)
-    const tx1 = await token.mint(contracts.wallet.address, 1)
+    const tx1 = await token.mint(contracts.wallet.address, 10000)
     const receipt1 = await tx1.wait()
 
     console.log(`creating reverted tx`)
     const tx2 = await token.alwaysReverts({ gasLimit: 250000 })
     const receipt2 = await waitReceiptWithBlock(contracts.provider, tx2.hash)
+
+    console.log(`deploying NFT contract`)
+    const contractNameNFT = `TestNFT`
+    const tokenNameNFT = `NFT`
+    const tokenSymbolNFT = `NFT`
+    const nft = await contracts.deploy(tokenNameNFT, tokenSymbolNFT, contractNameNFT) as TestNFT
+    const receiptNFT = await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
+
+    console.log(`minting NFT`)
+    const txNFT1 = await nft.mintNFT(contracts.wallet.address, ``)
+    const receiptNFT1 = await txNFT1.wait()
 
     shareData({
         MinerAddress: `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`,
@@ -59,6 +74,14 @@ const setupContracts = async (): Promise<void> => {
         TestTokenTXMintBlockNumber: receipt1.blockNumber.toString(),
         TestTokenTXRevertHash: tx2.hash,
         TestTokenTXRevertBlockNumber: receipt2.blockNumber.toString(),
+
+        TestNFTAddress: nft.address,
+        TestNFTName: tokenNameNFT,
+        TestNFTSymbol: tokenSymbolNFT,
+        TestNFTDeployTXHash: nft.deployTransaction.hash,
+        TestNFTDeployTXBlockNumber: receiptNFT.blockNumber,
+        TestNFTTXMintHash: txNFT1.hash,
+        TestNFTTXMintBlockNumber: receiptNFT1.blockNumber.toString(),
     })
 }
 
@@ -72,12 +95,28 @@ async function globalSetup(): Promise<void> {
     // 4. We are exposing it using env vars because tests are running in different processes
     if (process.env.WALLET) {
         if (process.env.LOAD_CONTRACTS_DATA === `1`) {
-            console.log(`loading contracts data`)
+            console.log(`loading contracts data from: ${CONTRACTS_DATA_FILE}`)
             Object.assign(process.env, process.env, JSON.parse(readFileSync(CONTRACTS_DATA_FILE).toString()))
         } else {
             console.log(`setting up contracts and transactions`)
             await setupContracts()
         }
+    }
+    const storageStateFile = `state.json`
+    if (process.env.RESOURCE_MODE === `account` && process.env.LOAD_AUTH_CTX === `0`) {
+        console.log(`creating authorization context for: ${storageStateFile}`)
+        const browser = await chromium.launch()
+        const ctx = await browser.newContext({ baseURL: testConfig[process.env.ENV] })
+        const page = await ctx.newPage()
+        const loginPage = new AuthorizedArea(page, null, null)
+        const { ACCOUNT_USERNAME, ACCOUNT_PASSWORD } = process.env
+        await loginPage.open()
+        await loginPage.signIn(ACCOUNT_USERNAME, ACCOUNT_PASSWORD)
+        await ctx.storageState({ path: `state.json` })
+        console.log(`authorization context saved: ${storageStateFile}`)
+        await browser.close()
+    } else {
+        console.log(`authorization context loaded from: ${storageStateFile}`)
     }
 }
 export default globalSetup

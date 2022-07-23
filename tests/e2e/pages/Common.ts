@@ -1,5 +1,6 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable guard-for-in */
+import { APIActions } from "@lib/APIActions"
 import { WebActions } from "@lib/WebActions"
 import type { Page } from 'playwright'
 
@@ -37,6 +38,26 @@ export class CommonPage {
 
     actions: WebActions
 
+    apiActions: APIActions
+
+    SIGN_IN = `text=Sign in`
+
+    ACCOUNT_MENU = `#navbarBlocksDropdown >> nth=1`
+
+    AUTH0_SIGN_UP = `text=Sign up`
+
+    AUTH0_INPUT_EMAIL = `input[name="email"]`
+
+    AUTH0_INPUT_USERNAME = `input[name="username"]`
+
+    AUTH0_INPUT_PASSWORD = `input[name="password"]`
+
+    AUTH0_SUBMIT = `button[name="action"]`
+
+    AUTH0_ACCEPT = `text=Accept`
+
+    LOGGED_IN_AS = `text=Signed in as`
+
     VERIFY_MSG = `To see accurate decoded input data, the contract must be verified`
 
     TX = `[data-test='chain_transaction']`
@@ -72,6 +93,17 @@ export class CommonPage {
     constructor(page: Page) {
         this.page = page
         this.actions = new WebActions(this.page)
+        this.apiActions = new APIActions()
+    }
+
+    async signUp(email: string, password: string): Promise<void> {
+        await this.actions.navigateToURL(`/`)
+        await this.actions.clickElement(this.SIGN_IN)
+        await this.actions.clickElement(this.AUTH0_SIGN_UP)
+        await this.actions.enterElementText(this.AUTH0_INPUT_EMAIL, email)
+        await this.actions.enterElementText(this.AUTH0_INPUT_PASSWORD, password)
+        await this.actions.clickElement(this.AUTH0_SUBMIT)
+        await this.actions.clickElement(this.AUTH0_ACCEPT)
     }
 
     async delay(amount: number): Promise<void> {
@@ -153,5 +185,10 @@ export class CommonPage {
             }
             row += 1
         }
+    }
+
+    async isSignedIn(): Promise<void> {
+        await this.actions.clickElement(this.ACCOUNT_MENU)
+        await this.actions.verifyElementIsDisplayed(this.LOGGED_IN_AS, `login failed`)
     }
 }

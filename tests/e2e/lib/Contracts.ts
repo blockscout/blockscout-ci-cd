@@ -24,16 +24,41 @@ export default class Contracts {
         this.wallet = new ethers.Wallet(walletAddr, this.provider)
     }
 
+    async sendEther(to: string, amount: string): Promise<void> {
+        const tx = {
+            to,
+            value: ethers.utils.parseEther(amount),
+        }
+        await this.wallet.sendTransaction(tx)
+    }
+
+    asHex(d: string): string {
+        return ethers.utils.hexlify(d)
+    }
+
+    newWallet(): ethers.Wallet {
+        return ethers.Wallet.createRandom().connect(this.provider)
+    }
+
     async deploy(contractName: string, symbol: string, contractFileName: string): Promise<Contract> {
-        const artifactPath = `${ARTIFACTS_PATH}/${contractFileName}.sol/${contractFileName}.json`
-        console.log(`reading artifact: ${artifactPath}`)
-        const content = await readFile(artifactPath)
-        const artifact = JSON.parse(content.toString())
+        const artifact = await this.readArtifact(contractFileName)
 
         const factory = new ContractFactory(artifact.abi, artifact.bytecode, this.wallet)
         const d = await factory.deploy(contractName, symbol)
         const contract = await d.deployed()
         console.log(`deployed contract:\nName: ${contractName}\nArtifact: ${contractFileName}\nAddress: ${contract.address}\nSymbol: ${symbol}`)
         return contract
+    }
+
+    async loadContract(contractFileName: string, address: string): Promise<Contract> {
+        const artifact = await this.readArtifact(contractFileName)
+        return new ethers.Contract(address, artifact.abi, this.provider).connect(this.wallet)
+    }
+
+    async readArtifact(contractFileName: string): Promise<any> {
+        const artifactPath = `${ARTIFACTS_PATH}/${contractFileName}.sol/${contractFileName}.json`
+        console.log(`reading artifact: ${artifactPath}`)
+        const content = await readFile(artifactPath)
+        return JSON.parse(content.toString())
     }
 }
