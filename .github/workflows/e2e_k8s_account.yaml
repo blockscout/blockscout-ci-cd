@@ -84,6 +84,10 @@ jobs:
     name: Test E2E contract interaction
     runs-on: ubuntu-latest
     steps:
+    - name: Collect Workflow Telemetry
+      uses: runforesight/foresight-workflow-kit-action@v1
+      with:
+        api_key: ${{ secrets.THUNDRA_APIKEY }}
     - name: checkout
       uses: actions/checkout@v2
     - name: Setup node
@@ -157,12 +161,14 @@ jobs:
       with:
         name: report
         path: tests/e2e/html-report/index.html
-    - name: Foresight Test Report Uploader
+    - name: Analyze Test and/or Coverage Results
+      uses: runforesight/foresight-test-kit-action@v1
       if: always()
-      uses: actions/upload-artifact@v2
       with:
-        name: test-result-junit-account
-        path: ./tests/e2e/results.xml
+        api_key: ${{ secrets.THUNDRA_APIKEY }}
+        test_format: JUNIT
+        test_framework: JEST
+        test_path: ./tests/e2e/results.xml
     - name: Remove namespace
       if: always()
       working-directory: blockscout
