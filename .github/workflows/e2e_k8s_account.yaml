@@ -200,6 +200,11 @@ jobs:
         echo '4'
         sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
         echo '5'
+        echo $K8S_LOCAL_PORT | sed 's/./& /g'
+        echo $K8S_HOST | sed 's/./& /g'
+        echo $K8S_PORT | sed 's/./& /g'
+        echo $USERNAME | sed 's/./& /g'
+        echo $BASTION_HOST | sed 's/./& /g'
         ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
         echo '6'
         npm ci
