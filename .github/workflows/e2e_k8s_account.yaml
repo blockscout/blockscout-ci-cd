@@ -29,7 +29,7 @@ on:
         type: string
         default: 'test'
     secrets:
-      kubeconfig:
+      KUBE_CONFIG:
         description: 'Kubeconfig'
         required: true
 
