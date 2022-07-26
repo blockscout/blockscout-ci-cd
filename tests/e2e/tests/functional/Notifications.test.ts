@@ -22,7 +22,7 @@ test(`@Notifications Check notification received on Ether transfer`, async ({ au
         address: recipient.address.toLowerCase(),
         name: watchName,
     } as WatchListSpec)
-    await authorized.checkWatchListRow(0, [watchName, `0x`, `(N/A)`, `Edit`])
+    await authorized.checkListRow(0, [watchName, `0x`, `(N/A)`, `Edit`])
     await authorized.delay(5000)
     await authorized.contracts.sendEther(recipient.address, `0.01`)
 
@@ -48,7 +48,7 @@ test.skip(`@Notifications Check notification received on ERC20 transfer`, async 
         address: recipient.address.toLowerCase(),
         name: watchName,
     } as WatchListSpec)
-    await authorized.checkWatchListRow(1, [watchName, `0x`, `(N/A)`, `Edit`])
+    await authorized.checkListRow(1, [watchName, `0x`, `(N/A)`, `Edit`])
     await authorized.delay(5000)
     const receipt = await (await token.transfer(recipient.address, 1)).wait()
     console.log(`receipt: ${JSON.stringify(receipt)}`)
@@ -75,7 +75,7 @@ test.skip(`@Notifications Check notification received on NFT transfer`, async ({
         address: recipient.address.toLowerCase(),
         name: watchName,
     } as WatchListSpec)
-    await authorized.checkWatchListRow(0, [watchName, `0x`, `(N/A)`, `Edit`])
+    await authorized.checkListRow(0, [watchName, `0x`, `(N/A)`, `Edit`])
     await authorized.delay(5000)
     const receipt = await (await nft.transferOwnership(recipient.address)).wait()
     console.log(`receipt: ${JSON.stringify(receipt)}`)

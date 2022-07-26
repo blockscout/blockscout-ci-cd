@@ -33,6 +33,17 @@ export interface WatchListSpec {
     excludeNotifications: boolean
 }
 
+export interface PublicTagSpec {
+    name?: string
+    email?: string
+    companyName?: string
+    companyWebSite?: string
+    myProjectCheckBox: boolean
+    tagsString: string
+    addresses: string[]
+    description: string
+}
+
 export class AuthorizedArea extends CommonPage {
     readonly page: Page
 
@@ -70,7 +81,7 @@ export class AuthorizedArea extends CommonPage {
 
     WATCHLIST_EMAIL_NOTIFICATIONS = `text=Email notifications`
 
-    WATCHLIST_SAVE_BUTTON = `text=Save`
+    SAVE_BTN = `text=Save`
 
     ADD_ADDRESS_BUTTON = `text=Add address`
 
@@ -79,6 +90,52 @@ export class AuthorizedArea extends CommonPage {
     WARN_NAME_REQUIRED = `text=Name required >> span`
 
     WARN_ADDRESS_INVALID = `text=is invalid`
+
+    ADDRESS_TAGS_TAB = `section >> text=Address Tags >> nth=0`
+
+    ADDRESS_TAGS_TAB_ADD_ADDRESS = `text=Add address tag`
+
+    ADDRESS_TAGS_ADDRESS_INPUT = `#tag_address_address_hash`
+
+    ADDRESS_TAGS_NAME_INPUT = `#tag_address_name`
+
+    TX_TAGS_TAB = `section >> text=Transaction Tags`
+
+    TX_TAGS_TAB_ADD_TX = `text=Add transaction tag`
+
+    TX_TAGS_TX_INPUT = `#tag_transaction_tx_hash`
+
+    TX_TAGS_NAME_INPUT = `#tag_transaction_name`
+
+    API_KEYS_TAB = `section >> text=API Keys`
+
+    API_KEYS_ADD_BTN = `text=Add API Key`
+
+    API_KEYS_NAME_INPUT = `#key_name`
+
+    PUBLIC_TAGS_TAB = `section >> text=Public Tags`
+
+    PUBLIC_TAGS_TAB_BTN = `text=Request to add public tag`
+
+    PUBLIC_TAGS_NAME_INPUT = `#public_tags_request_full_name`
+
+    PUBLIC_TAGS_EMAIL_INPUT = `#public_tags_request_email`
+
+    PUBLIC_TAGS_COMPANY_INPUT = `#public_tags_request_company`
+
+    PUBLIC_TAGS_WEBSITE_INPUT = `#public_tags_request_website`
+
+    PUBLIC_TAGS_PROJECT_CHECKBOX = `#public_tags_request_is_owner_true`
+
+    PUBLIC_TAGS_INCORRECT_CHECKBOX = `#public_tags_request_is_owner_false`
+
+    PUBLIC_TAGS_TAGS_INPUT = `#public_tags_request_tags`
+
+    PUBLIC_TAGS_ADDRESSES_INPUT = `#public_tags_request_addresses_array`
+
+    PUBLIC_TAGS_DESCRIPTION_INPUT = `#public_tags_request_additional_comment`
+
+    PUBLIC_TAGS_SEND_BTN = `text=Send request`
 
     constructor(page: Page, ms: MailSlurp, contracts: Contracts) {
         super(page)
@@ -95,6 +152,26 @@ export class AuthorizedArea extends CommonPage {
     async openAccount(options?: Object): Promise<void> {
         await this.actions.navigateToURL(`/`, options)
         await this.actions.clickElement(this.ACCOUNT_MENU)
+        await this.actions.clickElement(this.WATCHLIST_TAB)
+    }
+
+    async selectAddressTagTab(): Promise<void> {
+        await this.actions.clickElement(this.ADDRESS_TAGS_TAB)
+    }
+
+    async selectTXTagTab(): Promise<void> {
+        await this.actions.clickElement(this.TX_TAGS_TAB)
+    }
+
+    async selectAPIKeysTab(): Promise<void> {
+        await this.actions.clickElement(this.API_KEYS_TAB)
+    }
+
+    async selectPublicTagsTab(): Promise<void> {
+        await this.actions.clickElement(this.PUBLIC_TAGS_TAB)
+    }
+
+    async selectWatchlistTab(): Promise<void> {
         await this.actions.clickElement(this.WATCHLIST_TAB)
     }
 
@@ -126,10 +203,65 @@ export class AuthorizedArea extends CommonPage {
         await this.actions.verifyElementAttribute(this.PROFILE_EMAIL, `value`, `3cad691b-44e3-4613-bab2-c3ef59ae1f03@mailslurp.com`)
     }
 
-    async checkWatchListRow(num: number, data: string[]): Promise<void> {
-        for (const idx in data) {
-            await this.actions.verifyElementContainsText(`tbody >> tr >> nth=${num} >> td >> nth=${idx}`, data[idx])
+    async checkListRow(row: number, data: any[]): Promise<void> {
+        for (const col in data) {
+            if (Array.isArray(data[col])) {
+                for (const assert of data[col]) {
+                    await this.actions.verifyElementContainsText(`tbody >> tr >> nth=${row} >> td >> nth=${col}`, assert)
+                }
+            } else {
+                await this.actions.verifyElementContainsText(`tbody >> tr >> nth=${row} >> td >> nth=${col}`, data[col])
+            }
         }
+    }
+
+    async clickListRow(row: number, col: number): Promise<void> {
+        await this.actions.clickElement(`tbody >> tr >> nth=${row} >> td >> nth=${col} >> div >> a`)
+    }
+
+    async addAddressTag(address: string, name: string): Promise<void> {
+        await this.actions.clickElement(this.ADDRESS_TAGS_TAB_ADD_ADDRESS)
+        await this.actions.enterElementText(this.ADDRESS_TAGS_ADDRESS_INPUT, address)
+        await this.actions.enterElementText(this.ADDRESS_TAGS_NAME_INPUT, name)
+        await this.actions.clickElement(this.SAVE_BTN)
+    }
+
+    async addPublicTag(spec: PublicTagSpec): Promise<void> {
+        await this.actions.clickElement(this.PUBLIC_TAGS_TAB_BTN)
+        if (spec.name) {
+            await this.actions.enterElementText(this.PUBLIC_TAGS_NAME_INPUT, spec.name)
+        }
+        if (spec.email) {
+            await this.actions.enterElementText(this.PUBLIC_TAGS_EMAIL_INPUT, spec.email)
+        }
+        if (spec.companyName) {
+            await this.actions.enterElementText(this.PUBLIC_TAGS_COMPANY_INPUT, spec.companyName)
+        }
+        if (spec.companyWebSite) {
+            await this.actions.enterElementText(this.PUBLIC_TAGS_WEBSITE_INPUT, spec.companyWebSite)
+        }
+        if (spec.myProjectCheckBox) {
+            await this.actions.clickElement(this.PUBLIC_TAGS_PROJECT_CHECKBOX)
+        } else {
+            await this.actions.clickElement(this.PUBLIC_TAGS_INCORRECT_CHECKBOX)
+        }
+        await this.actions.enterElementText(this.PUBLIC_TAGS_TAGS_INPUT, spec.tagsString)
+        await this.actions.enterElementText(this.PUBLIC_TAGS_ADDRESSES_INPUT, spec.addresses[0])
+        await this.actions.enterElementText(this.PUBLIC_TAGS_DESCRIPTION_INPUT, spec.description)
+        await this.actions.clickElement(this.PUBLIC_TAGS_SEND_BTN)
+    }
+
+    async addTXTag(txHash: string, name: string): Promise<void> {
+        await this.actions.clickElement(this.TX_TAGS_TAB_ADD_TX)
+        await this.actions.enterElementText(this.TX_TAGS_TX_INPUT, txHash)
+        await this.actions.enterElementText(this.TX_TAGS_NAME_INPUT, name)
+        await this.actions.clickElement(this.SAVE_BTN)
+    }
+
+    async addAPIKey(name: string): Promise<void> {
+        await this.actions.clickElement(this.API_KEYS_ADD_BTN)
+        await this.actions.enterElementText(this.API_KEYS_NAME_INPUT, name)
+        await this.actions.clickElement(this.SAVE_BTN)
     }
 
     async addAddressWatch(data: WatchListSpec): Promise<void> {
@@ -165,7 +297,7 @@ export class AuthorizedArea extends CommonPage {
         if (data.excludeNotifications) {
             await this.actions.clickElement(this.WATCHLIST_EMAIL_NOTIFICATIONS)
         }
-        await this.actions.clickElement(this.WATCHLIST_SAVE_BUTTON)
+        await this.actions.clickElement(this.SAVE_BTN)
     }
 
     async checkValidationWarn(asserts: string[]): Promise<void> {

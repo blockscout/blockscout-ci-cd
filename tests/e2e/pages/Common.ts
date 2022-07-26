@@ -110,6 +110,10 @@ export class CommonPage {
         await this.actions.delay(amount)
     }
 
+    async hasText(text: string): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`text=${text}`, `failed to find text on the page`)
+    }
+
     async waitTextReload(status: string): Promise<void> {
         await this.actions.waitWithReload(`text=${status}`)
     }
