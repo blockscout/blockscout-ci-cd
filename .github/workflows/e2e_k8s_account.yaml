@@ -90,6 +90,9 @@ jobs:
         api_key: ${{ secrets.THUNDRA_APIKEY }}
     - name: checkout
       uses: actions/checkout@v2
+      with:
+        repository: blockscout/blockscout-ci-cd
+        path: blockscout-ci-cd
     - name: Setup node
       uses: actions/setup-node@v3
       with:
