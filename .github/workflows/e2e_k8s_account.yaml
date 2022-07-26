@@ -110,7 +110,7 @@ jobs:
           ${{ runner.os }}-build-
           ${{ runner.os }}-
     - name: Install deps
-      run: ls -la /home/runner/work/blockscout-account/ && ls -la /home/runner/work/blockscout-account/blockscout-account/ && npm ci
+      run: ls -la /home/runner/work/blockscout-account/blockscout-account/blockscout-ci-cd && npm ci
     - name: Lint
       run: npm run lint
     - name: Build contracts
@@ -132,7 +132,7 @@ jobs:
         name: ${{ github.sha }}
     - name: Deploy to k8s
       shell: bash
-      working-directory: blockscout
+      working-directory: blockscout-ci-cd/blockscout
       # port forwarding works only inside the step, consider refactoring as TS action
       env:
         NAMESPACE_NAME: e2e-geth-${{ steps.generate.outputs.uuid }}
@@ -174,7 +174,7 @@ jobs:
         test_path: blockscout-ci-cd/tests/e2e/results.xml
     - name: Remove namespace
       if: always()
-      working-directory: blockscout
+      working-directory: blockscout-ci-cd/blockscout
       env:
         NAMESPACE_NAME: e2e-geth-${{ steps.generate.outputs.uuid }}
       run: |
