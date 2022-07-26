@@ -163,7 +163,7 @@ jobs:
       if: always()
       with:
         name: report
-        path: tests/e2e/html-report/index.html
+        path: blockscout-ci-cd/tests/e2e/html-report/index.html
     - name: Analyze Test and/or Coverage Results
       uses: runforesight/foresight-test-kit-action@v1
       if: always()
