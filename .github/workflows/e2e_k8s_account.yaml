@@ -110,7 +110,7 @@ jobs:
           ${{ runner.os }}-build-
           ${{ runner.os }}-
     - name: Install deps
-      run: npm ci
+      run: ls -la /home/runner/work/blockscout-account/ && ls -la /home/runner/work/blockscout-account/blockscout-account/ && npm ci
     - name: Lint
       run: npm run lint
     - name: Build contracts
