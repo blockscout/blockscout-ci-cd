@@ -28,6 +28,10 @@ on:
         required: true
         type: string
         default: 'test'
+    secrets:
+      kubeconfig:
+        description: 'Kubeconfig'
+        required: true
 
 env:
   K8S_LOCAL_PORT: ${{ secrets.LOCAL_PORT }}
