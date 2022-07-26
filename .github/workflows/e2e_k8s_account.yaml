@@ -191,24 +191,12 @@ jobs:
         NAMESPACE_NAME: e2e-geth-${{ steps.generate.outputs.uuid }}
       run: |
         mkdir ~/.ssh
-        echo '1'
         ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
-        echo '2'
         eval `ssh-agent -s`
-        echo '3'
         ssh-add - <<< "$BASTION_SSH_KEY"
-        echo '4'
         sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
-        echo '5'
-        echo $K8S_LOCAL_PORT | sed 's/./& /g'
-        echo $K8S_HOST | sed 's/./& /g'
-        echo $K8S_PORT | sed 's/./& /g'
-        echo $USERNAME | sed 's/./& /g'
-        echo $BASTION_HOST | sed 's/./& /g'
         ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
-        echo '6'
         npm ci
-        echo '7'
         npm run start
     - name: Cache playwright binaries
       uses: actions/cache@v2
