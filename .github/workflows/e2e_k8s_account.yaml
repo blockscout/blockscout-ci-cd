@@ -81,6 +81,8 @@ on:
         required: true
       WALLET: 
         required: true
+      THUNDRA_APIKEY:
+        required: true
 
 env:
   K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
