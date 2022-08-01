@@ -76,7 +76,7 @@ env:
   NETWORK_PATH: "/"
   SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
 
-#   ENV: test
+  ENV: test
   NETWORK_URL: http://localhost:8544
   WALLET: ${{ secrets.WALLET }}
 
@@ -102,6 +102,7 @@ jobs:
       run: | 
         echo "IMAGE=${{ inputs.blockscout_image }}" >> $GITHUB_ENV
         echo "ENV=${{ inputs.environment }}" >> $GITHUB_ENV
+      if: ${{ github.event_name != 'push' }}
     - name: Cache node modules
       id: cache-npm
       uses: actions/cache@v3
