@@ -28,9 +28,64 @@ on:
         required: true
         type: string
         default: 'test'
+#     secrets:
+#       KUBE_CONFIG:
+#         required: true
+#       K8S_LOCAL_PORT: 
+#         required: true
+#       K8S_HOST:
+#         required: true
+#       BASTION_HOST:
+#         required: true
+#       K8S_PORT:
+#         required: true
+#       USERNAME: 
+#         required: true
+#       BASTION_SSH_KEY:
+#         required: true
+#       AWS_ACCESS_KEY_ID:
+#         required: true
+#       AWS_SECRET_ACCESS_KEY: 
+#         required: true
+#       ACCOUNT_USERNAME: 
+#         required: true
+#       ACCOUNT_PASSWORD: 
+#         required: true
+#       MAILSLURP_API_KEY: 
+#         required: true
+#       MAILSLURP_EMAIL_ID: 
+#         required: true
+#       AUTH0_DOMAIN: 
+#         required: true
+#       AUTH0_CLIENT_ID: 
+#         required: true
+#       AUTH0_CLIENT_SECRET: 
+#         required: true
+#       AUTH0_CALLBACK_URL: 
+#         required: true
+#       AUTH0_LOGOUT_RETURN_URL: 
+#         required: true
+#       AUTH0_LOGOUT_URL: 
+#         required: true
+#       SENDGRID_API_KEY: 
+#         required: true
+#       SENDGRID_SENDER: 
+#         required: true
+#       SENDGRID_TEMPLATE: 
+#         required: true
+#       PUBLIC_TAGS_AIRTABLE_URL: 
+#         required: true
+#       PUBLIC_TAGS_AIRTABLE_API_KEY: 
+#         required: true
+#       SECRET_KEY_BASE: 
+#         required: true
+#       WALLET: 
+#         required: true
+#       THUNDRA_APIKEY:
+#         required: true
 
 env:
-  K8S_LOCAL_PORT: ${{ secrets.LOCAL_PORT }}
+  K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
   K8S_HOST: ${{ secrets.K8S_HOST }}
   BASTION_HOST: ${{ secrets.BASTION_HOST }}
   K8S_PORT: ${{ secrets.K8S_PORT }}
@@ -90,6 +145,9 @@ jobs:
         api_key: ${{ secrets.THUNDRA_APIKEY }}
     - name: checkout
       uses: actions/checkout@v2
+      with:
+        repository: blockscout/blockscout-ci-cd
+        path: blockscout-ci-cd
     - name: Setup node
       uses: actions/setup-node@v3
       with:
@@ -111,7 +169,7 @@ jobs:
     - name: Lint
       run: npm run lint
     - name: Build contracts
-      working-directory: ./tests/contracts
+      working-directory: blockscout-ci-cd/tests/contracts
       run: |
         # gyp build from root
         npm config set user 0
@@ -129,7 +187,7 @@ jobs:
         name: ${{ github.sha }}
     - name: Deploy to k8s
       shell: bash
-      working-directory: blockscout
+      working-directory: blockscout-ci-cd/blockscout
       # port forwarding works only inside the step, consider refactoring as TS action
       env:
         NAMESPACE_NAME: e2e-geth-${{ steps.generate.outputs.uuid }}
@@ -160,7 +218,7 @@ jobs:
       if: always()
       with:
         name: report
-        path: tests/e2e/html-report/index.html
+        path: blockscout-ci-cd/tests/e2e/html-report/index.html
     - name: Analyze Test and/or Coverage Results
       uses: runforesight/foresight-test-kit-action@v1
       if: always()
@@ -168,10 +226,10 @@ jobs:
         api_key: ${{ secrets.THUNDRA_APIKEY }}
         test_format: JUNIT
         test_framework: JEST
-        test_path: ./tests/e2e/results.xml
+        test_path: blockscout-ci-cd/tests/e2e/results.xml
     - name: Remove namespace
       if: always()
-      working-directory: blockscout
+      working-directory: blockscout-ci-cd/blockscout
       env:
         NAMESPACE_NAME: e2e-geth-${{ steps.generate.outputs.uuid }}
       run: |
@@ -182,4 +240,5 @@ jobs:
 defaults:
   run:
     shell: bash
-    working-directory: ./tests/e2e
+    working-directory: blockscout-ci-cd/tests/e2e
+#     working-directory: ./tests/e2e
