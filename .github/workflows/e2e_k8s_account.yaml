@@ -85,10 +85,6 @@ jobs:
     name: Test E2E contract interaction
     runs-on: ubuntu-latest
     steps:
-    - name: Add inputs to GITHUB_ENV
-      run: | 
-        echo "IMAGE=$INPUT_BLOCKSCKOUT_IMAGE" >> $GITHUB_ENV
-        echo "ENV=$INPUT_ENVIRONMENT" >> $GITHUB_ENV
     - name: Collect Workflow Telemetry
       uses: runforesight/foresight-workflow-kit-action@v1
       with:
@@ -102,6 +98,10 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: v14.17.0
+    - name: Add inputs to GITHUB_ENV
+      run: | 
+        echo "IMAGE=$INPUT_BLOCKSCKOUT_IMAGE" >> $GITHUB_ENV
+        echo "ENV=$INPUT_ENVIRONMENT" >> $GITHUB_ENV
     - name: Cache node modules
       id: cache-npm
       uses: actions/cache@v3
