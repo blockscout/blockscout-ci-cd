@@ -13,7 +13,7 @@ test(`@Ethereum @Blocks @Data @PublicImage @AccountImage Block with a create tx`
             blockHeight: [`Block Height`],
             timestamp: [`Timestamp`, `UTC`],
             transactions: [`Transactions`, `Transaction`],
-            miner: [`Miner`, `0x`],
+            miner: [`Validator`, `0x`],
             size: [`Size`, `bytes`],
             hash: [`Hash`, `0x`],
             parentHash: [`Parent Hash`, `0x`],
@@ -23,8 +23,8 @@ test(`@Ethereum @Blocks @Data @PublicImage @AccountImage Block with a create tx`
             gasLimit: [`Gas Limit`, `,`],
             nonce: [`Nonce`, `0x0000000000000000`],
             baseFeePerGas: [`Base Fee per Gas`, `Gwei`],
-            burntFees: [`Burnt Fees`, `Ether`],
-            priorityFeeTip: [`Priority Fee / Tip`, `Ether`],
+            burntFees: [`Burnt Fees`, `xDAI`],
+            priorityFeeTip: [`Priority Fee / Tip`, `xDAI`],
         } as BlockDescriptionProps)
         await blocksPage.check_tx_in_list(0, {
             name: `Contract Creation`,
@@ -32,6 +32,7 @@ test(`@Ethereum @Blocks @Data @PublicImage @AccountImage Block with a create tx`
             from1: `0x`,
             to1: `0x`,
             nativeAmount: `0`,
+            nativeName: `xDAI`,
         } as TXProps)
     })
 })
@@ -44,7 +45,7 @@ test(`@Ethereum @Blocks @Data @PublicImage @AccountImage with a mint tx`, async 
             blockHeight: [`Block Height`],
             timestamp: [`Timestamp`, `UTC`],
             transactions: [`Transactions`, `Transaction`],
-            miner: [`Miner`, `0x`],
+            miner: [`Validator`, `0x`],
             size: [`Size`, `bytes`],
             hash: [`Hash`, `0x`],
             parentHash: [`Parent Hash`, `0x`],
@@ -54,8 +55,8 @@ test(`@Ethereum @Blocks @Data @PublicImage @AccountImage with a mint tx`, async 
             gasLimit: [`Gas Limit`, `,`],
             nonce: [`Nonce`, `0x0000000000000000`],
             baseFeePerGas: [`Base Fee per Gas`, `Gwei`],
-            burntFees: [`Burnt Fees`, `Ether`],
-            priorityFeeTip: [`Priority Fee / Tip`, `Ether`],
+            burntFees: [`Burnt Fees`, `xDAI`],
+            priorityFeeTip: [`Priority Fee / Tip`, `xDAI`],
         } as BlockDescriptionProps)
         await blocksPage.check_tx_in_list(0, {
             name: `Token Minting`,
@@ -63,6 +64,7 @@ test(`@Ethereum @Blocks @Data @PublicImage @AccountImage with a mint tx`, async 
             from1: `0x`,
             to1: `0x`,
             nativeAmount: `0`,
+            nativeName: `xDAI`,
         } as TXProps)
     })
 })
@@ -75,7 +77,7 @@ test(`@Ethereum @Blocks @Data @PublicImage @AccountImage Block info with reverte
             blockHeight: [`Block Height`],
             timestamp: [`Timestamp`, `UTC`],
             transactions: [`Transactions`, `Transaction`],
-            miner: [`Miner`, `0x`],
+            miner: [`Validator`, `0x`],
             size: [`Size`, `bytes`],
             hash: [`Hash`, `0x`],
             parentHash: [`Parent Hash`, `0x`],
@@ -85,8 +87,8 @@ test(`@Ethereum @Blocks @Data @PublicImage @AccountImage Block info with reverte
             gasLimit: [`Gas Limit`, `,`],
             nonce: [`Nonce`, `0x0000000000000000`],
             baseFeePerGas: [`Base Fee per Gas`, `Gwei`],
-            burntFees: [`Burnt Fees`, `Ether`],
-            priorityFeeTip: [`Priority Fee / Tip`, `Ether`],
+            burntFees: [`Burnt Fees`, `xDAI`],
+            priorityFeeTip: [`Priority Fee / Tip`, `xDAI`],
         } as BlockDescriptionProps)
         await blocksPage.check_tx_in_list(0, {
             name: `Contract Call`,
@@ -94,6 +96,7 @@ test(`@Ethereum @Blocks @Data @PublicImage @AccountImage Block info with reverte
             from1: `0x`,
             to1: `0x`,
             nativeAmount: `0`,
+            nativeName: `xDAI`,
         } as TXProps)
     })
 })

@@ -52,6 +52,7 @@ env:
   PORT_NETWORK_WS: 8546
 
   IMAGE: blockscout/blockscout:latest
+  VERIFICATION_SERVICE_IMAGE: ghcr.io/blockscout/verification:latest
   VARIANT: geth
   HTTP_URL: http://localhost:8544
   WS_URL: ws://localhost:8546

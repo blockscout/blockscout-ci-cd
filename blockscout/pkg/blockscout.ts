@@ -26,6 +26,7 @@ export enum ResourceMode {
 
 interface BlockscoutProps {
     image: string
+    verificationServiceImage?: string,
     namespaceName: string
     wallet: string
     httpURL: string
@@ -73,36 +74,56 @@ const guaranteedResources = (cpu: string, memory: string) => ({
     },
 })
 
-const selectResources = (mode: string): [ResourceRequirements, ResourceRequirements, ResourceRequirements] => {
+const selectResources = (mode: string): [ResourceRequirements, ResourceRequirements, ResourceRequirements, ResourceRequirements] => {
     let resourcesDB: ResourceRequirements
     let resourcesBS: ResourceRequirements
+    let resourcesV: ResourceRequirements
     let resourcesNetwork: ResourceRequirements
     switch (mode) {
     case ResourceMode.MainnetTest:
         resourcesDB = guaranteedResources(`1000m`, `1024Mi`)
         resourcesBS = guaranteedResources(`1000m`, `1024Mi`)
+        resourcesV = guaranteedResources(`100m`, `250Mi`)
         resourcesNetwork = guaranteedResources(`1000m`, `2Gi`)
         break
     case ResourceMode.E2E:
         resourcesDB = guaranteedResources(`500m`, `1024Mi`)
         resourcesBS = guaranteedResources(`500m`, `1024Mi`)
+        resourcesV = guaranteedResources(`100m`, `250Mi`)
         resourcesNetwork = guaranteedResources(`250m`, `1024Mi`)
         break
     case ResourceMode.Load:
         resourcesDB = guaranteedResources(`250m`, `1Gi`)
         resourcesBS = guaranteedResources(`250m`, `1Gi`)
+        resourcesV = guaranteedResources(`100m`, `250Mi`)
         resourcesNetwork = guaranteedResources(`250m`, `1Gi`)
         break
     case ResourceMode.Chaos:
         resourcesDB = guaranteedResources(`250m`, `1024Mi`)
         resourcesBS = guaranteedResources(`250m`, `1024Mi`)
+        resourcesV = guaranteedResources(`100m`, `250Mi`)
         resourcesNetwork = guaranteedResources(`250m`, `2Gi`)
         break
     default:
         throw Error(`unknown resource mode`)
     }
-    return [resourcesBS, resourcesDB, resourcesNetwork]
+    return [resourcesBS, resourcesV, resourcesDB, resourcesNetwork]
 }
+
+const verificationContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements, vcm: ConfigMap): Container => (
+    {
+        name: `bs-verification`,
+        image: bsProps.verificationServiceImage,
+        args: [`-c`, `/app/config/config.toml`],
+        volumeMounts: [
+            {
+                name: vcm.name,
+                mountPath: `/app/config`,
+            },
+        ],
+        resources,
+    }
+)
 
 const gethContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements, cm: ConfigMap): Container => ({
     name: `geth`,
@@ -432,7 +453,35 @@ export class BlockscoutChart extends Chart {
             })
         }
 
-        const [bs, db, net] = selectResources(bsProps.resourceMode)
+        const [bs, v, db, net] = selectResources(bsProps.resourceMode)
+
+        const vcm = new ConfigMap(this, `verification-cm`, {
+            metadata: {
+                namespace: ns.name,
+            },
+            data: {
+                'config.toml': `
+[server]
+addr = "0.0.0.0:8043"
+
+[sourcify]
+api_url = "https://sourcify.dev/server/"
+verification_attempts = 3
+request_timeout = 10
+
+[solidity]
+compilers_list_url = "https://raw.githubusercontent.com/blockscout/solc-bin/main/list.json"
+refresh_versions_schedule = "0 0 * * * * *"
+
+[metrics]
+endpoint = "/metrics"
+addr = "0.0.0.0:6060"
+
+[tracing]
+jaeger_agents = ["127.0.0.1:6831"]
+                `,
+            },
+        })
 
         const cm = new ConfigMap(this, `geth-cm`, {
             metadata: {
@@ -516,10 +565,17 @@ export class BlockscoutChart extends Chart {
                                         name: cm.name,
                                     },
                                 },
+                                {
+                                    name: vcm.name,
+                                    configMap: {
+                                        name: vcm.name,
+                                    },
+                                },
                             ],
                             containers: [
                                 gethContainer(bsProps, net, cm),
                                 bsContainer(bsProps, bs),
+                                verificationContainer(bsProps, v, vcm),
                                 pgContainer(bsProps, db),
                             ],
                         },
@@ -556,10 +612,17 @@ export class BlockscoutChart extends Chart {
                                         name: cm.name,
                                     },
                                 },
+                                {
+                                    name: vcm.name,
+                                    configMap: {
+                                        name: vcm.name,
+                                    },
+                                },
                             ],
                             containers: [
                                 gethContainer(bsProps, net, cm),
                                 bsContainer(bsProps, bs),
+                                verificationContainer(bsProps, v, vcm),
                                 pgContainer(bsProps, db),
                             ],
                         },
