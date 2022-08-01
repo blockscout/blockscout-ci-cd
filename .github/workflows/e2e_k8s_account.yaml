@@ -154,8 +154,10 @@ jobs:
         node-version: v14.17.0
     - name: Add inputs to GITHUB_ENV
       run: | 
-        echo "IMAGE=${{ github.event.inputs.blockscout_image }}" >> $GITHUB_ENV
-        echo "ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+        IMAGE=${{ github.event.inputs.blockscout_image }}
+        echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
+        ENV=${{ github.event.inputs.environment }}
+        echo "ENV=${ENV}" >> $GITHUB_ENV
     - name: Cache node modules
       id: cache-npm
       uses: actions/cache@v3
