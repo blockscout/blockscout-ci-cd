@@ -1,7 +1,7 @@
 /* eslint-disable dot-notation */
 import test from '@lib/BaseTest'
 import { faker } from '@faker-js/faker'
-import { WatchListSpec } from '@pages/Login'
+import { PublicTagSpec, WatchListSpec } from '@pages/Login'
 
 test.describe.configure({ mode: `parallel` })
 
@@ -57,4 +57,57 @@ test(`@AccountImage @Authorized Check not a personal address`, async ({ authoriz
         name: `test-token-1`,
     } as WatchListSpec)
     await authorized.checkValidationWarn([`This address isn't personal`])
+})
+
+test(`@AccountImage @Authorized Check address tag`, async ({ authorized }) => {
+    const {
+        TestTokenAddress,
+    } = process.env
+    await authorized.openAccount()
+    await authorized.selectAddressTagTab()
+    const tagName = faker.random.alphaNumeric(8)
+    await authorized.addAddressTag(TestTokenAddress, tagName)
+    await authorized.checkListRow(0, [tagName, `0x`, `Remove Tag`])
+    await authorized.clickListRow(0, 1)
+    await authorized.hasText(tagName)
+})
+
+test(`@AccountImage @Authorized Check transaction tag`, async ({ authorized }) => {
+    const {
+        TestTokenTXMintHash,
+    } = process.env
+    await authorized.openAccount()
+    await authorized.selectTXTagTab()
+    const tagName = faker.random.alphaNumeric(8)
+    await authorized.addTXTag(TestTokenTXMintHash, tagName)
+    await authorized.checkListRow(0, [tagName, `0x`, `Remove Tag`])
+    await authorized.clickListRow(0, 1)
+    await authorized.hasText(tagName)
+})
+
+test(`@AccountImage @Authorized Check API keys creation`, async ({ authorized }) => {
+    await authorized.openAccount()
+    await authorized.selectAPIKeysTab()
+    const keyName = faker.random.alphaNumeric(8)
+    await authorized.addAPIKey(keyName)
+    await authorized.checkListRow(0, [keyName, `-`, `Remove`, `Edit`])
+    // TODO: check key perms by using it?
+})
+
+test(`@AccountImage @Authorized Check public tags creation`, async ({ authorized }) => {
+    const {
+        TestTokenAddress, TestNFTAddress,
+    } = process.env
+    await authorized.openAccount()
+    await authorized.selectPublicTagsTab()
+    const tagName1 = faker.random.alphaNumeric(8)
+    const tagName2 = faker.random.alphaNumeric(8)
+    await authorized.addPublicTag({
+        myProjectCheckBox: true,
+        tagsString: `${tagName1};${tagName2}`,
+        addresses: [TestTokenAddress, TestNFTAddress],
+        description: `skldfhskdjfha`,
+    } as PublicTagSpec)
+    await authorized.checkListRow(0, [[tagName1, tagName2], TestTokenAddress])
+    // TODO: how to approve it now?
 })
