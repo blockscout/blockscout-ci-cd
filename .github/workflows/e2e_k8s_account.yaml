@@ -87,8 +87,8 @@ jobs:
     steps:
     - name: Add inputs to GITHUB_ENV
       run: | 
-        echo "IMAGE=${{ github.event.inputs.blockscout_image }}" >> $GITHUB_ENV
-        echo "ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+        echo "IMAGE=$INPUT_BLOCKSCKOUT_IMAGE" >> $GITHUB_ENV
+        echo "ENV=$INPUT_ENVIRONMENT" >> $GITHUB_ENV
     - name: Collect Workflow Telemetry
       uses: runforesight/foresight-workflow-kit-action@v1
       with:
