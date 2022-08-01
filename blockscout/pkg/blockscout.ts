@@ -365,6 +365,57 @@ const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements):
     return container
 }
 
+// const createService = (scope: Construct, ns: string): KubeService => {
+//     svc = new KubeService(scope, `svc`, {
+//         metadata: {
+//             name: `service`,
+//             namespace: ns.name,
+//             annotations: {
+//                 'service.beta.kubernetes.io/aws-load-balancer-nlb-target-type': `ip`,
+//                 'service.beta.kubernetes.io/aws-load-balancer-scheme': `internet-facing`,
+//                 'service.beta.kubernetes.io/aws-load-balancer-type': `external`,
+//             },
+//         },
+//         spec: {
+//             type: `LoadBalancer`,
+//             ports: [{ port: bsProps.port, targetPort: IntOrString.fromNumber(bsProps.port) }],
+//             selector: label,
+//         },
+//     })
+//     new KubeIngress(this, `ingress`, {
+//         metadata: {
+//             namespace: ns.name,
+//             name: `blockscout-ingress`,
+//             annotations: {
+//                 'nginx.ingress.kubernetes.io/rewrite-target': `/`,
+//             },
+//         },
+//         spec: {
+//             rules: [
+//                 {
+//                     host: `blockscout.test.static`,
+//                     http: {
+//                         paths: [
+//                             {
+//                                 path: `/eth`,
+//                                 pathType: `Prefix`,
+//                                 backend: {
+//                                     service: {
+//                                         name: `svc`,
+//                                         port: {
+//                                             number: bsProps.port,
+//                                         },
+//                                     },
+//                                 },
+//                             },
+//                         ],
+//                     },
+//                 },
+//             ],
+//         },
+//     })
+// }
+
 export class BlockscoutChart extends Chart {
     namespaceName: string
 
