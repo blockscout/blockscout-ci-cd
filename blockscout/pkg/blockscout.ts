@@ -15,7 +15,7 @@ import {
     KubeStatefulSet,
 } from '../imports/k8s'
 
-const defaultCmd = `mix compile && mix ecto.create && mix ecto.migrate && mix phx.server`
+const defaultCmd = `bin/blockscout eval "Elixir.Explorer.ReleaseTasks.create_and_migrate()" && bin/blockscout start`
 
 export enum ResourceMode {
     E2E = `e2e`,

@@ -51,8 +51,7 @@ env:
   PORT_NETWORK_HTTP: 8544
   PORT_NETWORK_WS: 8546
 
-  IMAGE: blockscout/blockscout:latest
-  VERIFICATION_SERVICE_IMAGE: ghcr.io/blockscout/verification:latest
+  # IMAGE: blockscout/blockscout:latest
   VARIANT: geth
   HTTP_URL: http://localhost:8544
   WS_URL: ws://localhost:8546
@@ -90,6 +89,12 @@ jobs:
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
           ${{ runner.os }}-
+    - name: Add inputs to GITHUB_ENV
+      run: | 
+        IMAGE=blockscout/blockscout:latest
+        echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
+        ENV=test
+        echo "ENV=${ENV}" >> $GITHUB_ENV
     - name: Install deps
       run: npm ci
     - name: Lint

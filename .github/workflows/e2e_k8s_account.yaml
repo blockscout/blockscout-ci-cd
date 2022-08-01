@@ -6,7 +6,7 @@ on:
       blockscout_image:
         description: 'Blockscout image:tag to test'     
         required: true
-        default: 'blockscout/blockscout-xdai-testnet:latest' 
+        default: 'blockscout/blockscout-account:latest' 
         type: string
       environment:
         description: 'Environment to run tests against'
@@ -21,13 +21,68 @@ on:
       blockscout_image:
         description: 'Blockscout image:tag to test'     
         required: true
-        default: 'blockscout/blockscout-xdai-testnet:latest' 
+        default: 'blockscout/blockscout-account:latest' 
         type: string
       environment:
         description: 'Environment to run tests against'
         required: true
         type: string
         default: 'test'
+#     secrets:
+#       KUBE_CONFIG:
+#         required: true
+#       K8S_LOCAL_PORT: 
+#         required: true
+#       K8S_HOST:
+#         required: true
+#       BASTION_HOST:
+#         required: true
+#       K8S_PORT:
+#         required: true
+#       USERNAME: 
+#         required: true
+#       BASTION_SSH_KEY:
+#         required: true
+#       AWS_ACCESS_KEY_ID:
+#         required: true
+#       AWS_SECRET_ACCESS_KEY: 
+#         required: true
+#       ACCOUNT_USERNAME: 
+#         required: true
+#       ACCOUNT_PASSWORD: 
+#         required: true
+#       MAILSLURP_API_KEY: 
+#         required: true
+#       MAILSLURP_EMAIL_ID: 
+#         required: true
+#       AUTH0_DOMAIN: 
+#         required: true
+#       AUTH0_CLIENT_ID: 
+#         required: true
+#       AUTH0_CLIENT_SECRET: 
+#         required: true
+#       AUTH0_CALLBACK_URL: 
+#         required: true
+#       AUTH0_LOGOUT_RETURN_URL: 
+#         required: true
+#       AUTH0_LOGOUT_URL: 
+#         required: true
+#       SENDGRID_API_KEY: 
+#         required: true
+#       SENDGRID_SENDER: 
+#         required: true
+#       SENDGRID_TEMPLATE: 
+#         required: true
+#       PUBLIC_TAGS_AIRTABLE_URL: 
+#         required: true
+#       PUBLIC_TAGS_AIRTABLE_API_KEY: 
+#         required: true
+#       SECRET_KEY_BASE: 
+#         required: true
+#       WALLET: 
+#         required: true
+#       THUNDRA_APIKEY:
+#         required: true
 
 env:
   K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
@@ -53,8 +108,7 @@ env:
   MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
   MAILSLURP_EMAIL_ID: ${{ secrets.MAILSLURP_EMAIL_ID }}
 
-  IMAGE: blockscout/blockscout-xdai-testnet:latest
-  VERIFICATION_SERVICE_IMAGE: ghcr.io/blockscout/verification:latest
+#   IMAGE: blockscout/blockscout-xdai-testnet:latest
   VARIANT: geth
   HTTP_URL: http://localhost:9544
   WS_URL: ws://localhost:9546
@@ -76,7 +130,7 @@ env:
   NETWORK_PATH: "/"
   SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
 
-  ENV: test
+#   ENV: test
   NETWORK_URL: http://localhost:8544
   WALLET: ${{ secrets.WALLET }}
 
@@ -100,9 +154,10 @@ jobs:
         node-version: v14.17.0
     - name: Add inputs to GITHUB_ENV
       run: | 
-        echo "IMAGE=${{ inputs.blockscout_image }}" >> $GITHUB_ENV
-        echo "ENV=${{ inputs.environment }}" >> $GITHUB_ENV
-      if: ${{ github.event_name != 'push' }}
+        IMAGE=blockscout/blockscout-account:latest
+        echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
+        ENV=test
+        echo "ENV=${ENV}" >> $GITHUB_ENV
     - name: Cache node modules
       id: cache-npm
       uses: actions/cache@v3
