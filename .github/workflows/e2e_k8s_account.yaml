@@ -108,7 +108,7 @@ env:
   MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
   MAILSLURP_EMAIL_ID: ${{ secrets.MAILSLURP_EMAIL_ID }}
 
-  IMAGE: blockscout/blockscout-xdai-testnet:latest
+#   IMAGE: blockscout/blockscout-xdai-testnet:latest
   VARIANT: geth
   HTTP_URL: http://localhost:9544
   WS_URL: ws://localhost:9546
@@ -130,7 +130,7 @@ env:
   NETWORK_PATH: "/"
   SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
 
-  ENV: test
+#   ENV: test
   NETWORK_URL: http://localhost:8544
   WALLET: ${{ secrets.WALLET }}
 
@@ -139,6 +139,10 @@ jobs:
     name: Test E2E contract interaction
     runs-on: ubuntu-latest
     steps:
+    - name: Add inputs to GITHUB_ENV
+      run: | 
+        echo "IMAGE=${{ github.event.inputs.blockscout_image }}" >> $GITHUB_ENV
+        echo "ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
     - name: Collect Workflow Telemetry
       uses: runforesight/foresight-workflow-kit-action@v1
       with:
