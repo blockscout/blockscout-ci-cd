@@ -8,6 +8,11 @@ on:
         required: true
         default: 'blockscout/blockscout-account:latest'
         type: string
+      verification_image:
+        description: 'Verification image:tag to test'
+        required: true
+        default: 'ghcr.io/blockscout/verification:latest'
+        type: string
       environment:
         description: 'Environment to run tests against'
         required: true
@@ -22,6 +27,11 @@ on:
         description: 'Blockscout image:tag to test'
         required: true
         default: 'blockscout/blockscout-account:latest'
+        type: string
+      verification_image:
+        description: 'Verification image:tag to test'
+        required: true
+        default: 'ghcr.io/blockscout/verification:latest'
         type: string
       environment:
         description: 'Environment to run tests against'
@@ -109,6 +119,7 @@ env:
   MAILSLURP_EMAIL_ID: ${{ secrets.MAILSLURP_EMAIL_ID }}
 
   IMAGE: blockscout/blockscout-account:latest
+  VERIFICATION_SERVICE_IMAGE: ghcr.io/blockscout/verification:latest
   VARIANT: geth
   HTTP_URL: http://localhost:9544
   WS_URL: ws://localhost:9546
@@ -156,6 +167,7 @@ jobs:
       if: "${{ inputs.blockscout_image != '' && inputs.environment != '' }}"
       run: |
         echo "IMAGE=${{ inputs.blockscout_image }}" >> $GITHUB_ENV
+        echo "VERIFICATION_SERVICE_IMAGE=${{ inputs.verification_image }}" >> $GITHUB_ENV
         echo "ENV=${{ inputs.environment }}" >> $GITHUB_ENV
     - name: Cache node modules
       id: cache-npm
