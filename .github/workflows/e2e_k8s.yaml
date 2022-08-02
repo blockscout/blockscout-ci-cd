@@ -51,7 +51,7 @@ env:
   PORT_NETWORK_HTTP: 8544
   PORT_NETWORK_WS: 8546
 
-  # IMAGE: blockscout/blockscout:latest
+  IMAGE: blockscout/blockscout:latest
   VARIANT: geth
   HTTP_URL: http://localhost:8544
   WS_URL: ws://localhost:8546
@@ -77,6 +77,13 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: v14.17.0
+    - name: Add inputs to GITHUB_ENV
+      if: ${{ github.event_name != 'push' }}
+      run: | 
+        IMAGE=${{ github.event.inputs.blockscout_image }}
+        echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
+        ENV=${{ github.event.inputs.environment }}
+        echo "ENV=${ENV}" >> $GITHUB_ENV
     - name: Cache node modules
       id: cache-npm
       uses: actions/cache@v3
@@ -89,12 +96,6 @@ jobs:
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
           ${{ runner.os }}-
-    - name: Add inputs to GITHUB_ENV
-      run: | 
-        IMAGE=blockscout/blockscout:latest
-        echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
-        ENV=test
-        echo "ENV=${ENV}" >> $GITHUB_ENV
     - name: Install deps
       run: npm ci
     - name: Lint

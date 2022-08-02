@@ -108,7 +108,7 @@ env:
   MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
   MAILSLURP_EMAIL_ID: ${{ secrets.MAILSLURP_EMAIL_ID }}
 
-#   IMAGE: blockscout/blockscout-xdai-testnet:latest
+  IMAGE: blockscout/blockscout-account:latest
   VARIANT: geth
   HTTP_URL: http://localhost:9544
   WS_URL: ws://localhost:9546
@@ -130,7 +130,7 @@ env:
   NETWORK_PATH: "/"
   SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
 
-#   ENV: test
+  ENV: test
   NETWORK_URL: http://localhost:8544
   WALLET: ${{ secrets.WALLET }}
 
@@ -153,10 +153,11 @@ jobs:
       with:
         node-version: v14.17.0
     - name: Add inputs to GITHUB_ENV
+      if: ${{ github.event_name != 'push' }}
       run: | 
-        IMAGE=blockscout/blockscout-account:latest
+        IMAGE=${{ github.event.inputs.blockscout_image }}
         echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
-        ENV=test
+        ENV=${{ github.event.inputs.environment }}
         echo "ENV=${ENV}" >> $GITHUB_ENV
     - name: Cache node modules
       id: cache-npm
