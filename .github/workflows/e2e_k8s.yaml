@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       blockscout_image:
-        description: 'Blockscout image:tag to test'     
+        description: 'Blockscout image:tag to test'
         required: true
-        default: 'blockscout/blockscout:latest' 
+        default: 'blockscout/blockscout:latest'
         type: string
       environment:
         description: 'Environment to run tests against'
@@ -19,9 +19,9 @@ on:
   workflow_call:
     inputs:
       blockscout_image:
-        description: 'Blockscout image:tag to test'     
+        description: 'Blockscout image:tag to test'
         required: true
-        default: 'blockscout/blockscout:latest' 
+        default: 'blockscout/blockscout:latest'
         type: string
       environment:
         description: 'Environment to run tests against'
@@ -30,7 +30,7 @@ on:
         default: 'test'
 
 env:
-  K8S_LOCAL_PORT: ${{ secrets.LOCAL_PORT }}
+  K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
   K8S_HOST: ${{ secrets.K8S_HOST }}
   BASTION_HOST: ${{ secrets.BASTION_HOST }}
   K8S_PORT: ${{ secrets.K8S_PORT }}
@@ -79,7 +79,7 @@ jobs:
         node-version: v14.17.0
     - name: Add inputs to GITHUB_ENV
       if: ${{ github.event_name != 'push' }}
-      run: | 
+      run: |
         IMAGE=${{ github.event.inputs.blockscout_image }}
         echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
         ENV=${{ github.event.inputs.environment }}
@@ -101,7 +101,7 @@ jobs:
     - name: Lint
       run: npm run lint
     - name: Build contracts
-      working-directory: ./tests/contracts
+      working-directory: blockscout-ci-cd/tests/contracts
       run: |
         # gyp build from root
         npm config set user 0
@@ -119,7 +119,7 @@ jobs:
         name: ${{ github.sha }}-2
     - name: Deploy to k8s
       shell: bash
-      working-directory: blockscout
+      working-directory: blockscout-ci-cd/blockscout
       # port forwarding works only inside the step, consider refactoring as TS action
       env:
         NAMESPACE_NAME: e2e-geth-${{ steps.generate.outputs.uuid }}
@@ -150,7 +150,7 @@ jobs:
       if: always()
       with:
         name: report
-        path: tests/e2e/html-report/index.html
+        path: blockscout-ci-cd/tests/e2e/html-report/index.html
     - name: Analyze Test and/or Coverage Results
       uses: runforesight/foresight-test-kit-action@v1
       if: always()
@@ -158,10 +158,10 @@ jobs:
         api_key: ${{ secrets.THUNDRA_APIKEY }}
         test_format: JUNIT
         test_framework: JEST
-        test_path: ./tests/e2e/results.xml
+        test_path: blockscout-ci-cd/tests/e2e/results.xml
     - name: Remove namespace
       if: always()
-      working-directory: blockscout
+      working-directory: blockscout-ci-cd/blockscout
       env:
         NAMESPACE_NAME: e2e-geth-${{ steps.generate.outputs.uuid }}
       run: |
@@ -172,4 +172,4 @@ jobs:
 defaults:
   run:
     shell: bash
-    working-directory: ./tests/e2e
+    working-directory: blockscout-ci-cd/tests/e2e
