@@ -4,9 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       blockscout_image:
-        description: 'Blockscout image:tag to test'     
+        description: 'Blockscout image:tag to test'
         required: true
-        default: 'blockscout/blockscout-xdai-testnet:latest' 
+        default: 'blockscout/blockscout-account:latest'
+        type: string
+      verification_image:
+        description: 'Verification image:tag to test'
+        required: true
+        default: 'ghcr.io/blockscout/verification:latest'
         type: string
       environment:
         description: 'Environment to run tests against'
@@ -19,9 +24,14 @@ on:
   workflow_call:
     inputs:
       blockscout_image:
-        description: 'Blockscout image:tag to test'     
+        description: 'Blockscout image:tag to test'
         required: true
-        default: 'blockscout/blockscout-xdai-testnet:latest' 
+        default: 'blockscout/blockscout-account:latest'
+        type: string
+      verification_image:
+        description: 'Verification image:tag to test'
+        required: true
+        default: 'ghcr.io/blockscout/verification:latest'
         type: string
       environment:
         description: 'Environment to run tests against'
@@ -31,7 +41,7 @@ on:
 #     secrets:
 #       KUBE_CONFIG:
 #         required: true
-#       K8S_LOCAL_PORT: 
+#       K8S_LOCAL_PORT:
 #         required: true
 #       K8S_HOST:
 #         required: true
@@ -39,47 +49,47 @@ on:
 #         required: true
 #       K8S_PORT:
 #         required: true
-#       USERNAME: 
+#       USERNAME:
 #         required: true
 #       BASTION_SSH_KEY:
 #         required: true
 #       AWS_ACCESS_KEY_ID:
 #         required: true
-#       AWS_SECRET_ACCESS_KEY: 
+#       AWS_SECRET_ACCESS_KEY:
 #         required: true
-#       ACCOUNT_USERNAME: 
+#       ACCOUNT_USERNAME:
 #         required: true
-#       ACCOUNT_PASSWORD: 
+#       ACCOUNT_PASSWORD:
 #         required: true
-#       MAILSLURP_API_KEY: 
+#       MAILSLURP_API_KEY:
 #         required: true
-#       MAILSLURP_EMAIL_ID: 
+#       MAILSLURP_EMAIL_ID:
 #         required: true
-#       AUTH0_DOMAIN: 
+#       AUTH0_DOMAIN:
 #         required: true
-#       AUTH0_CLIENT_ID: 
+#       AUTH0_CLIENT_ID:
 #         required: true
-#       AUTH0_CLIENT_SECRET: 
+#       AUTH0_CLIENT_SECRET:
 #         required: true
-#       AUTH0_CALLBACK_URL: 
+#       AUTH0_CALLBACK_URL:
 #         required: true
-#       AUTH0_LOGOUT_RETURN_URL: 
+#       AUTH0_LOGOUT_RETURN_URL:
 #         required: true
-#       AUTH0_LOGOUT_URL: 
+#       AUTH0_LOGOUT_URL:
 #         required: true
-#       SENDGRID_API_KEY: 
+#       SENDGRID_API_KEY:
 #         required: true
-#       SENDGRID_SENDER: 
+#       SENDGRID_SENDER:
 #         required: true
-#       SENDGRID_TEMPLATE: 
+#       SENDGRID_TEMPLATE:
 #         required: true
-#       PUBLIC_TAGS_AIRTABLE_URL: 
+#       PUBLIC_TAGS_AIRTABLE_URL:
 #         required: true
-#       PUBLIC_TAGS_AIRTABLE_API_KEY: 
+#       PUBLIC_TAGS_AIRTABLE_API_KEY:
 #         required: true
-#       SECRET_KEY_BASE: 
+#       SECRET_KEY_BASE:
 #         required: true
-#       WALLET: 
+#       WALLET:
 #         required: true
 #       THUNDRA_APIKEY:
 #         required: true
@@ -108,7 +118,8 @@ env:
   MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
   MAILSLURP_EMAIL_ID: ${{ secrets.MAILSLURP_EMAIL_ID }}
 
-#   IMAGE: blockscout/blockscout-xdai-testnet:latest
+  IMAGE: blockscout/blockscout-account:latest
+  VERIFICATION_SERVICE_IMAGE: ghcr.io/blockscout/verification:latest
   VARIANT: geth
   HTTP_URL: http://localhost:9544
   WS_URL: ws://localhost:9546
@@ -130,7 +141,7 @@ env:
   NETWORK_PATH: "/"
   SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
 
-#   ENV: test
+  ENV: test
   NETWORK_URL: http://localhost:8544
   WALLET: ${{ secrets.WALLET }}
 
@@ -153,11 +164,11 @@ jobs:
       with:
         node-version: v14.17.0
     - name: Add inputs to GITHUB_ENV
-      run: | 
-        IMAGE=${{ github.event.inputs.blockscout_image }}
-        echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
-        ENV=${{ github.event.inputs.environment }}
-        echo "ENV=${ENV}" >> $GITHUB_ENV
+      if: "${{ inputs.blockscout_image != '' && inputs.environment != '' }}"
+      run: |
+        echo "IMAGE=${{ inputs.blockscout_image }}" >> $GITHUB_ENV
+        echo "VERIFICATION_SERVICE_IMAGE=${{ inputs.verification_image }}" >> $GITHUB_ENV
+        echo "ENV=${{ inputs.environment }}" >> $GITHUB_ENV
     - name: Cache node modules
       id: cache-npm
       uses: actions/cache@v3

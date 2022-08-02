@@ -11,6 +11,7 @@ import { BlockscoutChart, ResourceMode } from './pkg/blockscout'
         {
         // TODO: do spread with a prefix for env vars
             image: process.env.IMAGE || `blockscout/blockscout:latest`,
+            verificationServiceImage: process.env.VERIFICATION_SERVICE_IMAGE,
             namespaceName: process.env.NAMESPACE_NAME || `e2e-test`,
             wallet: process.env.WALLET || ``,
             httpURL: process.env.HTTP_URL || `http://localhost:8544`,

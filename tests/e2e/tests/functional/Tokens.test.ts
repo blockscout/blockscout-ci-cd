@@ -44,6 +44,7 @@ test(`@Ethereum @Tokens @Data @PublicImage Check native currency list`, async ({
             position: `1`,
             address: MinerAddress,
             balance: `Ether`,
+            percentage: `% Market Cap`,
             txnCount: `Transactions sent`,
         } as NativeCurrencyProps)
     })

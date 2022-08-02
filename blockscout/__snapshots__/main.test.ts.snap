@@ -141,7 +141,7 @@ Array [
                 "*",
                 "--http.addr",
                 "0.0.0.0",
-                "--http.port=8544",
+                "--http.port=8545",
                 "--http.api",
                 "eth,net,web3,debug,txpool",
                 "--ws",
@@ -172,7 +172,7 @@ Array [
               "name": "geth",
               "ports": Array [
                 Object {
-                  "containerPort": 8544,
+                  "containerPort": 8545,
                   "name": "http",
                 },
                 Object {
@@ -182,12 +182,12 @@ Array [
               ],
               "resources": Object {
                 "limits": Object {
-                  "cpu": "1000m",
-                  "memory": "2Gi",
+                  "cpu": "250m",
+                  "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "1000m",
-                  "memory": "2Gi",
+                  "cpu": "250m",
+                  "memory": "1024Mi",
                 },
               },
               "volumeMounts": Array [
@@ -220,6 +220,10 @@ Array [
                 Object {
                   "name": "MIX_ENV",
                   "value": "prod",
+                },
+                Object {
+                  "name": "PORT",
+                  "value": "80",
                 },
                 Object {
                   "name": "ECTO_USE_SSL",
@@ -266,11 +270,11 @@ Array [
               },
               "resources": Object {
                 "limits": Object {
-                  "cpu": "1000m",
+                  "cpu": "500m",
                   "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "1000m",
+                  "cpu": "500m",
                   "memory": "1024Mi",
                 },
               },
@@ -284,6 +288,10 @@ Array [
                 Object {
                   "name": "POSTGRES_DB",
                   "value": "explorer_test",
+                },
+                Object {
+                  "name": "PGPORT",
+                  "value": "5432",
                 },
               ],
               "image": "postgres:13.6",
@@ -307,11 +315,11 @@ Array [
               },
               "resources": Object {
                 "limits": Object {
-                  "cpu": "1000m",
+                  "cpu": "500m",
                   "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "1000m",
+                  "cpu": "500m",
                   "memory": "1024Mi",
                 },
               },
@@ -473,7 +481,7 @@ Array [
                 "*",
                 "--http.addr",
                 "0.0.0.0",
-                "--http.port=8544",
+                "--http.port=8545",
                 "--http.api",
                 "eth,net,web3,debug,txpool",
                 "--ws",
@@ -504,7 +512,7 @@ Array [
               "name": "geth",
               "ports": Array [
                 Object {
-                  "containerPort": 8544,
+                  "containerPort": 8545,
                   "name": "http",
                 },
                 Object {
@@ -514,12 +522,12 @@ Array [
               ],
               "resources": Object {
                 "limits": Object {
-                  "cpu": "1000m",
-                  "memory": "2Gi",
+                  "cpu": "250m",
+                  "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "1000m",
-                  "memory": "2Gi",
+                  "cpu": "250m",
+                  "memory": "1024Mi",
                 },
               },
               "volumeMounts": Array [
@@ -552,6 +560,10 @@ Array [
                 Object {
                   "name": "MIX_ENV",
                   "value": "prod",
+                },
+                Object {
+                  "name": "PORT",
+                  "value": "80",
                 },
                 Object {
                   "name": "ECTO_USE_SSL",
@@ -598,11 +610,11 @@ Array [
               },
               "resources": Object {
                 "limits": Object {
-                  "cpu": "1000m",
+                  "cpu": "500m",
                   "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "1000m",
+                  "cpu": "500m",
                   "memory": "1024Mi",
                 },
               },
@@ -616,6 +628,10 @@ Array [
                 Object {
                   "name": "POSTGRES_DB",
                   "value": "explorer_test",
+                },
+                Object {
+                  "name": "PGPORT",
+                  "value": "5432",
                 },
               ],
               "image": "postgres:13.6",
@@ -639,11 +655,11 @@ Array [
               },
               "resources": Object {
                 "limits": Object {
-                  "cpu": "1000m",
+                  "cpu": "500m",
                   "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "1000m",
+                  "cpu": "500m",
                   "memory": "1024Mi",
                 },
               },
@@ -805,7 +821,7 @@ Array [
                 "*",
                 "--http.addr",
                 "0.0.0.0",
-                "--http.port=8544",
+                "--http.port=8545",
                 "--http.api",
                 "eth,net,web3,debug,txpool",
                 "--ws",
@@ -836,7 +852,7 @@ Array [
               "name": "geth",
               "ports": Array [
                 Object {
-                  "containerPort": 8544,
+                  "containerPort": 8545,
                   "name": "http",
                 },
                 Object {
@@ -846,12 +862,12 @@ Array [
               ],
               "resources": Object {
                 "limits": Object {
-                  "cpu": "1000m",
-                  "memory": "2Gi",
+                  "cpu": "250m",
+                  "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "1000m",
-                  "memory": "2Gi",
+                  "cpu": "250m",
+                  "memory": "1024Mi",
                 },
               },
               "volumeMounts": Array [
@@ -884,6 +900,10 @@ Array [
                 Object {
                   "name": "MIX_ENV",
                   "value": "prod",
+                },
+                Object {
+                  "name": "PORT",
+                  "value": "80",
                 },
                 Object {
                   "name": "ECTO_USE_SSL",
@@ -930,11 +950,11 @@ Array [
               },
               "resources": Object {
                 "limits": Object {
-                  "cpu": "1000m",
+                  "cpu": "500m",
                   "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "1000m",
+                  "cpu": "500m",
                   "memory": "1024Mi",
                 },
               },
@@ -948,6 +968,10 @@ Array [
                 Object {
                   "name": "POSTGRES_DB",
                   "value": "explorer_test",
+                },
+                Object {
+                  "name": "PGPORT",
+                  "value": "5432",
                 },
               ],
               "image": "postgres:13.6",
@@ -971,11 +995,11 @@ Array [
               },
               "resources": Object {
                 "limits": Object {
-                  "cpu": "1000m",
+                  "cpu": "500m",
                   "memory": "1024Mi",
                 },
                 "requests": Object {
-                  "cpu": "1000m",
+                  "cpu": "500m",
                   "memory": "1024Mi",
                 },
               },

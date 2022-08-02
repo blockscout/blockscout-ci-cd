@@ -10,6 +10,7 @@ export interface TXProps {
     from1: string
     to1: string
     nativeAmount: string
+    nativeName: string
 }
 
 export interface TXTokenProps {
@@ -151,7 +152,7 @@ export class CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.TX_INTERNAL} >> nth=${num} >> ${this.TX_ADDR_BAR} >> nth=0 >> text=${p.from1}`, `no from addr`)
         // different html tags on every page for (from -> to) lines, rewrite to a component when testing more than 2 targets
         await this.actions.verifyElementContainsText(`${this.TX_INTERNAL} >> nth=${num}`, p.to1)
-        await this.actions.verifyElementContainsText(`${this.TX_INTERNAL} >> nth=${num} >> text=Ether`, p.nativeAmount)
+        await this.actions.verifyElementContainsText(`${this.TX_INTERNAL} >> nth=${num} >> text=${p.nativeName}`, p.nativeAmount)
         await this.actions.verifyElementContainsText(`${this.TX_INTERNAL}`, `Block`)
     }
 
@@ -163,7 +164,7 @@ export class CommonPage {
         await this.actions.verifyElementContainsText(`${this.TX} >> nth=${num} >> ${this.TX_ADDR_BAR} >> nth=0`, p.from1)
         // different html tags on every page for (from -> to) lines, rewrite to a component when testing more than 2 targets
         await this.actions.verifyElementContainsText(`${this.TX} >> nth=${num}`, p.to1)
-        await this.actions.verifyElementContainsText(`${this.TX} >> nth=${num} >> text=Ether`, p.nativeAmount)
+        await this.actions.verifyElementContainsText(`${this.TX} >> nth=${num} >> text=${p.nativeName}`, p.nativeAmount)
         await this.actions.verifyElementContainsText(`${this.TX} >> nth=${num} >> text=TX Fee`, `0`)
         await this.actions.verifyElementContainsText(`${this.TX} >> nth=${num}`, `Block`)
     }
