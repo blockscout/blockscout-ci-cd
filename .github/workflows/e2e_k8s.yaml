@@ -78,7 +78,7 @@ jobs:
       with:
         node-version: v14.17.0
     - name: Add inputs to GITHUB_ENV
-      if: ${{ github.event_name != 'push' }}
+      if: ${{ github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' }}
       run: |
         echo "IMAGE=${{ inputs.blockscout_image }}" >> $GITHUB_ENV
         echo "ENV=${{ inputs.environment }}" >> $GITHUB_ENV
@@ -94,8 +94,11 @@ jobs:
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
           ${{ runner.os }}-
+    - name: debug
+      run: ls -la && ls -la blockscout-ci-cd
+      working-directory: ./
     - name: Install deps
-      run: ls -la && ls -la blockscout-ci-cd && npm ci
+      run: npm ci
     - name: Lint
       run: npm run lint
     - name: Build contracts
