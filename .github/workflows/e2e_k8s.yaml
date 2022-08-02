@@ -73,12 +73,15 @@ jobs:
         api_key: ${{ secrets.THUNDRA_APIKEY }}
     - name: checkout
       uses: actions/checkout@v2
+      with:
+        repository: blockscout/blockscout-ci-cd
+        path: blockscout-ci-cd
     - name: Setup node
       uses: actions/setup-node@v3
       with:
         node-version: v14.17.0
     - name: Add inputs to GITHUB_ENV
-      if: ${{ github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' }}
+      if: "${{ inputs.blockscout_image != '' && inputs.environment != '' }}"
       run: |
         echo "IMAGE=${{ inputs.blockscout_image }}" >> $GITHUB_ENV
         echo "ENV=${{ inputs.environment }}" >> $GITHUB_ENV
