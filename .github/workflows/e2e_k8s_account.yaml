@@ -153,7 +153,7 @@ jobs:
       with:
         node-version: v14.17.0
     - name: Add inputs to GITHUB_ENV
-      if: ${{ github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' }}
+      if: "${{ inputs.blockscout_image != '' && inputs.environment != '' }}"
       run: |
         echo "IMAGE=${{ inputs.blockscout_image }}" >> $GITHUB_ENV
         echo "ENV=${{ inputs.environment }}" >> $GITHUB_ENV
