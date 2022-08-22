@@ -7,7 +7,7 @@ docker:
   targetPort: 8043
 
 ingress:
-  host: sc-verifier.aws-k8s-test.blockscout.com
+  host: sc-verifier.aws-k8s.blockscout.com
 
 resources:
   limits:
@@ -20,6 +20,11 @@ resources:
       _default: "1Gi"
     cpu:
       _default: "0.5"
+
+hpa:
+  min_replicas: 1
+  max_replicas: 10
+  cpu_target: 90
 
 environment:
   SMART_CONTRACT_VERIFIER__SERVER__ADDR:
