@@ -1,0 +1,101 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "http-metrics"
+spec:
+  replicas: {{ .Values.replicas.sc_verifier }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      # serviceAccountName: vault-auth
+      containers:
+        - name: {{ .Release.Name }}
+          image: {{ .Values.image }}
+          resources:
+          {{- with .Values.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+          {{- end }}
+          imagePullPolicy: Always
+          command: ["/bin/bash"]
+          args: ["-c", "bin/blockscout eval \"Elixir.Explorer.ReleaseTasks.create_and_migrate()\" && bin/blockscout start"]
+          ports:
+            - containerPort: {{ .Values.docker.targetPort }}
+          env:
+{{- include "app_env" . | indent 10 }}
+          # volumeMounts:
+          #   - name: smweb-logs
+          #     mountPath: /usr/local/gkretail/sm-web-server/log
+          # readinessProbe:
+          #   httpGet:
+          #     path: /appversion # workaround in order to update backend's DNS entry
+          #     port: {{ .Values.docker.port }}
+          #     scheme: HTTP
+          #   initialDelaySeconds: 60
+          #   periodSeconds: 10
+          # livenessProbe:
+          #   httpGet:
+          #     path: /appversion # workaround in order to update backend's DNS entry
+          #     port: {{ .Values.docker.port }}
+          #     scheme: HTTP
+          #   initialDelaySeconds: 100
+          #   periodSeconds: 100
+        # - name: {{ .Release.Name }}-node-promtail
+        #   image: docker-registry.ru/grafana/promtail
+        #   resources:
+        #     requests:
+        #       memory: "50Mi"
+        #       cpu: "50m"
+        #     limits:
+        #       memory: "100Mi"
+        #       cpu: "300m"
+        #   imagePullPolicy: Always
+        #   volumeMounts:
+        #     - name: smweb-logs
+        #       mountPath: /smweb/
+        #     - name: config
+        #       mountPath: /etc/promtail/config.yml
+        #       subPath: config-node.yml
+      # volumes:
+      #   - name: smweb-logs
+      #     emptyDir: { }
+      #   - name: config
+      #     configMap:
+      #       name: {{ .Release.Name }}-promtail-configmap
+      restartPolicy: Always
+      {{- if .Values.node_group }}
+      tolerations:
+      - key: {{ .Values.node_group }}
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      {{- end }}
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #       {{- if .Values.node_group }}
+      #         - key: {{ .Values.node_group }}
+      #           operator: In
+      #           values:
+      #           - "true"
+      #       {{- else }}
+      #         - key: gkc
+      #           operator: In
+      #           values:
+      #           - "true"
+      #       {{- end }}
+---

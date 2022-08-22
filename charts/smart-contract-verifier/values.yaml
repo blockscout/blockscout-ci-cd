@@ -1,0 +1,71 @@
+image: ghcr.io/blockscout/smart-contract-verifier:v0.2.0
+
+replicas:
+  sc_verifier: 1
+docker:
+  port: 80
+  targetPort: 8043
+
+ingress:
+  host: sc-verifier.aws-k8s-test.blockscout.com
+
+resources:
+  limits:
+    memory:
+      _default: "1Gi"
+    cpu:
+      _default: "0.5"
+  requests:
+    memory:
+      _default: "1Gi"
+    cpu:
+      _default: "0.5"
+
+environment:
+  SMART_CONTRACT_VERIFIER__SERVER__ADDR:
+    _default: 0.0.0.0:8043
+
+  SMART_CONTRACT_VERIFIER__SOLIDITY__ENABLED:
+    _default: 'true'
+  SMART_CONTRACT_VERIFIER__SOLIDITY__COMPILERS_DIR:
+    _default: /tmp/compilers
+  SMART_CONTRACT_VERIFIER__SOLIDITY__REFRESH_VERSIONS_SCHEDULE:
+    _default: 0 0 * * * * *
+
+  # It depends on the OS you are running the service on
+  # SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__LIST__LIST_URL:
+  #   _default: https://solc-bin.ethereum.org/linux-amd64/list.json
+  #SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__LIST__LIST_URL=https://solc-bin.ethereum.org/macosx-amd64/list.json
+  #SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__LIST__LIST_URL=https://solc-bin.ethereum.org/windows-amd64/list.json
+
+  SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ACCESS_KEY:
+    _default: GOOGKJIVR7LER3V5SRI6QIS2
+  SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__SECRET_KEY:
+    _default: "kzfDtTWfaW0TuPMGyakaUGzjc+Dr4XpBVqzdn7Aw"
+  SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__REGION:
+    _default: ""
+  SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ENDPOINT:
+    _default: https://storage.googleapis.com
+  SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__BUCKET:
+    _default: 'solc-releases'
+
+  SMART_CONTRACT_VERIFIER__SOURCIFY__ENABLED:
+    _default: 'true'
+  SMART_CONTRACT_VERIFIER__SOURCIFY__API_URL:
+    _default: https://sourcify.dev/server/
+  SMART_CONTRACT_VERIFIER__SOURCIFY__VERIFICATION_ATTEMPTS:
+    _default: 3
+  SMART_CONTRACT_VERIFIER__SOURCIFY__REQUEST_TIMEOUT:
+    _default: 10
+
+  SMART_CONTRACT_VERIFIER__METRICS__ENABLED:
+    _default: 'true'
+  SMART_CONTRACT_VERIFIER__METRICS__ADDR:
+    _default: 0.0.0.0:6060
+  SMART_CONTRACT_VERIFIER__METRICS__ROUTE:
+    _default: /metrics
+
+  SMART_CONTRACT_VERIFIER__JAEGER__ENABLED:
+    _default: 'false'
+  SMART_CONTRACT_VERIFIER__JAEGER__AGENT_ENDPOINT:
+    _default: localhost:6831
