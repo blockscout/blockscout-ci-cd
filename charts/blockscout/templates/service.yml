@@ -16,3 +16,26 @@ spec:
   selector:
     app: {{ .Release.Name }}
 ---
+{{- if .Values.node }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-geth
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.node_port_http }}
+      targetPort: {{ .Values.node_port_http }}
+      protocol: TCP
+      name: http
+    - port: {{ .Values.node_port_ws }}
+      targetPort: {{ .Values.node_port_http }}
+      protocol: TCP
+      name: ws
+    - port: {{ .Values.node_port_discovery }}
+      targetPort: {{ .Values.node_port_discovery }}
+      protocol: TCP
+      name: discovery
+  selector:
+    app: {{ .Release.Name }}-geth
+{{- end }}
