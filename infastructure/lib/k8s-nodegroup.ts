@@ -33,11 +33,11 @@ export class K8snodegroups extends cdk.Stack {
     const nodeType = new CfnParameter(this, 'nodegroupInstanceType', {
       type: 'String',
       description: 'Instance Type to be used with nodegroup ng-1',
-      default: 't3.medium',
+      default: 't3.xlarge',
     });
     const nodeAMIVersion = new CfnParameter(this, 'nodeAMIVersion', {
       type: 'String',
-      default: '1.21.12-20220526',
+      default: '1.21.14-20220811',
       description: 'AMI version used for EKS Worker nodes https://docs.aws.amazon.com/eks/latest/userguide/eks-linux-ami-versions.html',
     });
 

@@ -35,7 +35,7 @@ export function addEndpoint (stack: Stack, vpc: Vpc): void {
 }
 
 export const eksVpc = {
-  cidr: '10.0.0.0/16',
+  cidr: '172.16.0.0/16',
   maxAzs: 3,
   // S3/DynamoDB https://docs.aws.amazon.com/vpc/latest/privatelink/vpce-gateway.html
   gatewayEndpoints: {

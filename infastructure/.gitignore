@@ -9,3 +9,4 @@ cdk.out
 # Other files
 test/eks-cdk-js.test.ts
 cdk.context.json
+instruction

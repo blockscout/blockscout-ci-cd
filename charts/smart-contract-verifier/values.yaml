@@ -1,0 +1,30 @@
+image: ghcr.io/blockscout/smart-contract-verifier:v0.2.0
+
+replicas:
+  sc_verifier: 1
+docker:
+  port: 80
+  targetPort: 8043
+
+resources:
+  limits:
+    memory:
+      _default: "1Gi"
+    cpu:
+      _default: "0.5"
+  requests:
+    memory:
+      _default: "1Gi"
+    cpu:
+      _default: "0.5"
+
+hpa:
+  min_replicas: 1
+  max_replicas: 10
+  cpu_target: 90
+
+environment: {}
+
+
+global:
+  env: test

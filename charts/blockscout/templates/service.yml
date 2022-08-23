@@ -1,0 +1,41 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-svc
+  # annotations:
+  #   service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+  #   service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+  #   service.beta.kubernetes.io/aws-load-balancer-type: external
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.docker.port }}
+      targetPort: {{ .Values.docker.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ .Release.Name }}
+---
+{{- if .Values.node }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-geth
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.node_port_http }}
+      targetPort: {{ .Values.node_port_http }}
+      protocol: TCP
+      name: http
+    - port: {{ .Values.node_port_ws }}
+      targetPort: {{ .Values.node_port_http }}
+      protocol: TCP
+      name: ws
+    - port: {{ .Values.node_port_discovery }}
+      targetPort: {{ .Values.node_port_discovery }}
+      protocol: TCP
+      name: discovery
+  selector:
+    app: {{ .Release.Name }}-geth
+{{- end }}
