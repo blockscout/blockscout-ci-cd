@@ -1,8 +1,7 @@
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  annotations:
-    name: {{ .Release.Name }}
+  name: {{ .Release.Name }}
 spec:
   maxReplicas: {{ .Values.hpa.max_replicas }}
   minReplicas: {{ .Values.hpa.min_replicas }}
@@ -11,3 +10,4 @@ spec:
     kind: Deployment
     name: {{ .Release.Name }}
   targetCPUUtilizationPercentage: {{ .Values.hpa.cpu_target }}
+

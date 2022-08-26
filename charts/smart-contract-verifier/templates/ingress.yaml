@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
@@ -16,10 +16,20 @@ spec:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
-          - path: "/"
+          - path: "/metrics"
+            pathType: Exact
             backend:
-              serviceName: {{ .Release.Name }}-svc
-              servicePort: {{ .Values.docker.port }}
+              service:
+                name: {{ .Release.Name }}-svc
+                port:
+                  number: {{ .Values.docker.metricsPort }}
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-svc
+                port:
+                  number: {{ .Values.docker.port }}
   # tls:
   #   - hosts:
   #       - {{ .Values.ingress.host }}

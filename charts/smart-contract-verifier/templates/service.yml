@@ -6,13 +6,19 @@ metadata:
   #   service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
   #   service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
   #   service.beta.kubernetes.io/aws-load-balancer-type: external
+  labels:
+    app: {{ .Release.Name }}
 spec:
   type: ClusterIP
   ports:
     - port: {{ .Values.docker.port }}
       targetPort: {{ .Values.docker.targetPort }}
       protocol: TCP
-      name: http
+      name: web
+    - port: {{ .Values.docker.metricsPort }}
+      targetPort: {{ .Values.docker.metricsPort }}
+      protocol: TCP
+      name: http-metrics
   selector:
     app: {{ .Release.Name }}
 ---

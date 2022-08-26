@@ -29,7 +29,7 @@ spec:
       protocol: TCP
       name: http
     - port: {{ .Values.node_port_ws }}
-      targetPort: {{ .Values.node_port_http }}
+      targetPort: {{ .Values.node_port_ws }}
       protocol: TCP
       name: ws
     - port: {{ .Values.node_port_discovery }}
