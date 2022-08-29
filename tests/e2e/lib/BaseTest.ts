@@ -8,12 +8,15 @@ import { AddressPage } from '@pages/Address'
 import { AuthorizedArea } from '@pages/Login'
 import { CommonPage } from '@pages/Common'
 import MailSlurp from 'mailslurp-client'
+import { GnosisHome } from '@pages/HomeGnosis'
+import { ETHHome } from '@pages/HomeETH'
 import Contracts from './Contracts'
 import testConfig from '../testConfig'
 
 const test = baseTest.extend<{
     commonPage: CommonPage,
-    homePage: HomePage,
+    ethHomePage: ETHHome,
+    gnosisHomePage: GnosisHome,
     authorized: AuthorizedArea,
     transactionPage: TransactionPage,
     blocksPage: BlocksPage,
@@ -24,8 +27,11 @@ const test = baseTest.extend<{
     commonPage: async ({ page }, use) => {
         await use(new CommonPage(page))
     },
-    homePage: async ({ page }, use) => {
-        await use(new HomePage(page))
+    ethHomePage: async ({ page }, use) => {
+        await use(new ETHHome(page))
+    },
+    gnosisHomePage: async ({ page }, use) => {
+        await use(new GnosisHome(page))
     },
     authorized: async ({ browser }, use) => {
         const ctx = await browser.newContext({ storageState: `state.json` })
