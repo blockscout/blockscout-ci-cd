@@ -106,7 +106,6 @@ export class HomePage {
 
     async verifyComponents(ctx: BrowserContext): Promise<void> {
         await actions.verifyElementIsDisplayed(this.po.LOGO, `no logo have been found`)
-        // await actions.verifyElementIsDisplayed(this.po.SIGN_IN, `no sign in have been found`)
         await actions.verifyElementIsDisplayed(this.po.SEARCH_INPUT, `no search have been found`)
         await this.verifyNavbarComponents()
         await actions.verifyElementIsDisplayed(this.po.BLOCKS_GOTO, `no blocks page widget link have been found`)
@@ -121,7 +120,7 @@ export class HomePage {
         await actions.verifyElementIsDisplayed(this.po.BLOCKS_TAB, `no blocks tab have been found`)
         await actions.verifyElementIsDisplayed(this.po.TRANSACTIONS_TAB, `no transactions tab have been found`)
         await actions.verifyElementIsDisplayed(this.po.TOKENS_TAB, `no tokens tab have been found`)
-        await actions.verifyElementIsDisplayed(this.po.APPS_TAB, `no apps tab have been found`)
+        // await actions.verifyElementIsDisplayed(this.po.APPS_TAB, `no apps tab have been found`)
         // TODO: not displayed in local deployment
         await actions.verifyElementIsDisplayed(this.po.NETWORKS_SELECT_TAB, `no networks select tab have been found`)
         await actions.verifyElementIsDisplayed(this.po.DARK_MODE_CHANGER, `no dark mode selector tab have been found`)
@@ -130,14 +129,8 @@ export class HomePage {
     async verifyNetworksDashboardChartComponents(): Promise<void> {
         await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART, `no network chart have been found`)
         await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_DATA_CONTAINER, `no network chart data have been found`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_PRICE, `no xDAI price is displayed`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_PRICE_DATA, `no xDAI price data is displayed`)
         await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_GAS_TRACKER, `no gas tracker is displayed`)
         await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_GAS_TRACKER_DATA, `no gas tracker data is displayed`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_TVL, `no TVL is displayed`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_TVL_DATA, `no TVL data is displayed`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_DAILY_TRANSACTIONS, `no daily transactions is displayed`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_DAILY_TRANSACTIONS_DATA, `no daily transactions data is displayed`)
         // group on the right
         await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_AVG_BLOCK_TIME, `no avg block time is displayed`)
         await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_AVG_BLOCK_TIME_DATA, `no avg block time data is displayed`)
