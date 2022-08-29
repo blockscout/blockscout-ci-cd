@@ -4,6 +4,7 @@
 import { Construct } from 'constructs'
 import { Chart, ChartProps } from 'cdk8s'
 import { ConfigMap } from 'cdk8s-plus-22'
+import { v4 } from 'uuid'
 import { KubeIngress } from 'cdk8s-plus-22/lib/imports/k8s'
 import {
     KubeDeployment,
@@ -81,10 +82,10 @@ const selectResources = (mode: string): [ResourceRequirements, ResourceRequireme
     let resourcesNetwork: ResourceRequirements
     switch (mode) {
     case ResourceMode.MainnetTest:
-        resourcesDB = guaranteedResources(`1000m`, `1024Mi`)
-        resourcesBS = guaranteedResources(`1000m`, `1024Mi`)
+        resourcesDB = guaranteedResources(`200m`, `1024Mi`)
+        resourcesBS = guaranteedResources(`400m`, `1024Mi`)
         resourcesV = guaranteedResources(`100m`, `250Mi`)
-        resourcesNetwork = guaranteedResources(`1000m`, `2Gi`)
+        resourcesNetwork = guaranteedResources(`200m`, `2Gi`)
         break
     case ResourceMode.E2E:
         resourcesDB = guaranteedResources(`500m`, `1024Mi`)
@@ -365,56 +366,77 @@ const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements):
     return container
 }
 
-// const createService = (scope: Construct, ns: string): KubeService => {
-//     svc = new KubeService(scope, `svc`, {
-//         metadata: {
-//             name: `service`,
-//             namespace: ns.name,
-//             annotations: {
-//                 'service.beta.kubernetes.io/aws-load-balancer-nlb-target-type': `ip`,
-//                 'service.beta.kubernetes.io/aws-load-balancer-scheme': `internet-facing`,
-//                 'service.beta.kubernetes.io/aws-load-balancer-type': `external`,
-//             },
-//         },
-//         spec: {
-//             type: `LoadBalancer`,
-//             ports: [{ port: bsProps.port, targetPort: IntOrString.fromNumber(bsProps.port) }],
-//             selector: label,
-//         },
-//     })
-//     new KubeIngress(this, `ingress`, {
-//         metadata: {
-//             namespace: ns.name,
-//             name: `blockscout-ingress`,
-//             annotations: {
-//                 'nginx.ingress.kubernetes.io/rewrite-target': `/`,
-//             },
-//         },
-//         spec: {
-//             rules: [
-//                 {
-//                     host: `blockscout.test.static`,
-//                     http: {
-//                         paths: [
-//                             {
-//                                 path: `/eth`,
-//                                 pathType: `Prefix`,
-//                                 backend: {
-//                                     service: {
-//                                         name: `svc`,
-//                                         port: {
-//                                             number: bsProps.port,
-//                                         },
-//                                     },
-//                                 },
-//                             },
-//                         ],
-//                     },
-//                 },
-//             ],
-//         },
-//     })
-// }
+const createService = (scope: Construct, namespaceName: string, deploymentSelector: { [key: string]: string}, bsProps: BlockscoutProps): KubeService => {
+    let svc
+    if (bsProps.public === `true`) {
+        svc = new KubeService(scope, `svc-${v4()}`, {
+            metadata: {
+                name: `service`,
+                namespace: namespaceName,
+                annotations: {
+                    // 'service.beta.kubernetes.io/aws-load-balancer-nlb-target-type': `ip`,
+                    // 'service.beta.kubernetes.io/aws-load-balancer-scheme': `internet-facing`,
+                    // 'service.beta.kubernetes.io/aws-load-balancer-type': `external`,
+                },
+            },
+            spec: {
+                type: `ClusterIP`,
+                ports: [{ port: bsProps.port, targetPort: IntOrString.fromNumber(bsProps.port) }],
+                selector: deploymentSelector,
+            },
+        })
+        new KubeIngress(scope, `ingress`, {
+            metadata: {
+                namespace: namespaceName,
+                name: `blockscout-ingress`,
+                annotations: {
+                    'kubernetes.io/ingress.class': `internal-and-public`,
+                    'nginx.ingress.kubernetes.io/proxy-body-size': `500m`,
+                    'nginx.ingress.kubernetes.io/client-max-body-size': `500M`,
+                    'nginx.ingress.kubernetes.io/proxy-buffering': `off`,
+                    'nginx.ingress.kubernetes.io/proxy-connect-timeout': `15m`,
+                    'nginx.ingress.kubernetes.io/proxy-send-timeout': `15m`,
+                    'nginx.ingress.kubernetes.io/proxy-read-timeout': `15m`,
+                },
+            },
+            spec: {
+                rules: [
+                    {
+                        host: `bs-testnet.aws-k8s.blockscout.com`,
+                        http: {
+                            paths: [
+                                {
+                                    path: `/`,
+                                    pathType: `Prefix`,
+                                    backend: {
+                                        service: {
+                                            name: svc.name,
+                                            port: {
+                                                number: bsProps.port,
+                                            },
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        })
+    } else {
+        svc = new KubeService(scope, `svc-${v4()}`, {
+            metadata: {
+                name: `service`,
+                namespace: namespaceName,
+            },
+            spec: {
+                ports: [{ port: bsProps.port, targetPort: IntOrString.fromNumber(bsProps.port) }],
+                selector: deploymentSelector,
+            },
+        })
+    }
+    return svc
+}
 
 export class BlockscoutChart extends Chart {
     namespaceName: string
@@ -427,8 +449,8 @@ export class BlockscoutChart extends Chart {
     constructor(scope: Construct, id: string, props: ChartProps = {}, bsProps: BlockscoutProps) {
         super(scope, id, props)
         this.ports.push(bsProps.port, bsProps.portPG)
-        const label = { app: `blockscout-e2e` }
-        this.readySelector = `app=${label.app}`
+        const deploymentSelector = { app: `blockscout-e2e` }
+        this.readySelector = `app=${deploymentSelector.app}`
 
         const ns = new KubeNamespace(this, `ns`, {
             metadata: {
@@ -440,70 +462,7 @@ export class BlockscoutChart extends Chart {
         })
         this.namespaceName = ns.name
 
-        let svc: KubeService
-
-        if (bsProps.public === `true`) {
-            svc = new KubeService(this, `svc`, {
-                metadata: {
-                    name: `service`,
-                    namespace: ns.name,
-                    annotations: {
-                        'service.beta.kubernetes.io/aws-load-balancer-nlb-target-type': `ip`,
-                        'service.beta.kubernetes.io/aws-load-balancer-scheme': `internet-facing`,
-                        'service.beta.kubernetes.io/aws-load-balancer-type': `external`,
-                    },
-                },
-                spec: {
-                    type: `LoadBalancer`,
-                    ports: [{ port: bsProps.port, targetPort: IntOrString.fromNumber(bsProps.port) }],
-                    selector: label,
-                },
-            })
-            new KubeIngress(this, `ingress`, {
-                metadata: {
-                    namespace: ns.name,
-                    name: `blockscout-ingress`,
-                    annotations: {
-                        'nginx.ingress.kubernetes.io/rewrite-target': `/`,
-                    },
-                },
-                spec: {
-                    rules: [
-                        {
-                            host: `blockscout.test.static`,
-                            http: {
-                                paths: [
-                                    {
-                                        path: `/eth`,
-                                        pathType: `Prefix`,
-                                        backend: {
-                                            service: {
-                                                name: `svc`,
-                                                port: {
-                                                    number: bsProps.port,
-                                                },
-                                            },
-                                        },
-                                    },
-                                ],
-                            },
-                        },
-                    ],
-                },
-            })
-        } else {
-            svc = new KubeService(this, `svc`, {
-                metadata: {
-                    name: `service`,
-                    namespace: ns.name,
-                },
-                spec: {
-                    ports: [{ port: bsProps.port, targetPort: IntOrString.fromNumber(bsProps.port) }],
-                    selector: label,
-                },
-            })
-        }
-
+        const svc = createService(this, ns.name, deploymentSelector, bsProps)
         const [bs, v, db, net] = selectResources(bsProps.resourceMode)
 
         const vcm = new ConfigMap(this, `verification-cm`, {
@@ -601,12 +560,12 @@ jaeger_agents = ["127.0.0.1:6831"]
                     serviceName: svc.name,
                     replicas: 1,
                     selector: {
-                        matchLabels: label,
+                        matchLabels: deploymentSelector,
                     },
                     template: {
                         metadata: {
                             name: `pod`,
-                            labels: label,
+                            labels: deploymentSelector,
                         },
                         spec: {
                             volumes: [
@@ -648,12 +607,12 @@ jaeger_agents = ["127.0.0.1:6831"]
                 spec: {
                     replicas: 1,
                     selector: {
-                        matchLabels: label,
+                        matchLabels: deploymentSelector,
                     },
                     template: {
                         metadata: {
                             name: `pod`,
-                            labels: label,
+                            labels: deploymentSelector,
                         },
                         spec: {
                             volumes: [

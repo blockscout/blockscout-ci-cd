@@ -1,5 +1,5 @@
 export default {
-    prod: `https://blockscout.com/poa/core`,
+    prod: `https://blockscout.com/`,
     test: `http://localhost:${process.env.PORT}`,
     networkURL: `http://localhost:${process.env.PORT_NETWORK_HTTP}`,
     waitForElement: 120000,
