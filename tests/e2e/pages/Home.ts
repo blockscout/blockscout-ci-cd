@@ -1,9 +1,7 @@
 import { WebActions } from "@lib/WebActions"
 import type { BrowserContext, Page } from 'playwright'
 
-let actions: WebActions
-
-export class HomePageObjects {
+export class HomePage {
     SIGN_IN = `text=Sign in`
 
     SEARCH_INPUT = `#main-search-autocomplete`
@@ -28,6 +26,9 @@ export class HomePageObjects {
     NETWORKS_SELECT_TAB = `#navbarDropdown`
 
     DARK_MODE_CHANGER = `#dark-mode-changer`
+
+    // Small text on dashboard under the plot
+    NETWORK_STATS_BAR = `[class="dashboard-banner-chart-legend"]`
 
     // Network dashboard
     NETWORK_DASHBOARD_CHART = `[class=dashboard-banner-chart]`
@@ -59,94 +60,100 @@ export class HomePageObjects {
     NETWORK_DASHBOARD_CHART_XDAI_DAILY_TRANSACTIONS_DATA = `//span[contains(text(),'${this.NETWORK_DASHBOARD_CHART_XDAI_DAILY_TRANSACTIONS_TEXT}')]/following-sibling::span`
 
     // group on the right
-    NETWORK_DASHBOARD_CHART_XDAI_AVG_BLOCK_TIME = `text=Average block time`
+    NETWORK_CHART_AVG_BLOCK_TIME = `text=Average block time`
 
-    NETWORK_DASHBOARD_CHART_XDAI_AVG_BLOCK_TIME_DATA = `//span[@data-selector='average-block-time' and contains(text(), 'seconds')]`
+    NETWORK_CHART_AVG_BLOCK_TIME_DATA = `//span[@data-selector='average-block-time' and contains(text(), 'seconds')]`
 
-    NETWORK_DASHBOARD_CHART_XDAI_TOTAL_TRANSACTIONS = `text=Total transactions`
+    NETWORK_CHART_TOTAL_TRANSACTIONS = `text=Total transactions`
 
-    NETWORK_DASHBOARD_CHART_XDAI_TOTAL_TRANSACTIONS_DATA = `//span[@data-selector='transaction-count' and contains(text(), ',')]`
+    NETWORK_CHART_TOTAL_TRANSACTIONS_DATA = `//span[@data-selector='transaction-count' and contains(text(), ',')]`
 
-    NETWORK_DASHBOARD_CHART_XDAI_TOTAL_BLOCKS = `text=Total blocks`
+    NETWORK_CHART_TOTAL_BLOCKS = `text=Total blocks`
 
-    NETWORK_DASHBOARD_CHART_XDAI_TOTAL_BLOCKS_DATA = `//span[@data-selector='block-count' and contains(text(), ',')]`
+    NETWORK_CHART_TOTAL_BLOCKS_DATA = `//span[@data-selector='block-count' and contains(text(), ',')]`
 
-    NETWORK_DASHBOARD_CHART_XDAI_WALLET_ADDRESSES = `text=Wallet addresses`
+    NETWORK_CHART_WALLET_ADDRESSES = `text=Wallet addresses`
 
-    NETWORK_DASHBOARD_CHART_XDAI_WALLET_ADDRESSES_DATA = `//span[@data-selector='address-count' and contains(text(), ',')]`
+    NETWORK_CHART_WALLET_ADDRESSES_DATA = `//span[@data-selector='address-count' and contains(text(), ',')]`
 
-    // blocks feed
     BLOCKS_GOTO = `text=View All Blocks`
 
     BLOCKS = `[data-selector="chain-block"]`
 
-    // transactions feed
     TRANSACTIONS_GOTO = `text=View All Transactions`
 
     TRANSACTIONS = `[data-test='chain_transaction']`
-}
 
-export class HomePage {
     readonly page: Page
+
+    actions: WebActions
 
     constructor(page: Page) {
         this.page = page
-        actions = new WebActions(this.page)
+        this.actions = new WebActions(this.page)
     }
 
-    po = new HomePageObjects()
-
     async open(): Promise<void> {
-        await actions.navigateToURL(`/`)
+        await this.actions.navigateToURL(`/`)
     }
 
     async delay(amount: number): Promise<void> {
-        await actions.delay(amount)
+        await this.actions.delay(amount)
     }
 
     async verifyComponents(ctx: BrowserContext): Promise<void> {
-        await actions.verifyElementIsDisplayed(this.po.LOGO, `no logo have been found`)
-        await actions.verifyElementIsDisplayed(this.po.SEARCH_INPUT, `no search have been found`)
+        await this.verifyWidgetTiles()
         await this.verifyNavbarComponents()
-        await actions.verifyElementIsDisplayed(this.po.BLOCKS_GOTO, `no blocks page widget link have been found`)
-        await actions.verifyElementIsDisplayed(this.po.BLOCKS, `no block tiles have been found`)
-        await actions.verifyElementIsDisplayed(this.po.TRANSACTIONS_GOTO, `no transactions page widget link have been found`)
-        await actions.verifyElementIsDisplayed(this.po.TRANSACTIONS, `no transactions tiles have been found`)
         await this.verifyNetworksDashboardChartComponents()
         await this.visitGithubRelease(ctx)
     }
 
     async verifyNavbarComponents(): Promise<void> {
-        await actions.verifyElementIsDisplayed(this.po.BLOCKS_TAB, `no blocks tab have been found`)
-        await actions.verifyElementIsDisplayed(this.po.TRANSACTIONS_TAB, `no transactions tab have been found`)
-        await actions.verifyElementIsDisplayed(this.po.TOKENS_TAB, `no tokens tab have been found`)
-        // await actions.verifyElementIsDisplayed(this.po.APPS_TAB, `no apps tab have been found`)
-        // TODO: not displayed in local deployment
-        await actions.verifyElementIsDisplayed(this.po.NETWORKS_SELECT_TAB, `no networks select tab have been found`)
-        await actions.verifyElementIsDisplayed(this.po.DARK_MODE_CHANGER, `no dark mode selector tab have been found`)
+        await this.actions.verifyElementIsDisplayed(this.LOGO, `no logo have been found`)
+        await this.actions.verifyElementIsDisplayed(this.SEARCH_INPUT, `no search have been found`)
+        await this.actions.verifyElementIsDisplayed(this.BLOCKS_TAB, `no blocks tab have been found`)
+        await this.actions.verifyElementIsDisplayed(this.TRANSACTIONS_TAB, `no transactions tab have been found`)
+        await this.actions.verifyElementIsDisplayed(this.TOKENS_TAB, `no tokens tab have been found`)
+        await this.actions.verifyElementIsDisplayed(this.NETWORKS_SELECT_TAB, `no networks select tab have been found`)
+        await this.actions.verifyElementIsDisplayed(this.DARK_MODE_CHANGER, `no dark mode selector tab have been found`)
+    }
+
+    async verifyWidgetTiles(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(this.BLOCKS_GOTO, `no blocks page widget link have been found`)
+        await this.actions.verifyElementIsDisplayed(this.BLOCKS, `no block tiles have been found`)
+        await this.actions.verifyElementIsDisplayed(this.TRANSACTIONS_GOTO, `no transactions page widget link have been found`)
+        await this.actions.verifyElementIsDisplayed(this.TRANSACTIONS, `no transactions tiles have been found`)
+    }
+
+    async verifyNetworkDashboardStats(stats: string[]): Promise<void> {
+        // eslint-disable-next-line guard-for-in
+        for (const idx in stats) {
+            // eslint-disable-next-line no-await-in-loop
+            await this.actions.verifyElementContainsText(`${this.NETWORK_STATS_BAR} >> div >> nth=${idx}`, stats[idx])
+        }
     }
 
     async verifyNetworksDashboardChartComponents(): Promise<void> {
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART, `no network chart have been found`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_DATA_CONTAINER, `no network chart data have been found`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_GAS_TRACKER, `no gas tracker is displayed`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_GAS_TRACKER_DATA, `no gas tracker data is displayed`)
+        await this.actions.verifyElementIsDisplayed(this.NETWORK_DASHBOARD_CHART, `no network chart have been found`)
+        await this.actions.verifyElementIsDisplayed(this.NETWORK_DASHBOARD_CHART_DATA_CONTAINER, `no network chart data have been found`)
+        await this.actions.verifyElementIsDisplayed(this.NETWORK_DASHBOARD_CHART_GAS_TRACKER, `no gas tracker is displayed`)
+        await this.actions.verifyElementIsDisplayed(this.NETWORK_DASHBOARD_CHART_GAS_TRACKER_DATA, `no gas tracker data is displayed`)
         // group on the right
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_AVG_BLOCK_TIME, `no avg block time is displayed`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_AVG_BLOCK_TIME_DATA, `no avg block time data is displayed`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_TOTAL_TRANSACTIONS, `no total transactions is displayed`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_TOTAL_TRANSACTIONS_DATA, `no total transactions data is displayed`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_TOTAL_BLOCKS, `no total blocks is displayed`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_TOTAL_BLOCKS_DATA, `no total blocks data is displayed`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_WALLET_ADDRESSES, `no wallet addresses is displayed`)
-        await actions.verifyElementIsDisplayed(this.po.NETWORK_DASHBOARD_CHART_XDAI_WALLET_ADDRESSES_DATA, `no wallet addresses data is displayed`)
+        await this.actions.verifyElementIsDisplayed(this.NETWORK_CHART_AVG_BLOCK_TIME, `no avg block time is displayed`)
+        await this.actions.verifyElementIsDisplayed(this.NETWORK_CHART_AVG_BLOCK_TIME_DATA, `no avg block time data is displayed`)
+        await this.actions.verifyElementIsDisplayed(this.NETWORK_CHART_TOTAL_TRANSACTIONS, `no total transactions is displayed`)
+        await this.actions.verifyElementIsDisplayed(this.NETWORK_CHART_TOTAL_TRANSACTIONS_DATA, `no total transactions data is displayed`)
+        await this.actions.verifyElementIsDisplayed(this.NETWORK_CHART_TOTAL_BLOCKS, `no total blocks is displayed`)
+        await this.actions.verifyElementIsDisplayed(this.NETWORK_CHART_TOTAL_BLOCKS_DATA, `no total blocks data is displayed`)
+        await this.actions.verifyElementIsDisplayed(this.NETWORK_CHART_WALLET_ADDRESSES, `no wallet addresses is displayed`)
+        await this.actions.verifyElementIsDisplayed(this.NETWORK_CHART_WALLET_ADDRESSES_DATA, `no wallet addresses data is displayed`)
     }
 
     async visitGithubRelease(ctx: BrowserContext): Promise<void> {
-        await actions.verifyNewWindowUrl(ctx, this.po.GITHUB_VERSION_LINK, this.po.RELEASE_DIST_URL_ROOT)
+        await this.actions.verifyNewWindowUrl(ctx, this.GITHUB_VERSION_LINK, this.RELEASE_DIST_URL_ROOT)
     }
 
     async selectBlocksTab(): Promise<void> {
-        await actions.clickElement(this.po.BLOCKS_TAB)
+        await this.actions.clickElement(this.BLOCKS_TAB)
     }
 }
