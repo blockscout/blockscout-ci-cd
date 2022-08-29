@@ -106,7 +106,7 @@ export class HomePage {
 
     async verifyComponents(ctx: BrowserContext): Promise<void> {
         await actions.verifyElementIsDisplayed(this.po.LOGO, `no logo have been found`)
-        await actions.verifyElementIsDisplayed(this.po.SIGN_IN, `no sign in have been found`)
+        // await actions.verifyElementIsDisplayed(this.po.SIGN_IN, `no sign in have been found`)
         await actions.verifyElementIsDisplayed(this.po.SEARCH_INPUT, `no search have been found`)
         await this.verifyNavbarComponents()
         await actions.verifyElementIsDisplayed(this.po.BLOCKS_GOTO, `no blocks page widget link have been found`)
