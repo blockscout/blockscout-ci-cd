@@ -82,10 +82,10 @@ const selectResources = (mode: string): [ResourceRequirements, ResourceRequireme
     let resourcesNetwork: ResourceRequirements
     switch (mode) {
     case ResourceMode.MainnetTest:
-        resourcesDB = guaranteedResources(`1000m`, `1024Mi`)
-        resourcesBS = guaranteedResources(`1000m`, `1024Mi`)
+        resourcesDB = guaranteedResources(`200m`, `1024Mi`)
+        resourcesBS = guaranteedResources(`400m`, `1024Mi`)
         resourcesV = guaranteedResources(`100m`, `250Mi`)
-        resourcesNetwork = guaranteedResources(`1000m`, `2Gi`)
+        resourcesNetwork = guaranteedResources(`200m`, `2Gi`)
         break
     case ResourceMode.E2E:
         resourcesDB = guaranteedResources(`500m`, `1024Mi`)
@@ -374,13 +374,13 @@ const createService = (scope: Construct, namespaceName: string, deploymentSelect
                 name: `service`,
                 namespace: namespaceName,
                 annotations: {
-                    'service.beta.kubernetes.io/aws-load-balancer-nlb-target-type': `ip`,
-                    'service.beta.kubernetes.io/aws-load-balancer-scheme': `internet-facing`,
-                    'service.beta.kubernetes.io/aws-load-balancer-type': `external`,
+                    // 'service.beta.kubernetes.io/aws-load-balancer-nlb-target-type': `ip`,
+                    // 'service.beta.kubernetes.io/aws-load-balancer-scheme': `internet-facing`,
+                    // 'service.beta.kubernetes.io/aws-load-balancer-type': `external`,
                 },
             },
             spec: {
-                type: `LoadBalancer`,
+                type: `ClusterIP`,
                 ports: [{ port: bsProps.port, targetPort: IntOrString.fromNumber(bsProps.port) }],
                 selector: deploymentSelector,
             },
@@ -390,17 +390,23 @@ const createService = (scope: Construct, namespaceName: string, deploymentSelect
                 namespace: namespaceName,
                 name: `blockscout-ingress`,
                 annotations: {
-                    'nginx.ingress.kubernetes.io/rewrite-target': `/`,
+                    'kubernetes.io/ingress.class': `internal-and-public`,
+                    'nginx.ingress.kubernetes.io/proxy-body-size': `500m`,
+                    'nginx.ingress.kubernetes.io/client-max-body-size': `500M`,
+                    'nginx.ingress.kubernetes.io/proxy-buffering': `off`,
+                    'nginx.ingress.kubernetes.io/proxy-connect-timeout': `15m`,
+                    'nginx.ingress.kubernetes.io/proxy-send-timeout': `15m`,
+                    'nginx.ingress.kubernetes.io/proxy-read-timeout': `15m`,
                 },
             },
             spec: {
                 rules: [
                     {
-                        host: `blockscout.test.static`,
+                        host: `bs-testnet.aws-k8s.blockscout.com`,
                         http: {
                             paths: [
                                 {
-                                    path: `/eth`,
+                                    path: `/`,
                                     pathType: `Prefix`,
                                     backend: {
                                         service: {

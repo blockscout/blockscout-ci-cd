@@ -79,7 +79,7 @@ test(`@Ethereum @Address @Data @AccountImage Check address page`, async ({ addre
         await addressPage.check_address_description({
             token: [`Token`, `${TestTokenName} (${TestTokenSymbol})`],
             creator: [`Creator`, `0x`, `at`],
-            balance: [`Balance`, `xDAI`],
+            balance: [`Balance`, `Ether`],
             tokens: [`Tokens`, `tokens`],
             transactions: [`Transactions`, `Transactions`],
             transfers: [`Transfers`, `Transfers`],
@@ -92,7 +92,7 @@ test(`@Ethereum @Address @Data @AccountImage Check address page`, async ({ addre
             from1: `0x`,
             to1: `0x`,
             nativeAmount: `0`,
-            nativeName: `xDAI`,
+            nativeName: `Ether`,
         } as TXProps)
         await addressPage.check_tx_in_list(1, {
             name: `Contract Call`,
@@ -100,7 +100,7 @@ test(`@Ethereum @Address @Data @AccountImage Check address page`, async ({ addre
             from1: `0x`,
             to1: `0x`,
             nativeAmount: `0`,
-            nativeName: `xDAI`,
+            nativeName: `Ether`,
         } as TXProps)
         await addressPage.check_tx_in_list(2, {
             name: `Contract Creation`,
@@ -108,7 +108,7 @@ test(`@Ethereum @Address @Data @AccountImage Check address page`, async ({ addre
             from1: `0x`,
             to1: `0x`,
             nativeAmount: `0`,
-            nativeName: `xDAI`,
+            nativeName: `Ether`,
         } as TXProps)
         await addressPage.select_internal_txs_tab()
         await addressPage.check_internal_txs_list(0, {
@@ -117,7 +117,7 @@ test(`@Ethereum @Address @Data @AccountImage Check address page`, async ({ addre
             from1: `0x`,
             to1: `0x`,
             nativeAmount: `0`,
-            nativeName: `xDAI`,
+            nativeName: `Ether`,
         } as TXProps)
         await addressPage.select_logs_tab()
         await addressPage.check_tx_logs(0, {

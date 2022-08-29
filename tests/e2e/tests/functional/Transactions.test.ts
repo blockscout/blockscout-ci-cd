@@ -70,15 +70,15 @@ test(`@Ethereum @Transactions @Data @AccountImage Check contract creation tx pro
             timestamp: [`Timestamp`],
             from: [`From`, `0x`],
             interactedWith: [`To`, `0x`],
-            value: [`Value`, `xDAI`],
-            transactionFee: [`Transaction Fee`, `xDAI`],
+            value: [`Value`, `Ether`],
+            transactionFee: [`Transaction Fee`, `Ether`],
             gasPrice: [`Gas Price`, `Gwei`],
             transactionType: [`Transaction Type`, `2 (EIP-1559)`],
             gasLimit: [`Gas Limit`],
             maxFeePerGas: [`Max Fee per Gas`, `Gwei`],
             maxPriorityFeePerGas: [`Max Priority Fee per Gas`, `Gwei`],
-            priorityFeeTip: [`Priority Fee / Tip`, `xDAI`],
-            transactionBurntFee: [`Transaction Burnt Fee`, `xDAI`],
+            priorityFeeTip: [`Priority Fee / Tip`, `Ether`],
+            transactionBurntFee: [`Transaction Burnt Fee`, `Ether`],
             gasUsedByTransaction: [`Gas Used by Transaction`, `%`],
             nonce: [`Nonce`],
         } as TXDescriptionProps)
@@ -88,7 +88,7 @@ test(`@Ethereum @Transactions @Data @AccountImage Check contract creation tx pro
             from1: `0x`,
             to1: `0x`,
             nativeAmount: `0`,
-            nativeName: `xDAI`,
+            nativeName: `Ether`,
         } as TXProps)
         await transactionPage.select_logs_tab()
         await transactionPage.check_tx_logs(0, {
