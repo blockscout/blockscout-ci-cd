@@ -165,10 +165,10 @@ jobs:
     - name: Install Playwright
       if: steps.playwright-cache.outputs.cache-hit != 'true'
       run: npx playwright install --with-deps
-    - name: Run playwright
+    - name: Run playwright smoke suite
       run: |
         npm run test:smoke
-    - name: Run playwright
+    - name: Run playwright verification suite
       run: |
         npm run test:smoke:verification
     - uses: actions/upload-artifact@v3
