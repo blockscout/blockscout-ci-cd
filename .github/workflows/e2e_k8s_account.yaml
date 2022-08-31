@@ -85,6 +85,7 @@ env:
   SOCKET_ROOT: "/"
   NETWORK_PATH: "/"
   SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+  SECRET_KEY_GUARDIAN: ${{ secrets.SECRET_KEY_GUARDIAN }}
 
   ENV: test
   NETWORK_URL: http://localhost:8544

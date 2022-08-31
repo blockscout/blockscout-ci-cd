@@ -298,6 +298,22 @@ const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements):
                 name: `DATABASE_URL`,
                 value: `postgresql://postgres:@localhost:${bsProps.portPG}/blockscout?ssl=false`,
             },
+            {
+                name: `SECRET_KEY_BASE`,
+                value: bsProps.secretKeyBase!,
+            },
+            {
+                name: `SECRET_KEY_GUARDIAN`,
+                value: bsProps.secretKeyGuardian,
+            },
+            {
+                name: `ENABLE_RUST_VERIFICATION_SERVICE`,
+                value: bsProps.enableRustVerificationService!,
+            },
+            {
+                name: `RUST_VERIFICATION_SERVICE_URL`,
+                value: bsProps.rustVerificationServiceURL!,
+            },
         ],
         resources,
     }
@@ -365,22 +381,6 @@ const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements):
         {
             name: `NETWORK_PATH`,
             value: bsProps.networkPath!,
-        },
-        {
-            name: `SECRET_KEY_BASE`,
-            value: bsProps.secretKeyBase!,
-        },
-        {
-            name: `SECRET_KEY_GUARDIAN`,
-            value: bsProps.secretKeyGuardian,
-        },
-        {
-            name: `ENABLE_RUST_VERIFICATION_SERVICE`,
-            value: bsProps.enableRustVerificationService!,
-        },
-        {
-            name: `RUST_VERIFICATION_SERVICE_URL`,
-            value: bsProps.rustVerificationServiceURL!,
         },
         ])
     }

@@ -69,6 +69,9 @@ env:
   ETHEREUM_JSONRPC_TRACE_URL: http://localhost:8544
   COIN: DAI
 
+  SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+  SECRET_KEY_GUARDIAN: ${{ secrets.SECRET_KEY_GUARDIAN }}
+
   ENV: test
   NETWORK_URL: http://localhost:8544
   WALLET: ${{ secrets.WALLET }}
