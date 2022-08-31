@@ -13,6 +13,7 @@
     "test:notifications": "npx playwright test --grep=@Notifications",
     "test:smoke": "npx playwright test --grep=@PublicImage",
     "test:smoke:account": "npx playwright test --grep=@AccountImage",
+    "test:smoke:verification": "npx playwright test --grep=@Verification",
     "test:transactions": "npx playwright test --grep=@Transactions",
     "test:blocks": "npx playwright test --grep=@Blocks",
     "test:tokens": "npx playwright test --grep=@Tokens",

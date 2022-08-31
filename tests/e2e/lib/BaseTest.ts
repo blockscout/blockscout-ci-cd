@@ -10,6 +10,7 @@ import { CommonPage } from '@pages/Common'
 import MailSlurp from 'mailslurp-client'
 import { GnosisHome } from '@pages/HomeGnosis'
 import { ETHHome } from '@pages/HomeETH'
+import { VerificationPage } from '@pages/Verification'
 import Contracts from './Contracts'
 import testConfig from '../testConfig'
 
@@ -23,6 +24,7 @@ const test = baseTest.extend<{
     tokensPage: TokensPage
     tokenPage: TokenPage,
     addressPage: AddressPage,
+    verificationPage: VerificationPage,
 }>({
     commonPage: async ({ page }, use) => {
         await use(new CommonPage(page))
@@ -52,6 +54,9 @@ const test = baseTest.extend<{
     },
     addressPage: async ({ page }, use) => {
         await use(new AddressPage(page))
+    },
+    verificationPage: async ({ page }, use) => {
+        await use(new VerificationPage(page))
     },
 })
 

@@ -62,6 +62,9 @@ interface BlockscoutProps {
     networkPath?: string
     secretKeyBase?: string
     secretKeyGuardian?: string,
+    // verifier vars
+    enableRustVerificationService?: string,
+    rustVerificationServiceURL?: string,
 }
 
 const guaranteedResources = (cpu: string, memory: string) => ({
@@ -82,8 +85,8 @@ const selectResources = (mode: string): [ResourceRequirements, ResourceRequireme
     let resourcesNetwork: ResourceRequirements
     switch (mode) {
     case ResourceMode.MainnetTest:
-        resourcesDB = guaranteedResources(`200m`, `1024Mi`)
-        resourcesBS = guaranteedResources(`400m`, `1024Mi`)
+        resourcesDB = guaranteedResources(`500m`, `2048Mi`)
+        resourcesBS = guaranteedResources(`500m`, `1024Mi`)
         resourcesV = guaranteedResources(`100m`, `250Mi`)
         resourcesNetwork = guaranteedResources(`200m`, `2Gi`)
         break
@@ -245,8 +248,18 @@ const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements):
                 path: `/`,
                 port: { value: bsProps.port },
             },
-            initialDelaySeconds: 10,
-            periodSeconds: 2,
+            initialDelaySeconds: 20,
+            periodSeconds: 10,
+            timeoutSeconds: 10,
+        },
+        livenessProbe: {
+            httpGet: {
+                path: `/`,
+                port: { value: bsProps.port },
+            },
+            initialDelaySeconds: 20,
+            periodSeconds: 10,
+            timeoutSeconds: 10,
         },
         env: [
             {
@@ -361,6 +374,14 @@ const bsContainer = (bsProps: BlockscoutProps, resources: ResourceRequirements):
             name: `SECRET_KEY_GUARDIAN`,
             value: bsProps.secretKeyGuardian,
         },
+        {
+            name: `ENABLE_RUST_VERIFICATION_SERVICE`,
+            value: bsProps.enableRustVerificationService!,
+        },
+        {
+            name: `RUST_VERIFICATION_SERVICE_URL`,
+            value: bsProps.rustVerificationServiceURL!,
+        },
         ])
     }
     return container
@@ -373,11 +394,6 @@ const createService = (scope: Construct, namespaceName: string, deploymentSelect
             metadata: {
                 name: `service`,
                 namespace: namespaceName,
-                annotations: {
-                    // 'service.beta.kubernetes.io/aws-load-balancer-nlb-target-type': `ip`,
-                    // 'service.beta.kubernetes.io/aws-load-balancer-scheme': `internet-facing`,
-                    // 'service.beta.kubernetes.io/aws-load-balancer-type': `external`,
-                },
             },
             spec: {
                 type: `ClusterIP`,
@@ -480,7 +496,7 @@ verification_attempts = 3
 request_timeout = 10
 
 [solidity]
-compilers_list_url = "https://raw.githubusercontent.com/blockscout/solc-bin/main/list.json"
+compilers_list_url = "https://raw.githubusercontent.com/ethereum/solc-bin/gh-pages/linux-amd64/list.json"
 refresh_versions_schedule = "0 0 * * * * *"
 
 [metrics]

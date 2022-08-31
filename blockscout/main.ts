@@ -45,6 +45,8 @@ import { BlockscoutChart, ResourceMode } from './pkg/blockscout'
             networkPath: process.env.NETWORK_PATH,
             secretKeyBase: process.env.SECRET_KEY_BASE,
             secretKeyGuardian: process.env.SECRET_KEY_GUARDIAN,
+            enableRustVerificationService: process.env.ENABLE_RUST_VERIFICATION_SERVICE || `true`,
+            rustVerificationServiceURL: process.env.RUST_VERIFICATION_SERVICE_URL || `http://0.0.0.0:8043`,
         },
     )
     app.synth()

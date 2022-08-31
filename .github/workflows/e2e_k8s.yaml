@@ -73,6 +73,9 @@ env:
   NETWORK_URL: http://localhost:8544
   WALLET: ${{ secrets.WALLET }}
 
+  ENABLE_RUST_VERIFICATION_SERVICE: true
+  RUST_VERIFICATION_SERVICE_URL: http://0.0.0.0:8043
+
 jobs:
   test:
     name: Test E2E contract interaction
@@ -162,6 +165,9 @@ jobs:
     - name: Run playwright
       run: |
         npm run test:smoke
+    - name: Run playwright
+      run: |
+        npm run test:smoke:verification
     - uses: actions/upload-artifact@v3
       if: always()
       with:
