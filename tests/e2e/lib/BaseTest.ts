@@ -11,6 +11,7 @@ import MailSlurp from 'mailslurp-client'
 import { GnosisHome } from '@pages/HomeGnosis'
 import { ETHHome } from '@pages/HomeETH'
 import { VerificationPage } from '@pages/Verification'
+import { TransactionsListPage } from '@pages/TransactionsList'
 import Contracts from './Contracts'
 import testConfig from '../testConfig'
 
@@ -20,6 +21,7 @@ const test = baseTest.extend<{
     gnosisHomePage: GnosisHome,
     authorized: AuthorizedArea,
     transactionPage: TransactionPage,
+    transactionsListPage: TransactionsListPage,
     blocksPage: BlocksPage,
     tokensPage: TokensPage
     tokenPage: TokenPage,
@@ -42,6 +44,9 @@ const test = baseTest.extend<{
     },
     transactionPage: async ({ page }, use) => {
         await use(new TransactionPage(page))
+    },
+    transactionsListPage: async ({ page }, use) => {
+        await use(new TransactionsListPage(page))
     },
     blocksPage: async ({ page }, use) => {
         await use(new BlocksPage(page))

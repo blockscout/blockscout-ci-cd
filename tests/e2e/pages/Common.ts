@@ -29,9 +29,17 @@ export interface TokenHoldersProps {
 
 export interface TXLogProps {
     address: string[]
-    topics: string[]
-    data: string[]
-    logIndex: string[]
+    topics?: string[]
+    data?: string[]
+    logIndex?: string[]
+}
+
+export interface TXDecodedLogProps {
+    methodIDText: string
+    methodID: string
+    callText: string
+    call: string
+    logFields: string[][]
 }
 
 export class CommonPage {
@@ -189,6 +197,30 @@ export class CommonPage {
                 await this.actions.verifyElementContainsText(`${this.TX_LOG} >> nth=${num} >> dd >> nth=${row}`, a)
             }
             row += 1
+        }
+    }
+
+    async check_decoded_tx_logs(num: number, p: TXDecodedLogProps): Promise<void> {
+        await this.actions.verifyElementContainsText(`[data-items] >> dd >> table >> nth=0 >> tr >> nth=0 >> td >> nth=0`, p.methodIDText)
+        await this.actions.verifyElementContainsText(`[data-items] >> dd >> table >> nth=0 >> tr >> nth=0 >> td >> nth=1`, p.methodID)
+        await this.actions.verifyElementContainsText(`[data-items] >> dd >> table >> nth=0 >> tr >> nth=1 >> td >> nth=0`, p.callText)
+        await this.actions.verifyElementContainsText(`[data-items] >> dd >> table >> nth=0 >> tr >> nth=1 >> td >> nth=1`, p.call)
+        for (const rowIdx in p.logFields) {
+            for (const colIdx in p.logFields[rowIdx]) {
+                await this.actions.verifyElementContainsText(`[data-items] >> dd >> table >> nth=1 >> tr >> nth=${2 + Number(rowIdx)} >> td >> nth=${colIdx}`, p.logFields[rowIdx][colIdx])
+            }
+        }
+    }
+
+    async check_decoded_inputs(num: number, p: TXDecodedLogProps): Promise<void> {
+        await this.actions.verifyElementContainsText(`[class="card-body"] >> nth=1 >> table >> nth=0 >> tr >> nth=0 >> td >> nth=0`, p.methodIDText)
+        await this.actions.verifyElementContainsText(`[class="card-body"] >> nth=1 >> table >> nth=0 >> tr >> nth=0 >> td >> nth=1`, p.methodID)
+        await this.actions.verifyElementContainsText(`[class="card-body"] >> nth=1 >> table >> nth=0 >> tr >> nth=1 >> td >> nth=0`, p.callText)
+        await this.actions.verifyElementContainsText(`[class="card-body"] >> nth=1 >> table >> nth=0 >> tr >> nth=1 >> td >> nth=1`, p.call)
+        for (const rowIdx in p.logFields) {
+            for (const colIdx in p.logFields[rowIdx]) {
+                await this.actions.verifyElementContainsText(`[class="card-body"] >> nth=1 >> table >> nth=1 >> tr >> nth=${2 + Number(rowIdx)} >> td >> nth=${colIdx}`, p.logFields[rowIdx][colIdx])
+            }
         }
     }
 

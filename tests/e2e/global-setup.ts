@@ -9,7 +9,6 @@ import { AuthorizedArea } from '@pages/Login'
 import testConfig from './testConfig'
 import Contracts from './lib/Contracts'
 import { TestToken } from '../contracts/typechain/contracts/TestToken'
-import { SimpleStorage } from '../contracts/typechain/contracts/SimpleStorage'
 import { TestNFT } from '../contracts/typechain/contracts/TestNFT'
 
 const CONTRACTS_DATA_FILE = `contracts_data.env`
@@ -69,7 +68,6 @@ const setupContracts = async (): Promise<void> => {
     const TestNFTFlatContractCode = readFileSync(`../contracts/contracts/TestNFT_flat.sol`).toString()
 
     console.log(`deploying ERC20 contract (verified)`)
-    const contractNameV = `TestTokenVerified`
     const tokenNameV = `EPICV`
     const tokenSymbolV = `EPCV`
     const tokenV = await contracts.deploySymbolContract(tokenNameV, tokenSymbolV, `TestToken`) as TestToken
@@ -95,6 +93,7 @@ const setupContracts = async (): Promise<void> => {
     const receiptNFT1V = await txNFT1V.wait()
 
     shareData({
+        ZeroAddress: `0x0000000000000000000000000000000000000000`,
         MinerAddress: `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`,
 
         TestTokenHolder: contracts.wallet.address,
