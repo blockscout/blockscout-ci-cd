@@ -40,7 +40,17 @@ export default class Contracts {
         return ethers.Wallet.createRandom().connect(this.provider)
     }
 
-    async deploy(contractName: string, symbol: string, contractFileName: string): Promise<Contract> {
+    async deploy(contractName: string, contractFileName: string): Promise<Contract> {
+        const artifact = await this.readArtifact(contractFileName)
+
+        const factory = new ContractFactory(artifact.abi, artifact.bytecode, this.wallet)
+        const d = await factory.deploy()
+        const contract = await d.deployed()
+        console.log(`deployed contract:\nName: ${contractName}\nArtifact: ${contractFileName}\nAddress: ${contract.address}`)
+        return contract
+    }
+
+    async deploySymbolContract(contractName: string, symbol: string, contractFileName: string): Promise<Contract> {
         const artifact = await this.readArtifact(contractFileName)
 
         const factory = new ContractFactory(artifact.abi, artifact.bytecode, this.wallet)

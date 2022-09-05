@@ -69,9 +69,15 @@ env:
   ETHEREUM_JSONRPC_TRACE_URL: http://localhost:8544
   COIN: DAI
 
+  SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+  SECRET_KEY_GUARDIAN: ${{ secrets.SECRET_KEY_GUARDIAN }}
+
   ENV: test
   NETWORK_URL: http://localhost:8544
   WALLET: ${{ secrets.WALLET }}
+
+  ENABLE_RUST_VERIFICATION_SERVICE: true
+  RUST_VERIFICATION_SERVICE_URL: http://0.0.0.0:8043
 
 jobs:
   test:
@@ -159,9 +165,12 @@ jobs:
     - name: Install Playwright
       if: steps.playwright-cache.outputs.cache-hit != 'true'
       run: npx playwright install --with-deps
-    - name: Run playwright
+    - name: Run playwright smoke suite
       run: |
         npm run test:smoke
+    - name: Run playwright verification suite
+      run: |
+        npm run test:smoke:verification
     - uses: actions/upload-artifact@v3
       if: always()
       with:

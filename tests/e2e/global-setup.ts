@@ -40,7 +40,7 @@ const setupContracts = async (): Promise<void> => {
     const contractName = `TestToken`
     const tokenName = `EPIC`
     const tokenSymbol = `EPC`
-    const token = await contracts.deploy(tokenName, tokenSymbol, contractName) as TestToken
+    const token = await contracts.deploySymbolContract(tokenName, tokenSymbol, contractName) as TestToken
     const receipt0 = await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
 
     console.log(`minting tokens`)
@@ -55,15 +55,47 @@ const setupContracts = async (): Promise<void> => {
     const contractNameNFT = `TestNFT`
     const tokenNameNFT = `NFT`
     const tokenSymbolNFT = `NFT`
-    const nft = await contracts.deploy(tokenNameNFT, tokenSymbolNFT, contractNameNFT) as TestNFT
+    const nft = await contracts.deploySymbolContract(tokenNameNFT, tokenSymbolNFT, contractNameNFT) as TestNFT
     const receiptNFT = await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
 
     console.log(`minting NFT`)
     const txNFT1 = await nft.mintNFT(contracts.wallet.address, ``)
     const receiptNFT1 = await txNFT1.wait()
 
+    // read flattened contracts, deploy separate contract pack for verification
+    const SimpleStorageFlatContractCode = readFileSync(`../contracts/contracts/SimpleStorage_flat.sol`).toString()
+    const TestTokenFlatContractCode = readFileSync(`../contracts/contracts/TestToken_flat.sol`).toString()
+    const TestNFTFlatContractCode = readFileSync(`../contracts/contracts/TestNFT_flat.sol`).toString()
+
+    console.log(`deploying ERC20 contract (verified)`)
+    const tokenNameV = `EPICV`
+    const tokenSymbolV = `EPCV`
+    const tokenV = await contracts.deploySymbolContract(tokenNameV, tokenSymbolV, `TestToken`) as TestToken
+    const receipt0V = await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
+
+    console.log(`minting tokens`)
+    const tx1V = await tokenV.mint(contracts.wallet.address, 10000)
+    const receipt1V = await tx1V.wait()
+
+    console.log(`creating reverted tx`)
+    const tx2V = await tokenV.alwaysReverts({ gasLimit: 250000 })
+    const receipt2V = await waitReceiptWithBlock(contracts.provider, tx2.hash)
+
+    console.log(`deploying NFT contract`)
+    const contractNameNFTV = `TestNFTV`
+    const tokenNameNFTV = `NFTV`
+    const tokenSymbolNFTV = `NFTV`
+    const nftV = await contracts.deploySymbolContract(tokenNameNFTV, tokenSymbolNFTV, `TestNFT`) as TestNFT
+    const receiptNFTV = await waitReceiptWithBlock(contracts.provider, tokenV.deployTransaction.hash)
+
+    console.log(`minting NFT`)
+    const txNFT1V = await nftV.mintNFT(contracts.wallet.address, ``)
+    const receiptNFT1V = await txNFT1V.wait()
+
     shareData({
+        ZeroAddress: `0x0000000000000000000000000000000000000000`,
         MinerAddress: `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`,
+
         TestTokenHolder: contracts.wallet.address,
         TestTokenAddress: token.address,
         TestTokenName: tokenName,
@@ -82,6 +114,29 @@ const setupContracts = async (): Promise<void> => {
         TestNFTDeployTXBlockNumber: receiptNFT.blockNumber,
         TestNFTTXMintHash: txNFT1.hash,
         TestNFTTXMintBlockNumber: receiptNFT1.blockNumber.toString(),
+
+        // verified
+        SimpleStorageFlatContractCode,
+        TestTokenFlatContractCode,
+        TestNFTFlatContractCode,
+
+        TestTokenAddressV: tokenV.address,
+        TestTokenNameV: tokenNameV,
+        TestTokenSymbolV: tokenSymbolV,
+        TestTokenDeployTXHashV: tokenV.deployTransaction.hash,
+        TestTokenDeployTXBlockNumberV: receipt0V.blockNumber,
+        TestTokenTXMintHashV: tx1V.hash,
+        TestTokenTXMintBlockNumberV: receipt1V.blockNumber.toString(),
+        TestTokenTXRevertHashV: tx2V.hash,
+        TestTokenTXRevertBlockNumberV: receipt2V.blockNumber.toString(),
+
+        TestNFTAddressV: nftV.address,
+        TestNFTNameV: tokenNameNFTV,
+        TestNFTSymbolV: tokenSymbolNFTV,
+        TestNFTDeployTXHashV: nftV.deployTransaction.hash,
+        TestNFTDeployTXBlockNumberV: receiptNFTV.blockNumber,
+        TestNFTTXMintHashV: txNFT1V.hash,
+        TestNFTTXMintBlockNumberV: receiptNFT1V.blockNumber.toString(),
     })
 }
 
