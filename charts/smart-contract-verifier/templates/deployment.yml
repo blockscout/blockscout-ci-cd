@@ -41,14 +41,14 @@ spec:
           readinessProbe:
             httpGet:
               path: /health
-              port: {{ .Values.docker.port }}
+              port: {{ .Values.docker.targetPort }}
               scheme: HTTP
             initialDelaySeconds: 60
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /health
-              port: {{ .Values.docker.port }}
+              port: {{ .Values.docker.targetPort }}
               scheme: HTTP
             initialDelaySeconds: 100
             periodSeconds: 100
