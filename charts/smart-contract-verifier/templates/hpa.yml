@@ -10,4 +10,3 @@ spec:
     kind: Deployment
     name: {{ .Release.Name }}
   targetCPUUtilizationPercentage: {{ .Values.hpa.cpu_target }}
-

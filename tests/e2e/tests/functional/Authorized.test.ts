@@ -108,6 +108,6 @@ test(`@AccountImage @Authorized Check public tags creation`, async ({ authorized
         addresses: [TestTokenAddress, TestNFTAddress],
         description: `skldfhskdjfha`,
     } as PublicTagSpec)
-    await authorized.checkListRow(0, [[tagName1, tagName2], TestTokenAddress])
+    await authorized.checkListRow(0, [[tagName1, tagName2], TestTokenAddress.toLowerCase()])
     // TODO: how to approve it now?
 })
