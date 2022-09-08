@@ -5,7 +5,7 @@ metadata:
   name: {{ .Release.Name }}-geth
 spec:
   serviceName: {{ .Release.Name }}-geth
-  replicas: 1
+  replicas: {{ .Values.node.replicas.app }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}-geth
