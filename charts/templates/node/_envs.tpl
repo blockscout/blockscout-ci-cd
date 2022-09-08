@@ -1,6 +1,6 @@
-{{- define "app_env" }}
-{{- range $key, $value := .Values.environment }}
-{{- $item := get $.Values.environment $key }}
+{{- define "node_env" }}
+{{- range $key, $value := .Values.node.environment }}
+{{- $item := get $.Values.node.environment $key }}
 {{- if or (kindIs "string" $item) (kindIs "int64" $item) (kindIs "bool" $item)}}
 - name: {{ $key }}
   value: {{ $value | quote }}

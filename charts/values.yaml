@@ -1,0 +1,157 @@
+global:
+  env: test
+
+# enable Blockscout deploy
+blockscout:
+  enabled: false
+  image: blockscout/blockscout:latest
+
+  replicas:
+    app: 1
+  docker:
+    port: 80
+    targetPort: 4000
+
+  # enable ingress
+  ingress:
+    enabled: false
+    host:
+    # enable https
+    tls:
+      enabled: false
+
+  resources:
+    limits:
+      memory:
+        _default: "1Gi"
+      cpu:
+        _default: "0.5"
+    requests:
+      memory:
+        _default: "1Gi"
+      cpu:
+        _default: "0.5"
+
+  # enable service to connect to RDS
+  rds:
+    enable: false
+    endpoint: <endpoint>.<region>.rds.amazonaws.com
+
+  # Blockscout environment variables
+  environment: {}
+
+# enable Node (geth) deploy
+node:
+  enabled: false
+  image: ethereum/client-go:stable
+  portHttp: 8545
+  portWs: 8546
+  portDiscovery: 30303
+  environment: {}
+
+  resources:
+    limits:
+      memory:
+        _default: "6Gi"
+      cpu:
+        _default: "3"
+    requests:
+      memory:
+        _default: "6Gi"
+      cpu:
+        _default: "3"
+
+  # enable ingress
+  ingress:
+    enabled: false
+    host:
+    # enable https
+    tls:
+      enabled: false
+
+# enable Smart-contract-verifier deploy
+scVerifier:
+  enabled: false
+  image: ghcr.io/blockscout/smart-contract-verifier:v0.3.0
+
+  replicas:
+    app: 1
+  docker:
+    port: 80
+    targetPort: 8043
+    metricsPort: 6060
+
+  # enable ingress
+  ingress:
+    enabled: false
+    host:
+    # enable https
+    tls:
+      enabled: false
+
+  resources:
+    limits:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+    requests:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+
+  # enable Horizontal Pod Autoscaler
+  hpa:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 10
+    cpuTarget: 90
+
+  environment:
+    SMART_CONTRACT_VERIFIER__SERVER__ADDR:
+      _default: 0.0.0.0:8043
+    SMART_CONTRACT_VERIFIER__SOLIDITY__ENABLED:
+      _default: 'true'
+    SMART_CONTRACT_VERIFIER__SOLIDITY__COMPILERS_DIR:
+      _default: /tmp/solidity-compilers
+    SMART_CONTRACT_VERIFIER__SOLIDITY__REFRESH_VERSIONS_SCHEDULE:
+      _default: 0 0 * * * * *
+
+    # It depends on the OS you are running the service on
+    # SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__LIST__LIST_URL:
+    #   _default: https://solc-bin.ethereum.org/linux-amd64/list.json
+    #SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__LIST__LIST_URL=https://solc-bin.ethereum.org/macosx-amd64/list.json
+    #SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__LIST__LIST_URL=https://solc-bin.ethereum.org/windows-amd64/list.json
+
+    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ACCESS_KEY:
+      _default:
+    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__SECRET_KEY:
+      _default:
+    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__REGION:
+      _default: ""
+    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ENDPOINT:
+      _default:
+    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__BUCKET:
+      _default:
+
+    SMART_CONTRACT_VERIFIER__SOURCIFY__ENABLED:
+      _default: 'true'
+    SMART_CONTRACT_VERIFIER__SOURCIFY__API_URL:
+      _default:
+    SMART_CONTRACT_VERIFIER__SOURCIFY__VERIFICATION_ATTEMPTS:
+      _default: 3
+    SMART_CONTRACT_VERIFIER__SOURCIFY__REQUEST_TIMEOUT:
+      _default: 10
+
+    SMART_CONTRACT_VERIFIER__METRICS__ENABLED:
+      _default: 'true'
+    SMART_CONTRACT_VERIFIER__METRICS__ADDR:
+      _default: 0.0.0.0:6060
+    SMART_CONTRACT_VERIFIER__METRICS__ROUTE:
+      _default: /metrics
+
+    SMART_CONTRACT_VERIFIER__JAEGER__ENABLED:
+      _default: 'false'
+    SMART_CONTRACT_VERIFIER__JAEGER__AGENT_ENDPOINT:
+      _default:

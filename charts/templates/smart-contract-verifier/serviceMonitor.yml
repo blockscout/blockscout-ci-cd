@@ -1,9 +1,8 @@
+{{- if .Values.scVerifier.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  # labels:
-  #   app: {{ .Release.Name }}
-  name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-sc-verifier
 spec:
   endpoints:
   - scrapeTimeout: 10s
@@ -11,4 +10,5 @@ spec:
     path: /metrics
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: {{ .Release.Name }}-sc-verifier
+{{- end }}

@@ -1,26 +1,27 @@
+{{- if .Values.scVerifier.enabled }}
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-sc-verifier
   annotations:
     prometheus.io/scrape: "true"
     prometheus.io/port: "http-metrics"
 spec:
-  replicas: {{ .Values.replicas.sc_verifier }}
+  replicas: {{ .Values.scVerifier.replicas }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: {{ .Release.Name }}-sc-verifier
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
+        app: {{ .Release.Name }}-sc-verifier
     spec:
       # serviceAccountName: vault-auth
       containers:
-        - name: {{ .Release.Name }}
-          image: {{ .Values.image }}
+        - name: {{ .Release.Name }}-sc-verifier
+          image: {{ .Values.scVerifier.image }}
           resources:
-          {{- with .Values.resources }}
+          {{- with .Values.scVerifier.resources }}
             limits:
               memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
               cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
@@ -30,8 +31,8 @@ spec:
           {{- end }}
           imagePullPolicy: Always
           ports:
-            - containerPort: {{ .Values.docker.targetPort }}
-            - containerPort: {{ .Values.docker.metricsPort }}
+            - containerPort: {{ .Values.scVerifier.docker.targetPort }}
+            - containerPort: {{ .Values.scVerifier.docker.metricsPort }}
               name: http-metrics
           env:
 {{- include "app_env" . | indent 10 }}
@@ -41,14 +42,14 @@ spec:
           readinessProbe:
             httpGet:
               path: /health
-              port: {{ .Values.docker.targetPort }}
+              port: {{ .Values.scVerifier.docker.targetPort }}
               scheme: HTTP
             initialDelaySeconds: 60
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /health
-              port: {{ .Values.docker.targetPort }}
+              port: {{ .Values.scVerifier.docker.targetPort }}
               scheme: HTTP
             initialDelaySeconds: 100
             periodSeconds: 100
@@ -60,3 +61,4 @@ spec:
       #       name: {{ .Release.Name }}-promtail-configmap
       restartPolicy: Always
 ---
+{{- end}}

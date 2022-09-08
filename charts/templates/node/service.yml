@@ -1,0 +1,23 @@
+{{- if .Values.node.enabled }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-node-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.node.port_http }}
+      targetPort: {{ .Values.node.port_http }}
+      protocol: TCP
+      name: http
+    - port: {{ .Values.node_port_ws }}
+      targetPort: {{ .Values.node.port_ws }}
+      protocol: TCP
+      name: ws
+    - port: {{ .Values.node.port_discovery }}
+      targetPort: {{ .Values.node.port_discovery }}
+      protocol: TCP
+      name: discovery
+  selector:
+    app: {{ .Release.Name }}-geth
+{{- end }}
