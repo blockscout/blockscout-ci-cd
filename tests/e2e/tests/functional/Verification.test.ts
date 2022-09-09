@@ -16,7 +16,7 @@ test(`@Ethereum @Verification @Data Can verify ERC20 contract with flatten`, asy
     await verificationPage.open(TestTokenAddressV)
     const form = {
         contractName: TestTokenNameV,
-        compilerVersion: ``,
+        compilerVersion: `v0.8.17+commit.8df45f5f`,
         evmVersion: ``,
         code: TestTokenFlatContractCode,
     } as VerificationFlattenForm
@@ -25,7 +25,7 @@ test(`@Ethereum @Verification @Data Can verify ERC20 contract with flatten`, asy
         contractNameText: `Contract name`,
         contractName: `TestToken`,
         compilerVersionText: `Compiler version`,
-        compilerVersion: `v0.8.16+commit.07a7930e`,
+        compilerVersion: `v0.8.17+commit.8df45f5f`,
         EVMVersionText: `EVM Version`,
         EVMVersion: `default`,
         optomizationEnabledText: `Optimization enabled`,
@@ -86,7 +86,7 @@ test(`@Ethereum @Verification @Data Can verify NFT contract with flatten`, async
     await verificationPage.fillFlattenForm(
         {
             contractName: TestNFTNameV,
-            compilerVersion: ``,
+            compilerVersion: `v0.8.17+commit.8df45f5f`,
             evmVersion: ``,
             code: TestNFTFlatContractCode,
         } as VerificationFlattenForm,
@@ -95,7 +95,7 @@ test(`@Ethereum @Verification @Data Can verify NFT contract with flatten`, async
         contractNameText: `Contract name`,
         contractName: `TestNFT`,
         compilerVersionText: `Compiler version`,
-        compilerVersion: `v0.8.16+commit.07a7930e`,
+        compilerVersion: `v0.8.17+commit.8df45f5f`,
         EVMVersionText: `EVM Version`,
         EVMVersion: `default`,
         optomizationEnabledText: `Optimization enabled`,
