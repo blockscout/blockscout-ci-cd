@@ -131,7 +131,7 @@ export class AuthorizedArea extends CommonPage {
 
     PUBLIC_TAGS_TAGS_INPUT = `#public_tags_request_tags`
 
-    PUBLIC_TAGS_ADDRESSES_INPUT = `#public_tags_request_addresses`
+    PUBLIC_TAGS_ADDRESSES_INPUT = `#public_tags_request_addresses_array`
 
     PUBLIC_TAGS_DESCRIPTION_INPUT = `#public_tags_request_additional_comment`
 

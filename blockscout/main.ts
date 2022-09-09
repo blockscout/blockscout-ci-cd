@@ -47,6 +47,8 @@ import { BlockscoutChart, ResourceMode } from './pkg/blockscout'
             secretKeyGuardian: process.env.SECRET_KEY_GUARDIAN,
             enableRustVerificationService: process.env.ENABLE_RUST_VERIFICATION_SERVICE || `true`,
             rustVerificationServiceURL: process.env.RUST_VERIFICATION_SERVICE_URL || `http://0.0.0.0:8043`,
+            verificationS3AccessKey: process.env.SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ACCESS_KEY,
+            verificationS3SecretKey: process.env.SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__SECRET_KEY,
         },
     )
     app.synth()

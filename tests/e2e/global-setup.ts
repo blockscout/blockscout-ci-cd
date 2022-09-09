@@ -63,7 +63,6 @@ const setupContracts = async (): Promise<void> => {
     const receiptNFT1 = await txNFT1.wait()
 
     // read flattened contracts, deploy separate contract pack for verification
-    const SimpleStorageFlatContractCode = readFileSync(`../contracts/contracts/SimpleStorage_flat.sol`).toString()
     const TestTokenFlatContractCode = readFileSync(`../contracts/contracts/TestToken_flat.sol`).toString()
     const TestNFTFlatContractCode = readFileSync(`../contracts/contracts/TestNFT_flat.sol`).toString()
 
@@ -116,7 +115,6 @@ const setupContracts = async (): Promise<void> => {
         TestNFTTXMintBlockNumber: receiptNFT1.blockNumber.toString(),
 
         // verified
-        SimpleStorageFlatContractCode,
         TestTokenFlatContractCode,
         TestNFTFlatContractCode,
 
