@@ -7,7 +7,7 @@ metadata:
     prometheus.io/scrape: "true"
     prometheus.io/port: "http-metrics"
 spec:
-  replicas: {{ .Values.scVerifier.replicas }}
+  replicas: {{ .Values.scVerifier.replicas.app }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}-sc-verifier

@@ -17,7 +17,7 @@ spec:
       containers:
       - name: {{ .Release.Name }}-geth
         image: {{ .Values.node.image }}
-        args: [ "--goerli", "--gcmode=archive", "--http", "--http.addr=0.0.0.0", "--http.api=eth,net,web3,txpool", "--http.corsdomain=*", "--ws", "--ws.addr=0.0.0.0", "--ws.api=eth,net,web3,txpool", "--datadir=/data", ]
+        args: [ "--goerli", "--snapshot=false", "--gcmode=archive", "--http", "--http.addr=0.0.0.0", "--http.api=eth,net,web3,txpool", "--http.corsdomain=*", "--http.vhosts=*", "--ws", "--ws.addr=0.0.0.0", "--ws.api=eth,net,web3,txpool", "--ws.origins=*", "--datadir=/data", ]
         # args: [ "--http", "--http.addr=0.0.0.0", "--http.vhosts=geth-mainnet-full", "--http.api=eth,net,web3,txpool", "--ws", "--ws.addr=0.0.0.0", "--datadir=/data", ]
         resources:
         {{- with .Values.node.resources }}

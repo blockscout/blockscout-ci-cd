@@ -12,7 +12,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "15m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
-    {{- if .Values.ingress.tls }}
+    {{- if .Values.node.ingress.tls.enabled }}
     cert-manager.io/cluster-issuer: "letsencrypt-cluster"
     {{- end }}
   name: {{ .Release.Name }}-node-ingress
@@ -35,14 +35,14 @@ spec:
                 name: {{ .Release.Name }}-node-svc
                 port:
                   number: {{ .Values.node.portWs }}
-          - path: /discovery(/|$)(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Release.Name }}-node-svc
-                port:
-                  number: {{ .Values.node.portDiscovery }}
-  {{- if .Values.ingress.tls }}
+          # - path: /discovery(/|$)(.*)
+          #   pathType: Prefix
+          #   backend:
+          #     service:
+          #       name: {{ .Release.Name }}-node-svc
+          #       port:
+          #         number: {{ .Values.node.portDiscovery }}
+  {{- if .Values.node.ingress.tls.enabled }}
   tls:
     - hosts:
         - {{ .Values.node.ingress.host }}

@@ -12,6 +12,10 @@ blockscout:
     port: 80
     targetPort: 4000
 
+  service:
+    # ClusterIP, NodePort or LoadBalancer
+    type: ClusterIP
+
   # enable ingress
   ingress:
     enabled: false
@@ -45,7 +49,8 @@ node:
   enabled: false
   image: ethereum/client-go:stable
 
-  relicas: 1
+  replicas:
+    app: 1
 
   portHttp: 8545
   portWs: 8546
@@ -64,6 +69,10 @@ node:
         _default: "6Gi"
       cpu:
         _default: "3"
+
+  service:
+    # ClusterIP, NodePort or LoadBalancer
+    type: ClusterIP
 
   # enable ingress
   ingress:
@@ -84,6 +93,10 @@ scVerifier:
     port: 80
     targetPort: 8043
     metricsPort: 6060
+
+  service:
+    # ClusterIP, NodePort or LoadBalancer
+    type: ClusterIP
 
   # enable ingress
   ingress:
