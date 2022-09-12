@@ -672,6 +672,9 @@ jaeger_agents = ["127.0.0.1:6831"]
                             annotations: scrapeAnnotations,
                         },
                         spec: {
+                            nodeSelector: {
+                                app: `blockscout`,
+                            },
                             volumes: [
                                 {
                                     name: cm.name,
@@ -720,6 +723,9 @@ jaeger_agents = ["127.0.0.1:6831"]
                             annotations: scrapeAnnotations,
                         },
                         spec: {
+                            nodeSelector: {
+                                app: `blockscout`,
+                            },
                             volumes: [
                                 {
                                     name: cm.name,
