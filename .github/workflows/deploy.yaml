@@ -15,3 +15,4 @@ jobs:
           owner: blockscout
           repo: depoloyment-values
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow_file_name: main.yml
