@@ -40,20 +40,24 @@ spec:
           # volumeMounts:
           #   - name: smweb-logs
           #     mountPath: /usr/local/sm-web-server/log
-          # readinessProbe:
-          #   httpGet:
-          #     path: /health
-          #     port: {{ .Values.blockscout.docker.targetPort }}
-          #     scheme: HTTP
-          #   initialDelaySeconds: 60
-          #   periodSeconds: 10
-          # livenessProbe:
-          #   httpGet:
-          #     path: /health
-          #     port: {{ .Values.blockscout.docker.targetPort }}
-          #     scheme: HTTP
-          #   initialDelaySeconds: 100
-          #   periodSeconds: 100
+          {{- if .Values.blockscout.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.blockscout.livenereadinessProbessProbe.path }}
+              port: {{ .Values.blockscout.docker.targetPort }}
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          {{- end }}
+          {{- if .Values.blockscout.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.blockscout.livenessProbe.path }}
+              port: {{ .Values.blockscout.docker.targetPort }}
+              scheme: HTTP
+            initialDelaySeconds: 100
+            periodSeconds: 100
+          {{- end }}
         #   volumeMounts:
         #     - name: smweb-logs
         #       mountPath: /smweb/
@@ -67,5 +71,9 @@ spec:
       #     configMap:
       #       name: {{ .Release.Name }}-promtail-configmap
       restartPolicy: Always
+      {{- if .Values.blockscout.nodeSelector.enabled }}
+      nodeSelector:
+        app: {{ .Values.blockscout.nodeSelector.app}}
+      {{- end }}
 ---
 {{- end }}

@@ -39,20 +39,24 @@ spec:
           # volumeMounts:
           #   - name: {{ .Release.Name }}-logs
           #     mountPath: /usr/local/gkretail/sm-web-server/log
+          {{- if .Values.scVerifier.livenessProbe.enabled }}
           readinessProbe:
             httpGet:
-              path: /health
+              path: {{ .Values.scVerifier.livenessProbe.path }}
               port: {{ .Values.scVerifier.docker.targetPort }}
               scheme: HTTP
             initialDelaySeconds: 60
             periodSeconds: 10
+          {{- end }}
+          {{- if .Values.scVerifier.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
-              path: /health
+              path: {{ .Values.scVerifier.livenessProbe.path }}
               port: {{ .Values.scVerifier.docker.targetPort }}
               scheme: HTTP
             initialDelaySeconds: 100
             periodSeconds: 100
+          {{- end }}
       # volumes:
       #   - name: {{ .Release.Name }}-logs
       #     emptyDir: { }
@@ -60,5 +64,9 @@ spec:
       #     configMap:
       #       name: {{ .Release.Name }}-promtail-configmap
       restartPolicy: Always
+      {{- if .Values.scVerifier.nodeSelector.enabled }}
+      nodeSelector:
+        app: {{ .Values.scVerifier.nodeSelector.app}}
+      {{- end }}
 ---
 {{- end}}
