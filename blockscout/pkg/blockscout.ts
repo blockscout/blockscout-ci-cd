@@ -18,6 +18,11 @@ import {
 
 const defaultCmd = `bin/blockscout eval "Elixir.Explorer.ReleaseTasks.create_and_migrate()" && bin/blockscout start`
 
+const scrapeAnnotations = {
+    'prometheus.io/scrape': `true`,
+    'prometheus.io/port': `http-metrics`,
+}
+
 export enum ResourceMode {
     E2E = `e2e`,
     Load = `load`,
@@ -65,6 +70,8 @@ interface BlockscoutProps {
     // verifier vars
     enableRustVerificationService?: string,
     rustVerificationServiceURL?: string,
+    verificationS3AccessKey?: string,
+    verificationS3SecretKey?: string,
 }
 
 const guaranteedResources = (cpu: string, memory: string) => ({
@@ -119,10 +126,84 @@ const verificationContainer = (bsProps: BlockscoutProps, resources: ResourceRequ
         name: `bs-verification`,
         image: bsProps.verificationServiceImage,
         args: [`-c`, `/app/config/config.toml`],
+        ports: [
+            { name: `http`, containerPort: 8043 },
+            { name: `http-metrics`, containerPort: 6060 },
+        ],
         volumeMounts: [
             {
                 name: vcm.name,
                 mountPath: `/app/config`,
+            },
+        ],
+        env: [
+            {
+                name: `SMART_CONTRACT_VERIFIER__SERVER__ADDR`,
+                value: `0.0.0.0:8043`,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__SOLIDITY__COMPILERS_DIR`,
+                value: `/tmp/solidity/compilers`,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__SOLIDITY__ENABLED`,
+                value: `true`,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ACCESS_KEY`,
+                value: bsProps.verificationS3AccessKey,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__BUCKET`,
+                value: `solc-releases`,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__BUCKET`,
+                value: `solc-releases`,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ENDPOINT`,
+                value: `https://storage.googleapis.com`,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__REGION`,
+                value: ``,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__SECRET_KEY`,
+                value: bsProps.verificationS3SecretKey,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__SOLIDITY__REFRESH_VERSIONS_SCHEDULE`,
+                value: `0 0 * * * * *`,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__SOURCIFY__API_URL`,
+                value: `https://sourcify.dev/server/`,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__SOURCIFY__ENABLED`,
+                value: `true`,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__SOURCIFY__REQUEST_TIMEOUT`,
+                value: `10`,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__SOURCIFY__VERIFICATION_ATTEMPTS`,
+                value: `3`,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__METRICS__ADDR`,
+                value: `0.0.0.0:6060`,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__METRICS__ENABLED`,
+                value: `true`,
+            },
+            {
+                name: `SMART_CONTRACT_VERIFIER__METRICS__ROUTE`,
+                value: `/metrics`,
             },
         ],
         resources,
@@ -397,7 +478,9 @@ const createService = (scope: Construct, namespaceName: string, deploymentSelect
             },
             spec: {
                 type: `ClusterIP`,
-                ports: [{ port: bsProps.port, targetPort: IntOrString.fromNumber(bsProps.port) }],
+                ports: [
+                    { port: bsProps.port, targetPort: IntOrString.fromNumber(bsProps.port) },
+                ],
                 selector: deploymentSelector,
             },
         })
@@ -446,7 +529,11 @@ const createService = (scope: Construct, namespaceName: string, deploymentSelect
                 namespace: namespaceName,
             },
             spec: {
-                ports: [{ port: bsProps.port, targetPort: IntOrString.fromNumber(bsProps.port) }],
+                ports: [
+                    { name: `api`, port: bsProps.port, targetPort: IntOrString.fromNumber(bsProps.port) },
+                    { name: `http`, port: 8043, targetPort: IntOrString.fromNumber(8043) },
+                    { name: `http-metrics`, port: 6060, targetPort: IntOrString.fromNumber(6060) },
+                ],
                 selector: deploymentSelector,
             },
         })
@@ -582,8 +669,12 @@ jaeger_agents = ["127.0.0.1:6831"]
                         metadata: {
                             name: `pod`,
                             labels: deploymentSelector,
+                            annotations: scrapeAnnotations,
                         },
                         spec: {
+                            nodeSelector: {
+                                app: `blockscout`,
+                            },
                             volumes: [
                                 {
                                     name: cm.name,
@@ -629,8 +720,12 @@ jaeger_agents = ["127.0.0.1:6831"]
                         metadata: {
                             name: `pod`,
                             labels: deploymentSelector,
+                            annotations: scrapeAnnotations,
                         },
                         spec: {
+                            nodeSelector: {
+                                app: `blockscout`,
+                            },
                             volumes: [
                                 {
                                     name: cm.name,
