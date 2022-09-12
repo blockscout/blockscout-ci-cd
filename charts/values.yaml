@@ -27,10 +27,10 @@ blockscout:
   # probes
   livenessProbe:
     enabled: true
-    path: /api/v1/health
+    path: /
   readinessProbe:
     enabled: true
-    path: /api/v1/health
+    path: /
 
   resources:
     limits:
@@ -51,7 +51,7 @@ blockscout:
 
   # node label
   nodeSelector:
-    enabled: true 
+    enabled: true
     app: blockscout
 
   # Blockscout environment variables
