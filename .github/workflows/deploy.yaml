@@ -1,18 +1,84 @@
 name: Test deploy
 
-
+# Triggered when a pull request is merged or changes are pushed directly to master branch
 on:
   push:
-
+    # branches: [master]
+  workflow_dispatch:
 
 jobs:
+
   deploy:
     name: Deploy
-    runs-on: ubuntu-18.04
+    needs: pre-release
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      max-parallel: 1
+      matrix:
+        environment: [Dev]
+        region: [us-east-1]
+    environment:
+      name: ${{ matrix.environment }}
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.1
+      # - name: Download Deployment Artifacts
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: deployment-artifacts
+
+      # # Replace the docker image tag in deployment spec.
+      # - name: Substitute Values In Deployment Files
+      #   uses: cschleiden/replace-tokens@v1
+      #   with:
+      #     tokenPrefix: '${'
+      #     tokenSuffix: '}'
+      #     files: '["cloud/deployment.yaml"]'
+      #   env:
+      #     COMMIT: ${{ needs.pre-release.outputs.commit }}
+
+      - name: Configure Kubectl
+        uses: azure/setup-kubectl@v2.0
         with:
-          owner: blockscout
-          repo: depoloyment-values
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow_file_name: main.yml
+          version: 'v1.23.6'
+        id: install
+
+      # This action will use the GitHub OIDC id-token and request AWS STS to get temporary credentials.
+      # The temporary credentials are exported as env variables.
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ matrix.region }}
+          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+
+
+
+      # The following command will update the kube config file with our cluster information.
+      # It will use the credentials exported by the previous action.
+      - name: Update KubeConfig
+        shell: bash
+        run: |
+          aws eks update-kubeconfig --name ${{ secrets.AWS_CLUSTER_NAME }} --region=${{ matrix.region }}
+
+      # Deploy newly built changes to EKS cluster.
+      - name: Deploy To Cluster
+        shell: bash
+        run: kubectl get pod
+
+
+# on:
+#   push:
+
+
+# jobs:
+#   deploy:
+#     name: Deploy
+#     runs-on: ubuntu-18.04
+#     steps:
+#       - uses: convictional/trigger-workflow-and-wait@v1.6.1
+#         with:
+#           owner: blockscout
+#           repo: depoloyment-values
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           workflow_file_name: main.yml

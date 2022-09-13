@@ -43,7 +43,7 @@ spec:
           {{- if .Values.blockscout.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
-              path: {{ .Values.blockscout.livenereadinessProbessProbe.path }}
+              path: {{ .Values.blockscout.readinessProbe.path }}
               port: {{ .Values.blockscout.docker.targetPort }}
               scheme: HTTP
             initialDelaySeconds: 60
