@@ -104,6 +104,9 @@ jobs:
       #     COMMIT: ${{ needs.pre-release.outputs.commit }}
       - name: Check out the repo
         uses: actions/checkout@v3
+        with:
+          repository: blockscout/blockscout-ci-cd
+          path: blockscout-ci-cd
 
       - name: Add inputs to GITHUB_ENV
         if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
