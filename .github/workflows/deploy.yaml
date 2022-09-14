@@ -18,6 +18,11 @@ on:
         required: false
         default: 'blockscout'
         type: string
+      frontendImage:
+        description: 'Frontend image'
+        required: false
+        default: 'frontend:latest'
+        type: string
   workflow_call:
     inputs:
       valuesDir:
@@ -84,6 +89,7 @@ jobs:
         run: |
           echo "VALUES_DIR=${{ inputs.valuesDir }}" >> $GITHUB_ENV
           echo "APP_NAME=${{ inputs.appName }}" >> $GITHUB_ENV
+          echo "FRONTEND_IMAGE=${{ inputs.frontendImage }}" >> $GITHUB_ENV
 
       - name: Generate namespace name
         if: "${{ inputs.appNamespace == '' }}"
@@ -159,6 +165,7 @@ jobs:
             $APP_NAME blockscout-stack \
             -f $VALUES_DIR/values.yaml \
             -f $VALUES_DIR/secrets.yaml \
+            --set frontend.image=$FRONTEND_IMAGE \
             -n $APP_NAMESPACE --create-namespace
 
       # Copy registry secret if private repo
