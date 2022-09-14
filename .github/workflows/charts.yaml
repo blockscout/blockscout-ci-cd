@@ -32,7 +32,7 @@ jobs:
           publish_branch: gh-pages
           force_orphan: true
           publish_dir: ./repo
-          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
 
   helm-lint:
     runs-on: ubuntu-latest
