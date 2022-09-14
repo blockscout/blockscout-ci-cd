@@ -163,7 +163,7 @@ jobs:
 
       # Copy registry secret if private repo
       - name: Deploy To Cluster
-        if: $GITHUB_REPOSITORY == blockscout/frontend
+        if: github.repository == blockscout/frontend
         shell: bash
         run: |
           kubectl get secret regcred -o yaml | sed 's/namespace: .*/namespace: $APP_NAMESPACE/' | kubectl apply -f -
