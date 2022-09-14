@@ -4,6 +4,22 @@ name: Test deploy
 on:
   push:
     # branches: [master]
+    inputs:
+      valuesDir:
+        description: 'Directory with values'
+        required: true
+        default: 'charts'
+        type: string
+      appName:
+        description: 'App name'
+        required: true
+        default: 'blockscout'
+        type: string
+      appNamespace:
+        description: 'Namespace to deploy in'
+        required: false
+        default: 'blockscout'
+        type: string
   workflow_dispatch:
     inputs:
       valuesDir:
