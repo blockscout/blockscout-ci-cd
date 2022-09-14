@@ -180,7 +180,8 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           fingerprint: ${{ secrets.GPG_FINGERPRINT }}
-          
+          passphrase: ''
+
       # Deploy newly built changes to EKS cluster.
       - name: Deploy To Cluster
         shell: bash
