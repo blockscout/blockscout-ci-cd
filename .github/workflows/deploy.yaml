@@ -1,25 +1,6 @@
 name: Test deploy
 
-# Triggered when a pull request is merged or changes are pushed directly to master branch
 on:
-  push:
-    # branches: [master]
-    inputs:
-      valuesDir:
-        description: 'Directory with values'
-        required: true
-        default: 'charts'
-        type: string
-      appName:
-        description: 'App name'
-        required: true
-        default: 'blockscout'
-        type: string
-      appNamespace:
-        description: 'Namespace to deploy in'
-        required: false
-        default: 'blockscout'
-        type: string
   workflow_dispatch:
     inputs:
       valuesDir:
@@ -54,16 +35,6 @@ on:
         required: false
         default: 'blockscout'
         type: string
-
-      # environment:
-      #   description: 'Environment to run tests against'
-      #   required: false
-      #   type: choice
-      #   default: 'dev'
-      #   options:
-      #   - prod
-      #   - test
-      #   - dev
 
 env:
   K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
@@ -121,16 +92,7 @@ jobs:
         with:
           name: ${{ github.sha }}
 
-      # - name: Add inputs to GITHUB_ENV
-      #   if: "${{ inputs.appNamespace != '' }}"
-      #   run: |
-      #     echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> $GITHUB_ENV
-
-      # - name: Add inputs to GITHUB_ENV
-      #   if: "${{ inputs.appNamespace != '' }}"
-      #   run: |
-      #     echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> $GITHUB_ENV
-      - name: Set env NEED
+      - name: Set envs
         run: |
           if ${{ inputs.appNamespace != '' }}; then
               echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> "$GITHUB_ENV"
@@ -198,3 +160,10 @@ jobs:
             -f $VALUES_DIR/values.yaml \
             -f $VALUES_DIR/secrets.yaml \
             -n $APP_NAMESPACE --create-namespace
+
+      # Copy registry secret if private repo
+      - name: Deploy To Cluster
+        if: $GITHUB_REPOSITORY == blockscout/frontend
+        shell: bash
+        run: |
+          kubectl get secret regcred -o yaml | sed 's/namespace: .*/namespace: $APP_NAMESPACE/' | kubectl apply -f -

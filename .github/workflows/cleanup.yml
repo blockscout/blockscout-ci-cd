@@ -1,0 +1,93 @@
+name: Cleanup
+
+# Triggered when a pull request is merged
+on:
+  workflow_dispatch:
+    inputs:
+      appNamespace:
+        description: 'Namespace to delete'
+        required: true
+        default: 'blockscout'
+        type: string
+  workflow_call:
+    inputs:
+      appNamespace:
+        description: 'Namespace to delete'
+        required: true
+        default: 'blockscout'
+        type: string
+
+env:
+  K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
+  K8S_HOST: ${{ secrets.K8S_HOST }}
+  BASTION_HOST: ${{ secrets.BASTION_HOST }}
+  K8S_PORT: ${{ secrets.K8S_PORT }}
+  USERNAME: ${{ secrets.USERNAME }}
+  BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
+
+jobs:
+  deploy:
+    name: Deploy
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      max-parallel: 1
+      matrix:
+        environment: [Dev]
+        region: [us-east-1]
+    environment:
+      name: ${{ matrix.environment }}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Add inputs to GITHUB_ENV
+        run: |
+          echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> $GITHUB_ENV
+
+      - name: Configure Kubectl
+        uses: azure/setup-kubectl@v2.0
+        with:
+          version: 'v1.23.6'
+        id: install
+
+      # This action will use the GitHub OIDC id-token and request AWS STS to get temporary credentials.
+      # The temporary credentials are exported as env variables.
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ matrix.region }}
+          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+
+      # Install helm, helm-secrets, sops
+      - name: Install helm and helm-secrets, sops
+        shell: bash
+        run: |
+          curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+          sudo apt-get install apt-transport-https --yes
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+          sudo apt-get update -y
+          sudo apt-get install helm -y
+
+      # The following command will update the kube config file with our cluster information.
+      # It will use the credentials exported by the previous action.
+      - name: Update KubeConfig
+        shell: bash
+        run: |
+          aws eks update-kubeconfig --name ${{ secrets.AWS_CLUSTER_NAME }} --region=${{ matrix.region }}
+
+      # Deploy newly built changes to EKS cluster.
+      - name: Deploy To Cluster
+        shell: bash
+        run: |
+          mkdir ~/.ssh
+          ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
+          eval `ssh-agent -s`
+          ssh-add - <<< "$BASTION_SSH_KEY"
+          sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
+          sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
+          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+          kubectl delete ns $APP_NAMESPACE
