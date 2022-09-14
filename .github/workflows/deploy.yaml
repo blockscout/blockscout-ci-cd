@@ -165,7 +165,6 @@ jobs:
           curl -O -L -C - https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux
           sudo mv sops-v3.7.3.linux /usr/bin/sops
           sudo chmod +x /usr/bin/sops
-          gpg --version
 
       # The following command will update the kube config file with our cluster information.
       # It will use the credentials exported by the previous action.
