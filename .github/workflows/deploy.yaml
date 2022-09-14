@@ -105,10 +105,8 @@ jobs:
       #     COMMIT: ${{ needs.pre-release.outputs.commit }}
       - name: Check out the repo
         uses: actions/checkout@v3
-        with:
-          ref: 'main'
-          # repository: blockscout/blockscout-ci-cd
-          # path: blockscout-ci-cd
+        # with:
+        #   ref: 'main'
 
       - name: Add inputs to GITHUB_ENV
         if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
@@ -183,6 +181,8 @@ jobs:
           sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
           sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
           ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+          ls -la
+          ls -la deployment-values
           helm secrets install --repo https://github.com/blockscout/blockscout-ci-cd/charts/ \
             $APP_NAME blockscout-stack \
             -f $VALUES_DIR/values.yaml \
