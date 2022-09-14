@@ -173,6 +173,14 @@ jobs:
         run: |
           aws eks update-kubeconfig --name ${{ secrets.AWS_CLUSTER_NAME }} --region=${{ matrix.region }}
 
+      # Import GPG key
+      - name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          fingerprint: ${{ secrets.GPG_FINGERPRINT }}
+          
       # Deploy newly built changes to EKS cluster.
       - name: Deploy To Cluster
         shell: bash
