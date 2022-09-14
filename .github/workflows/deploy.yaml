@@ -197,4 +197,4 @@ jobs:
             $APP_NAME blockscout-stack \
             -f $VALUES_DIR/values.yaml \
             -f $VALUES_DIR/secrets.yaml \
-            -n $APP_NAMESPACE
+            -n $APP_NAMESPACE --create-namespace
