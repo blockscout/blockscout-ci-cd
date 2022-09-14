@@ -5,6 +5,40 @@ on:
   push:
     # branches: [master]
   workflow_dispatch:
+    inputs:
+      valuesDir:
+        description: 'Directory with values'
+        required: true
+        default: 'charts'
+        type: string
+      appName:
+        description: 'App name'
+        required: true
+        default: 'blockscout'
+        type: string
+      appNamespace:
+        description: 'Namespace to deploy in'
+        required: false
+        default: 'blockscout'
+        type: string
+
+      # environment:
+      #   description: 'Environment to run tests against'
+      #   required: false
+      #   type: choice
+      #   default: 'dev'
+      #   options:
+      #   - prod
+      #   - test
+      #   - dev
+
+env:
+  K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
+  K8S_HOST: ${{ secrets.K8S_HOST }}
+  BASTION_HOST: ${{ secrets.BASTION_HOST }}
+  K8S_PORT: ${{ secrets.K8S_PORT }}
+  USERNAME: ${{ secrets.USERNAME }}
+  BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
 
 jobs:
   deploy:
@@ -35,6 +69,38 @@ jobs:
       #     files: '["cloud/deployment.yaml"]'
       #   env:
       #     COMMIT: ${{ needs.pre-release.outputs.commit }}
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Add inputs to GITHUB_ENV
+        if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
+        run: |
+          echo "VALUES_DIR=${{ inputs.valuesDir }}" >> $GITHUB_ENV
+          echo "APP_NAME=${{ inputs.appName }}" >> $GITHUB_ENV
+
+      - name: Generate namespace name
+        if: "${{ inputs.appNamespace == '' }}"
+        id: generate
+        uses: filipstefansson/uuid-action@v1
+        with:
+          name: ${{ github.sha }}
+
+      # - name: Add inputs to GITHUB_ENV
+      #   if: "${{ inputs.appNamespace != '' }}"
+      #   run: |
+      #     echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> $GITHUB_ENV
+
+      # - name: Add inputs to GITHUB_ENV
+      #   if: "${{ inputs.appNamespace != '' }}"
+      #   run: |
+      #     echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> $GITHUB_ENV
+      - name: Set env NEED
+        run: |
+          if ${{ inputs.appNamespace != '' }}; then
+              echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> "$GITHUB_ENV"
+          else
+              echo "APP_NAMESPACE=bs-${{ steps.generate.outputs.uuid }}" >> "$GITHUB_ENV"
+          fi
 
       - name: Configure Kubectl
         uses: azure/setup-kubectl@v2.0
@@ -50,7 +116,16 @@ jobs:
           aws-region: ${{ matrix.region }}
           role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
 
-
+      # Install helm, helm-secrets
+      - name: Install helm and helm-secrets
+        shell: bash
+        run: |
+          curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+          sudo apt-get install apt-transport-https --yes
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+          sudo apt-get update -y
+          sudo apt-get install helm -y
+          helm plugin install https://github.com/jkroepke/helm-secrets
 
       # The following command will update the kube config file with our cluster information.
       # It will use the credentials exported by the previous action.
@@ -62,21 +137,16 @@ jobs:
       # Deploy newly built changes to EKS cluster.
       - name: Deploy To Cluster
         shell: bash
-        run: kubectl get pod
-
-
-# on:
-#   push:
-
-
-# jobs:
-#   deploy:
-#     name: Deploy
-#     runs-on: ubuntu-18.04
-#     steps:
-#       - uses: convictional/trigger-workflow-and-wait@v1.6.1
-#         with:
-#           owner: blockscout
-#           repo: depoloyment-values
-#           github_token: ${{ secrets.GITHUB_TOKEN }}
-#           workflow_file_name: main.yml
+        run: |
+          mkdir ~/.ssh
+          ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
+          eval `ssh-agent -s`
+          ssh-add - <<< "$BASTION_SSH_KEY"
+          sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
+          sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
+          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+          helm secrets install --repo https://github.com/blockscout/blockscout-ci-cd/charts/ \
+            $APP_NAME blockscout-stack \
+            -f $VALUES_DIR/values.yaml \
+            -f $VALUES_DIR/secrets.yaml \
+            -n $APP_NAMESPACE
