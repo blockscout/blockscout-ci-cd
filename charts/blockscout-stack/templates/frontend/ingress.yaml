@@ -10,7 +10,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "15m"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "15m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
-    # cert-manager.io/cluster-issuer: vault
+    cert-manager.io/cluster-issuer: "letsencrypt-cluster"
   name: {{ .Release.Name }}-frontend-ingress
 spec:
   rules:
@@ -24,8 +24,8 @@ spec:
                 name: {{ .Release.Name }}-frontend-svc
                 port:
                   number: {{ .Values.frontend.docker.port }}
-  # tls:
-  #   - hosts:
-  #       - {{ .Values.ingress.host }}
-  #     secretName: xcloud-cert-srv
+  tls:
+    - hosts:
+        - {{ .Values.frontend.ingress.host }}
+      secretName: {{ .Release.Name }}-frontend-tls
 {{- end }}
