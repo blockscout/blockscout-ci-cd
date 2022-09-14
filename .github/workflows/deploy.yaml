@@ -152,8 +152,8 @@ jobs:
           aws-region: ${{ matrix.region }}
           role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
 
-      # Install helm, helm-secrets
-      - name: Install helm and helm-secrets
+      # Install helm, helm-secrets, sops
+      - name: Install helm and helm-secrets, sops
         shell: bash
         run: |
           curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
@@ -162,6 +162,9 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install helm -y
           helm plugin install https://github.com/jkroepke/helm-secrets
+          curl -O -L -C https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux
+          sudo mv sops-v3.7.3.linux /usr/bin/sops
+          sudo chmod +x /usr/bin/sops
 
       # The following command will update the kube config file with our cluster information.
       # It will use the credentials exported by the previous action.
