@@ -188,4 +188,4 @@ jobs:
         if: github.repository == 'blockscout/frontend'
         shell: bash
         run: |
-          kubectl get secret regcred -o yaml | sed 's/namespace: .*/namespace: $APP_NAMESPACE/' | kubectl apply -f -
+          kubectl get secret regcred -o yaml | sed "s/namespace: .*/namespace: $APP_NAMESPACE/" | kubectl apply -f -
