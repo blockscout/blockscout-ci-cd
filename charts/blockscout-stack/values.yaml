@@ -20,6 +20,7 @@ blockscout:
   ingress:
     enabled: false
     host:
+      _default:
     # enable https
     tls:
       enabled: false
@@ -47,7 +48,8 @@ blockscout:
   # enable service to connect to RDS
   rds:
     enable: false
-    endpoint: <endpoint>.<region>.rds.amazonaws.com
+    endpoint:
+      _default: <endpoint>.<region>.rds.amazonaws.com
 
   # node label
   nodeSelector:

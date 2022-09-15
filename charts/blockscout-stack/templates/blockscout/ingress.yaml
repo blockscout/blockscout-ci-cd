@@ -13,7 +13,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    {{- if .Values.ingress.tls.enabled }}
+    {{- if .Values.blockscout.ingress.tls.enabled }}
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-cluster"
@@ -21,7 +21,7 @@ metadata:
   name: {{ .Release.Name }}-blockscout-ingress
 spec:
   rules:
-    - host: {{ .Values.blockscout.ingress.host }}
+    - host: {{ pluck $.Values.global.env .Values.blockscout.ingress.host | first | default .Values.blockscout.ingress.host._default | quote }}
       http:
         paths:
           - path: "/"
@@ -31,10 +31,10 @@ spec:
                 name: {{ .Release.Name }}-blockscout-svc
                 port:
                   number: {{ .Values.blockscout.docker.port }}
-  {{- if .Values.blockscout.ingress.tls }}
+  {{- if .Values.blockscout.ingress.tls.enabled }}
   tls:
     - hosts:
-        - {{ .Values.blockscout.ingress.host }}
+        - {{ pluck $.Values.global.env .Values.blockscout.ingress.host | first | default .Values.blockscout.ingress.host._default | quote }}
       secretName: {{ .Release.Name }}-blockscout-tls
   {{- end}}
 ---

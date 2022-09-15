@@ -86,8 +86,6 @@ jobs:
       #     COMMIT: ${{ needs.pre-release.outputs.commit }}
       - name: Check out the repo
         uses: actions/checkout@v3
-        # with:
-        #   ref: 'main'
 
       - name: Add inputs to GITHUB_ENV
         if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
@@ -174,7 +172,7 @@ jobs:
             -n $APP_NAMESPACE --create-namespace
 
       # Copy registry secret if private repo
-      - name: Deploy To Cluster
+      - name: Copy private registry secret
         if: github.repository == 'blockscout/frontend'
         shell: bash
         run: |

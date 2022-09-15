@@ -7,7 +7,7 @@ metadata:
     app: {{ .Release.Name }}-rds-svc
   name: db-svc
 spec:
-  externalName: {{ .Values.blockscout.rds.endpoint }}
+  externalName: {{ pluck $.Values.global.env .Values.blockscout.rds.endpoint | first | default .Values.blockscout.rds.endpoint._default | quote }}
   selector:
     app: {{ .Release.Name }}-rds-svc
   type: ExternalName
