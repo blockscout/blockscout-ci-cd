@@ -23,6 +23,11 @@ on:
         required: false
         default: 'frontend:latest'
         type: string
+      frontendIngressHost:
+        description: 'Frontend url'
+        required: false
+        default: 'frontend-test'
+        type: string
   workflow_call:
     inputs:
       valuesDir:
@@ -44,6 +49,11 @@ on:
         description: 'Frontend image'
         required: false
         default: 'frontend:latest'
+        type: string
+      frontendIngressHost:
+        description: 'Frontend url'
+        required: false
+        default: 'frontend-test.aws-k8s.blockscout.com'
         type: string
 
 env:
@@ -93,6 +103,7 @@ jobs:
           echo "VALUES_DIR=${{ inputs.valuesDir }}" >> $GITHUB_ENV
           echo "APP_NAME=${{ inputs.appName }}" >> $GITHUB_ENV
           echo "FRONTEND_IMAGE=${{ inputs.frontendImage }}" >> $GITHUB_ENV
+          echo "FRONTEND_INGRESS_HOST=${{ inputs.frontendIngressHost }}" >> $GITHUB_ENV
 
       - name: Generate namespace name
         if: "${{ inputs.appNamespace == '' }}"
@@ -169,6 +180,7 @@ jobs:
             -f $VALUES_DIR/values.yaml \
             -f $VALUES_DIR/secrets.yaml \
             --set frontend.image=$FRONTEND_IMAGE \
+            --set frontend.ingress.host=$FRONTEND_INGRESS_HOST \
             -n $APP_NAMESPACE --create-namespace
 
       # Copy registry secret if private repo
