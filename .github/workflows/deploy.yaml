@@ -40,6 +40,11 @@ on:
         required: false
         default: 'blockscout'
         type: string
+      frontendImage:
+        description: 'Frontend image'
+        required: false
+        default: 'frontend:latest'
+        type: string
 
 env:
   K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
