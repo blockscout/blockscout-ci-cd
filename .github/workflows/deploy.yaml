@@ -193,29 +193,29 @@ jobs:
 
       - name: Add input to DEPLOY_ARGS if not empty
         if: "${{ inputs.frontendImage != '' }}"
-        run: echo "--set frontend.image._default=${{ inputs.frontendImage }} " > "$DEPLOY_ARGS"
+        run: DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
 
       - name: Deploy args
         shell: bash
         run: |
           echo $DEPLOY_ARGS
           if ${{ inputs.frontendImage != '' }}; then
-            echo "--set frontend.image._default=${{ inputs.frontendImage }} " >> "$DEPLOY_ARGS"
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
           fi
           if [ -n ${{ inputs.frontendIngressHost }} ]; then
-            echo "--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }} " >> "$DEPLOY_ARGS"
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }} "
           fi
           if [ -n ${{ inputs.blocksckoutImage }} ]; then
-            echo "--set blockscout.image._default=${{ inputs.blocksckoutImage }} " >> "$DEPLOY_ARGS"
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blocksckoutImage }} "
           fi
           if [ -n ${{ inputs.blocksckoutIngressHost }} ]; then
-            echo "--set blocksckout.ingress.host._default=${{ inputs.blocksckoutIngressHost }} " >> "$DEPLOY_ARGS"
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blocksckout.ingress.host._default=${{ inputs.blocksckoutIngressHost }} "
           fi
           if [ -n ${{ inputs.scVerifierImage }} ]; then
-            echo "--set scVerifier.image._default=${{ inputs.scVerifierImage }} " >> "$DEPLOY_ARGS"
+            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
           fi
           if [ -n ${{ inputs.scVerifierIngressHost }} ]; then
-            echo "--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }} " >> "$DEPLOY_ARGS"
+            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }} "
           fi
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
 
