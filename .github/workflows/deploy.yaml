@@ -130,7 +130,7 @@ jobs:
           echo "APP_NAME=${{ inputs.appName }}" >> $GITHUB_ENV
           echo "FRONTEND_IMAGE=${{ inputs.frontendImage }}" >> $GITHUB_ENV
           echo "FRONTEND_INGRESS_HOST=${{ inputs.frontendIngressHost }}" >> $GITHUB_ENV
-          env
+          echo $INPUT_VALUESDIR
 
       - name: Generate namespace name
         if: "${{ inputs.appNamespace == '' }}"
