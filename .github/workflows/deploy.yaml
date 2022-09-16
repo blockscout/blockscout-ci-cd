@@ -7,12 +7,12 @@ on:
       valuesDir:
         description: 'Directory with values'
         required: true
-        default: 'charts'
+        default: 'charts/blockscout-stack'
         type: string
       appName:
         description: 'App name'
         required: true
-        default: 'blockscout'
+        default: 'blockscout-stack'
         type: string
       appNamespace:
         description: 'Namespace to deploy in'
@@ -22,27 +22,26 @@ on:
       blockscoutImage:
         description: 'Blockscout image'
         required: false
-        default: 'blockscout/scVerifier:latest'
+        type: string
+      blockscoutIngressHost:
+        description: 'Frontend url'
+        required: false
         type: string
       frontendImage:
         description: 'Frontend image'
         required: false
-        default: 'frontend:latest'
         type: string
       frontendIngressHost:
         description: 'Frontend url'
         required: false
-        default: 'frontend-test'
         type: string
       scVerifierImage:
         description: 'Smart-contract-verifier image'
         required: false
-        default: 'blockscout/scVerifier:latest'
         type: string
       scVerifierIngressHost:
         description: 'Smart-contract-verifier url'
         required: false
-        default: 'scVerifier-test.aws-k8s.blockscout.com'
         type: string
   workflow_call:
     inputs:
@@ -61,25 +60,29 @@ on:
         required: false
         default: 'blockscout'
         type: string
+      blockscoutImage:
+        description: 'Blockscout image'
+        required: false
+        type: string
+      blockscoutIngressHost:
+        description: 'Frontend url'
+        required: false
+        type: string
       frontendImage:
         description: 'Frontend image'
         required: false
-        default: 'blockscout/frontend:latest'
         type: string
       frontendIngressHost:
         description: 'Frontend url'
         required: false
-        default: 'frontend-test.aws-k8s.blockscout.com'
         type: string
       scVerifierImage:
         description: 'Smart-contract-verifier image'
         required: false
-        default: 'blockscout/scVerifier:latest'
         type: string
       scVerifierIngressHost:
         description: 'Smart-contract-verifier url'
         required: false
-        default: 'scVerifier-test.aws-k8s.blockscout.com'
         type: string
 
 env:
@@ -124,13 +127,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Add inputs to GITHUB_ENV
-        # if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
+        if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
         run: |
           echo "VALUES_DIR=${{ inputs.valuesDir }}" >> $GITHUB_ENV
           echo "APP_NAME=${{ inputs.appName }}" >> $GITHUB_ENV
-          echo "FRONTEND_IMAGE=${{ inputs.frontendImage }}" >> $GITHUB_ENV
-          echo "FRONTEND_INGRESS_HOST=${{ inputs.frontendIngressHost }}" >> $GITHUB_ENV
-          echo ${{ inputs.valuesDir }}
 
       - name: Generate namespace name
         if: "${{ inputs.appNamespace == '' }}"
@@ -139,7 +139,7 @@ jobs:
         with:
           name: ${{ github.sha }}
 
-      - name: Set envs
+      - name: Set APP_NAMESPACE
         run: |
           if ${{ inputs.appNamespace != '' }}; then
               echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> "$GITHUB_ENV"
@@ -191,6 +191,28 @@ jobs:
           fingerprint: ${{ secrets.GPG_FINGERPRINT }}
           passphrase: ''
 
+      - name: Deploy args
+        shell: bash
+        run: |
+          if [ -n ${{ inputs.frontendImage }} ]; then
+            echo "--set frontend.image._default=${{ inputs.frontendImage }} " > $DEPLOY_ARGS"
+          fi
+          if [ -n ${{ inputs.frontendIngressHost }} ]; then
+            echo "--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }} " >> $DEPLOY_ARGS"
+          fi
+          if [ -n ${{ inputs.blocksckoutImage }} ]; then
+            echo "--set blockscout.image._default=${{ inputs.blocksckoutImage }} " >> $DEPLOY_ARGS"
+          fi
+          if [ -n ${{ inputs.blocksckoutIngressHost }} ]; then
+            echo "--set blocksckout.ingress.host._default=${{ inputs.blocksckoutIngressHost }} " >> $DEPLOY_ARGS"
+          fi
+          if [ -n ${{ inputs.scVerifierImage }} ]; then
+            echo "--set scVerifier.image._default=${{ inputs.scVerifierImage }} " >> $DEPLOY_ARGS"
+          fi
+          if [ -n ${{ inputs.scVerifierIngressHost }} ]; then
+            echo "--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }} " >> $DEPLOY_ARGS"
+          fi
+
       # Deploy newly built changes to EKS cluster.
       - name: Deploy To Cluster
         shell: bash
@@ -206,8 +228,7 @@ jobs:
             $APP_NAME blockscout-stack \
             -f $VALUES_DIR/values.yaml \
             -f $VALUES_DIR/secrets.yaml \
-            --set frontend.image=$FRONTEND_IMAGE \
-            --set frontend.ingress.host._default=$FRONTEND_INGRESS_HOST \
+            $DEPLOY_ARGS \
             -n $APP_NAMESPACE --create-namespace
 
       # Copy registry secret if private repo
@@ -215,4 +236,5 @@ jobs:
         if: github.repository == 'blockscout/frontend'
         shell: bash
         run: |
+          kubectl delete secret regcred -n $APP_NAMESPACE --ignore-not-found
           kubectl get secret regcred -o yaml | sed "s/namespace: .*/namespace: $APP_NAMESPACE/" | kubectl apply -f -
