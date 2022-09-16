@@ -202,21 +202,27 @@ jobs:
           if ${{ inputs.frontendImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
           fi
+          echo $DEPLOY_ARGS
           if [ -n ${{ inputs.frontendIngressHost }} ]; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }} "
           fi
+          echo $DEPLOY_ARGS
           if [ -n ${{ inputs.blocksckoutImage }} ]; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blocksckoutImage }} "
           fi
+          echo $DEPLOY_ARGS
           if [ -n ${{ inputs.blocksckoutIngressHost }} ]; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set blocksckout.ingress.host._default=${{ inputs.blocksckoutIngressHost }} "
           fi
+          echo $DEPLOY_ARGS
           if [ -n ${{ inputs.scVerifierImage }} ]; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
           fi
+          echo $DEPLOY_ARGS
           if [ -n ${{ inputs.scVerifierIngressHost }} ]; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }} "
           fi
+          echo $DEPLOY_ARGS
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
 
       # Deploy newly built changes to EKS cluster.
