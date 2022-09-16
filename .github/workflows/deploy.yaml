@@ -124,7 +124,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Add inputs to GITHUB_ENV
-        if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
+        # if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
         run: |
           echo "VALUES_DIR=${{ inputs.valuesDir }}" >> $GITHUB_ENV
           echo "APP_NAME=${{ inputs.appName }}" >> $GITHUB_ENV
