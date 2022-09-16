@@ -19,7 +19,7 @@ spec:
       # serviceAccountName: vault-auth
       containers:
         - name: {{ .Release.Name }}-sc-verifier
-          image: {{ .Values.scVerifier.image }}
+          image: {{ pluck $.Values.global.env .Values.scVerifier.image | first | default .Values.scVerifier.image ._default | quote }}
           resources:
           {{- with .Values.scVerifier.resources }}
             limits:
