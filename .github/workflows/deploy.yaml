@@ -212,6 +212,7 @@ jobs:
           if [ -n ${{ inputs.scVerifierIngressHost }} ]; then
             echo "--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }} " >> $DEPLOY_ARGS"
           fi
+          echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
 
       # Deploy newly built changes to EKS cluster.
       - name: Deploy To Cluster
