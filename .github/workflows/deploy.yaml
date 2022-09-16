@@ -203,23 +203,23 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
           fi
           echo $DEPLOY_ARGS
-          if [ -n ${{ inputs.frontendIngressHost }} ]; then
+          if ${{ inputs.frontendIngressHost != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }} "
           fi
           echo $DEPLOY_ARGS
-          if [ -n ${{ inputs.blocksckoutImage }} ]; then
+          if ${{ inputs.blocksckoutImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blocksckoutImage }} "
           fi
           echo $DEPLOY_ARGS
-          if [ -n ${{ inputs.blocksckoutIngressHost }} ]; then
+          if ${{ inputs.blocksckoutIngressHost != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set blocksckout.ingress.host._default=${{ inputs.blocksckoutIngressHost }} "
           fi
           echo $DEPLOY_ARGS
-          if [ -n ${{ inputs.scVerifierImage }} ]; then
+          if ${{ inputs.scVerifierImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
           fi
           echo $DEPLOY_ARGS
-          if [ -n ${{ inputs.scVerifierIngressHost }} ]; then
+          if ${{ inputs.scVerifierIngressHost != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }} "
           fi
           echo $DEPLOY_ARGS
