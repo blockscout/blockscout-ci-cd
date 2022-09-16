@@ -191,10 +191,15 @@ jobs:
           fingerprint: ${{ secrets.GPG_FINGERPRINT }}
           passphrase: ''
 
+      - name: Add input to DEPLOY_ARGS if not empty
+        if: "${{ inputs.frontendImage != '' }}"
+        run: echo "--set frontend.image._default=${{ inputs.frontendImage }} " > $DEPLOY_ARGS"
+
       - name: Deploy args
         shell: bash
         run: |
-          if [ -n ${{ inputs.frontendImage }} ]; then
+          echo $DEPLOY_ARGS
+          if ${{ inputs.frontendImage != '' }}; then
             echo "--set frontend.image._default=${{ inputs.frontendImage }} " > $DEPLOY_ARGS"
           fi
           if [ -n ${{ inputs.frontendIngressHost }} ]; then
