@@ -14,7 +14,7 @@ metadata:
   name: {{ .Release.Name }}-frontend-ingress
 spec:
   rules:
-    - host: {{ .Values.frontend.ingress.host }}
+    - host: {{ pluck $.Values.global.env .Values.frontend.ingress.host | first | default .Values.frontend.ingress.host._default | quote }}
       http:
         paths:
           - path: "/"
@@ -26,6 +26,6 @@ spec:
                   number: {{ .Values.frontend.docker.port }}
   tls:
     - hosts:
-        - {{ .Values.frontend.ingress.host }}
+        - {{ pluck $.Values.global.env .Values.frontend.ingress.host | first | default .Values.frontend.ingress.host._default | quote }}
       secretName: {{ .Release.Name }}-frontend-tls
 {{- end }}

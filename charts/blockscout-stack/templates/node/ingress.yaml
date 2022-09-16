@@ -18,7 +18,7 @@ metadata:
   name: {{ .Release.Name }}-node-ingress
 spec:
   rules:
-    - host: {{ .Values.node.ingress.host }}
+    - host: {{ pluck $.Values.global.env .Values.node.ingress.host | first | default .Values.node.ingress.host._default | quote }}
       http:
         paths:
           - path: "/http(/|$)(.*)"
@@ -45,7 +45,7 @@ spec:
   {{- if .Values.node.ingress.tls.enabled }}
   tls:
     - hosts:
-        - {{ .Values.node.ingress.host }}
+        - {{ pluck $.Values.global.env .Values.node.ingress.host | first | default .Values.node.ingress.host._default | quote }}
       secretName: {{ .Release.Name }}-node-tls
   {{- end }}
 {{- end }}

@@ -1,10 +1,11 @@
 global:
-  env: test
+  env: testnet
 
 # enable Blockscout deploy
 blockscout:
   enabled: false
-  image: blockscout/blockscout:latest
+  image:
+    _default: blockscout/blockscout:latest
 
   replicas:
     app: 1
@@ -20,7 +21,7 @@ blockscout:
   ingress:
     enabled: false
     host:
-      _default:
+      _default: <url>
     # enable https
     tls:
       enabled: false
@@ -62,7 +63,8 @@ blockscout:
 # enable Node (geth) deploy
 node:
   enabled: false
-  image: ethereum/client-go:stable
+  image:
+    _default: ethereum/client-go:stable
 
   replicas:
     app: 1
@@ -217,7 +219,8 @@ client:
 # enable Smart-contract-verifier deploy
 scVerifier:
   enabled: false
-  image: ghcr.io/blockscout/smart-contract-verifier:v0.3.0
+  image:
+    _default: ghcr.io/blockscout/smart-contract-verifier:latest
 
   replicas:
     app: 1
@@ -234,6 +237,7 @@ scVerifier:
   ingress:
     enabled: false
     host:
+      _default: <url>
     # enable https
     tls:
       enabled: false
@@ -321,7 +325,8 @@ scVerifier:
 frontend:
   enabled: false
 
-  image: ghcr.io/blockscout/frontend:main
+  image:
+    _default: ghcr.io/blockscout/frontend:main
 
   replicas:
     app: 1
@@ -331,7 +336,8 @@ frontend:
 
   ingress:
     enabled: true
-    host: blockscout-frontend.aws-k8s.blockscout.com
+    host:
+      _default: blockscout-frontend.aws-k8s.blockscout.com
 
   resources:
     limits:

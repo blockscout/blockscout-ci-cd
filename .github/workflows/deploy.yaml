@@ -1,6 +1,7 @@
 name: Test deploy
 
 on:
+  push:
   workflow_dispatch:
     inputs:
       valuesDir:
@@ -18,6 +19,11 @@ on:
         required: false
         default: 'blockscout'
         type: string
+      blockscoutImage:
+        description: 'Blockscout image'
+        required: false
+        default: 'blockscout/scVerifier:latest'
+        type: string
       frontendImage:
         description: 'Frontend image'
         required: false
@@ -27,6 +33,16 @@ on:
         description: 'Frontend url'
         required: false
         default: 'frontend-test'
+        type: string
+      scVerifierImage:
+        description: 'Smart-contract-verifier image'
+        required: false
+        default: 'blockscout/scVerifier:latest'
+        type: string
+      scVerifierIngressHost:
+        description: 'Smart-contract-verifier url'
+        required: false
+        default: 'scVerifier-test.aws-k8s.blockscout.com'
         type: string
   workflow_call:
     inputs:
@@ -48,12 +64,22 @@ on:
       frontendImage:
         description: 'Frontend image'
         required: false
-        default: 'frontend:latest'
+        default: 'blockscout/frontend:latest'
         type: string
       frontendIngressHost:
         description: 'Frontend url'
         required: false
         default: 'frontend-test.aws-k8s.blockscout.com'
+        type: string
+      scVerifierImage:
+        description: 'Smart-contract-verifier image'
+        required: false
+        default: 'blockscout/scVerifier:latest'
+        type: string
+      scVerifierIngressHost:
+        description: 'Smart-contract-verifier url'
+        required: false
+        default: 'scVerifier-test.aws-k8s.blockscout.com'
         type: string
 
 env:
@@ -104,6 +130,7 @@ jobs:
           echo "APP_NAME=${{ inputs.appName }}" >> $GITHUB_ENV
           echo "FRONTEND_IMAGE=${{ inputs.frontendImage }}" >> $GITHUB_ENV
           echo "FRONTEND_INGRESS_HOST=${{ inputs.frontendIngressHost }}" >> $GITHUB_ENV
+          echo $GITHUB_ENV
 
       - name: Generate namespace name
         if: "${{ inputs.appNamespace == '' }}"
