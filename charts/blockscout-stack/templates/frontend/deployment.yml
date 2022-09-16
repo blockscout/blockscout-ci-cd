@@ -21,7 +21,7 @@ spec:
         - name: regcred
       containers:
         - name: {{ .Release.Name }}-front
-          image: {{ pluck $.Values.global.env .Values.frontend.image | first | default .Values.frontend.image ._default | quote }}
+          image: {{ pluck $.Values.global.env .Values.frontend.image | first | default .Values.frontend.image._default | quote }}
           resources:
           {{- with .Values.frontend.resources }}
             limits:

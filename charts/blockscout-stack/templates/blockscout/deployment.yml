@@ -19,7 +19,7 @@ spec:
       # serviceAccountName: vault-auth
       containers:
         - name: {{ .Release.Name }}-blockscout
-          image: {{ pluck $.Values.global.env .Values.blockscout.image | first | default .Values.blockscout.image ._default | quote }}
+          image: {{ pluck $.Values.global.env .Values.blockscout.image | first | default .Values.blockscout.image._default | quote }}
           resources:
           {{- with .Values.blockscout.resources }}
             limits:
