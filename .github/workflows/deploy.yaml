@@ -130,7 +130,7 @@ jobs:
           echo "APP_NAME=${{ inputs.appName }}" >> $GITHUB_ENV
           echo "FRONTEND_IMAGE=${{ inputs.frontendImage }}" >> $GITHUB_ENV
           echo "FRONTEND_INGRESS_HOST=${{ inputs.frontendIngressHost }}" >> $GITHUB_ENV
-          echo ${{ github.events.inputs.valuesDir }}
+          echo ${{ inputs.valuesDir }}
 
       - name: Generate namespace name
         if: "${{ inputs.appNamespace == '' }}"
@@ -207,7 +207,7 @@ jobs:
             -f $VALUES_DIR/values.yaml \
             -f $VALUES_DIR/secrets.yaml \
             --set frontend.image=$FRONTEND_IMAGE \
-            --set frontend.ingress.host=$FRONTEND_INGRESS_HOST \
+            --set frontend.ingress.host._default=$FRONTEND_INGRESS_HOST \
             -n $APP_NAMESPACE --create-namespace
 
       # Copy registry secret if private repo
