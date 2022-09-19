@@ -35,7 +35,7 @@ spec:
             - containerPort: {{ .Values.scVerifier.docker.metricsPort }}
               name: http-metrics
           env:
-{{- include "app_env" . | indent 10 }}
+{{- include "scVerifier_env" . | indent 10 }}
           # volumeMounts:
           #   - name: {{ .Release.Name }}-logs
           #     mountPath: /usr/local/gkretail/sm-web-server/log

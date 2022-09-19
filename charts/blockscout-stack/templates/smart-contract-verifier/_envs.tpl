@@ -1,4 +1,4 @@
-{{- define "app_env" }}
+{{- define "scVerifier_env" }}
 {{- range $key, $value := .Values.scVerifier.environment }}
 {{- $item := get $.Values.scVerifier.environment $key }}
 {{- if or (kindIs "string" $item) (kindIs "int64" $item) (kindIs "bool" $item)}}
