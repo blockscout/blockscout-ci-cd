@@ -13,7 +13,6 @@ env:
 
 jobs:
   deploy_e2e_account:
-    needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
     with:
       valuesDir: charts/blockscout-stack/values/e2e-account
