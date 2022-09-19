@@ -105,7 +105,6 @@ node:
       enabled: false
 
 
-
 # enable Smart-contract-verifier deploy
 scVerifier:
   enabled: false
