@@ -17,7 +17,7 @@ spec:
         - name: postgres
           image: {{ .Values.postgres.image }}
           resources:
-          {{- with .Values.blockscout.resources }}
+          {{- with .Values.postgres.resources }}
             limits:
               memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
               cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
