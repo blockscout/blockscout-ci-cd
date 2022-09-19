@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       blockscout_image:
-        description: 'Blockscout image:tag to test'     
+        description: 'Blockscout image:tag to test'
         required: true
-        default: 'blockscout/blockscout:latest' 
+        default: 'blockscout/blockscout:latest'
         type: string
       environment:
         description: 'Environment to run tests against'
@@ -19,9 +19,9 @@ on:
   workflow_call:
     inputs:
       blockscout_image:
-        description: 'Blockscout image:tag to test'     
+        description: 'Blockscout image:tag to test'
         required: true
-        default: 'blockscout/blockscout:latest' 
+        default: 'blockscout/blockscout:latest'
         type: string
       environment:
         description: 'Environment to run tests against'

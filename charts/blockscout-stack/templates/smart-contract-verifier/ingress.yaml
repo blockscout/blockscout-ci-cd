@@ -1,0 +1,42 @@
+{{- if .Values.scVerifier.enabled }}
+{{- if .Values.scVerifier.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: internal-and-public
+    nginx.ingress.kubernetes.io/proxy-body-size: 500m
+    nginx.ingress.kubernetes.io/client-max-body-size: "500M"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "15m"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "15m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
+    cert-manager.io/cluster-issuer: "letsencrypt-cluster"
+  name: {{ .Release.Name }}-sc-verifier-ingress
+spec:
+  rules:
+    - host: {{ .Values.scVerifier.ingress.host }}
+      http:
+        paths:
+          - path: "/metrics"
+            pathType: Exact
+            backend:
+              service:
+                name: {{ .Release.Name }}-sc-verifier-svc
+                port:
+                  number: {{ .Values.scVerifier.docker.metricsPort }}
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-sc-verifier-svc
+                port:
+                  number: {{ .Values.scVerifier.docker.port }}
+  {{- if .Values.scVerifier.ingress.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ .Values.scVerifier.ingress.host }}
+      secretName: {{ .Release.Name }}-sc-verifier-tls
+  {{- end }}
+{{- end }}
+{{- end }}

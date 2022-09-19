@@ -1,0 +1,23 @@
+{{- if .Values.node.enabled }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-node-svc
+spec:
+  type: {{ .Values.node.service.type}}
+  ports:
+    - port: {{ .Values.node.portHttp }}
+      targetPort: {{ .Values.node.portHttp }}
+      protocol: TCP
+      name: http
+    - port: {{ .Values.node.portWs }}
+      targetPort: {{ .Values.node.portWs }}
+      protocol: TCP
+      name: ws
+    - port: {{ .Values.node.portDiscovery }}
+      targetPort: {{ .Values.node.portDiscovery }}
+      protocol: TCP
+      name: discovery
+  selector:
+    app: {{ .Release.Name }}-geth
+{{- end }}

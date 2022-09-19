@@ -1,0 +1,79 @@
+{{- if .Values.blockscout.enabled }}
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Release.Name }}-blockscout
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "http-metrics"
+spec:
+  replicas: {{ .Values.blockscout.replicas.app }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-blockscout
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-blockscout
+    spec:
+      # serviceAccountName: vault-auth
+      containers:
+        - name: {{ .Release.Name }}-blockscout
+          image: {{ pluck $.Values.global.env .Values.blockscout.image | first | default .Values.blockscout.image._default | quote }}
+          resources:
+          {{- with .Values.blockscout.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+          {{- end }}
+          imagePullPolicy: Always
+          command: ["/bin/bash"]
+          # args: ["-c", "mix do ecto.create, ecto.migrate, phx.server"]
+          args: ["-c", "bin/blockscout eval \"Elixir.Explorer.ReleaseTasks.create_and_migrate()\" && bin/blockscout start"]
+          ports:
+            - containerPort: {{ .Values.blockscout.docker.targetPort }}
+          env:
+{{- include "app_env" . | indent 10 }}
+          # volumeMounts:
+          #   - name: smweb-logs
+          #     mountPath: /usr/local/sm-web-server/log
+          {{- if .Values.blockscout.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.blockscout.readinessProbe.path }}
+              port: {{ .Values.blockscout.docker.targetPort }}
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          {{- end }}
+          {{- if .Values.blockscout.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.blockscout.livenessProbe.path }}
+              port: {{ .Values.blockscout.docker.targetPort }}
+              scheme: HTTP
+            initialDelaySeconds: 100
+            periodSeconds: 100
+          {{- end }}
+        #   volumeMounts:
+        #     - name: smweb-logs
+        #       mountPath: /smweb/
+        #     - name: config
+        #       mountPath: /etc/promtail/config.yml
+        #       subPath: config-node.yml
+      # volumes:
+      #   - name: smweb-logs
+      #     emptyDir: { }
+      #   - name: config
+      #     configMap:
+      #       name: {{ .Release.Name }}-promtail-configmap
+      restartPolicy: Always
+      {{- if .Values.blockscout.nodeSelector.enabled }}
+      nodeSelector:
+        app: {{ .Values.blockscout.nodeSelector.app}}
+      {{- end }}
+---
+{{- end }}

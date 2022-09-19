@@ -1,11 +1,11 @@
-{{- if .Values.node}}
+{{- if .Values.node.enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-geth
 spec:
   serviceName: {{ .Release.Name }}-geth
-  replicas: 1
+  replicas: {{ .Values.node.replicas.app }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}-geth
@@ -16,10 +16,11 @@ spec:
     spec:
       containers:
       - name: {{ .Release.Name }}-geth
-        image: {{ .Values.node_image }}
-        args: [ "--http", "--http.addr=0.0.0.0", "--http.vhosts=geth-mainnet-full", "--http.api=eth,net,web3,txpool", "--ws", "--ws.addr=0.0.0.0", "--datadir=/data", ]
+        image: {{ .Values.node.image }}
+        args: [ "--goerli", "--snapshot=false", "--syncmode=full", "--gcmode=archive", "--http", "--http.addr=0.0.0.0", "--http.api=eth,net,web3,debug,txpool", "--http.corsdomain=*", "--http.vhosts=*", "--ws", "--ws.addr=0.0.0.0", "--ws.api=eth,net,web3,debug,txpool", "--ws.origins=*", "--datadir=/data", "--rpc.allow-unprotected-txs", "--vmdebug", "--verbosity=3" ]
+        # args: [ "--http", "--http.addr=0.0.0.0", "--http.vhosts=geth-mainnet-full", "--http.api=eth,net,web3,txpool", "--ws", "--ws.addr=0.0.0.0", "--datadir=/data", ]
         resources:
-        {{- with .Values.resources }}
+        {{- with .Values.node.resources }}
           limits:
             memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
             cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
@@ -28,24 +29,29 @@ spec:
             cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
         {{- end }}
         env:
-# {{- include "node_env" . | indent 10 }}
+{{- include "node_env" . | indent 10 }}
         ports:
-        - containerPort: {{ .Values.node_port_http }}
+        - containerPort: {{ .Values.node.portHttp }}
           name: gethrpchttp
-        - containerPort: {{ .Values.node_port_ws }}
+        - containerPort: {{ .Values.node.portWs }}
           name: gethrpctcp
-        - containerPort: {{ .Values.node_port_discovery }}
+        - containerPort: {{ .Values.node.portDiscovery }}
           name: gethdiscovery
         volumeMounts:
         - name: data
           mountPath: "/data"
+      {{- if .Values.node.nodeSelector.enabled }}
+      nodeSelector:
+        app: {{ .Values.node.nodeSelector.app}}
+      {{- end }}
   volumeClaimTemplates:
     - metadata:
         name: data
       spec:
         accessModes: ["ReadWriteOnce"]
-        storageClassName: gp2
+        # storageClassName: gp2
         resources:
           requests:
             storage: 1000Gi
+---
 {{- end }}

@@ -1,18 +1,20 @@
+{{- if .Values.blockscout.enabled }}
 kind: Service
 apiVersion: v1
 metadata:
-  name: {{ .Release.Name }}-svc
+  name: {{ .Release.Name }}-blockscout-svc
   # annotations:
   #   service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
   #   service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
   #   service.beta.kubernetes.io/aws-load-balancer-type: external
 spec:
-  type: ClusterIP
+  type: {{ .Values.blockscout.service.type}}
   ports:
-    - port: {{ .Values.docker.port }}
-      targetPort: {{ .Values.docker.targetPort }}
+    - port: {{ .Values.blockscout.docker.port }}
+      targetPort: {{ .Values.blockscout.docker.targetPort }}
       protocol: TCP
       name: http
   selector:
-    app: {{ .Release.Name }}
+    app: {{ .Release.Name }}-blockscout
 ---
+{{- end }}

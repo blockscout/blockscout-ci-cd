@@ -1,0 +1,9 @@
+apiVersion: v1
+appVersion: 0.0.6
+version: 0.0.6
+name: blockscout-stack
+description: '''
+Helm chart for deploying blockscout-stack in K8S
+
+Deploy command: `helm upgrade --install -n=<namespace> blockscout-stack ./ -f values-<name>.yaml`
+'''
