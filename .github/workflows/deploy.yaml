@@ -232,7 +232,7 @@ jobs:
             $DEPLOY_ARGS \
             -n $APP_NAMESPACE --create-namespace
 
-      # Copy registry secret if private repo
+      # Copy registry secret if private docker repo
       - name: Copy private registry secret
         # if: github.repository == 'blockscout/frontend'
         shell: bash
