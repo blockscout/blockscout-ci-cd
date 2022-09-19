@@ -1,6 +1,6 @@
 name: E2E K8s
 on:
-  # push:
+  push:
   workflow_dispatch:
     inputs:
       blockscout_image:

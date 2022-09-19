@@ -1,6 +1,6 @@
 name: Load baseline
 on:
-  # push:
+  push:
 env:
   K8S_LOCAL_PORT: ${{ secrets.LOCAL_PORT }}
   K8S_HOST: ${{ secrets.K8S_HOST }}

@@ -1,6 +1,6 @@
 name: E2E K8s Account
 on:
-  # push:
+  push:
   workflow_dispatch:
     inputs:
       blockscout_image:
