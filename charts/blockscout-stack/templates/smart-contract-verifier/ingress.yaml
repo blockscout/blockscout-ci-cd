@@ -22,14 +22,14 @@ spec:
             pathType: Exact
             backend:
               service:
-                name: {{ .Release.Name }}-sc-verifier-svc
+                name: sc-verifier-svc
                 port:
                   number: {{ .Values.scVerifier.docker.metricsPort }}
           - path: "/"
             pathType: Prefix
             backend:
               service:
-                name: {{ .Release.Name }}-sc-verifier-svc
+                name: sc-verifier-svc
                 port:
                   number: {{ .Values.scVerifier.docker.port }}
   {{- if .Values.scVerifier.ingress.tls.enabled }}
