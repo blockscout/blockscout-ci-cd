@@ -1,4 +1,4 @@
-name: Test deploy
+name: Deploy blockscout-stack
 
 on:
   push:
@@ -16,8 +16,7 @@ on:
         type: string
       appNamespace:
         description: 'Namespace to deploy in'
-        required: false
-        default: 'blockscout'
+        required: true
         type: string
       blockscoutImage:
         description: 'Blockscout image'
