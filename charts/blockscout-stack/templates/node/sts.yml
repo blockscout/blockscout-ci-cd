@@ -32,19 +32,35 @@ spec:
         env:
 {{- include "node_env" . | indent 10 }}
         ports:
-        - containerPort: {{ .Values.node.portHttp }}
-          name: gethrpchttp
-        - containerPort: {{ .Values.node.portWs }}
-          name: gethrpctcp
-        - containerPort: {{ .Values.node.portDiscovery }}
-          name: gethdiscovery
+          - containerPort: {{ .Values.node.portHttp }}
+            name: gethrpchttp
+          - containerPort: {{ .Values.node.portWs }}
+            name: gethrpctcp
+          - containerPort: {{ .Values.node.portDiscovery }}
+            name: gethdiscovery
         volumeMounts:
-        - name: data
-          mountPath: "/data"
+        {{- .Values.node.persistence.enabled }}
+          - name: data
+            mountPath: "/data"
+        {{- end }}
+          - mountPath: /root/init.sh
+            name: geth-cm
+            subPath: init.sh
+          - mountPath: /root/genesis.json
+            name: geth-cm
+            subPath: genesis.json
+          - mountPath: /root/password.txt
+            name: geth-cm
+            subPath: password.txt
       {{- if .Values.node.nodeSelector.enabled }}
       nodeSelector:
         app: {{ .Values.node.nodeSelector.app}}
       {{- end }}
+      volumes:
+        - configMap:
+            name: geth-cm
+          name: geth-cm
+  {{- .Values.node.persistence.enabled }}
   volumeClaimTemplates:
     - metadata:
         name: data
@@ -54,5 +70,6 @@ spec:
         resources:
           requests:
             storage: 1000Gi
+  {{- end }}
 ---
 {{- end }}
