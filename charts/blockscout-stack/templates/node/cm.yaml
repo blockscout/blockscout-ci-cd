@@ -4,8 +4,6 @@ kind: ConfigMap
 metadata:
   name: geth-cm
 data:
-  genesis.json: |-
-    {{ .Values.node.files.genesis }}
-  init.sh: |-
-    {{ .Values.node.files.init }}
+  genesis.json: {{ .Values.node.files.genesis }}
+  init.sh: {{ .Values.node.files.init }}
   password.txt: ""
