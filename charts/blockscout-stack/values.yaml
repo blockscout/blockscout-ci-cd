@@ -65,13 +65,25 @@ postgres:
   image: postgres:13.6
   port: 5432
 
-  environment:
-    POSTGRES_USER:
-      _default:
-    POSTGRES_PASSWORD:
-      _default:
-    POSTGRES_DB:
-      _default:
+  resources:
+    limits:
+      memory:
+        _default: "1Gi"
+      cpu:
+        _default: "0.2"
+    requests:
+      memory:
+        _default: "1Gi"
+      cpu:
+        _default: "0.2"
+
+  environment: {}
+    # POSTGRES_USER:
+    #   _default:
+    # POSTGRES_PASSWORD:
+    #   _default:
+    # POSTGRES_DB:
+    #   _default:
 
 # enable Node (geth) deploy
 node:
