@@ -101,7 +101,7 @@ node:
   environment: {}
 
   persistence:
-    enabled: false 
+    enabled: false
 
   command: '["sh","./root/init.sh"]'
   args: ''
@@ -135,6 +135,9 @@ node:
     tls:
       enabled: false
 
+  files:
+    genesis: ''
+    init: ''
 
 # enable Smart-contract-verifier deploy
 scVerifier:
