@@ -60,6 +60,19 @@ blockscout:
   # Blockscout environment variables
   environment: {}
 
+postgres:
+  enabled: false
+  image: postgres:13.6
+  port: 5432
+
+  environment:
+    POSTGRES_USER:
+      _default:
+    POSTGRES_PASSWORD:
+      _default:
+    POSTGRES_DB:
+      _default:
+
 # enable Node (geth) deploy
 node:
   enabled: false
@@ -74,6 +87,8 @@ node:
   portDiscovery: 30303
 
   environment: {}
+
+  args: ''
 
   resources:
     limits:

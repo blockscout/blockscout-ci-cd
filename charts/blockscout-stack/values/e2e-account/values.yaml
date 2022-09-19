@@ -66,12 +66,10 @@ blockscout:
     PUBLIC:
       _default: 'false'
 
-    K8S_LOCAL_PORT:
-      _default: 9443
     PORT:
       _default: 4000
     PORT_PG:
-      _default: 6432
+      _default: 5432
     PORT_NETWORK_HTTP:
       _default: 9545
     PORT_NETWORK_WS:
@@ -98,11 +96,15 @@ blockscout:
     NETWORK_PATH:
       _default: "/"
 
+postgres:
+  enabled: true
+  image: postgres:13.6
+  port: 5432
 
 
 # enable Node (geth) deploy
 node:
-  enabled: false
+  enabled: true
   image:
     _default: ethereum/client-go:stable
 
