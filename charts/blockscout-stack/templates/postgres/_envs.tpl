@@ -1,4 +1,4 @@
-{{- define "app_env" }}
+{{- define "postgres_env" }}
 {{- range $key, $value := .Values.postgres.environment }}
 {{- $item := get $.Values.postgres.environment $key }}
 {{- if or (kindIs "string" $item) (kindIs "int64" $item) (kindIs "bool" $item)}}

@@ -29,7 +29,7 @@ spec:
           ports:
             - containerPort: {{ .Values.postgres.port }}
           env:
-{{- include "app_env" . | indent 10 }}
+{{- include "postgres_env" . | indent 10 }}
           # volumeMounts:
           #   - mountPath: /var/lib/postgresql/data
           #     name: postgredb

@@ -100,6 +100,7 @@ node:
 
   environment: {}
 
+  command: sh ./root/init.sh
   args: ''
 
   resources:
