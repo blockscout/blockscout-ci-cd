@@ -1,7 +1,7 @@
-name: Test deploy
+name: Deploy blockscout-stack
 
 on:
-  push:
+  # push:
   workflow_dispatch:
     inputs:
       valuesDir:
@@ -16,8 +16,7 @@ on:
         type: string
       appNamespace:
         description: 'Namespace to deploy in'
-        required: false
-        default: 'blockscout'
+        required: true
         type: string
       blockscoutImage:
         description: 'Blockscout image'
@@ -233,9 +232,9 @@ jobs:
             $DEPLOY_ARGS \
             -n $APP_NAMESPACE --create-namespace
 
-      # Copy registry secret if private repo
+      # Copy registry secret if private docker repo
       - name: Copy private registry secret
-        if: github.repository == 'blockscout/frontend'
+        # if: github.repository == 'blockscout/frontend'
         shell: bash
         run: |
           kubectl delete secret regcred -n $APP_NAMESPACE --ignore-not-found

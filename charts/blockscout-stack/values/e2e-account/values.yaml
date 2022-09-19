@@ -3,9 +3,9 @@ global:
 
 # enable Blockscout deploy
 blockscout:
-  enabled: false
+  enabled: true
   image:
-    _default: blockscout/blockscout:latest
+    _default: blockscout/blockscout-account:latest
 
   replicas:
     app: 1
@@ -24,7 +24,7 @@ blockscout:
       _default: <url>
     # enable https
     tls:
-      enabled: false
+      enabled: true
 
   # probes
   livenessProbe:
@@ -39,12 +39,12 @@ blockscout:
       memory:
         _default: "1Gi"
       cpu:
-        _default: "0.5"
+        _default: "1"
     requests:
       memory:
         _default: "1Gi"
       cpu:
-        _default: "0.5"
+        _default: "1"
 
   # enable service to connect to RDS
   rds:
@@ -58,7 +58,47 @@ blockscout:
     app: blockscout
 
   # Blockscout environment variables
-  environment: {}
+  environment:
+    ENV:
+      _default: test
+    RESOURCE_MODE:
+      _default: account
+    PUBLIC:
+      _default: 'false'
+
+    K8S_LOCAL_PORT:
+      _default: 9443
+    PORT:
+      _default: 4000
+    PORT_PG:
+      _default: 6432
+    PORT_NETWORK_HTTP:
+      _default: 9545
+    PORT_NETWORK_WS:
+      _default: 9546
+
+    VARIANT:
+      _default: geth
+    HTTP_URL:
+      _default: http://node-svc:8545
+    WS_URL:
+      _default: ws://node-svc:8546
+    ETHEREUM_JSONRPC_TRACE_URL:
+      _default: http://node-svc:8545
+    COIN:
+      _default: DAI
+
+    RUST_VERIFICATION_SERVICE_URL:
+      _default: http://sc-verifier-svc:8043
+
+    DISABLE_REALTIME_INDEXER:
+      _default: 'false'
+    SOCKET_ROOT:
+      _default: "/"
+    NETWORK_PATH:
+      _default: "/"
+
+
 
 # enable Node (geth) deploy
 node:
@@ -73,19 +113,20 @@ node:
   portWs: 8546
   portDiscovery: 30303
 
+  args: '["--fakepow", "--dev", "--dev.period 1", "--datadir /root/.ethereum/devnet", "--keystore /root/.ethereum/devnet/keystore", "--password /root/password.txt", "--unlock 0", "--unlock 1", "--mine", "--miner.threads 1", "--miner.etherbase 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266", "--ipcpath /root/geth.ipc", "--http", "--http.vhosts *", "--http.addr 0.0.0.0", "--http.port=9545", "--http.api eth,net,web3,debug,txpool", "--ws", "--ws.origins *", "--ws.addr 0.0.0.0", "--ws.port=9546", "--ws.api eth,net,web3,debug,txpool", "--graphql", "--graphql.corsdomain *", "--allow-insecure-unlock", "--rpc.allow-unprotected-txs", "--http.corsdomain *", "--vmdebug", "--networkid=1337", "--rpc.txfeecap 0"]'
   environment: {}
 
   resources:
     limits:
       memory:
-        _default: "6Gi"
+        _default: "2Gi"
       cpu:
-        _default: "3"
+        _default: "0.2"
     requests:
       memory:
-        _default: "6Gi"
+        _default: "2Gi"
       cpu:
-        _default: "3"
+        _default: "0.2"
 
   # node label
   nodeSelector:
@@ -107,7 +148,7 @@ node:
 
 # enable Smart-contract-verifier deploy
 scVerifier:
-  enabled: false
+  enabled: true
   image:
     _default: ghcr.io/blockscout/smart-contract-verifier:latest
 
@@ -166,8 +207,9 @@ scVerifier:
   environment:
     SMART_CONTRACT_VERIFIER__SERVER__ADDR:
       _default: 0.0.0.0:8043
-    SMART_CONTRACT_VERIFIER__SOLIDITY__ENABLED:
-      _default: 'true'
+
+    # SMART_CONTRACT_VERIFIER__SOLIDITY__ENABLED:
+    #   _default: 'true'
     SMART_CONTRACT_VERIFIER__SOLIDITY__COMPILERS_DIR:
       _default: /tmp/solidity-compilers
     SMART_CONTRACT_VERIFIER__SOLIDITY__REFRESH_VERSIONS_SCHEDULE:
@@ -179,21 +221,15 @@ scVerifier:
     #SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__LIST__LIST_URL=https://solc-bin.ethereum.org/macosx-amd64/list.json
     #SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__LIST__LIST_URL=https://solc-bin.ethereum.org/windows-amd64/list.json
 
-    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ACCESS_KEY:
-      _default:
-    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__SECRET_KEY:
-      _default:
     SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__REGION:
       _default: ""
     SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ENDPOINT:
-      _default:
-    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__BUCKET:
-      _default:
+      _default: https://storage.googleapis.com
 
     SMART_CONTRACT_VERIFIER__SOURCIFY__ENABLED:
       _default: 'true'
     SMART_CONTRACT_VERIFIER__SOURCIFY__API_URL:
-      _default:
+      _default: https://sourcify.dev/server/
     SMART_CONTRACT_VERIFIER__SOURCIFY__VERIFICATION_ATTEMPTS:
       _default: 3
     SMART_CONTRACT_VERIFIER__SOURCIFY__REQUEST_TIMEOUT:
@@ -208,11 +244,9 @@ scVerifier:
 
     SMART_CONTRACT_VERIFIER__JAEGER__ENABLED:
       _default: 'false'
-    SMART_CONTRACT_VERIFIER__JAEGER__AGENT_ENDPOINT:
-      _default:
 
 frontend:
-  enabled: false
+  enabled: true
 
   image:
     _default: ghcr.io/blockscout/frontend:main
@@ -224,9 +258,9 @@ frontend:
     targetPort: 3000
 
   ingress:
-    enabled: true
+    enabled: false
     host:
-      _default: blockscout-frontend.aws-k8s.blockscout.com
+      _default: test
 
   resources:
     limits:
@@ -247,7 +281,7 @@ frontend:
 
   environment:
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
-      _default: v4.1.7-beta
+      _default: v4.1.8-beta
     NEXT_PUBLIC_FOOTER_GITHUB_LINK:
       _default: https://github.com/blockscout/blockscout
     NEXT_PUBLIC_FOOTER_TWITTER_LINK:
