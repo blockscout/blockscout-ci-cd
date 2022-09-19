@@ -39,7 +39,7 @@ spec:
           - containerPort: {{ .Values.node.portDiscovery }}
             name: gethdiscovery
         volumeMounts:
-        {{- .Values.node.persistence.enabled }}
+        {{- if .Values.node.persistence.enabled }}
           - name: data
             mountPath: "/data"
         {{- end }}
@@ -60,7 +60,7 @@ spec:
         - configMap:
             name: geth-cm
           name: geth-cm
-  {{- .Values.node.persistence.enabled }}
+  {{- if .Values.node.persistence.enabled }}
   volumeClaimTemplates:
     - metadata:
         name: data
