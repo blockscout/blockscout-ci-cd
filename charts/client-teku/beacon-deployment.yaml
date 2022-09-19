@@ -1,0 +1,83 @@
+{{- if .Values.client.enabled }}
+{{- with .Values.client.beacon }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .name }}
+  labels:
+    app: {{ .name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .name }}
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}
+    spec:
+      containers:
+      - name: {{ .name }}
+        image: "{{ $.Values.client.image.beaconImage }}:{{ $.Values.client.image.versionTag }}"
+        args:
+        {{- if $.Values.client.ethereumTestnet }}
+        - --network={{ $.Values.client.ethereumTestnet }}
+        {{- end }}
+        - --p2p-port={{ .p2pPort }}
+        - --rest-api-enabled
+        - --rest-api-host-allowlist=*
+        - --eth1-endpoints={{ .eth1Endpoints | join "," }}
+        - --data-beacon-path=/data/teku/beacon
+        - --log-destination=CONSOLE
+        - --metrics-enabled=true
+        - --metrics-interface=0.0.0.0
+        {{- if .checkpointSyncURL }}
+        - --initial-state={{ .checkpointSyncURL }}
+        {{- end }}
+        ports:
+        - containerPort: {{ .p2pPort }}
+          hostPort: {{ .p2pPort }}
+          protocol: TCP
+        - containerPort: {{ .p2pPort }}
+          hostPort: {{ .p2pPort }}
+          protocol: UDP
+        - containerPort: 5051
+          protocol: TCP
+          name: rest-api
+        - containerPort: 8008
+          protocol: TCP
+          name: metrics
+        volumeMounts:
+          - name: data
+            mountPath: /data/teku/local
+        livenessProbe:
+          httpGet:
+            path: /teku/v1/admin/liveness
+            port: rest-api
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /eth/v1/node/health
+            port: rest-api
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+      volumes:
+        - name: data
+          emptyDir: { }
+      securityContext:
+        {{- toYaml $.Values.client.securityContext | nindent 8 }}
+      serviceAccountName: beacon
+      restartPolicy: Always
+{{- end }}
+{{- end }}
