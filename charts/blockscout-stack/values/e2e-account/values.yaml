@@ -19,7 +19,7 @@ blockscout:
 
   # enable ingress
   ingress:
-    enabled: false
+    enabled: true 
     host:
       _default: <url>
     # enable https
@@ -154,8 +154,9 @@ node:
 
   # enable ingress
   ingress:
-    enabled: false
+    enabled: true
     host:
+      _default: url
     # enable https
     tls:
       enabled: false
@@ -180,12 +181,12 @@ scVerifier:
 
   # enable ingress
   ingress:
-    enabled: false
+    enabled: true
     host:
       _default: <url>
     # enable https
     tls:
-      enabled: false
+      enabled: true
 
   resources:
     limits:
@@ -273,9 +274,13 @@ frontend:
     targetPort: 3000
 
   ingress:
-    enabled: false
+    enabled: true
     host:
       _default: test
+    # enable https
+    tls:
+      enabled: true
+
 
   resources:
     limits:

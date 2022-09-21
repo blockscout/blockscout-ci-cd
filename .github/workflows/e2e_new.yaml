@@ -42,6 +42,14 @@ on:
         description: 'Smart-contract-verifier url'
         required: false
         type: string
+      nodeImage:
+        description: 'Geth node image'
+        required: false
+        type: string
+      nodeIngressHost:
+        description: 'Geth node url'
+        required: false
+        type: string
   workflow_call:
     inputs:
       valuesDir:
@@ -56,8 +64,7 @@ on:
         type: string
       appNamespace:
         description: 'Namespace to deploy in'
-        required: false
-        default: 'blockscout'
+        required: true
         type: string
       blockscoutImage:
         description: 'Blockscout image'
@@ -81,6 +88,14 @@ on:
         type: string
       scVerifierIngressHost:
         description: 'Smart-contract-verifier url'
+        required: false
+        type: string
+      nodeImage:
+        description: 'Geth node image'
+        required: false
+        type: string
+      nodeIngressHost:
+        description: 'Geth node url'
         required: false
         type: string
 
@@ -201,19 +216,22 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
           fi
           if ${{ inputs.frontendIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }} "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }}-$GITHUB_HEAD_REF.aws-k8s.blockscout.com "
           fi
           if ${{ inputs.blocksckoutImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blocksckoutImage }} "
           fi
           if ${{ inputs.blocksckoutIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blocksckout.ingress.host._default=${{ inputs.blocksckoutIngressHost }} "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blocksckout.ingress.host._default=${{ inputs.blocksckoutIngressHost }}-$GITHUB_HEAD_REF.aws-k8s.blockscout.com "
           fi
           if ${{ inputs.scVerifierImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
           fi
           if ${{ inputs.scVerifierIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }} "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-$GITHUB_HEAD_REF.aws-k8s.blockscout.com "
+          fi
+          if ${{ inputs.nodeIngressHost != '' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set node.ingress.host._default=${{ inputs.nodeIngressHost }}-$GITHUB_HEAD_REF.aws-k8s.blockscout.com "
           fi
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
 
