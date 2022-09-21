@@ -293,7 +293,6 @@ jobs:
           path: blockscout-ci-cd/tests/e2e/html-report/index.html
       - name: Analyze Test and/or Coverage Results
         uses: runforesight/foresight-test-kit-action@v1
-        working-directory: blockscout-ci-cd/tests/e2e
         if: always()
         with:
           api_key: ${{ secrets.THUNDRA_APIKEY }}
