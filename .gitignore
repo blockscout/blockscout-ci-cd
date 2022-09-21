@@ -5,3 +5,5 @@ helms/
 commands
 
 **.decrypted~**
+charts/blockscout-stack/key.*.pub
+charts/blockscout-stack/key.*.sec

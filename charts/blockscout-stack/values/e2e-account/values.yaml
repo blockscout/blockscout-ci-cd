@@ -5,7 +5,7 @@ global:
 blockscout:
   enabled: true
   image:
-    _default: blockscout/blockscout-account:latest
+    _default: blockscout/blockscout:latest
 
   replicas:
     app: 1
@@ -21,7 +21,8 @@ blockscout:
   ingress:
     enabled: true 
     host:
-      _default: <url>
+      _default: blockscout-e2e-local
+      testnet: asdfg-blockscout.test.blockscout.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true
@@ -39,12 +40,12 @@ blockscout:
       memory:
         _default: "1Gi"
       cpu:
-        _default: "1"
+        _default: "2"
     requests:
       memory:
         _default: "1Gi"
       cpu:
-        _default: "1"
+        _default: "2"
 
   # enable service to connect to RDS
   rds:
@@ -75,12 +76,8 @@ blockscout:
     PORT_NETWORK_WS:
       _default: 9546
 
-    VARIANT:
+    ETHEREUM_JSONRPC_VARIANT:
       _default: geth
-    HTTP_URL:
-      _default: http://node-svc:9545
-    WS_URL:
-      _default: ws://node-svc:9546
     ETHEREUM_JSONRPC_TRACE_URL:
       _default: http://node-svc:9545
     ETHEREUM_JSONRPC_HTTP_URL:
@@ -97,6 +94,8 @@ blockscout:
 
     RUST_VERIFICATION_SERVICE_URL:
       _default: http://sc-verifier-svc:8043
+    ACCOUNT_ENABLED:
+      _default: true
 
     DISABLE_REALTIME_INDEXER:
       _default: 'false'
@@ -156,7 +155,7 @@ node:
   ingress:
     enabled: true
     host:
-      _default: url
+      _default: asdfg-node.test.blockscout.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: false
@@ -277,6 +276,7 @@ frontend:
     enabled: true
     host:
       _default: test
+      testnet: asdfg-frontend.test.blockscout.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true
