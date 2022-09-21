@@ -1,7 +1,7 @@
 name: E2E tests account
 
 on:
-  # push:
+  push:
   workflow_dispatch:
     inputs:
       valuesDir:
