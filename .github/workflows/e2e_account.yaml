@@ -1,8 +1,9 @@
 name: E2E K8s account
 
 on:
-  push:
+  # push:
   # workflow_dispatch:
+  pull_request:
 
 env:
   K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
