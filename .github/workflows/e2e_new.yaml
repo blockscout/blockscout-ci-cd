@@ -239,7 +239,6 @@ jobs:
           path: blockscout-ci-cd
       - name: Setup node
         uses: actions/setup-node@v3
-        working-directory: blockscout-ci-cd/tests/e2e
         with:
           node-version: v14.17.0
       - name: Cache node modules
