@@ -7,12 +7,12 @@ on:
       valuesDir:
         description: 'Directory with values'
         required: true
-        default: 'charts/blockscout-stack'
+        default: 'charts/blockscout-stack/values/e2e-account'
         type: string
       appName:
         description: 'App name'
         required: true
-        default: 'blockscout-stack'
+        default: 'e2e-bs-stack'
         type: string
       appNamespace:
         description: 'Namespace to deploy in'
@@ -47,12 +47,12 @@ on:
       valuesDir:
         description: 'Directory with values'
         required: true
-        default: 'charts'
+        default: 'charts/blockscout-stack/values/e2e-account'
         type: string
       appName:
         description: 'App name'
         required: true
-        default: 'blockscout'
+        default: 'e2e-bs-stack'
         type: string
       appNamespace:
         description: 'Namespace to deploy in'
