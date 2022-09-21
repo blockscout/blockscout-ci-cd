@@ -15,7 +15,7 @@ metadata:
   name: {{ .Release.Name }}-sc-verifier-ingress
 spec:
   rules:
-    - host: {{ .Values.scVerifier.ingress.host }}
+    - host: {{ pluck $.Values.global.env .Values.scVerifier.ingress.host | first | default .Values.scVerifier.ingress.host._default | quote }}
       http:
         paths:
           - path: "/metrics"
@@ -35,7 +35,7 @@ spec:
   {{- if .Values.scVerifier.ingress.tls.enabled }}
   tls:
     - hosts:
-        - {{ .Values.scVerifier.ingress.host }}
+        - {{ pluck $.Values.global.env .Values.scVerifier.ingress.host | first | default .Values.scVerifier.ingress.host._default | quote }}
       secretName: {{ .Release.Name }}-sc-verifier-tls
   {{- end }}
 {{- end }}
