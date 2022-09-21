@@ -210,11 +210,11 @@ jobs:
           if ${{ inputs.frontendIngressHost != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }}-$GITHUB_HEAD_REF.aws-k8s.blockscout.com "
           fi
-          if ${{ inputs.blocksckoutImage != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blocksckoutImage }} "
+          if ${{ inputs.blockscoutImage != '' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blockscoutImage }} "
           fi
-          if ${{ inputs.blocksckoutIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blocksckout.ingress.host._default=${{ inputs.blocksckoutIngressHost }}-$GITHUB_HEAD_REF.aws-k8s.blockscout.com "
+          if ${{ inputs.blockscoutIngressHost != '' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$GITHUB_HEAD_REF.aws-k8s.blockscout.com "
           fi
           if ${{ inputs.scVerifierImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
