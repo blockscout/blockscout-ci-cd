@@ -225,21 +225,26 @@ jobs:
         run: |
           kubectl delete secret regcred -n $APP_NAMESPACE --ignore-not-found
           kubectl get secret regcred -o yaml | sed "s/namespace: .*/namespace: $APP_NAMESPACE/" | kubectl apply -f -
+
       # tests
       - name: Collect Workflow Telemetry
         uses: runforesight/foresight-workflow-kit-action@v1
+        working-directory: blockscout-ci-cd/tests/e2e
         with:
           api_key: ${{ secrets.THUNDRA_APIKEY }}
       - name: checkout
         uses: actions/checkout@v2
+        working-directory: blockscout-ci-cd/tests/e2e
         with:
           repository: blockscout/blockscout-ci-cd
           path: blockscout-ci-cd
       - name: Setup node
         uses: actions/setup-node@v3
+        working-directory: blockscout-ci-cd/tests/e2e
         with:
           node-version: v14.17.0
       - name: Cache node modules
+        working-directory: blockscout-ci-cd/tests/e2e
         id: cache-npm
         uses: actions/cache@v3
         env:
@@ -252,8 +257,10 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Install deps
+        working-directory: blockscout-ci-cd/tests/e2e
         run: npm ci
       - name: Lint
+        working-directory: blockscout-ci-cd/tests/e2e
         run: npm run lint
       - name: Build contracts
         working-directory: blockscout-ci-cd/tests/contracts
@@ -263,6 +270,7 @@ jobs:
           npm ci
           npm run build
       - name: Cache playwright binaries
+        working-directory: blockscout-ci-cd/tests/e2e
         uses: actions/cache@v2
         id: playwright-cache
         with:
@@ -271,21 +279,26 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
       - name: Install Playwright
+        working-directory: blockscout-ci-cd/tests/e2e
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
       - name: Run playwright smoke suite
+        working-directory: blockscout-ci-cd/tests/e2e
         run: |
           npm run test:smoke:account
       - name: Run playwright verification suite
+        working-directory: blockscout-ci-cd/tests/e2e
         run: |
           npm run test:smoke:verification
       - uses: actions/upload-artifact@v3
+        working-directory: blockscout-ci-cd/tests/e2e
         if: always()
         with:
           name: report
           path: blockscout-ci-cd/tests/e2e/html-report/index.html
       - name: Analyze Test and/or Coverage Results
         uses: runforesight/foresight-test-kit-action@v1
+        working-directory: blockscout-ci-cd/tests/e2e
         if: always()
         with:
           api_key: ${{ secrets.THUNDRA_APIKEY }}
@@ -302,4 +315,4 @@ jobs:
 defaults:
   run:
     shell: bash
-    working-directory: blockscout-ci-cd/tests/e2e
+    # working-directory: blockscout-ci-cd/tests/e2e
