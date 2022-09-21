@@ -16,7 +16,7 @@ on:
         type: string
       appNamespace:
         description: 'Namespace to deploy in'
-        required: true
+        required: false
         type: string
       blockscoutImage:
         description: 'Blockscout image'
@@ -60,7 +60,7 @@ on:
         type: string
       appNamespace:
         description: 'Namespace to deploy in'
-        required: true
+        required: false
         type: string
       blockscoutImage:
         description: 'Blockscout image'
