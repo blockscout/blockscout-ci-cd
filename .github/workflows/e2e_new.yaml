@@ -234,7 +234,6 @@ jobs:
           api_key: ${{ secrets.THUNDRA_APIKEY }}
       - name: checkout
         uses: actions/checkout@v2
-        working-directory: blockscout-ci-cd/tests/e2e
         with:
           repository: blockscout/blockscout-ci-cd
           path: blockscout-ci-cd
