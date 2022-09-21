@@ -42,10 +42,6 @@ on:
         description: 'Smart-contract-verifier url'
         required: false
         type: string
-      nodeImage:
-        description: 'Geth node image'
-        required: false
-        type: string
       nodeIngressHost:
         description: 'Geth node url'
         required: false
@@ -88,10 +84,6 @@ on:
         type: string
       scVerifierIngressHost:
         description: 'Smart-contract-verifier url'
-        required: false
-        type: string
-      nodeImage:
-        description: 'Geth node image'
         required: false
         type: string
       nodeIngressHost:
