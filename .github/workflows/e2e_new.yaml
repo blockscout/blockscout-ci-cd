@@ -225,6 +225,7 @@ jobs:
           if ${{ inputs.nodeIngressHost != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set node.ingress.host._default=${{ inputs.nodeIngressHost }}-$GITHUB_HEAD_REF.aws-k8s.blockscout.com "
           fi
+          echo "$DEPLOY_ARGS"
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
 
       # Deploy newly built changes to EKS cluster.
@@ -325,13 +326,13 @@ jobs:
           test_format: JUNIT
           test_framework: JEST
           test_path: blockscout-ci-cd/tests/e2e/results.xml
-      # - name: Remove namespace
-      #   if: always()
-      #   run: |
-      #     eval `ssh-agent -s`
-      #     ssh-add - <<< "$BASTION_SSH_KEY"
-      #     ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
-      #     kubectl delete ns -n $APP_NAMESPACE
+      - name: Remove namespace
+        if: always()
+        run: |
+          eval `ssh-agent -s`
+          ssh-add - <<< "$BASTION_SSH_KEY"
+          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+          kubectl delete ns -n $APP_NAMESPACE
 defaults:
   run:
     shell: bash
