@@ -1,0 +1,305 @@
+name: E2E tests account
+
+on:
+  # push:
+  workflow_dispatch:
+    inputs:
+      valuesDir:
+        description: 'Directory with values'
+        required: true
+        default: 'charts/blockscout-stack'
+        type: string
+      appName:
+        description: 'App name'
+        required: true
+        default: 'blockscout-stack'
+        type: string
+      appNamespace:
+        description: 'Namespace to deploy in'
+        required: true
+        type: string
+      blockscoutImage:
+        description: 'Blockscout image'
+        required: false
+        type: string
+      blockscoutIngressHost:
+        description: 'Frontend url'
+        required: false
+        type: string
+      frontendImage:
+        description: 'Frontend image'
+        required: false
+        type: string
+      frontendIngressHost:
+        description: 'Frontend url'
+        required: false
+        type: string
+      scVerifierImage:
+        description: 'Smart-contract-verifier image'
+        required: false
+        type: string
+      scVerifierIngressHost:
+        description: 'Smart-contract-verifier url'
+        required: false
+        type: string
+  workflow_call:
+    inputs:
+      valuesDir:
+        description: 'Directory with values'
+        required: true
+        default: 'charts'
+        type: string
+      appName:
+        description: 'App name'
+        required: true
+        default: 'blockscout'
+        type: string
+      appNamespace:
+        description: 'Namespace to deploy in'
+        required: false
+        default: 'blockscout'
+        type: string
+      blockscoutImage:
+        description: 'Blockscout image'
+        required: false
+        type: string
+      blockscoutIngressHost:
+        description: 'Frontend url'
+        required: false
+        type: string
+      frontendImage:
+        description: 'Frontend image'
+        required: false
+        type: string
+      frontendIngressHost:
+        description: 'Frontend url'
+        required: false
+        type: string
+      scVerifierImage:
+        description: 'Smart-contract-verifier image'
+        required: false
+        type: string
+      scVerifierIngressHost:
+        description: 'Smart-contract-verifier url'
+        required: false
+        type: string
+
+env:
+  K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
+  K8S_HOST: ${{ secrets.K8S_HOST }}
+  BASTION_HOST: ${{ secrets.BASTION_HOST }}
+  K8S_PORT: ${{ secrets.K8S_PORT }}
+  USERNAME: ${{ secrets.USERNAME }}
+  BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
+
+jobs:
+  deploy_and_tests:
+    name: Deploy
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      max-parallel: 1
+      matrix:
+        environment: [Dev]
+        region: [us-east-1]
+    environment:
+      name: ${{ matrix.environment }}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Add inputs to GITHUB_ENV
+        if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
+        run: |
+          echo "VALUES_DIR=${{ inputs.valuesDir }}" >> $GITHUB_ENV
+          echo "APP_NAME=${{ inputs.appName }}" >> $GITHUB_ENV
+
+      - name: Generate namespace name
+        if: "${{ inputs.appNamespace == '' }}"
+        id: generate
+        uses: filipstefansson/uuid-action@v1
+        with:
+          name: ${{ github.sha }}
+
+      - name: Set APP_NAMESPACE
+        run: |
+          if ${{ inputs.appNamespace != '' }}; then
+              echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> "$GITHUB_ENV"
+          else
+              echo "APP_NAMESPACE=bs-${{ steps.generate.outputs.uuid }}" >> "$GITHUB_ENV"
+          fi
+
+      - name: Configure Kubectl
+        uses: azure/setup-kubectl@v2.0
+        with:
+          version: 'v1.23.6'
+        id: install
+
+      # This action will use the GitHub OIDC id-token and request AWS STS to get temporary credentials.
+      # The temporary credentials are exported as env variables.
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ matrix.region }}
+          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+
+      # Install helm, helm-secrets, sops
+      - name: Install helm and helm-secrets, sops
+        shell: bash
+        run: |
+          curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+          sudo apt-get install apt-transport-https --yes
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+          sudo apt-get update -y
+          sudo apt-get install helm gnupg -y
+          helm plugin install https://github.com/jkroepke/helm-secrets
+          curl -O -L -C - https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux
+          sudo mv sops-v3.7.3.linux /usr/bin/sops
+          sudo chmod +x /usr/bin/sops
+
+      # The following command will update the kube config file with our cluster information.
+      # It will use the credentials exported by the previous action.
+      - name: Update KubeConfig
+        shell: bash
+        run: |
+          aws eks update-kubeconfig --name ${{ secrets.AWS_CLUSTER_NAME }} --region=${{ matrix.region }}
+
+      # Import GPG key
+      - name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          fingerprint: ${{ secrets.GPG_FINGERPRINT }}
+          passphrase: ''
+
+      - name: Deploy args
+        shell: bash
+        run: |
+          echo $DEPLOY_ARGS
+          if ${{ inputs.frontendImage != '' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
+          fi
+          if ${{ inputs.frontendIngressHost != '' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }} "
+          fi
+          if ${{ inputs.blocksckoutImage != '' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blocksckoutImage }} "
+          fi
+          if ${{ inputs.blocksckoutIngressHost != '' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blocksckout.ingress.host._default=${{ inputs.blocksckoutIngressHost }} "
+          fi
+          if ${{ inputs.scVerifierImage != '' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
+          fi
+          if ${{ inputs.scVerifierIngressHost != '' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }} "
+          fi
+          echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
+
+      # Deploy newly built changes to EKS cluster.
+      - name: Deploy To Cluster
+        shell: bash
+        run: |
+          mkdir ~/.ssh
+          ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
+          eval `ssh-agent -s`
+          ssh-add - <<< "$BASTION_SSH_KEY"
+          sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
+          sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
+          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+          helm secrets upgrade --install --repo https://blockscout.github.io/blockscout-ci-cd/ \
+            $APP_NAME blockscout-stack \
+            -f $VALUES_DIR/values.yaml \
+            -f $VALUES_DIR/secrets.yaml \
+            $DEPLOY_ARGS \
+            -n $APP_NAMESPACE --create-namespace
+
+      # Copy registry secret if private docker repo
+      - name: Copy private registry secret
+        # if: github.repository == 'blockscout/frontend'
+        shell: bash
+        run: |
+          kubectl delete secret regcred -n $APP_NAMESPACE --ignore-not-found
+          kubectl get secret regcred -o yaml | sed "s/namespace: .*/namespace: $APP_NAMESPACE/" | kubectl apply -f -
+      # tests
+      - name: Collect Workflow Telemetry
+        uses: runforesight/foresight-workflow-kit-action@v1
+        with:
+          api_key: ${{ secrets.THUNDRA_APIKEY }}
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          repository: blockscout/blockscout-ci-cd
+          path: blockscout-ci-cd
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: v14.17.0
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Install deps
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Build contracts
+        working-directory: blockscout-ci-cd/tests/contracts
+        run: |
+          # gyp build from root
+          npm config set user 0
+          npm ci
+          npm run build
+      - name: Cache playwright binaries
+        uses: actions/cache@v2
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
+      - name: Install Playwright
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+      - name: Run playwright smoke suite
+        run: |
+          npm run test:smoke:account
+      - name: Run playwright verification suite
+        run: |
+          npm run test:smoke:verification
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: report
+          path: blockscout-ci-cd/tests/e2e/html-report/index.html
+      - name: Analyze Test and/or Coverage Results
+        uses: runforesight/foresight-test-kit-action@v1
+        if: always()
+        with:
+          api_key: ${{ secrets.THUNDRA_APIKEY }}
+          test_format: JUNIT
+          test_framework: JEST
+          test_path: blockscout-ci-cd/tests/e2e/results.xml
+      # - name: Remove namespace
+      #   if: always()
+      #   run: |
+      #     eval `ssh-agent -s`
+      #     ssh-add - <<< "$BASTION_SSH_KEY"
+      #     ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+      #     kubectl delete ns -n $APP_NAMESPACE
+defaults:
+  run:
+    shell: bash
+    working-directory: blockscout-ci-cd/tests/e2e
