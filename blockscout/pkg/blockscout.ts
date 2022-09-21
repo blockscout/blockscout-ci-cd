@@ -92,8 +92,8 @@ const selectResources = (mode: string): [ResourceRequirements, ResourceRequireme
     let resourcesNetwork: ResourceRequirements
     switch (mode) {
     case ResourceMode.MainnetTest:
-        resourcesDB = guaranteedResources(`500m`, `2048Mi`)
-        resourcesBS = guaranteedResources(`500m`, `1024Mi`)
+        resourcesDB = guaranteedResources(`1000m`, `2048Mi`)
+        resourcesBS = guaranteedResources(`1000m`, `1024Mi`)
         resourcesV = guaranteedResources(`100m`, `250Mi`)
         resourcesNetwork = guaranteedResources(`200m`, `2Gi`)
         break
