@@ -92,6 +92,23 @@ env:
   USERNAME: ${{ secrets.USERNAME }}
   BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
 
+  ACCOUNT_USERNAME: ${{ secrets.ACCOUNT_USERNAME }}
+  ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
+  MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
+  MAILSLURP_EMAIL_ID: ${{ secrets.MAILSLURP_EMAIL_ID }}
+  ENV: test
+  RESOURCE_MODE: account
+  PUBLIC: false
+  PORT: 4000
+  PORT_PG: 5432
+  PORT_NETWORK_HTTP: 9545
+  PORT_NETWORK_WS: 9546
+  NETWORK_URL: http://node-svc:9545
+  WALLET: ${{ secrets.WALLET }}
+  PWDEBUG: 0
+  LOAD_AUTH_CTX: 0
+  LOAD_CONTRACTS_DATA: 0
+
 jobs:
   deploy_and_tests:
     name: Deploy
