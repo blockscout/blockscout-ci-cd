@@ -21,7 +21,8 @@ blockscout:
   ingress:
     enabled: true
     host:
-      _default: <url>
+      _default: blockscout-e2e-local
+      testnet: asdfg-blockscout.test.blockscout.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true
@@ -39,12 +40,12 @@ blockscout:
       memory:
         _default: "1Gi"
       cpu:
-        _default: "1"
+        _default: "2"
     requests:
       memory:
         _default: "1Gi"
       cpu:
-        _default: "1"
+        _default: "2"
 
   # enable service to connect to RDS
   rds:
@@ -154,7 +155,7 @@ node:
   ingress:
     enabled: true
     host:
-      _default: url
+      _default: asdfg-node.test.blockscout.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: false
@@ -275,6 +276,7 @@ frontend:
     enabled: true
     host:
       _default: test
+      testnet: asdfg-frontend.test.blockscout.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true

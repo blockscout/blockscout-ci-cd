@@ -34,7 +34,7 @@ const waitReceiptWithBlock = async (provider: JsonRpcProvider, hash: string): Pr
 
 // setupContracts sets test contracts up
 const setupContracts = async (): Promise<void> => {
-    const contracts = new Contracts(testConfig.networkURL)
+    const contracts = new Contracts(process.env.NETWORK_URL)
 
     console.log(`deploying ERC20 contract`)
     const contractName = `TestToken`
@@ -156,10 +156,10 @@ async function globalSetup(): Promise<void> {
         }
     }
     const storageStateFile = `state.json`
-    if (process.env.RESOURCE_MODE === `account` && process.env.LOAD_AUTH_CTX === `0`) {
+    if (process.env.ACCOUNT === `1` && process.env.LOAD_AUTH_CTX === `0`) {
         console.log(`creating authorization context for: ${storageStateFile}`)
         const browser = await chromium.launch()
-        const ctx = await browser.newContext({ baseURL: testConfig[process.env.ENV] })
+        const ctx = await browser.newContext({ baseURL: process.env.BLOCKSCOUT_URL })
         const page = await ctx.newPage()
         const loginPage = new AuthorizedArea(page, null, null)
         const { ACCOUNT_USERNAME, ACCOUNT_PASSWORD } = process.env
