@@ -1,7 +1,7 @@
 export default {
     prod: `https://blockscout.com/`,
-    test: `http://localhost:${process.env.PORT}`,
-    networkURL: `http://localhost:${process.env.PORT_NETWORK_HTTP}`,
+    test: process.env.BLOCKSCOUT_URL,
+    networkURL: process.env.NETWORK_URL,
     waitForElement: 120000,
     dbUsername: ``,
     dbPassword: ``,
