@@ -18,7 +18,7 @@ jobs:
     uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@fix-e2e-tests
     with:
       valuesDir: charts/blockscout-stack/values/e2e-account
-      # appNamespace: e2e-test-account
+      appNamespace: e2e-test-account
       appName: e2e-bs-stack
       blockscoutIngressHost: blocksckout
       frontendIngressHost: frontend
