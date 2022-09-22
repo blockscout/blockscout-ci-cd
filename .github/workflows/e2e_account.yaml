@@ -25,3 +25,4 @@ jobs:
       nodeIngressHost: node
       scVerifierIngressHost: sc-verifier
     secrets: inherit
+
