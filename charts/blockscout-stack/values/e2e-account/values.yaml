@@ -1,5 +1,5 @@
 global:
-  env: testnet
+  env: e2e
 
 # enable Blockscout deploy
 blockscout:
