@@ -20,9 +20,8 @@ jobs:
       valuesDir: charts/blockscout-stack/values/e2e-account
       appNamespace: e2e-test-account
       appName: e2e-bs-stack
-      blockscoutIngressHost: blocksckout
-      frontendIngressHost: frontend
-      nodeIngressHost: node
-      scVerifierIngressHost: sc-verifier
+      blockscoutIngressHost: blocksckout-test
+      frontendIngressHost: frontend-test
+      nodeIngressHost: node-test
+      scVerifierIngressHost: sc-verifier-test
     secrets: inherit
-
