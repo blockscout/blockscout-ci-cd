@@ -220,8 +220,8 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blockscoutImage }} "
           fi
           if ${{ inputs.blockscoutIngressHost != '' }}; then
-            BLOCKSCOUT_URL=${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=$BLOCKSCOUT_URL "
+            BLOCKSCOUT_URL=https://${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
             echo "BLOCKSCOUT_URL=$BLOCKSCOUT_URL" >> "$GITHUB_ENV"
           fi
           if ${{ inputs.scVerifierImage != '' }}; then
@@ -232,7 +232,7 @@ jobs:
           fi
           if ${{ inputs.nodeIngressHost != '' }}; then
             NETWORK_URL=${{ inputs.nodeIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com/http
-            echo "NETWORK_URL=$NETWORK_URL" >> "$GITHUB_ENV"
+            echo "NETWORK_URL=http://$NETWORK_URL" >> "$GITHUB_ENV"
             DEPLOY_ARGS="$DEPLOY_ARGS--set node.ingress.host._default=${{ inputs.nodeIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
           fi
           echo "$DEPLOY_ARGS"
