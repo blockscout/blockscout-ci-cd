@@ -220,6 +220,8 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blockscoutImage }} "
           fi
           if ${{ inputs.blockscoutIngressHost != '' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_CALLBACK_URL._default=http://${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com/auth/auth0/callback "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com/auth/logout "
             BLOCKSCOUT_URL=https://${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
             echo "BLOCKSCOUT_URL=$BLOCKSCOUT_URL" >> "$GITHUB_ENV"
