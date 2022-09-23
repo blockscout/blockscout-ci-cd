@@ -115,6 +115,7 @@ env:
   PWDEBUG: 0
   LOAD_AUTH_CTX: 0
   LOAD_CONTRACTS_DATA: 0
+  ACCOUNT: 1
 
   # BLOCKSCOUT_URL: http://asdfg-blockscout.test.blockscout.aws-k8s.blockscout.com/
   # NETWORK_URL: http://asdfg-node.test.blockscout.aws-k8s.blockscout.com/http
