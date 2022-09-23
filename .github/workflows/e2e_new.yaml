@@ -159,7 +159,7 @@ jobs:
           if ${{ inputs.appNamespace != '' }}; then
               echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> "$GITHUB_ENV"
           else
-              echo "APP_NAMESPACE=bs-${{ steps.generate.outputs.uuid }}" >> "$GITHUB_ENV"
+              echo "APP_NAMESPACE=bs-$GITHUB_REF_SLUG" >> "$GITHUB_ENV"
           fi
 
       - name: Configure Kubectl
