@@ -159,7 +159,7 @@ jobs:
           if ${{ inputs.appNamespace != '' }}; then
               echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> "$GITHUB_ENV"
           else
-              echo "APP_NAMESPACE=bs-$GITHUB_REF_SLUG" >> "$GITHUB_ENV"
+              echo "APP_NAMESPACE=bs-${{ steps.generate.outputs.uuid }}" >> "$GITHUB_ENV"
           fi
 
       - name: Configure Kubectl
@@ -214,7 +214,7 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
           fi
           if ${{ inputs.frontendIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }}-$GITHUB_REF_SLUG.test.aws-k8s.blockscout.com "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }}-${{ steps.generate.outputs.uuid }}.test.aws-k8s.blockscout.com "
           fi
           if ${{ inputs.blockscoutImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blockscoutImage }} "
@@ -228,12 +228,12 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
           fi
           if ${{ inputs.scVerifierIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-$GITHUB_REF_SLUG.test.aws-k8s.blockscout.com "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-${{ steps.generate.outputs.uuid }}.test.aws-k8s.blockscout.com "
           fi
           if ${{ inputs.nodeIngressHost != '' }}; then
-            NETWORK_URL=${{ inputs.nodeIngressHost }}-$GITHUB_REF_SLUG.test.aws-k8s.blockscout.com/http
+            NETWORK_URL=${{ inputs.nodeIngressHost }}-${{ steps.generate.outputs.uuid }}.test.aws-k8s.blockscout.com/http
             echo "NETWORK_URL=$NETWORK_URL" >> "$GITHUB_ENV"
-            DEPLOY_ARGS="$DEPLOY_ARGS--set node.ingress.host._default=${{ inputs.nodeIngressHost }}-$GITHUB_REF_SLUG.test.aws-k8s.blockscout.com "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set node.ingress.host._default=${{ inputs.nodeIngressHost }}-${{ steps.generate.outputs.uuid }}.test.aws-k8s.blockscout.com "
           fi
           echo "$DEPLOY_ARGS"
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
