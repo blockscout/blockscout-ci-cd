@@ -1,0 +1,9 @@
+apiVersion: v1
+appVersion: 0.0.1
+version: 0.0.1
+name: redis
+description: '''
+Helm chart for deploying redis in K8S
+
+Deploy command: `helm upgrade --install -n=<namespace> redis ./ -f values-<name>.yaml`
+'''
