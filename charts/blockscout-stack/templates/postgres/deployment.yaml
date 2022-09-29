@@ -26,6 +26,9 @@ spec:
               cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
           {{- end }}
           imagePullPolicy: "IfNotPresent"
+          # {{- if .Values.postgres.args }}
+          # args:
+          # {{- end }}
           ports:
             - containerPort: {{ .Values.postgres.port }}
           env:
@@ -37,4 +40,5 @@ spec:
       #   - name: postgredb
       #     persistentVolumeClaim:
       #       claimName: postgres-pv-claim
+---
 {{- end }}

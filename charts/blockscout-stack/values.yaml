@@ -13,9 +13,16 @@ blockscout:
     port: 80
     targetPort: 4000
 
+  # init container
+  init:
+    enabled: false
+
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
+
+  command: '["/bin/bash"]'
+  args: '["-c", "bin/blockscout eval \"Elixir.Explorer.ReleaseTasks.create_and_migrate()\" && bin/blockscout start"]'
 
   # enable ingress
   ingress:
@@ -64,6 +71,8 @@ postgres:
   enabled: false
   image: postgres:13.6
   port: 5432
+
+  args:
 
   resources:
     limits:

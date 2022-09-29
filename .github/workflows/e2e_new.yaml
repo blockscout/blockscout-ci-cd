@@ -115,6 +115,10 @@ env:
   PWDEBUG: 0
   LOAD_AUTH_CTX: 0
   LOAD_CONTRACTS_DATA: 0
+  ACCOUNT: 1
+
+  # BLOCKSCOUT_URL: http://asdfg-blockscout.test.blockscout.aws-k8s.blockscout.com/
+  # NETWORK_URL: http://asdfg-node.test.blockscout.aws-k8s.blockscout.com/http
 
   # BLOCKSCOUT_URL: http://asdfg-blockscout.test.blockscout.aws-k8s.blockscout.com/
   # NETWORK_URL: http://asdfg-node.test.blockscout.aws-k8s.blockscout.com/http
@@ -214,26 +218,28 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
           fi
           if ${{ inputs.frontendIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
           fi
           if ${{ inputs.blockscoutImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blockscoutImage }} "
           fi
           if ${{ inputs.blockscoutIngressHost != '' }}; then
-            BLOCKSCOUT_URL=${{ inputs.blockscoutIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=$BLOCKSCOUT_URL "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_CALLBACK_URL._default=http://${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com/auth/auth0/callback "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com/auth/logout "
+            BLOCKSCOUT_URL=https://${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
             echo "BLOCKSCOUT_URL=$BLOCKSCOUT_URL" >> "$GITHUB_ENV"
           fi
           if ${{ inputs.scVerifierImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
           fi
           if ${{ inputs.scVerifierIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
           fi
           if ${{ inputs.nodeIngressHost != '' }}; then
-            NETWORK_URL=${{ inputs.nodeIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com/http
-            echo "NETWORK_URL=$NETWORK_URL" >> "$GITHUB_ENV"
-            DEPLOY_ARGS="$DEPLOY_ARGS--set node.ingress.host._default=${{ inputs.nodeIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com "
+            NETWORK_URL=${{ inputs.nodeIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com/http
+            echo "NETWORK_URL=http://$NETWORK_URL" >> "$GITHUB_ENV"
+            DEPLOY_ARGS="$DEPLOY_ARGS--set node.ingress.host._default=${{ inputs.nodeIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
           fi
           echo "$DEPLOY_ARGS"
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"

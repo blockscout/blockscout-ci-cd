@@ -17,6 +17,26 @@ spec:
         app: {{ .Release.Name }}-blockscout
     spec:
       # serviceAccountName: vault-auth
+      {{- if .Values.blockscout.init.enabled }}
+      initContainers:
+        - name: init
+          image: busybox:1.28
+          command:
+            - mkdir
+            - "-p"
+            - /var/kend/data
+            - "&&"
+            - wget
+            - "-O"
+            - "/var/kend/data/klaytn-baobab-chaindata-latest.tar.gz"
+            - https://s3.ap-northeast-2.amazonaws.com/klaytn-chaindata/baobab/klaytn-baobab-chaindata-20220928010912.tar.gz
+            - "&&"
+            - sleep
+            - "2000"
+          volumeMounts:
+            - name: workdir
+              mountPath: "/var/kend/data"
+      {{- end }}
       containers:
         - name: {{ .Release.Name }}-blockscout
           image: {{ pluck $.Values.global.env .Values.blockscout.image | first | default .Values.blockscout.image._default | quote }}
@@ -30,9 +50,9 @@ spec:
               cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
           {{- end }}
           imagePullPolicy: Always
-          command: ["/bin/bash"]
+          command: {{ .Values.blockscout.command }}
           # args: ["-c", "mix do ecto.create, ecto.migrate, phx.server"]
-          args: ["-c", "bin/blockscout eval \"Elixir.Explorer.ReleaseTasks.create_and_migrate()\" && bin/blockscout start"]
+          args: {{ .Values.blockscout.args }}
           ports:
             - containerPort: {{ .Values.blockscout.docker.targetPort }}
           env:
@@ -58,6 +78,9 @@ spec:
             initialDelaySeconds: 100
             periodSeconds: 100
           {{- end }}
+      volumes:
+      - name: workdir
+        emptyDir: {}
         #   volumeMounts:
         #     - name: smweb-logs
         #       mountPath: /smweb/
@@ -70,6 +93,7 @@ spec:
       #   - name: config
       #     configMap:
       #       name: {{ .Release.Name }}-promtail-configmap
+      imagePullPolicy: Always
       restartPolicy: Always
       {{- if .Values.blockscout.nodeSelector.enabled }}
       nodeSelector:
