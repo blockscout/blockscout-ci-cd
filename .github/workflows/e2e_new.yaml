@@ -120,6 +120,9 @@ env:
   # BLOCKSCOUT_URL: http://asdfg-blockscout.test.blockscout.aws-k8s.blockscout.com/
   # NETWORK_URL: http://asdfg-node.test.blockscout.aws-k8s.blockscout.com/http
 
+  # BLOCKSCOUT_URL: http://asdfg-blockscout.test.blockscout.aws-k8s.blockscout.com/
+  # NETWORK_URL: http://asdfg-node.test.blockscout.aws-k8s.blockscout.com/http
+
 jobs:
   deploy_and_tests:
     name: Deploy
