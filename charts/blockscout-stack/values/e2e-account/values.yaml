@@ -89,6 +89,10 @@ blockscout:
       _default: "/"
     NETWORK_PATH:
       _default: "/"
+    ETHEREUM_JSONRPC_DISABLE_ARCHIVE_BALANCES:
+      _default: 'true'
+
+
 postgres:
   enabled: true
   image: postgres:13.6
