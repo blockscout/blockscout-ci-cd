@@ -93,6 +93,7 @@ spec:
       #   - name: config
       #     configMap:
       #       name: {{ .Release.Name }}-promtail-configmap
+      imagePullPolicy: Always
       restartPolicy: Always
       {{- if .Values.blockscout.nodeSelector.enabled }}
       nodeSelector:
