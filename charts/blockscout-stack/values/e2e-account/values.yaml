@@ -62,17 +62,17 @@ blockscout:
     PORT_PG:
       _default: 5432
     PORT_NETWORK_HTTP:
-      _default: 9545
+      _default: 8545
     PORT_NETWORK_WS:
-      _default: 9546
+      _default: 8546
     ETHEREUM_JSONRPC_VARIANT:
       _default: geth
     ETHEREUM_JSONRPC_TRACE_URL:
-      _default: http://node-svc:9545
+      _default: http://node-svc:8545
     ETHEREUM_JSONRPC_HTTP_URL:
-      _default: http://node-svc:9545
+      _default: http://node-svc:8545
     ETHEREUM_JSONRPC_WS_URL:
-      _default: ws://node-svc:9546
+      _default: ws://node-svc:8546
     COIN:
       _default: DAI
     MIX_ENV:
@@ -126,7 +126,7 @@ geth:
   portWs: 8546
   portAuth: 8551
   command: '["sh","./root/init.sh"]'
-  args: '["--fakepow", "--dev", "--dev.period=1", "--datadir=/root/.ethereum/devnet", "--keystore=/root/.ethereum/devnet/keystore", "--password=/root/password.txt", "--unlock=0", "--unlock=1", "--mine", "--miner.threads=1", "--miner.etherbase=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266", "--ipcpath=/root/geth.ipc", "--http", "--http.vhosts=*", "--http.addr=0.0.0.0", "--http.port=9545", "--http.api=eth,net,web3,debug,txpool", "--ws", "--ws.origins=*", "--ws.addr=0.0.0.0", "--ws.port=9546", "--ws.api=eth,net,web3,debug,txpool", "--graphql", "--graphql.corsdomain=*", "--allow-insecure-unlock", "--rpc.allow-unprotected-txs", "--http.corsdomain=*", "--vmdebug", "--networkid=1337", "--rpc.txfeecap=0"]'
+  args: '["--fakepow", "--dev", "--dev.period=1", "--datadir=/root/.ethereum/devnet", "--keystore=/root/.ethereum/devnet/keystore", "--password=/root/password.txt", "--unlock=0", "--unlock=1", "--mine", "--miner.threads=1", "--miner.etherbase=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266", "--ipcpath=/root/geth.ipc", "--http", "--http.vhosts=*", "--http.addr=0.0.0.0", "--http.port=8545", "--http.api=eth,net,web3,debug,txpool", "--ws", "--ws.origins=*", "--ws.addr=0.0.0.0", "--ws.port=8546", "--ws.api=eth,net,web3,debug,txpool", "--graphql", "--graphql.corsdomain=*", "--allow-insecure-unlock", "--rpc.allow-unprotected-txs", "--http.corsdomain=*", "--vmdebug", "--networkid=1337", "--rpc.txfeecap=0"]'
   environment: {}
   persistence:
     enabled: false
@@ -156,6 +156,8 @@ geth:
     # enable https
     tls:
       enabled: false
+  jwt:
+    enabled: false
 # enable Smart-contract-verifier deploy
 scVerifier:
   enabled: true
