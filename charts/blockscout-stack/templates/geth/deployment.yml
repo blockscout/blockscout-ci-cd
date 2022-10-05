@@ -42,9 +42,11 @@ spec:
             - name: geth
               mountPath: {{ .Values.geth.persistence.mountPath }}
             {{- end }}
+            {{- if .Values.geth.jwt.enabled }}
             - mountPath: /root/.ethereum/goerli/geth/jwtsecret
               name: jwt
               subPath: jwtsecret
+            {{- end }}
             {{- if .Values.geth.files.enabled }}
               {{- range $key, $value := .Values.geth.files }}
             - mountPath: /root/{{ $key }}
