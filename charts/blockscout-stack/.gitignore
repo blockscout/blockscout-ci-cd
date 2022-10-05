@@ -2,3 +2,4 @@ values-**
 client-**
 node-**
 !values-test.yaml
+frontend-test

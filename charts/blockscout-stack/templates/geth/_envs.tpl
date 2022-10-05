@@ -1,6 +1,6 @@
-{{- define "frontend_env" }}
-{{- range $key, $value := .Values.frontend.environment }}
-{{- $item := get $.Values.frontend.environment $key }}
+{{- define "geth_env" }}
+{{- range $key, $value := .Values.geth.environment }}
+{{- $item := get $.Values.geth.environment $key }}
 {{- if or (kindIs "string" $item) (kindIs "int64" $item) (kindIs "bool" $item)}}
 - name: {{ $key }}
   value: {{ $value | quote }}

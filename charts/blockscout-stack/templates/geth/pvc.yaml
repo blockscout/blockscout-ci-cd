@@ -1,0 +1,17 @@
+{{- if .Values.geth.enabled }}
+{{- if .Values.geth.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: geth
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1000Gi
+---
+{{- end }}
+
+{{- end }}

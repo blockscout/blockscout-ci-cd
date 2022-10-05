@@ -1,0 +1,24 @@
+{{- if .Values.geth.enabled }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: geth-svc
+spec:
+  type: {{ .Values.geth.service.type}}
+  ports:
+    - port: {{ .Values.geth.portHttp }}
+      targetPort: {{ .Values.geth.portHttp }}
+      protocol: TCP
+      name: http
+    - port: {{ .Values.geth.portWs }}
+      targetPort: {{ .Values.geth.portWs }}
+      protocol: TCP
+      name: ws
+    - port: {{ .Values.geth.portAuth }}
+      targetPort: {{ .Values.geth.portAuth }}
+      protocol: TCP
+      name: auth
+  selector:
+    app: {{ .Release.Name }}-geth
+---
+{{- end }}

@@ -37,7 +37,27 @@ spec:
             - name: workdir
               mountPath: "/var/kend/data"
       {{- end }}
+      imagePullSecrets:
+        - name: regcred
       containers:
+      {{- if .Values.frontend.enabled }}
+        - name: {{ .Release.Name }}-front
+          image: {{ pluck $.Values.global.env .Values.frontend.image | first | default .Values.frontend.image._default | quote }}
+          resources:
+          {{- with .Values.frontend.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+          {{- end }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.frontend.docker.targetPort }}
+          env:
+{{- include "frontend_env" . | indent 10 }}
+      {{- end }}
         - name: {{ .Release.Name }}-blockscout
           image: {{ pluck $.Values.global.env .Values.blockscout.image | first | default .Values.blockscout.image._default | quote }}
           resources:
