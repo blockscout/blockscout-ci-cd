@@ -17,7 +17,7 @@ spec:
         - name: {{ .Release.Name }}-geth
           image: {{ pluck $.Values.global.env .Values.geth.image | first | default .Values.geth.image._default | quote }}
           command: {{ .Values.geth.command }}
-          args: {{ .Values.nogethde.args }}
+          args: {{ .Values.geth.args }}
           # args: [ "--http", "--http.addr=0.0.0.0", "--http.vhosts=geth-mainnet-full", "--http.api=eth,net,web3,txpool", "--ws", "--ws.addr=0.0.0.0", "--datadir=/data", ]
           resources:
             {{- with .Values.geth.resources }}
