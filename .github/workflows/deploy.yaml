@@ -23,7 +23,7 @@ on:
         required: false
         type: string
       blockscoutIngressHost:
-        description: 'Frontend url'
+        description: 'Blockscout url'
         required: false
         type: string
       frontendImage:
@@ -64,7 +64,7 @@ on:
         required: false
         type: string
       blockscoutIngressHost:
-        description: 'Frontend url'
+        description: 'Blockscout url'
         required: false
         type: string
       frontendImage:
@@ -200,11 +200,11 @@ jobs:
           if ${{ inputs.frontendIngressHost != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }} "
           fi
-          if ${{ inputs.blocksckoutImage != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blocksckoutImage }} "
+          if ${{ inputs.blockscoutImage != '' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blockscoutImage }} "
           fi
-          if ${{ inputs.blocksckoutIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blocksckout.ingress.host._default=${{ inputs.blocksckoutIngressHost }} "
+          if ${{ inputs.blockscoutIngressHost != '' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }} "
           fi
           if ${{ inputs.scVerifierImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "

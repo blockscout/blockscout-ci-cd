@@ -1,0 +1,94 @@
+{{- if .Values.node.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-node
+spec:
+  replicas: {{ .Values.node.replicas.app }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-node
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-node
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-node
+          image: {{ pluck $.Values.global.env .Values.node.image | first | default .Values.node.image._default | quote }}
+          command: {{ .Values.node.command }}
+          args: {{ .Values.node.args }}
+          # args: [ "--http", "--http.addr=0.0.0.0", "--http.vhosts=geth-mainnet-full", "--http.api=eth,net,web3,txpool", "--ws", "--ws.addr=0.0.0.0", "--datadir=/data", ]
+          resources:
+            {{- with .Values.node.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+            {{- end }}
+          env:
+            {{- include "node_env" . | indent 10 }}
+            {{- include "node_common_env" . | indent 10 }}
+          ports:
+            - containerPort: {{ .Values.node.portHttp }}
+              name: noderpchttp
+            - containerPort: {{ .Values.node.portWs }}
+              name: noderpctcp
+          volumeMounts:
+            {{- if .Values.node.persistence.enabled }}
+            - name: node
+              mountPath: "/geth"
+            {{- end }}
+            {{- range $key, $value := .Values.node.files }}
+            - mountPath: /scripts/{{ $key }}
+              name: geth-cm
+              subPath: {{ $key }}
+            {{- end }}
+        {{ if .Values.node.dtl.enabled }}
+        - name: {{ .Release.Name }}-dtl
+          image: {{ pluck $.Values.global.env .Values.node.dtl.image | first | default .Values.node.dtl.image._default | quote }}
+          env:
+            {{- include "node_dtl_env" . | indent 10 }}
+            {{- include "node_common_env" . | indent 10 }}
+          ports:
+            - containerPort: {{ .Values.node.dtl.port }}
+              name: dtl
+          volumeMounts:
+            {{- if .Values.node.dtl.persistence.enabled }}
+            - name: dtl
+              mountPath: "/db"
+            {{- end }}
+        {{- end }}
+        {{ if .Values.node.healthcheck.enabled }}
+        - name: {{ .Release.Name }}-healthcheck
+          image: {{ pluck $.Values.global.env .Values.node.healthcheck.image | first | default .Values.node.healthcheck.image._default | quote }}
+          env:
+            {{- include "node_healthcheck_env" . | indent 10 }}
+            {{- include "node_common_env" . | indent 10 }}
+          ports:
+            - containerPort: {{ .Values.node.healthcheck.port }}
+              name: healthcheck
+        {{- end }}
+      {{- if .Values.node.nodeSelector.enabled }}
+      nodeSelector:
+        app: {{ .Values.node.nodeSelector.app}}
+      {{- end }}
+      volumes:
+        - configMap:
+            name: node-cm
+            defaultMode: 0777
+          name: node-cm
+        {{- if .Values.node.persistence.enabled }}
+        - name: node
+          persistentVolumeClaim:
+            claimName: node
+        {{- end }}
+        {{- if .Values.node.dtl.persistence.enabled }}
+        - name: dtl
+          persistentVolumeClaim:
+            claimName: dtl
+        {{- end }}
+---
+{{- end }}

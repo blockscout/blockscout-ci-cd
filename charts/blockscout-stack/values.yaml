@@ -94,8 +94,8 @@ postgres:
     # POSTGRES_DB:
     #   _default:
 
-# enable Node (geth) deploy
-node:
+# enable geth deploy
+geth:
   enabled: false
   image:
     _default: ethereum/client-go:stable
@@ -144,9 +144,306 @@ node:
     tls:
       enabled: false
 
+  files: {}
+
+  jwt:
+    enabled: false
+    token: ''
+
+# enable Node l2geth deploy
+node:
+  enabled: false
+
+  image:
+    _default: ethereumoptimism/l2geth:latest
+
+  replicas:
+    app: 1
+
+  command: '["/bin/sh","-c"]'
+  args: '["/scripts/check-for-chaindata-berlin.sh", "&&", "/scripts/l2geth-start.sh"]'
+
+  # node label
+  nodeSelector:
+    app: blockscout
+
+  portHttp: 8545
+  portWs: 8546
+
+  persistence:
+    enabled: false
+
   files:
-    genesis: ''
-    init: ''
+    check-for-chaindata-berlin.sh: |-
+      #!/bin/sh
+      set -exu
+
+      echo running "${0}"
+
+      GETH_DATA_DIR=/geth
+      GETH_CHAINDATA_DIR=$GETH_DATA_DIR/geth/chaindata
+      GETH_KEYSTORE_DIR=$GETH_DATA_DIR/keystore
+
+      if [ ! -d "$GETH_KEYSTORE_DIR" ]; then
+          echo "$GETH_KEYSTORE_DIR missing, running account import"
+          echo -n "$BLOCK_SIGNER_PRIVATE_KEY_PASSWORD" > "$GETH_DATA_DIR"/password
+          echo -n "$BLOCK_SIGNER_PRIVATE_KEY" > "$GETH_DATA_DIR"/block-signer-key
+          geth account import \
+              --datadir="$GETH_DATA_DIR" \
+              --password="$GETH_DATA_DIR"/password \
+              "$GETH_DATA_DIR"/block-signer-key
+          echo "get account import complete"
+      fi
+
+      if [ ! -d "$GETH_CHAINDATA_DIR" ]; then
+          echo "$GETH_CHAINDATA_DIR missing, running init"
+          geth init --datadir="$GETH_DATA_DIR" "$L2GETH_GENESIS_URL" "$L2GETH_GENESIS_HASH"
+          echo "geth init complete"
+      else
+          echo "$GETH_CHAINDATA_DIR exists, checking for hardfork."
+          echo "Chain config:"
+          geth dump-chain-cfg --datadir="$GETH_DATA_DIR"
+          if geth dump-chain-cfg --datadir="$GETH_DATA_DIR" | grep -q "\"berlinBlock\": $L2GETH_BERLIN_ACTIVATION_HEIGHT"; then
+              echo "Hardfork already activated."
+          else
+              echo "Hardfork not activated, running init."
+              geth init --datadir="$GETH_DATA_DIR" "$L2GETH_GENESIS_URL" "$L2GETH_GENESIS_HASH"
+              echo "geth hardfork activation complete"
+          fi
+      fi
+    l2geth-start.sh: |-
+      #!/bin/sh
+      set -eou
+      if [[ -z $DATADIR ]]; then
+          echo "Must pass DATADIR"
+          exit 1
+      fi
+      if [[ -z $BLOCK_SIGNER_ADDRESS ]]; then
+          echo "Must pass BLOCK_SIGNER_ADDRESS"
+          exit 1
+      fi
+      exec geth \
+        --vmodule=eth/*=5,miner=4,rpc=5,rollup=4,consensus/clique=1 \
+        --datadir=$DATADIR \
+        --password=$DATADIR/password \
+        --allow-insecure-unlock \
+        --unlock=$BLOCK_SIGNER_ADDRESS \
+        --mine \
+        --miner.etherbase=$BLOCK_SIGNER_ADDRESS \
+        --gcmode=$NODE_TYPE \
+        # --metrics \
+        # --metrics.influxdb \
+        # --metrics.influxdb.endpoint=http://influxdb:8086 \
+        # --metrics.influxdb.database=l2geth \
+        $@
+
+  environment:
+    ###############################################################################
+    #                            ↓ OPTIMISM OPTIONS ↓                             #
+    ###############################################################################
+
+    USING_OVM:
+      default: 'true'
+    SEQUENCER_CLIENT_HTTP:
+      default: https://goerli.optimism.io
+    BLOCK_SIGNER_ADDRESS:
+      default: 0x27770a9694e4B4b1E130Ab91Bc327C36855f612E
+    BLOCK_SIGNER_PRIVATE_KEY:
+      default: da5deb73dbc9dea2e3916929daaf079f75232d32a2cf37ff8b1f7140ef3fd9db
+    BLOCK_SIGNER_PRIVATE_KEY_PASSWORD:
+      default: pwd
+    ETH1_CTC_DEPLOYMENT_HEIGHT:
+      default: 7017096
+    ETH1_SYNC_SERVICE_ENABLE:
+      default: 'true'
+    L2GETH_GENESIS_URL:
+      default: https://storage.googleapis.com/optimism/goerli/goerli-devnet-genesis-2022-06.json
+    L2GETH_GENESIS_HASH:
+      default: 0x1067d2037744f17d34e3ceb88b0d654a3798f5d12b79b348085f13f1ec458636
+    L2GETH_BERLIN_ACTIVATION_HEIGHT:
+      default: 0
+    ROLLUP_BACKEND:
+      default: l1
+    ROLLUP_CLIENT_HTTP:
+      default: http://dtl-svc:7878
+    ROLLUP_DISABLE_TRANSFERS:
+      default: 'false'
+    ROLLUP_ENABLE_L2_GAS_POLLING:
+      default: 'false'
+    ROLLUP_GAS_PRICE_ORACLE_OWNER_ADDRESS:
+      default: 0xc8910a1957d276cE5634B978d908B5ef9fB0e05B
+    ROLLUP_MAX_CALLDATA_SIZE:
+      default: 40000
+    ROLLUP_POLL_INTERVAL_FLAG:
+      default: 1s
+    ROLLUP_SYNC_SERVICE_ENABLE:
+      default: true
+    ROLLUP_TIMESTAMP_REFRESH:
+      default: 5m
+    ROLLUP_VERIFIER_ENABLE:
+      default: 'true'
+
+    ###############################################################################
+    #                            ↓ STANDARD OPTIONS ↓                             #
+    ###############################################################################
+
+    DATADIR:
+      default: /geth
+    CHAIN_ID:
+      default: 420
+    NETWORK_ID:
+      default: 420
+    NO_DISCOVER:
+      default: 'true'
+    NO_USB:
+      default: 'true'
+    GASPRICE:
+      default: 0
+    TARGET_GAS_LIMIT:
+      default: 15000000
+    RPC_ADDR:
+      default: 0.0.0.0
+    RPC_API:
+      default: eth,rollup,net,web3,debug
+    RPC_CORS_DOMAIN:
+      default: '*'
+    RPC_ENABLE:
+      default: 'true'
+    RPC_PORT:
+      default: 8545
+    RPC_VHOSTS:
+      default: '*'
+    WS_ADDR:
+      default: 0.0.0.0
+    WS_API:
+      default: eth,rollup,net,web3,debug
+    WS_ORIGINS:
+      default: '*'
+    WS:
+      default: 'true'
+
+  environmentCommon:
+    ###############################################################################
+    #                                ↓ REQUIRED ↓                                 #
+    ###############################################################################
+
+    # Network to run the node on ("mainnet" or "goerli")
+    NETWORK_NAME:
+      default: goerli
+
+    # Type of node to run ("full" or "archive"), note that "archive" is 10x bigger
+    NODE_TYPE:
+      default: archive
+
+    # Reference L2 node to run healthcheck against
+    HEALTHCHECK__REFERENCE_RPC_PROVIDER:
+      default:
+
+    # L1 node to run fault detection against
+    FAULT_DETECTOR__L1_RPC_PROVIDER:
+      default:
+
+    # L1 node to get chain data from
+    DATA_TRANSPORT_LAYER__L1_RPC_ENDPOINT:
+      default:
+
+    ###############################################################################
+    #                               ↓ NO TOUCHING ↓                               #
+    ###############################################################################
+
+    # Seriously, don't modify these!
+    RESTART:
+      default: unless-stopped
+
+  resources:
+    limits:
+      memory:
+        _default: "6Gi"
+      cpu:
+        _default: "3"
+    requests:
+      memory:
+        _default: "6Gi"
+      cpu:
+        _default: "3"
+
+  service:
+    # ClusterIP, NodePort or LoadBalancer
+    type: ClusterIP
+
+  # enable ingress
+  ingress:
+    enabled: true
+    host:
+      _default: optimism-goerli-node.aws-k8s.blockscout.com
+    # enable https
+    tls:
+      enabled: false
+
+  dtl:
+    enabled: true
+    image:
+      _default: ethereumoptimism/data-transport-layer:latest
+    port: 7878
+    persistence:
+      enabled: false
+    service:
+      # ClusterIP, NodePort or LoadBalancer
+      type: ClusterIP
+    environment:
+      DATA_TRANSPORT_LAYER__ADDRESS_MANAGER:
+        _default: 0xa6f73589243a6A7a9023b1Fa0651b1d89c177111
+      DATA_TRANSPORT_LAYER__SYNC_FROM_L1:
+        _default: 'true'
+      DATA_TRANSPORT_LAYER__SYNC_FROM_L2:
+        _default: 'false'
+      DATA_TRANSPORT_LAYER__L1_START_HEIGHT:
+        _default: 7017096
+      DATA_TRANSPORT_LAYER__CONFIRMATIONS:
+        _default: 12
+      DATA_TRANSPORT_LAYER__DANGEROUSLY_CATCH_ALL_ERRORS:
+        _default: 'true'
+      DATA_TRANSPORT_LAYER__DB_PATH:
+        _default: /db
+      DATA_TRANSPORT_LAYER__DEFAULT_BACKEND:
+        _default: l1
+      DATA_TRANSPORT_LAYER__L1_GAS_PRICE_BACKEND:
+        _default: l1
+      DATA_TRANSPORT_LAYER__ENABLE_METRICS:
+        _default: 'true'
+      DATA_TRANSPORT_LAYER__ETH_NETWORK_NAME:
+        _default: goerli
+      DATA_TRANSPORT_LAYER__L2_CHAIN_ID:
+        _default: 420
+      DATA_TRANSPORT_LAYER__LOGS_PER_POLLING_INTERVAL:
+        _default: 2000
+      DATA_TRANSPORT_LAYER__NODE_ENV:
+        _default: production
+      DATA_TRANSPORT_LAYER__POLLING_INTERVAL:
+        _default: 500
+      DATA_TRANSPORT_LAYER__SENTRY_TRACE_RATE:
+        _default: 0.05
+      DATA_TRANSPORT_LAYER__SERVER_HOSTNAME:
+        _default: 0.0.0.0
+      DATA_TRANSPORT_LAYER__SERVER_PORT:
+        _default: 7878
+      DATA_TRANSPORT_LAYER__TRANSACTIONS_PER_POLLING_INTERVAL:
+        _default: 1000
+
+  healthcheck:
+    enabled: true
+    image:
+      _default: ethereumoptimism/replica-healthcheck:latest
+    port: 7300
+    environment:
+      HEALTHCHECK__TARGET_RPC_PROVIDER:
+        _default: http://node-svc:8545
+
+  faultDetector:
+    enabled: false
+    image:
+      _default: ethereumoptimism/fault-detector:latest
+
 
 # enable Smart-contract-verifier deploy
 scVerifier:
@@ -289,15 +586,45 @@ frontend:
     app: blockscout
 
   environment:
+    NEXT_PUBLIC_APP_PROTOCOL:
+      _default: http
+    NEXT_PUBLIC_APP_HOST:
+      _default: localhost
+    NEXT_PUBLIC_APP_PORT:
+      _default: 3000
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
       _default: v4.1.7-beta
     NEXT_PUBLIC_FOOTER_GITHUB_LINK:
       _default: https://github.com/blockscout/blockscout
     NEXT_PUBLIC_FOOTER_TWITTER_LINK:
       _default: https://www.twitter.com/blockscoutcom
+    NEXT_PUBLIC_APP_INSTANCE:
+      _default: local
     NEXT_PUBLIC_FOOTER_TELEGRAM_LINK:
       _default: https://t.me/poa_network
     NEXT_PUBLIC_FOOTER_STAKING_LINK:
       _default: https://duneanalytics.com/maxaleks/xdai-staking
-    NEXT_PUBLIC_SUPPORTED_NETWORKS:
-      _default: [{"name":"Gnosis Chain","type":"xdai","subType":"mainnet","group":"mainnets","isAccountSupported":true},{"name":"Optimism on Gnosis Chain","type":"xdai","subType":"optimism","group":"mainnets"},{"name":"Arbitrum on xDai","type":"xdai","subType":"aox","group":"mainnets"},{"name":"Ethereum","type":"eth","subType":"mainnet","group":"mainnets"},{"name":"Ethereum Classic","type":"etc","subType":"mainnet","group":"mainnets"},{"name":"POA","type":"poa","subType":"core","group":"mainnets"},{"name":"RSK","type":"rsk","subType":"mainnet","group":"mainnets"},{"name":"Gnosis Chain Testnet","type":"xdai","subType":"testnet","group":"testnets","isAccountSupported":true},{"name":"POA Sokol","type":"poa","subType":"sokol","group":"testnets"},{"name":"ARTIS Σ1","type":"artis","subType":"sigma1","group":"other"},{"name":"LUKSO L14","type":"lukso","subType":"l14","group":"other"}]
+    NEXT_PUBLIC_NETWORK_NAME:
+      _default: POA
+    NEXT_PUBLIC_NETWORK_SHORT_NAME:
+      _default: POA
+    NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
+      _default: poa
+    NEXT_PUBLIC_NETWORK_TYPE:
+      _default: poa
+    NEXT_PUBLIC_NETWORK_SUBTYPE:
+      _default: core
+    NEXT_PUBLIC_NETWORK_ID:
+      _default: 99
+    NEXT_PUBLIC_NETWORK_CURRENCY:
+      _default: POA
+    NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS:
+      _default: 0x029a799563238d0e75e20be2f4bda0ea68d00172
+    NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED:
+      _default: 'true'
+    NEXT_PUBLIC_FEATURED_NETWORKS:
+      _default: "[{'title':'Gnosis Chain','basePath':'/xdai/mainnet','group':'mainnets'},{'title':'Optimism on Gnosis Chain','basePath':'/xdai/optimism','group':'mainnets','icon':'https://www.fillmurray.com/60/60'},{'title':'Arbitrum on xDai','basePath':'/xdai/aox','group':'mainnets'},{'title':'Ethereum','basePath':'/eth/mainnet','group':'mainnets'},{'title':'Ethereum Classic','basePath':'/etx/mainnet','group':'mainnets'},{'title':'POA','basePath':'/poa/core','group':'mainnets'},{'title':'RSK','basePath':'/rsk/mainnet','group':'mainnets'},{'title':'Gnosis Chain Testnet','basePath':'/xdai/testnet','group':'testnets'},{'title':'POA Sokol','basePath':'/poa/sokol','group':'testnets'},{'title':'ARTIS Σ1','basePath':'/artis/sigma1','group':'other'},{'title':'LUKSO L14','basePath':'/lukso/l14','group':'other'},{'title':'Astar','basePath':'/astar','group':'other'}]"
+    NEXT_PUBLIC_SENTRY_DSN:
+      _default: https://fdcd971162e04694bf03564c5be3d291@o1222505.ingest.sentry.io/4503902500421632
+    SENTRY_CSP_REPORT_URI:
+      _default: https://o1222505.ingest.sentry.io/api/4503902500421632/security/?sentry_key=fdcd971162e04694bf03564c5be3d291
