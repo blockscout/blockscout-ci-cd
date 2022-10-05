@@ -42,7 +42,7 @@ on:
         description: 'Smart-contract-verifier url'
         required: false
         type: string
-      nodeIngressHost:
+      gethIngressHost:
         description: 'Geth node url'
         required: false
         type: string
@@ -86,7 +86,7 @@ on:
         description: 'Smart-contract-verifier url'
         required: false
         type: string
-      nodeIngressHost:
+      gethIngressHost:
         description: 'Geth node url'
         required: false
         type: string
@@ -237,10 +237,10 @@ jobs:
           if ${{ inputs.scVerifierIngressHost != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
           fi
-          if ${{ inputs.nodeIngressHost != '' }}; then
-            NETWORK_URL=${{ inputs.nodeIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com/http
+          if ${{ inputs.gethIngressHost != '' }}; then
+            NETWORK_URL=${{ inputs.gethIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com/http
             echo "NETWORK_URL=http://$NETWORK_URL" >> "$GITHUB_ENV"
-            DEPLOY_ARGS="$DEPLOY_ARGS--set node.ingress.host._default=${{ inputs.nodeIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set geth.ingress.host._default=${{ inputs.gethIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
           fi
           echo "$DEPLOY_ARGS"
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"

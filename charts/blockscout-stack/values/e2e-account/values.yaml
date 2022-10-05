@@ -158,6 +158,8 @@ geth:
       enabled: false
   jwt:
     enabled: false
+  files:
+    enabled: true
 # enable Smart-contract-verifier deploy
 scVerifier:
   enabled: true

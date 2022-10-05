@@ -1,3 +1,5 @@
+{{- if .Values.node.enabled }}
+{{- if .Values.node.files.enabled }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -10,3 +12,5 @@ data:
   # genesis.json: {{ toYaml .Values.node.files.genesis | indent 2 }}
   # init.sh: {{ toYaml .Values.node.files.init | indent 2 }}
   # password.txt: ""
+{{- end }}
+{{- end }}
