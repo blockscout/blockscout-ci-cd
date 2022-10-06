@@ -25,6 +25,8 @@ spec:
               memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
               cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
           {{- end }}
+          command: {{ .Values.postgres.command }}
+          args: {{ .Values.postgres.args }}
           imagePullPolicy: "IfNotPresent"
           # {{- if .Values.postgres.args }}
           # args:
