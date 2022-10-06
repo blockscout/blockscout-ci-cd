@@ -6,7 +6,7 @@ kind: ConfigMap
 metadata:
   name: node-cm
 data:
-  {{- range $key, $value := .Values.node.files }}
+  {{- range $key, $value := .Values.node.files.list }}
   {{ $key }}: {{ toYaml $value | indent 2 }}
   {{- end }}
   # genesis.json: {{ toYaml .Values.node.files.genesis | indent 2 }}
