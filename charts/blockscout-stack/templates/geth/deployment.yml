@@ -48,7 +48,7 @@ spec:
               subPath: jwtsecret
             {{- end }}
             {{- if .Values.geth.files.enabled }}
-              {{- range $key, $value := .Values.geth.files }}
+              {{- range $key, $value := .Values.geth.files.list }}
             - mountPath: /root/{{ $key }}
               name: geth-cm
               subPath: {{ $key }}
