@@ -13,7 +13,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     {{- if .Values.geth.ingress.tls.enabled }}
-    cert-manager.io/cluster-issuer: "letsencrypt-cluster"
+    cert-manager.io/cluster-issuer: "zerossl-prod"
     {{- end }}
   name: {{ .Release.Name }}-geth-ingress
 spec:
