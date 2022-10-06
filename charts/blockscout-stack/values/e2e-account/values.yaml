@@ -98,6 +98,9 @@ postgres:
   image: postgres:13.6
   port: 5432
 
+  command: '["postgres", "-c"]'
+  args: '["max_connections=200"]'
+
   resources:
     limits:
       memory:
@@ -248,7 +251,7 @@ scVerifier:
 frontend:
   enabled: true
   image:
-    _default: ghcr.io/blockscout/frontend:main
+    _default: ghcr.io/blockscout/frontend:prerelease-5ca79e55
   replicas:
     app: 1
   docker:
