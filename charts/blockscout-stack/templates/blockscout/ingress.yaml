@@ -16,7 +16,7 @@ metadata:
     {{- if .Values.blockscout.ingress.tls.enabled }}
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: "letsencrypt-cluster"
+    cert-manager.io/cluster-issuer: "zerossl-prod"
     {{- end}}
   name: {{ .Release.Name }}-blockscout-ingress
 spec:
