@@ -33,6 +33,6 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ .Release.Name }}-frontend
+    app: {{ .Release.Name }}-blockscout
 ---
 {{- end }}

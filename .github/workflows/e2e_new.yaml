@@ -110,7 +110,7 @@ env:
   PORT_PG: 5432
   PORT_NETWORK_HTTP: 8545
   PORT_NETWORK_WS: 8546
-  # NETWORK_URL: http://node-svc:8545
+  # NETWORK_URL: http://geth-svc:8545
   WALLET: ${{ secrets.WALLET }}
   PWDEBUG: 0
   LOAD_AUTH_CTX: 0

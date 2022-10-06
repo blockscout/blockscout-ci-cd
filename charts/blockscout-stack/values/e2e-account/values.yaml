@@ -68,11 +68,11 @@ blockscout:
     ETHEREUM_JSONRPC_VARIANT:
       _default: geth
     ETHEREUM_JSONRPC_TRACE_URL:
-      _default: http://node-svc:8545
+      _default: http://geth-svc:8545
     ETHEREUM_JSONRPC_HTTP_URL:
-      _default: http://node-svc:8545
+      _default: http://geth-svc:8545
     ETHEREUM_JSONRPC_WS_URL:
-      _default: ws://node-svc:8546
+      _default: ws://geth-svc:8546
     COIN:
       _default: DAI
     MIX_ENV:
