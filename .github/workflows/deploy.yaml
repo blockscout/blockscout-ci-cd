@@ -195,6 +195,7 @@ jobs:
           fi
           if ${{ inputs.frontendIngressHost != '' }}; then
             FRONTEND_INGRESS_URL=${{ inputs.frontendIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com
+            FRONTEND_URL=https://$FRONTEND_INGRESS_URL
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=$FRONTEND_INGRESS_URL "
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_APP_HOST._default=$FRONTEND_INGRESS_URL "
           fi
@@ -213,6 +214,7 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
           fi
           if ${{ inputs.scVerifierIngressHost != '' }}; then
+            SC_VERIFIER_URL=https://${{ inputs.scVerifierIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com "
           fi
           if ${{ inputs.gethIngressHost != '' }}; then
@@ -248,3 +250,16 @@ jobs:
         run: |
           kubectl delete secret regcred -n $APP_NAMESPACE --ignore-not-found
           kubectl get secret regcred -o yaml | sed "s/namespace: .*/namespace: $APP_NAMESPACE/" | kubectl apply -f -
+
+      # Show app URLs
+      - name: Print URLs of blockscout-stack
+        shell: bash
+        run: |
+          echo "Your Blockscout app is here:"
+          echo "$BLOCKSCOUT_URL"
+          echo "Your Frontend app is here:"
+          echo "$FRONTEND_URL"
+          echo "Your Smart-contract-verifier app is here:"
+          echo "SC_VERIFIER_URL"
+          echo "Your geth app is here:"
+          echo "$NETWORK_URL"
