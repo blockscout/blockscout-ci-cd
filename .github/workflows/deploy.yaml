@@ -11,7 +11,7 @@ on:
         type: string
       appName:
         description: 'App name'
-        required: true
+        required: false
         default: 'bs-stack'
         type: string
       appNamespace:
@@ -55,7 +55,7 @@ on:
         type: string
       appName:
         description: 'App name'
-        required: true
+        required: false
         default: 'bs-stack'
         type: string
       appNamespace:
