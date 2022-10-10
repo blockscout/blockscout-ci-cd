@@ -266,3 +266,14 @@ jobs:
           echo "Your geth app is here:" >> urls.txt
           echo "$NETWORK_URL" >> urls.txt
           cat urls.txt
+
+      - uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Blockscout URL: $BLOCKSCOUT_URL \n $FRONTEND_URL"
+            })
