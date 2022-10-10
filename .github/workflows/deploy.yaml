@@ -257,11 +257,12 @@ jobs:
       - name: Print URLs of blockscout-stack
         shell: bash
         run: |
-          echo "Your Blockscout app is here:"
-          echo "$BLOCKSCOUT_URL"
-          echo "Your Frontend app is here:"
-          echo "$FRONTEND_URL"
-          echo "Your Smart-contract-verifier app is here:"
-          echo "%SC_VERIFIER_URL"
-          echo "Your geth app is here:"
-          echo "$NETWORK_URL"
+          echo "Your Blockscout app is here:" > urls.txt
+          echo "$BLOCKSCOUT_URL" >> urls.txt
+          echo "Your Frontend app is here:" >> urls.txt
+          echo "$FRONTEND_URL" >> urls.txt
+          echo "Your Smart-contract-verifier app is here:" >> urls.txt
+          echo "$SC_VERIFIER_URL" >> urls.txt
+          echo "Your geth app is here:" >> urls.txt
+          echo "$NETWORK_URL" >> urls.txt
+          cat urls.txt
