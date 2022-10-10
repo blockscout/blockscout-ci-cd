@@ -7,7 +7,7 @@ on:
       valuesDir:
         description: 'Directory with values'
         required: true
-        default: 'charts/blockscout-stack/values/e2e-account'
+        default: 'charts/blockscout-stack/values/e2e'
         type: string
       appName:
         description: 'App name'
@@ -51,7 +51,7 @@ on:
       valuesDir:
         description: 'Directory with values'
         required: true
-        default: 'charts/blockscout-stack/values/e2e-account'
+        default: 'charts/blockscout-stack/values/e2e'
         type: string
       appName:
         description: 'App name'
