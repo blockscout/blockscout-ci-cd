@@ -7,14 +7,14 @@ on:
       appNamespace:
         description: 'Namespace to delete'
         required: true
-        default: 'blockscout'
+        default: 'review-blockscout'
         type: string
   workflow_call:
     inputs:
       appNamespace:
         description: 'Namespace to delete'
         required: true
-        default: 'blockscout'
+        default: 'review-blockscout'
         type: string
 
 env:
@@ -26,8 +26,8 @@ env:
   BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
 
 jobs:
-  deploy:
-    name: Deploy
+  Cleanup:
+    name: Cleanup
     permissions:
       id-token: write
       contents: read
@@ -61,16 +61,6 @@ jobs:
         with:
           aws-region: ${{ matrix.region }}
           role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
-
-      # Install helm, helm-secrets, sops
-      - name: Install helm and helm-secrets, sops
-        shell: bash
-        run: |
-          curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
-          sudo apt-get install apt-transport-https --yes
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
-          sudo apt-get update -y
-          sudo apt-get install helm -y
 
       # The following command will update the kube config file with our cluster information.
       # It will use the credentials exported by the previous action.
