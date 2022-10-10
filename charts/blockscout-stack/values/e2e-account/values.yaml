@@ -92,14 +92,13 @@ blockscout:
     ETHEREUM_JSONRPC_DISABLE_ARCHIVE_BALANCES:
       _default: 'true'
 
-
 postgres:
   enabled: true
-  image: postgres:13.6
+  image: postgres:13.8
   port: 5432
 
-  command: '["postgres", "-c"]'
-  args: '["max_connections=200"]'
+  command: '["docker-entrypoint.sh", "-c"]'
+  args: '["max_connections=300"]'
 
   resources:
     limits:
@@ -306,9 +305,9 @@ frontend:
     NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
       _default: poa
     NEXT_PUBLIC_NETWORK_TYPE:
-      _default: poa
+      _default:
     NEXT_PUBLIC_NETWORK_SUBTYPE:
-      _default: core
+      _default:
     NEXT_PUBLIC_NETWORK_ID:
       _default: 99
     NEXT_PUBLIC_NETWORK_CURRENCY:

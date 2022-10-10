@@ -218,7 +218,9 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
           fi
           if ${{ inputs.frontendIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
+            FRONTEND_INGRESS_URL=${{ inputs.frontendIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=$FRONTEND_INGRESS_URL "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_APP_HOST._default=$FRONTEND_INGRESS_URL "
           fi
           if ${{ inputs.blockscoutImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blockscoutImage }} "
@@ -228,7 +230,7 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com/auth/logout "
             BLOCKSCOUT_URL=https://${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_API_ENDPOINT._default=${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_API_ENDPOINT._default=$BLOCKSCOUT_URL "
             echo "BLOCKSCOUT_URL=$BLOCKSCOUT_URL" >> "$GITHUB_ENV"
           fi
           if ${{ inputs.scVerifierImage != '' }}; then
