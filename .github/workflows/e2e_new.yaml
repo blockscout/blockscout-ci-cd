@@ -23,7 +23,7 @@ on:
         required: false
         type: string
       blockscoutIngressHost:
-        description: 'Frontend url'
+        description: 'Blockscout url'
         required: false
         type: string
       frontendImage:
@@ -67,7 +67,7 @@ on:
         required: false
         type: string
       blockscoutIngressHost:
-        description: 'Frontend url'
+        description: 'Blockscout url'
         required: false
         type: string
       frontendImage:
@@ -163,7 +163,7 @@ jobs:
           if ${{ inputs.appNamespace != '' }}; then
               echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> "$GITHUB_ENV"
           else
-              echo "APP_NAMESPACE=bs-${{ steps.generate.outputs.uuid }}" >> "$GITHUB_ENV"
+              echo "APP_NAMESPACE=e2e-${{ steps.generate.outputs.uuid }}" >> "$GITHUB_ENV"
           fi
 
       - name: Configure Kubectl
@@ -345,13 +345,13 @@ jobs:
           test_format: JUNIT
           test_framework: JEST
           test_path: blockscout-ci-cd/tests/e2e/results.xml
-      # - name: Remove namespace
-      #   if: always()
-      #   run: |
-      #     eval `ssh-agent -s`
-      #     ssh-add - <<< "$BASTION_SSH_KEY"
-      #     ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
-      #     kubectl delete ns $APP_NAMESPACE
+      - name: Remove namespace
+        if: always()
+        run: |
+          eval `ssh-agent -s`
+          ssh-add - <<< "$BASTION_SSH_KEY"
+          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+          kubectl delete ns $APP_NAMESPACE
 defaults:
   run:
     shell: bash

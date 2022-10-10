@@ -305,9 +305,9 @@ frontend:
     NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
       _default: poa
     NEXT_PUBLIC_NETWORK_TYPE:
-      _default:
+      _default: poa
     NEXT_PUBLIC_NETWORK_SUBTYPE:
-      _default:
+      _default: core
     NEXT_PUBLIC_NETWORK_ID:
       _default: 99
     NEXT_PUBLIC_NETWORK_CURRENCY:
