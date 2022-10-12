@@ -266,7 +266,7 @@ jobs:
             $APP_NAME blockscout-stack \
             -f $VALUES_DIR/values.yaml \
             -f $VALUES_DIR/secrets.yaml \
-            $DEPLOY_ARGS \
+            $DEPLOY_ARGS --wait \
             -n $APP_NAMESPACE --create-namespace
 
       # Copy registry secret if private docker repo
@@ -329,20 +329,20 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
 
-      # check if instance is ready
-      - name: Check the deployed service URL
-        uses: jtalk/url-health-check-action@v2
-        with:
-          # Check the following URLs one by one sequentially
-          url: ${{ env.FRONTEND_URL }}|${{ env.SC_VERIFIER_URL }}/health|${{ env.NETWORK_URL }}|${{ env.BLOCKSCOUT_URL }}
-          # Follow redirects, or just report success on 3xx status codes
-          follow-redirect: false # Optional, defaults to "false"
-          # Fail this action after this many failed attempts
-          max-attempts: 10 # Optional, defaults to 1
-          # Delay between retries
-          retry-delay: 10s # Optional, only applicable to max-attempts > 1
-          # Retry all errors, including 404. This option might trigger curl upgrade.
-          retry-all: true # Optional, defaults to "false"
+      # # check if instance is ready
+      # - name: Check the deployed service URL
+      #   uses: jtalk/url-health-check-action@v2
+      #   with:
+      #     # Check the following URLs one by one sequentially
+      #     url: ${{ env.FRONTEND_URL }}|${{ env.SC_VERIFIER_URL }}/health|${{ env.NETWORK_URL }}|${{ env.BLOCKSCOUT_URL }}
+      #     # Follow redirects, or just report success on 3xx status codes
+      #     follow-redirect: false # Optional, defaults to "false"
+      #     # Fail this action after this many failed attempts
+      #     max-attempts: 10 # Optional, defaults to 1
+      #     # Delay between retries
+      #     retry-delay: 10s # Optional, only applicable to max-attempts > 1
+      #     # Retry all errors, including 404. This option might trigger curl upgrade.
+      #     retry-all: true # Optional, defaults to "false"
 
       - name: Run playwright smoke suite
         working-directory: blockscout-ci-cd/tests/e2e
