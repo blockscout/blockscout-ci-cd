@@ -44,7 +44,7 @@ spec:
             {{- if .Values.node.files.enabled }}
             {{- range $key, $value := .Values.node.files.list }}
             - mountPath: /scripts/{{ $key }}
-              name: geth-cm
+              name: node-cm
               subPath: {{ $key }}
             {{- end }}
             {{- end }}

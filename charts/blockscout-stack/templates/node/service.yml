@@ -14,10 +14,6 @@ spec:
       targetPort: {{ .Values.node.portWs }}
       protocol: TCP
       name: ws
-    - port: {{ .Values.node.portDiscovery }}
-      targetPort: {{ .Values.node.portDiscovery }}
-      protocol: TCP
-      name: discovery
   selector:
     app: {{ .Release.Name }}-node
 ---
