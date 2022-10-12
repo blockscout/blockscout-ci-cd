@@ -17,8 +17,7 @@ blockscout:
   ingress:
     enabled: true
     host:
-      _default: blockscout.test.blockscout.aws-k8s.blockscout.com
-      testnet: asdfg-blockscout.test.blockscout.aws-k8s.blockscout.com
+      _default: blockscout.test.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true
@@ -154,7 +153,7 @@ geth:
   ingress:
     enabled: true
     host:
-      _default: asdfg-node.test.blockscout.aws-k8s.blockscout.com
+      _default: node.test.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: false
@@ -180,8 +179,7 @@ scVerifier:
   ingress:
     enabled: true
     host:
-      _default: verifier.test.blockscout.aws-k8s.blockscout.com
-      testnet: asdfg-verifier.test.blockscout.aws-k8s.blockscout.com
+      _default: verifier.test.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true
@@ -259,8 +257,7 @@ frontend:
   ingress:
     enabled: true
     host:
-      _default: frontend.test.blockscout.aws-k8s.blockscout.com
-      testnet: asdfg-frontend.test.blockscout.aws-k8s.blockscout.com
+      _default: frontend.test.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true

@@ -63,8 +63,6 @@ export class CommonPage {
 
     AUTH0_SUBMIT = `button[name="action"]`
 
-    AUTH0_ACCEPT = `text=Accept`
-
     LOGGED_IN_AS = `text=Signed in as`
 
     VERIFY_MSG = `To see accurate decoded input data, the contract must be verified`
@@ -112,7 +110,6 @@ export class CommonPage {
         await this.actions.enterElementText(this.AUTH0_INPUT_EMAIL, email)
         await this.actions.enterElementText(this.AUTH0_INPUT_PASSWORD, password)
         await this.actions.clickElement(this.AUTH0_SUBMIT)
-        await this.actions.clickElement(this.AUTH0_ACCEPT)
     }
 
     async delay(amount: number): Promise<void> {
