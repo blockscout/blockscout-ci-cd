@@ -219,6 +219,8 @@ jobs:
           fi
           if ${{ inputs.frontendIngressHost != '' }}; then
             FRONTEND_INGRESS_URL=${{ inputs.frontendIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com
+            FRONTEND_URL=https://$FRONTEND_INGRESS_URL
+            echo "FRONTEND_URL=$FRONTEND_URL" >> "$GITHUB_ENV"
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=$FRONTEND_INGRESS_URL "
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_APP_HOST._default=$FRONTEND_INGRESS_URL "
           fi
@@ -237,6 +239,8 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
           fi
           if ${{ inputs.scVerifierIngressHost != '' }}; then
+            SC_VERIFIER_URL=https://${{ inputs.scVerifierIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com
+            echo "SC_VERIFIER_URL=$SC_VERIFIER_URL" >> "$GITHUB_ENV"
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
           fi
           if ${{ inputs.gethIngressHost != '' }}; then
@@ -330,7 +334,7 @@ jobs:
         uses: jtalk/url-health-check-action@v2
         with:
           # Check the following URLs one by one sequentially
-          url: ${{ env.BLOCKSCOUT_URL }}
+          url: ${{ env.BLOCKSCOUT_URL }}|${{ env.FRONTEND_URL }}|${{ env.SC_VERIFIER_URL }}|${{ env.NETWORK_URL }}
           # Follow redirects, or just report success on 3xx status codes
           follow-redirect: false # Optional, defaults to "false"
           # Fail this action after this many failed attempts
