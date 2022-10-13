@@ -1,7 +1,6 @@
 name: E2E tests account
 
 on:
-  # push:
   workflow_dispatch:
     inputs:
       valuesDir:
@@ -110,18 +109,11 @@ env:
   PORT_PG: 5432
   PORT_NETWORK_HTTP: 8545
   PORT_NETWORK_WS: 8546
-  # NETWORK_URL: http://geth-svc:8545
   WALLET: ${{ secrets.WALLET }}
   PWDEBUG: 0
   LOAD_AUTH_CTX: 0
   LOAD_CONTRACTS_DATA: 0
   ACCOUNT: 1
-
-  # BLOCKSCOUT_URL: http://asdfg-blockscout.test.blockscout.aws-k8s.blockscout.com/
-  # NETWORK_URL: http://asdfg-node.test.blockscout.aws-k8s.blockscout.com/http
-
-  # BLOCKSCOUT_URL: http://asdfg-blockscout.test.blockscout.aws-k8s.blockscout.com/
-  # NETWORK_URL: http://asdfg-node.test.blockscout.aws-k8s.blockscout.com/http
 
 jobs:
   deploy_and_tests:
