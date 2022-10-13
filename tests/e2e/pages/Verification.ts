@@ -2,7 +2,10 @@
 /* eslint-disable guard-for-in */
 import { WebActions } from "@lib/WebActions"
 import type { Page } from 'playwright'
+import testConfig from "../testConfig"
 import { CommonPage } from "./Common"
+
+const { waitForVerification } = testConfig
 
 export interface VerificationFlattenForm {
     contractName: string,
@@ -93,7 +96,7 @@ export class VerificationPage extends CommonPage {
     }
 
     async checkCodePage(info: VerificationCodeInfo): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(this.CODE_BLOCK_SELECTED, `no code block is displayed after verification`)
+        await this.actions.verifyElementIsDisplayed(this.CODE_BLOCK_SELECTED, `no code block is displayed after verification`, waitForVerification)
         await this.checkCodeHeader(info)
         await this.checkCodeBody(info)
     }

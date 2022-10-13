@@ -43,7 +43,7 @@ spec:
               mountPath: {{ .Values.geth.persistence.mountPath }}
             {{- end }}
             {{- if .Values.geth.jwt.enabled }}
-            - mountPath: /root/.ethereum/goerli/geth/jwtsecret
+            - mountPath: {{ .Values.geth.jwt.mountPath }}
               name: jwt
               subPath: jwtsecret
             {{- end }}

@@ -7,7 +7,7 @@ on:
       valuesDir:
         description: 'Directory with values'
         required: true
-        default: 'charts/blockscout-stack/values/e2e-account'
+        default: 'charts/blockscout-stack/values/e2e'
         type: string
       appName:
         description: 'App name'
@@ -23,7 +23,7 @@ on:
         required: false
         type: string
       blockscoutIngressHost:
-        description: 'Frontend url'
+        description: 'Blockscout url'
         required: false
         type: string
       frontendImage:
@@ -51,7 +51,7 @@ on:
       valuesDir:
         description: 'Directory with values'
         required: true
-        default: 'charts/blockscout-stack/values/e2e-account'
+        default: 'charts/blockscout-stack/values/e2e'
         type: string
       appName:
         description: 'App name'
@@ -67,7 +67,7 @@ on:
         required: false
         type: string
       blockscoutIngressHost:
-        description: 'Frontend url'
+        description: 'Blockscout url'
         required: false
         type: string
       frontendImage:
@@ -163,7 +163,7 @@ jobs:
           if ${{ inputs.appNamespace != '' }}; then
               echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> "$GITHUB_ENV"
           else
-              echo "APP_NAMESPACE=bs-${{ steps.generate.outputs.uuid }}" >> "$GITHUB_ENV"
+              echo "APP_NAMESPACE=e2e-${{ steps.generate.outputs.uuid }}" >> "$GITHUB_ENV"
           fi
 
       - name: Configure Kubectl
@@ -218,7 +218,11 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
           fi
           if ${{ inputs.frontendIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
+            FRONTEND_INGRESS_URL=${{ inputs.frontendIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com
+            FRONTEND_URL=https://$FRONTEND_INGRESS_URL
+            echo "FRONTEND_URL=$FRONTEND_URL" >> "$GITHUB_ENV"
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=$FRONTEND_INGRESS_URL "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_APP_HOST._default=$FRONTEND_INGRESS_URL "
           fi
           if ${{ inputs.blockscoutImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blockscoutImage }} "
@@ -228,13 +232,15 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com/auth/logout "
             BLOCKSCOUT_URL=https://${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_API_ENDPOINT._default=${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_API_ENDPOINT._default=$BLOCKSCOUT_URL "
             echo "BLOCKSCOUT_URL=$BLOCKSCOUT_URL" >> "$GITHUB_ENV"
           fi
           if ${{ inputs.scVerifierImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
           fi
           if ${{ inputs.scVerifierIngressHost != '' }}; then
+            SC_VERIFIER_URL=https://${{ inputs.scVerifierIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com
+            echo "SC_VERIFIER_URL=$SC_VERIFIER_URL" >> "$GITHUB_ENV"
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
           fi
           if ${{ inputs.gethIngressHost != '' }}; then
@@ -270,8 +276,9 @@ jobs:
         run: |
           kubectl delete secret regcred -n $APP_NAMESPACE --ignore-not-found
           kubectl get secret regcred -o yaml | sed "s/namespace: .*/namespace: $APP_NAMESPACE/" | kubectl apply -f -
+          pkill -f "ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST"
 
-      # tests
+################### tests
       - name: Collect Workflow Telemetry
         uses: runforesight/foresight-workflow-kit-action@v1
         with:
@@ -322,6 +329,23 @@ jobs:
         working-directory: blockscout-ci-cd/tests/e2e
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
+
+      # check if instance is ready
+      - name: Check the deployed service URL
+        uses: jtalk/url-health-check-action@v2
+        with:
+          # Check the following URLs one by one sequentially
+          url: ${{ env.FRONTEND_URL }}|${{ env.SC_VERIFIER_URL }}/health|${{ env.NETWORK_URL }}|${{ env.BLOCKSCOUT_URL }}
+          #
+          # Follow redirects, or just report success on 3xx status codes
+          follow-redirect: false # Optional, defaults to "false"
+          # Fail this action after this many failed attempts
+          max-attempts: 30 # Optional, defaults to 1
+          # Delay between retries
+          retry-delay: 10s # Optional, only applicable to max-attempts > 1
+          # Retry all errors, including 404. This option might trigger curl upgrade.
+          retry-all: true # Optional, defaults to "false"
+
       - name: Run playwright smoke suite
         working-directory: blockscout-ci-cd/tests/e2e
         run: |
@@ -343,13 +367,17 @@ jobs:
           test_format: JUNIT
           test_framework: JEST
           test_path: blockscout-ci-cd/tests/e2e/results.xml
-      # - name: Remove namespace
-      #   if: always()
-      #   run: |
-      #     eval `ssh-agent -s`
-      #     ssh-add - <<< "$BASTION_SSH_KEY"
-      #     ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
-      #     kubectl delete ns $APP_NAMESPACE
+      - name: Remove namespace
+        if: always()
+        run: |
+          mkdir ~/.ssh || true
+          ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts || true
+          eval `ssh-agent -s` || true
+          ssh-add - <<< "$BASTION_SSH_KEY" || true
+          sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
+          grep 9443 ~/.kube/config || sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
+          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST }; kubectl delete ns $APP_NAMESPACE
+
 defaults:
   run:
     shell: bash

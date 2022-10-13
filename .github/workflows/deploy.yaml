@@ -7,16 +7,16 @@ on:
       valuesDir:
         description: 'Directory with values'
         required: true
-        default: 'charts/blockscout-stack'
+        default: 'charts/blockscout-stack/values/e2e'
         type: string
       appName:
         description: 'App name'
-        required: true
-        default: 'blockscout-stack'
+        required: false
+        default: 'bs-stack'
         type: string
       appNamespace:
         description: 'Namespace to deploy in'
-        required: true
+        required: false
         type: string
       blockscoutImage:
         description: 'Blockscout image'
@@ -40,6 +40,10 @@ on:
         type: string
       scVerifierIngressHost:
         description: 'Smart-contract-verifier url'
+        required: false
+        type: string
+      gethIngressHost:
+        description: 'Geth node url'
         required: false
         type: string
   workflow_call:
@@ -47,17 +51,16 @@ on:
       valuesDir:
         description: 'Directory with values'
         required: true
-        default: 'charts'
+        default: 'charts/blockscout-stack/values/e2e'
         type: string
       appName:
         description: 'App name'
-        required: true
-        default: 'blockscout'
+        required: false
+        default: 'bs-stack'
         type: string
       appNamespace:
         description: 'Namespace to deploy in'
         required: false
-        default: 'blockscout'
         type: string
       blockscoutImage:
         description: 'Blockscout image'
@@ -81,6 +84,10 @@ on:
         type: string
       scVerifierIngressHost:
         description: 'Smart-contract-verifier url'
+        required: false
+        type: string
+      gethIngressHost:
+        description: 'Geth node url'
         required: false
         type: string
 
@@ -108,22 +115,11 @@ jobs:
     environment:
       name: ${{ matrix.environment }}
     steps:
-      # - name: Download Deployment Artifacts
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: deployment-artifacts
-
-      # # Replace the docker image tag in deployment spec.
-      # - name: Substitute Values In Deployment Files
-      #   uses: cschleiden/replace-tokens@v1
-      #   with:
-      #     tokenPrefix: '${'
-      #     tokenSuffix: '}'
-      #     files: '["cloud/deployment.yaml"]'
-      #   env:
-      #     COMMIT: ${{ needs.pre-release.outputs.commit }}
       - name: Check out the repo
         uses: actions/checkout@v3
+
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4
 
       - name: Add inputs to GITHUB_ENV
         if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
@@ -198,20 +194,37 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
           fi
           if ${{ inputs.frontendIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=${{ inputs.frontendIngressHost }} "
+            FRONTEND_INGRESS_URL=${{ inputs.frontendIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com
+            FRONTEND_URL=https://$FRONTEND_INGRESS_URL
+            echo "FRONTEND_URL=$FRONTEND_URL" >> "$GITHUB_ENV"
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=$FRONTEND_INGRESS_URL "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_APP_HOST._default=$FRONTEND_INGRESS_URL "
           fi
           if ${{ inputs.blockscoutImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blockscoutImage }} "
           fi
           if ${{ inputs.blockscoutIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }} "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_CALLBACK_URL._default=http://${{ inputs.blockscoutIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com/auth/auth0/callback "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com/auth/logout "
+            BLOCKSCOUT_URL=https://${{ inputs.blockscoutIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_API_ENDPOINT._default=$BLOCKSCOUT_URL "
+            echo "BLOCKSCOUT_URL=$BLOCKSCOUT_URL" >> "$GITHUB_ENV"
           fi
           if ${{ inputs.scVerifierImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
           fi
           if ${{ inputs.scVerifierIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }} "
+            SC_VERIFIER_URL=https://${{ inputs.scVerifierIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com
+            echo "SC_VERIFIER_URL=$SC_VERIFIER_URL" >> "$GITHUB_ENV"
+            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com "
           fi
+          if ${{ inputs.gethIngressHost != '' }}; then
+            NETWORK_URL=${{ inputs.gethIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com/http
+            echo "NETWORK_URL=http://$NETWORK_URL" >> "$GITHUB_ENV"
+            DEPLOY_ARGS="$DEPLOY_ARGS--set geth.ingress.host._default=${{ inputs.gethIngressHost }}-$GITHUB_HEAD_REF_SLUG.test.aws-k8s.blockscout.com "
+          fi
+          echo "$DEPLOY_ARGS"
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
 
       # Deploy newly built changes to EKS cluster.
@@ -239,3 +252,17 @@ jobs:
         run: |
           kubectl delete secret regcred -n $APP_NAMESPACE --ignore-not-found
           kubectl get secret regcred -o yaml | sed "s/namespace: .*/namespace: $APP_NAMESPACE/" | kubectl apply -f -
+
+      # Show app URLs
+      - name: Print URLs of blockscout-stack
+        shell: bash
+        run: |
+          echo "Your Blockscout app is here:" > urls.txt
+          echo "$BLOCKSCOUT_URL" >> urls.txt
+          echo "Your Frontend app is here:" >> urls.txt
+          echo "$FRONTEND_URL" >> urls.txt
+          echo "Your Smart-contract-verifier app is here:" >> urls.txt
+          echo "$SC_VERIFIER_URL" >> urls.txt
+          echo "Your geth app is here:" >> urls.txt
+          echo "$NETWORK_URL" >> urls.txt
+          cat urls.txt

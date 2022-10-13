@@ -69,9 +69,10 @@ blockscout:
 
 postgres:
   enabled: false
-  image: postgres:13.6
+  image: postgres:13.8
   port: 5432
 
+  command:
   args:
 
   resources:
@@ -247,84 +248,84 @@ node:
     ###############################################################################
 
     USING_OVM:
-      default: 'true'
+      _default: 'true'
     SEQUENCER_CLIENT_HTTP:
-      default: https://goerli.optimism.io
+      _default: https://goerli.optimism.io
     BLOCK_SIGNER_ADDRESS:
-      default: 0x27770a9694e4B4b1E130Ab91Bc327C36855f612E
+      _default: 0x27770a9694e4B4b1E130Ab91Bc327C36855f612E
     BLOCK_SIGNER_PRIVATE_KEY:
-      default: da5deb73dbc9dea2e3916929daaf079f75232d32a2cf37ff8b1f7140ef3fd9db
+      _default: da5deb73dbc9dea2e3916929daaf079f75232d32a2cf37ff8b1f7140ef3fd9db
     BLOCK_SIGNER_PRIVATE_KEY_PASSWORD:
-      default: pwd
+      _default: pwd
     ETH1_CTC_DEPLOYMENT_HEIGHT:
-      default: 7017096
+      _default: '7017096'
     ETH1_SYNC_SERVICE_ENABLE:
-      default: 'true'
+      _default: 'true'
     L2GETH_GENESIS_URL:
-      default: https://storage.googleapis.com/optimism/goerli/goerli-devnet-genesis-2022-06.json
+      _default: https://storage.googleapis.com/optimism/goerli/goerli-devnet-genesis-2022-06.json
     L2GETH_GENESIS_HASH:
-      default: 0x1067d2037744f17d34e3ceb88b0d654a3798f5d12b79b348085f13f1ec458636
+      _default: 0x1067d2037744f17d34e3ceb88b0d654a3798f5d12b79b348085f13f1ec458636
     L2GETH_BERLIN_ACTIVATION_HEIGHT:
-      default: 0
+      _default: 0
     ROLLUP_BACKEND:
-      default: l1
+      _default: l1
     ROLLUP_CLIENT_HTTP:
-      default: http://dtl-svc:7878
+      _default: http://dtl-svc:7878
     ROLLUP_DISABLE_TRANSFERS:
-      default: 'false'
+      _default: 'false'
     ROLLUP_ENABLE_L2_GAS_POLLING:
-      default: 'false'
+      _default: 'false'
     ROLLUP_GAS_PRICE_ORACLE_OWNER_ADDRESS:
-      default: 0xc8910a1957d276cE5634B978d908B5ef9fB0e05B
+      _default: 0xc8910a1957d276cE5634B978d908B5ef9fB0e05B
     ROLLUP_MAX_CALLDATA_SIZE:
-      default: 40000
+      _default: 40000
     ROLLUP_POLL_INTERVAL_FLAG:
-      default: 1s
+      _default: 1s
     ROLLUP_SYNC_SERVICE_ENABLE:
-      default: true
+      _default: true
     ROLLUP_TIMESTAMP_REFRESH:
-      default: 5m
+      _default: 5m
     ROLLUP_VERIFIER_ENABLE:
-      default: 'true'
+      _default: 'true'
 
     ###############################################################################
     #                            ↓ STANDARD OPTIONS ↓                             #
     ###############################################################################
 
     DATADIR:
-      default: /geth
+      _default: /geth
     CHAIN_ID:
-      default: 420
+      _default: 420
     NETWORK_ID:
-      default: 420
+      _default: 420
     NO_DISCOVER:
-      default: 'true'
+      _default: 'true'
     NO_USB:
-      default: 'true'
+      _default: 'true'
     GASPRICE:
-      default: 0
+      _default: 0
     TARGET_GAS_LIMIT:
-      default: 15000000
+      _default: '15000000'
     RPC_ADDR:
-      default: 0.0.0.0
+      _default: 0.0.0.0
     RPC_API:
-      default: eth,rollup,net,web3,debug
+      _default: eth,rollup,net,web3,debug
     RPC_CORS_DOMAIN:
-      default: '*'
+      _default: '*'
     RPC_ENABLE:
-      default: 'true'
+      _default: 'true'
     RPC_PORT:
-      default: 8545
+      _default: 8545
     RPC_VHOSTS:
-      default: '*'
+      _default: '*'
     WS_ADDR:
-      default: 0.0.0.0
+      _default: 0.0.0.0
     WS_API:
-      default: eth,rollup,net,web3,debug
+      _default: eth,rollup,net,web3,debug
     WS_ORIGINS:
-      default: '*'
+      _default: '*'
     WS:
-      default: 'true'
+      _default: 'true'
 
   environmentCommon:
     ###############################################################################
@@ -333,23 +334,23 @@ node:
 
     # Network to run the node on ("mainnet" or "goerli")
     NETWORK_NAME:
-      default: goerli
+      _default: goerli
 
     # Type of node to run ("full" or "archive"), note that "archive" is 10x bigger
     NODE_TYPE:
-      default: archive
+      _default: archive
 
     # Reference L2 node to run healthcheck against
     HEALTHCHECK__REFERENCE_RPC_PROVIDER:
-      default:
+      _default:
 
     # L1 node to run fault detection against
     FAULT_DETECTOR__L1_RPC_PROVIDER:
-      default:
+      _default:
 
     # L1 node to get chain data from
     DATA_TRANSPORT_LAYER__L1_RPC_ENDPOINT:
-      default:
+      _default:
 
     ###############################################################################
     #                               ↓ NO TOUCHING ↓                               #
@@ -357,7 +358,7 @@ node:
 
     # Seriously, don't modify these!
     RESTART:
-      default: unless-stopped
+      _default: unless-stopped
 
   resources:
     limits:
@@ -402,7 +403,7 @@ node:
       DATA_TRANSPORT_LAYER__SYNC_FROM_L2:
         _default: 'false'
       DATA_TRANSPORT_LAYER__L1_START_HEIGHT:
-        _default: 7017096
+        _default: '7017096'
       DATA_TRANSPORT_LAYER__CONFIRMATIONS:
         _default: 12
       DATA_TRANSPORT_LAYER__DANGEROUSLY_CATCH_ALL_ERRORS:

@@ -35,13 +35,6 @@ spec:
                 name: {{ .Release.Name }}-node-svc
                 port:
                   number: {{ .Values.node.portWs }}
-          # - path: /discovery(/|$)(.*)
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: {{ .Release.Name }}-node-svc
-          #       port:
-          #         number: {{ .Values.node.portDiscovery }}
   {{- if .Values.node.ingress.tls.enabled }}
   tls:
     - hosts:
