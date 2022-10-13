@@ -365,6 +365,31 @@ jobs:
           test_format: JUNIT
           test_framework: JEST
           test_path: blockscout-ci-cd/tests/e2e/results.xml
+      # - name: Remove namespace
+      #   if: always()
+      #   run: |
+      #     eval `ssh-agent -s`
+      #     ssh-add - <<< "$BASTION_SSH_KEY"
+      #     ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST || true
+      #     kubectl delete ns $APP_NAMESPACE
+  cleaunup:
+    needs: deploy_and_tests
+    name: Cleanup
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      max-parallel: 1
+      matrix:
+        environment: [Dev]
+        region: [us-east-1]
+    environment:
+      name: ${{ matrix.environment }}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
       - name: Remove namespace
         if: always()
         run: |
@@ -372,6 +397,7 @@ jobs:
           ssh-add - <<< "$BASTION_SSH_KEY"
           ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST || true
           kubectl delete ns $APP_NAMESPACE
+  cleaunup:
 defaults:
   run:
     shell: bash
