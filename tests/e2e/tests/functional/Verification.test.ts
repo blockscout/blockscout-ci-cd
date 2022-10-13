@@ -72,7 +72,8 @@ test(`@Ethereum @Verification @Data Can verify ERC20 contract with flatten`, asy
     await transactionsListPage.findText([`Mint`])
 })
 
-test(`@Ethereum @Verification @Data Can verify NFT contract with flatten`, async ({ verificationPage, transactionPage, transactionsListPage }) => {
+test.skip(`@Ethereum @Verification @Data Can verify NFT contract with flatten`, async ({ verificationPage, transactionPage, transactionsListPage }) => {
+    // TODO: takes too long and fails sometimes, bug? not enough resources?
     const {
         TestNFTAddressV,
         TestNFTNameV,

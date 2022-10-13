@@ -18,6 +18,7 @@ blockscout:
     enabled: true
     host:
       _default: blockscout.test.aws-k8s.blockscout.com
+      local: blockscout.test.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true
@@ -154,6 +155,7 @@ geth:
     enabled: true
     host:
       _default: node.test.aws-k8s.blockscout.com
+      local: node.test.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: false
@@ -180,6 +182,7 @@ scVerifier:
     enabled: true
     host:
       _default: verifier.test.aws-k8s.blockscout.com
+      local: verifier.test.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true
@@ -188,12 +191,12 @@ scVerifier:
       memory:
         _default: "0.5Gi"
       cpu:
-        _default: "0.25"
+        _default: "1"
     requests:
       memory:
         _default: "0.5Gi"
       cpu:
-        _default: "0.25"
+        _default: "1"
   # node label
   nodeSelector:
     enabled: true
@@ -258,6 +261,7 @@ frontend:
     enabled: true
     host:
       _default: frontend.test.aws-k8s.blockscout.com
+      local: frontend.test.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true
@@ -281,8 +285,10 @@ frontend:
       _default: http
     NEXT_PUBLIC_APP_HOST:
       _default: localhost
+      local: frontend.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_APP_PORT:
       _default: 3000
+      local: 80
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
       _default: v4.1.7-beta
     NEXT_PUBLIC_FOOTER_GITHUB_LINK:
@@ -315,4 +321,5 @@ frontend:
       _default: "[{'title':'Gnosis Chain','basePath':'/xdai/mainnet','group':'mainnets'},{'title':'Optimism on Gnosis Chain','basePath':'/xdai/optimism','group':'mainnets','icon':'https://www.fillmurray.com/60/60'},{'title':'Arbitrum on xDai','basePath':'/xdai/aox','group':'mainnets'},{'title':'Ethereum','basePath':'/eth/mainnet','group':'mainnets'},{'title':'Ethereum Classic','basePath':'/etx/mainnet','group':'mainnets'},{'title':'POA','basePath':'/poa/core','group':'mainnets'},{'title':'RSK','basePath':'/rsk/mainnet','group':'mainnets'},{'title':'Gnosis Chain Testnet','basePath':'/xdai/testnet','group':'testnets'},{'title':'POA Sokol','basePath':'/poa/sokol','group':'testnets'},{'title':'ARTIS Σ1','basePath':'/artis/sigma1','group':'other'},{'title':'LUKSO L14','basePath':'/lukso/l14','group':'other'},{'title':'Astar','basePath':'/astar','group':'other'}]"
     NEXT_PUBLIC_API_ENDPOINT:
       _default: https://blockscout.com
+      local: https://blockscout.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_API_BASE_PATH: /
