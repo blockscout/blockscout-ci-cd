@@ -339,7 +339,7 @@ jobs:
           # Follow redirects, or just report success on 3xx status codes
           follow-redirect: false # Optional, defaults to "false"
           # Fail this action after this many failed attempts
-          max-attempts: 3 # Optional, defaults to 1
+          max-attempts: 30 # Optional, defaults to 1
           # Delay between retries
           retry-delay: 15s # Optional, only applicable to max-attempts > 1
           # Retry all errors, including 404. This option might trigger curl upgrade.
@@ -377,32 +377,6 @@ jobs:
           grep 9443 ~/.kube/config || sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
           ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST }; kubectl delete ns $APP_NAMESPACE
 
-  # nc -z localhost $K8S_LOCAL_PORT ||
-  # cleanup:
-  #   needs: deploy_and_tests
-  #   if: always()
-  #   name: Cleanup
-  #   permissions:
-  #     id-token: write
-  #     contents: read
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     fail-fast: true
-  #     max-parallel: 1
-  #     matrix:
-  #       environment: [Dev]
-  #       region: [us-east-1]
-  #   environment:
-  #     name: ${{ matrix.environment }}
-  #   steps:
-  #     - name: Check out the repo
-  #       uses: actions/checkout@v3
-  #     - name: Remove namespace
-  #       run: |
-  #         eval `ssh-agent -s`
-  #         ssh-add - <<< "$BASTION_SSH_KEY"
-  #         ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST || true
-  #         kubectl delete ns $APP_NAMESPACE
 defaults:
   run:
     shell: bash
