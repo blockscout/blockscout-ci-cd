@@ -18,7 +18,7 @@ export class GnosisHome extends HomePage {
     }
 
     async open(): Promise<void> {
-        await this.actions.navigateToURL(`/xdai/mainnet`)
+        await this.actions.navigateToURL(`https://blockscout.com/xdai/mainnet`)
     }
 
     async verifyComponents(ctx: BrowserContext): Promise<void> {

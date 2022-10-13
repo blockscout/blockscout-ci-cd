@@ -1,6 +1,0 @@
-node_modules
-dist
-**/imports/*
-**/jest.*
-**/config.js
-**/*.d.ts
