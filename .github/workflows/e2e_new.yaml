@@ -372,6 +372,7 @@ jobs:
       #     ssh-add - <<< "$BASTION_SSH_KEY"
       #     ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST || true
       #     kubectl delete ns $APP_NAMESPACE
+
   cleaunup:
     needs: deploy_and_tests
     name: Cleanup
@@ -397,7 +398,6 @@ jobs:
           ssh-add - <<< "$BASTION_SSH_KEY"
           ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST || true
           kubectl delete ns $APP_NAMESPACE
-  cleaunup:
 defaults:
   run:
     shell: bash
