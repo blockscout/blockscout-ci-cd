@@ -335,6 +335,7 @@ jobs:
         with:
           # Check the following URLs one by one sequentially
           url: ${{ env.FRONTEND_URL }}|${{ env.SC_VERIFIER_URL }}/health|${{ env.NETWORK_URL }}|${{ env.BLOCKSCOUT_URL }}
+          #
           # Follow redirects, or just report success on 3xx status codes
           follow-redirect: false # Optional, defaults to "false"
           # Fail this action after this many failed attempts
@@ -365,12 +366,38 @@ jobs:
           test_format: JUNIT
           test_framework: JEST
           test_path: blockscout-ci-cd/tests/e2e/results.xml
+      # - name: Remove namespace
+      #   if: always()
+      #   run: |
+      #     eval `ssh-agent -s`
+      #     ssh-add - <<< "$BASTION_SSH_KEY"
+      #     ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST || true
+      #     kubectl delete ns $APP_NAMESPACE
+
+  cleaunup:
+    needs: deploy_and_tests
+    if: always()
+    name: Cleanup
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      max-parallel: 1
+      matrix:
+        environment: [Dev]
+        region: [us-east-1]
+    environment:
+      name: ${{ matrix.environment }}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
       - name: Remove namespace
-        if: always()
         run: |
           eval `ssh-agent -s`
           ssh-add - <<< "$BASTION_SSH_KEY"
-          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST && echo "connected" || echo "cannot connect"
+          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST || true
           kubectl delete ns $APP_NAMESPACE
 defaults:
   run:
