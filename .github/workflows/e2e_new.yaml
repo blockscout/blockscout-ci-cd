@@ -339,7 +339,7 @@ jobs:
           # Follow redirects, or just report success on 3xx status codes
           follow-redirect: false # Optional, defaults to "false"
           # Fail this action after this many failed attempts
-          max-attempts: 30 # Optional, defaults to 1
+          max-attempts: 3 # Optional, defaults to 1
           # Delay between retries
           retry-delay: 10s # Optional, only applicable to max-attempts > 1
           # Retry all errors, including 404. This option might trigger curl upgrade.
