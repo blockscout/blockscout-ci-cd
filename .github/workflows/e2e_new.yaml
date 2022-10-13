@@ -375,7 +375,7 @@ jobs:
       #     kubectl delete ns $APP_NAMESPACE
 
   cleaunup:
-    needs: deploy_and_tests
+    # needs: deploy_and_tests
     name: Cleanup
     permissions:
       id-token: write
