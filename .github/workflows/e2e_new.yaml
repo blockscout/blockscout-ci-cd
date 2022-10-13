@@ -374,9 +374,9 @@ jobs:
           eval `ssh-agent -s` || true
           ssh-add - <<< "$BASTION_SSH_KEY" || true
           sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
-          { nc -z localhost $K8S_LOCAL_PORT } || { sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config && ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST }
-          kubectl delete ns $APP_NAMESPACE
+          sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config; ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST }; kubectl delete ns $APP_NAMESPACE
 
+  # nc -z localhost $K8S_LOCAL_PORT ||
   # cleanup:
   #   needs: deploy_and_tests
   #   if: always()
