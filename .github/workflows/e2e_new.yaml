@@ -370,7 +370,7 @@ jobs:
         run: |
           eval `ssh-agent -s`
           ssh-add - <<< "$BASTION_SSH_KEY"
-          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST && echo "connected" || echo "cannot connect"
+          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST 
           kubectl delete ns $APP_NAMESPACE
 defaults:
   run:
