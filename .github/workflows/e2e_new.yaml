@@ -375,7 +375,8 @@ jobs:
       #     kubectl delete ns $APP_NAMESPACE
 
   cleaunup:
-    # needs: deploy_and_tests
+    needs: deploy_and_tests
+    if: always()
     name: Cleanup
     permissions:
       id-token: write
@@ -393,7 +394,6 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
       - name: Remove namespace
-        if: always()
         run: |
           eval `ssh-agent -s`
           ssh-add - <<< "$BASTION_SSH_KEY"
