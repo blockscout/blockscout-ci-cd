@@ -194,6 +194,7 @@ jobs:
             DEPLOY_SUFFIX=$GITHUB_REF_SLUG
           else
             DEPLOY_SUFFIX=$GITHUB_HEAD_REF_SLUG
+          fi
           echo "DEPLOY_SUFFIX=$DEPLOY_SUFFIX" >> "$GITHUB_ENV"
           if ${{ inputs.frontendImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
