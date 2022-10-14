@@ -13,6 +13,10 @@ export class ETHHome extends HomePage {
         this.actions = new WebActions(this.page)
     }
 
+    async open(): Promise<void> {
+        await this.actions.navigateToURL(`https://blockscout.com/eth/mainnet/`)
+    }
+
     async verifyComponents(ctx: BrowserContext): Promise<void> {
         await this.verifyWidgetTiles()
         await this.verifyNavbarComponents()
