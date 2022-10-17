@@ -44,6 +44,9 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4
+
       - name: Add inputs to GITHUB_ENV
         run: |
           echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> $GITHUB_ENV
