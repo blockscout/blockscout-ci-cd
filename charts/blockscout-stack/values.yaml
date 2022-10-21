@@ -32,6 +32,8 @@ blockscout:
     # enable https
     tls:
       enabled: false
+    path:
+      - "/"
 
   # probes
   livenessProbe:
@@ -572,6 +574,8 @@ frontend:
     enabled: true
     host:
       _default: blockscout-frontend.aws-k8s.blockscout.com
+    path:
+      - "/"
 
   resources:
     limits:

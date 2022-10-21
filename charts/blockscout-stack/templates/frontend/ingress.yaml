@@ -17,13 +17,15 @@ spec:
     - host: {{ pluck $.Values.global.env .Values.frontend.ingress.host | first | default .Values.frontend.ingress.host._default | quote }}
       http:
         paths:
-          - path: "/"
+        {{- range .Values.frontend.ingress.path }}
+          - path: {{ . }}
             pathType: Prefix
             backend:
               service:
                 name: {{ .Release.Name }}-frontend-svc
                 port:
                   number: {{ .Values.frontend.docker.port }}
+        {{- end}}
   tls:
     - hosts:
         - {{ pluck $.Values.global.env .Values.frontend.ingress.host | first | default .Values.frontend.ingress.host._default | quote }}

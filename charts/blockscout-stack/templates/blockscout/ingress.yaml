@@ -24,13 +24,15 @@ spec:
     - host: {{ pluck $.Values.global.env .Values.blockscout.ingress.host | first | default .Values.blockscout.ingress.host._default | quote }}
       http:
         paths:
-          - path: "/"
+        {{- range .Values.blockscout.ingress.path }}
+          - path: {{ . }}
             pathType: Prefix
             backend:
               service:
                 name: {{ .Release.Name }}-blockscout-svc
                 port:
                   number: {{ .Values.blockscout.docker.port }}
+        {{- end }}
   {{- if .Values.blockscout.ingress.tls.enabled }}
   tls:
     - hosts:
