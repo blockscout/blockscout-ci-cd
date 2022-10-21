@@ -22,9 +22,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ .Release.Name }}-frontend-svc
+                name: {{ $.Release.Name }}-frontend-svc
                 port:
-                  number: {{ .Values.frontend.docker.port }}
+                  number: {{ $.Values.frontend.docker.port }}
         {{- end}}
   tls:
     - hosts:

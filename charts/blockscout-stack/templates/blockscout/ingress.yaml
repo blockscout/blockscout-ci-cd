@@ -29,9 +29,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ .Release.Name }}-blockscout-svc
+                name: {{ $.Release.Name }}-blockscout-svc
                 port:
-                  number: {{ .Values.blockscout.docker.port }}
+                  number: {{ $.Values.blockscout.docker.port }}
         {{- end }}
   {{- if .Values.blockscout.ingress.tls.enabled }}
   tls:
