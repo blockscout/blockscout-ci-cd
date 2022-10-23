@@ -193,7 +193,7 @@ jobs:
           if ${{ env.GITHUB_REF_SLUG == 'main' }}; then
             DEPLOY_SUFFIX=$GITHUB_REF_SLUG
           else
-            DEPLOY_SUFFIX=$GITHUB_HEAD_REF_SLUG
+            DEPLOY_SUFFIX=$GITHUB_REF_SLUG
           fi
           echo "DEPLOY_SUFFIX=$DEPLOY_SUFFIX" >> "$GITHUB_ENV"
           if ${{ inputs.frontendImage != '' }}; then
