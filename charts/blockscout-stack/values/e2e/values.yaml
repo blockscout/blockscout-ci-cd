@@ -41,7 +41,7 @@ blockscout:
         _default: "2"
   # enable service to connect to RDS
   rds:
-    enable: false
+    enabled: false
     endpoint:
       _default: <endpoint>.<region>.rds.amazonaws.com
   # node label
