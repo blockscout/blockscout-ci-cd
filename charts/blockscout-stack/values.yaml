@@ -27,6 +27,7 @@ blockscout:
   # enable ingress
   ingress:
     enabled: false
+    annotations: {}
     host:
       _default: <url>
     # enable https
@@ -572,8 +573,12 @@ frontend:
 
   ingress:
     enabled: true
+    annotations: {}
     host:
       _default: blockscout-frontend.aws-k8s.blockscout.com
+    # enable https
+    tls:
+      enabled: true
     path:
       - "/"
 

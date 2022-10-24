@@ -18,6 +18,9 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     cert-manager.io/cluster-issuer: "zerossl-prod"
     {{- end}}
+    {{- range .Values.blockscout.ingress.annotations }}
+    {{ . | quote }}
+    {{- end}}
   name: {{ .Release.Name }}-blockscout-ingress
 spec:
   rules:
