@@ -25,7 +25,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: node-svc
+                name: {{ .Release.Name }}-node-svc
                 port:
                   number: {{ .Values.node.portHttp }}
           - path: /ws(/|$)(.*)

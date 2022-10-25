@@ -178,6 +178,8 @@ node:
 
   persistence:
     enabled: false
+    storageClass: gp3
+    storage: 10Gi
 
   files:
     enabled: false
@@ -395,6 +397,8 @@ node:
     port: 7878
     persistence:
       enabled: false
+      storageClass: gp3
+      storage: 10Gi
     service:
       # ClusterIP, NodePort or LoadBalancer
       type: ClusterIP

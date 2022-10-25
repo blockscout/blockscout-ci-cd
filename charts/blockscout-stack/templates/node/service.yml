@@ -2,7 +2,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: node-svc
+  name: {{ .Release.Name }}-node-svc
 spec:
   type: {{ .Values.node.service.type}}
   ports:
@@ -21,7 +21,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: dtl-svc
+  name: {{ .Release.Name }}-dtl-svc
 spec:
   type: {{ .Values.node.dtl.service.type}}
   ports:

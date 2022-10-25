@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: node-cm
+  name: {{ .Release.Name }}-node-cm
 data:
   {{- range $key, $value := .Values.node.files.list }}
   {{ $key }}: {{ toYaml $value | indent 2 }}

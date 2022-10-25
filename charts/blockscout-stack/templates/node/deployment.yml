@@ -5,6 +5,8 @@ metadata:
   name: {{ .Release.Name }}-node
 spec:
   replicas: {{ .Values.node.replicas.app }}
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: {{ .Release.Name }}-node
@@ -80,19 +82,19 @@ spec:
       volumes:
         {{- if .Values.node.files.enabled }}
         - configMap:
-            name: node-cm
+            name: {{ .Release.Name }}-node-cm
             defaultMode: 0777
           name: node-cm
         {{- end }}
         {{- if .Values.node.persistence.enabled }}
         - name: node
           persistentVolumeClaim:
-            claimName: node
+            claimName: {{ .Release.Name }}-node
         {{- end }}
         {{- if .Values.node.dtl.persistence.enabled }}
         - name: dtl
           persistentVolumeClaim:
-            claimName: dtl
+            claimName: {{ .Release.Name }}-dtl
         {{- end }}
 ---
 {{- end }}
