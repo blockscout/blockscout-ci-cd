@@ -4,16 +4,25 @@ on:
   # push:
   workflow_dispatch:
     inputs:
-      valuesDir:
-        description: 'Directory with values'
-        required: true
-        default: 'charts/blockscout-stack/values/e2e'
-        type: string
-      appName:
-        description: 'App name'
+      env_vars:
+        description: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=bs-stack
         required: false
-        default: 'bs-stack'
         type: string
+      globalEnv:
+        description: 'Network type'
+        required: false
+        default: 'testnet'
+        type: string
+      # valuesDir:
+      #   description: 'Directory with values'
+      #   required: true
+      #   default: 'charts/blockscout-stack/values/e2e'
+      #   type: string
+      # appName:
+      #   description: 'App name'
+      #   required: true
+      #   default: 'bs-stack'
+      #   type: string
       appNamespace:
         description: 'Namespace to deploy in'
         required: false
@@ -48,16 +57,25 @@ on:
         type: string
   workflow_call:
     inputs:
-      valuesDir:
-        description: 'Directory with values'
-        required: true
-        default: 'charts/blockscout-stack/values/e2e'
-        type: string
-      appName:
-        description: 'App name'
+      env_vars:
+        description: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=bs-stack
         required: false
-        default: 'bs-stack'
         type: string
+      globalEnv:
+        description: 'Network type'
+        required: false
+        default: 'testnet'
+        type: string
+      # valuesDir:
+      #   description: 'Directory with values'
+      #   required: true
+      #   default: 'charts/blockscout-stack/values/e2e'
+      #   type: string
+      # appName:
+      #   description: 'App name'
+      #   required: false
+      #   default: 'bs-stack'
+      #   type: string
       appNamespace:
         description: 'Namespace to deploy in'
         required: false
@@ -121,11 +139,19 @@ jobs:
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v4
 
-      - name: Add inputs to GITHUB_ENV
-        if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
+      - name: Set environment variables
         run: |
-          echo "VALUES_DIR=${{ inputs.valuesDir }}" >> $GITHUB_ENV
-          echo "APP_NAME=${{ inputs.appName }}" >> $GITHUB_ENV
+          env_vars=${{ inputs.env_vars }}
+          for i in ${env_vars//,/ }
+          do
+              echo "$i" >> $GITHUB_ENV
+          done
+
+      # - name: Add inputs to GITHUB_ENV
+      #   if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
+      #   run: |
+      #     echo "VALUES_DIR=${{ inputs.valuesDir }}" >> $GITHUB_ENV
+      #     echo "APP_NAME=${{ inputs.appName }}" >> $GITHUB_ENV
 
       - name: Generate namespace name
         if: "${{ inputs.appNamespace == '' }}"
@@ -196,6 +222,9 @@ jobs:
             DEPLOY_SUFFIX=$GITHUB_REF_SLUG
           fi
           echo "DEPLOY_SUFFIX=$DEPLOY_SUFFIX" >> "$GITHUB_ENV"
+          if ${{ inputs.globalEnv != '' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set global.env=${{ inputs.globalEnv }} "
+          fi
           if ${{ inputs.frontendImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
           fi
