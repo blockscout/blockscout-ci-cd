@@ -32,5 +32,5 @@ spec:
   tls:
     - hosts:
         - {{ pluck $.Values.global.env .Values.frontend.ingress.host | first | default .Values.frontend.ingress.host._default | quote }}
-      secretName: {{ .Release.Name }}-frontend-tls
+      secretName: {{ .Release.Name }}-{{ .Values.frontend.app }}-tls
 {{- end }}

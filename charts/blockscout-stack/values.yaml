@@ -3,6 +3,7 @@ global:
 
 # enable Blockscout deploy
 blockscout:
+  app: blockscout
   enabled: false
   image:
     _default: blockscout/blockscout:latest
@@ -564,6 +565,7 @@ scVerifier:
       _default:
 
 frontend:
+  app: frontend
   enabled: false
 
   image:

@@ -40,7 +40,7 @@ spec:
   tls:
     - hosts:
         - {{ pluck $.Values.global.env .Values.blockscout.ingress.host | first | default .Values.blockscout.ingress.host._default | quote }}
-      secretName: {{ .Release.Name }}-blockscout-tls
+      secretName: {{ .Release.Name }}-{{ .Values.blockscout.app }}-tls
   {{- end}}
 ---
 {{- end }}
