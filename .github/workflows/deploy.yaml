@@ -147,7 +147,7 @@ jobs:
           for i in ${env_vars//,/ }
           do
               echo "$i" >> $GITHUB_ENV
-              echo ${{ environment.url }}
+              echo "${{ inputs.appNamespace }}${{ env.K8S_DOMAIN }}"
           done
 
       # - name: Add inputs to GITHUB_ENV
