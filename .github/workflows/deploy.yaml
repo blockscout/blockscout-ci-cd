@@ -133,8 +133,8 @@ jobs:
       #   environment: [Dev]
       #   region: [us-east-1]
     environment:
-      name: Testing
-      url:  ${{ steps.deploy-args.outputs.app_url }}
+      name: Dev
+      # url:  ${{ steps.deploy-args.outputs.app_url }}
       #https://${{ inputs.appNamespace }}.${{ env.K8S_DOMAIN }}
     steps:
       - name: Check out the repo
