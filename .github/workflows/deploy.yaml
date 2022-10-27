@@ -133,6 +133,7 @@ jobs:
         region: [us-east-1]
     environment:
       name: ${{ matrix.environment }}
+      url: ${{ inputs.appNamespace }}${{ env.K8S_DOMAIN }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
