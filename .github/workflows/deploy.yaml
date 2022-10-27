@@ -133,7 +133,7 @@ jobs:
         region: [us-east-1]
     environment:
       name: ${{ matrix.environment }}
-      url: ${{ inputs.appNamespace }}${{ env.K8S_DOMAIN }}
+      url: ${{ inputs.appNamespace }}.${{ env.K8S_DOMAIN }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -147,7 +147,7 @@ jobs:
           for i in ${env_vars//,/ }
           do
               echo "$i" >> $GITHUB_ENV
-              echo "${{ inputs.appNamespace }}${{ env.K8S_DOMAIN }}"
+              echo "${{ inputs.appNamespace }}.${{ env.K8S_DOMAIN }}"
           done
 
       # - name: Add inputs to GITHUB_ENV
