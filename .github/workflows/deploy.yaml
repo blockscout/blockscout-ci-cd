@@ -126,9 +126,9 @@ jobs:
       id-token: write
       contents: read
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      max-parallel: 1
+    # strategy:
+    #   fail-fast: true
+    #   max-parallel: 1
       # matrix:
       #   environment: [Dev]
       #   region: [us-east-1]
