@@ -133,7 +133,8 @@ jobs:
         region: [us-east-1]
     environment:
       name: ${{ matrix.environment }}
-      url: https://${{ inputs.appNamespace }}.${{ env.K8S_DOMAIN }}
+      url:  ${{ steps.deploy-args.outputs.app_url }}
+      #https://${{ inputs.appNamespace }}.${{ env.K8S_DOMAIN }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -216,6 +217,7 @@ jobs:
           passphrase: ''
 
       - name: Deploy args
+        id: deploy-args
         shell: bash
         run: |
           echo $DEPLOY_ARGS
@@ -249,6 +251,7 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN "
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_API_ENDPOINT._default=$BLOCKSCOUT_URL "
             echo "BLOCKSCOUT_URL=$BLOCKSCOUT_URL" >> "$GITHUB_ENV"
+            echo "::set-output name=app_url::$BLOCKSCOUT_URL"
           fi
           if ${{ inputs.scVerifierImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
