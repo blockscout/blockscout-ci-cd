@@ -146,7 +146,7 @@ async function globalSetup(): Promise<void> {
     //    and generating a real DAG, now way to workaround that
     //    In developer mode genesis is partially ignored, for example alloc clause, so we can't fund the keys
     // 4. We are exposing it using env vars because tests are running in different processes
-    if (process.env.PROD) {
+    if (process.env.PROD === `1`) {
         return
     }
     if (process.env.WALLET) {

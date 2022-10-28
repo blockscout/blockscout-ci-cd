@@ -34,7 +34,7 @@ export class BlocksPage extends CommonPage {
     }
 
     async open(bn: string): Promise<void> {
-        await this.actions.navigateToURL(`block/${bn}/transactions`)
+        await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}/block/${bn}/transactions`)
     }
 
     async check_block_description(p: BlockDescriptionProps): Promise<void> {
