@@ -3,16 +3,25 @@ name: E2E tests account
 on:
   workflow_dispatch:
     inputs:
-      valuesDir:
-        description: 'Directory with values'
-        required: true
-        default: 'charts/blockscout-stack/values/e2e'
+      env_vars:
+        description: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack
+        required: false
         type: string
-      appName:
-        description: 'App name'
-        required: true
-        default: 'e2e-bs-stack'
+      globalEnv:
+        description: 'Network type'
+        required: false
+        default: 'testnet'
         type: string
+      # valuesDir:
+      #   description: 'Directory with values'
+      #   required: true
+      #   default: 'charts/blockscout-stack/values/e2e'
+      #   type: string
+      # appName:
+      #   description: 'App name'
+      #   required: true
+      #   default: 'bs-stack'
+      #   type: string
       appNamespace:
         description: 'Namespace to deploy in'
         required: false
@@ -47,16 +56,25 @@ on:
         type: string
   workflow_call:
     inputs:
-      valuesDir:
-        description: 'Directory with values'
-        required: true
-        default: 'charts/blockscout-stack/values/e2e'
+      env_vars:
+        description: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack
+        required: false
         type: string
-      appName:
-        description: 'App name'
-        required: true
-        default: 'e2e-bs-stack'
+      globalEnv:
+        description: 'Network type'
+        required: false
+        default: 'testnet'
         type: string
+      # valuesDir:
+      #   description: 'Directory with values'
+      #   required: true
+      #   default: 'charts/blockscout-stack/values/e2e'
+      #   type: string
+      # appName:
+      #   description: 'App name'
+      #   required: true
+      #   default: 'bs-stack'
+      #   type: string
       appNamespace:
         description: 'Namespace to deploy in'
         required: false
@@ -97,6 +115,8 @@ env:
   K8S_PORT: ${{ secrets.K8S_PORT }}
   USERNAME: ${{ secrets.USERNAME }}
   BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
+  K8S_DOMAIN: test.aws-k8s.blockscout.com
+  REGION: us-east-1
 
   ACCOUNT_USERNAME: ${{ secrets.ACCOUNT_USERNAME }}
   ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
@@ -122,14 +142,16 @@ jobs:
       id-token: write
       contents: read
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      max-parallel: 1
-      matrix:
-        environment: [Dev]
-        region: [us-east-1]
+    # strategy:
+    #   fail-fast: true
+    #   max-parallel: 1
+      # matrix:
+      #   environment: [Dev]
+      #   region: [us-east-1]
     environment:
-      name: ${{ matrix.environment }}
+      name: Dev
+      # url:  ${{ steps.deploy-args.outputs.app_url }}
+      #https://${{ inputs.appNamespace }}.${{ env.K8S_DOMAIN }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -137,11 +159,20 @@ jobs:
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v4
 
-      - name: Add inputs to GITHUB_ENV
-        if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
+      - name: Set environment variables
         run: |
-          echo "VALUES_DIR=${{ inputs.valuesDir }}" >> $GITHUB_ENV
-          echo "APP_NAME=${{ inputs.appName }}" >> $GITHUB_ENV
+          env_vars=${{ inputs.env_vars }}
+          for i in ${env_vars//,/ }
+          do
+              echo "$i" >> $GITHUB_ENV
+              echo "${{ inputs.appNamespace }}.${{ env.K8S_DOMAIN }}"
+          done
+
+      # - name: Add inputs to GITHUB_ENV
+      #   if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
+      #   run: |
+      #     echo "VALUES_DIR=${{ inputs.valuesDir }}" >> $GITHUB_ENV
+      #     echo "APP_NAME=${{ inputs.appName }}" >> $GITHUB_ENV
 
       - name: Generate namespace name
         if: "${{ inputs.appNamespace == '' }}"
@@ -155,7 +186,7 @@ jobs:
           if ${{ inputs.appNamespace != '' }}; then
               echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> "$GITHUB_ENV"
           else
-              echo "APP_NAMESPACE=e2e-${{ steps.generate.outputs.uuid }}" >> "$GITHUB_ENV"
+              echo "APP_NAMESPACE=bs-${{ steps.generate.outputs.uuid }}" >> "$GITHUB_ENV"
           fi
 
       - name: Configure Kubectl
@@ -169,7 +200,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-region: ${{ matrix.region }}
+          aws-region: ${{ env.REGION }}
           role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
 
       # Install helm, helm-secrets, sops
@@ -191,7 +222,7 @@ jobs:
       - name: Update KubeConfig
         shell: bash
         run: |
-          aws eks update-kubeconfig --name ${{ secrets.AWS_CLUSTER_NAME }} --region=${{ matrix.region }}
+          aws eks update-kubeconfig --name ${{ secrets.AWS_CLUSTER_NAME }} --region=${{ env.REGION }}
 
       # Import GPG key
       - name: Import GPG key
@@ -203,14 +234,24 @@ jobs:
           passphrase: ''
 
       - name: Deploy args
+        id: deploy-args
         shell: bash
         run: |
           echo $DEPLOY_ARGS
+          if ${{ env.GITHUB_REF_SLUG == 'main' }}; then
+            DEPLOY_SUFFIX=$GITHUB_REF_SLUG
+          else
+            DEPLOY_SUFFIX=$GITHUB_REF_SLUG
+          fi
+          echo "DEPLOY_SUFFIX=$DEPLOY_SUFFIX" >> "$GITHUB_ENV"
+          if ${{ inputs.globalEnv != '' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set global.env=${{ inputs.globalEnv }} "
+          fi
           if ${{ inputs.frontendImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
           fi
           if ${{ inputs.frontendIngressHost != '' }}; then
-            FRONTEND_INGRESS_URL=${{ inputs.frontendIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com
+            FRONTEND_INGRESS_URL=${{ inputs.frontendIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN
             FRONTEND_URL=https://$FRONTEND_INGRESS_URL
             echo "FRONTEND_URL=$FRONTEND_URL" >> "$GITHUB_ENV"
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=$FRONTEND_INGRESS_URL "
@@ -220,25 +261,27 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blockscoutImage }} "
           fi
           if ${{ inputs.blockscoutIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_CALLBACK_URL._default=http://${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com/auth/auth0/callback "
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com/auth/logout "
-            BLOCKSCOUT_URL=https://${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_CALLBACK_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/poa/sokol/auth/auth0/callback "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/poa/sokol/auth/logout "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/poa/sokol/auth/logout "
+            BLOCKSCOUT_URL=https://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN "
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_API_ENDPOINT._default=$BLOCKSCOUT_URL "
             echo "BLOCKSCOUT_URL=$BLOCKSCOUT_URL" >> "$GITHUB_ENV"
+            echo "::set-output name=app_url::$BLOCKSCOUT_URL"
           fi
           if ${{ inputs.scVerifierImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
           fi
           if ${{ inputs.scVerifierIngressHost != '' }}; then
-            SC_VERIFIER_URL=https://${{ inputs.scVerifierIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com
+            SC_VERIFIER_URL=https://${{ inputs.scVerifierIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN
             echo "SC_VERIFIER_URL=$SC_VERIFIER_URL" >> "$GITHUB_ENV"
-            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN "
           fi
           if ${{ inputs.gethIngressHost != '' }}; then
-            NETWORK_URL=${{ inputs.gethIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com/http
+            NETWORK_URL=${{ inputs.gethIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/http
             echo "NETWORK_URL=http://$NETWORK_URL" >> "$GITHUB_ENV"
-            DEPLOY_ARGS="$DEPLOY_ARGS--set geth.ingress.host._default=${{ inputs.gethIngressHost }}-$GITHUB_SHA_SHORT.test.aws-k8s.blockscout.com "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set geth.ingress.host._default=${{ inputs.gethIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN "
           fi
           echo "$DEPLOY_ARGS"
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
@@ -268,7 +311,7 @@ jobs:
         run: |
           kubectl delete secret regcred -n $APP_NAMESPACE --ignore-not-found
           kubectl get secret regcred -o yaml | sed "s/namespace: .*/namespace: $APP_NAMESPACE/" | kubectl apply -f -
-          pkill -f "ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST"
+
 
 ################### tests
       - name: Collect Workflow Telemetry

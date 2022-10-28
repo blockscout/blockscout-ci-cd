@@ -17,11 +17,9 @@ jobs:
   deploy_and_tests:
     uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
     with:
-      valuesDir: charts/blockscout-stack/values/e2e
-      # appNamespace: e2e-test-account
-      appName: e2e-bs-stack
+      env_vars: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack
       blockscoutIngressHost: blockscout
-      frontendIngressHost: frontend
+      frontendIngressHost: blockscout
       gethIngressHost: geth
       scVerifierIngressHost: sc-verifier
     secrets: inherit
