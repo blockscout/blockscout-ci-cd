@@ -53,7 +53,7 @@ export class TransactionPage extends CommonPage {
     CARD_BODY_VALUES = `[class='card-body'] >> dd`
 
     async open(hash: string): Promise<void> {
-        await this.actions.navigateToURL(`tx/${hash}`)
+        await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}/tx/${hash}`)
     }
 
     // checks tx description for each field in array format [fieldText, valueAssertion, valueAssertion...]

@@ -222,6 +222,7 @@ export class CommonPage {
     }
 
     async isSignedIn(): Promise<void> {
+        await this.page.reload()
         await this.actions.clickElement(this.ACCOUNT_MENU)
         await this.actions.verifyElementIsDisplayed(this.LOGGED_IN_AS, `login failed`)
     }

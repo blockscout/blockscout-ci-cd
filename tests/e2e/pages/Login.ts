@@ -39,7 +39,7 @@ export interface PublicTagSpec {
     companyName?: string
     companyWebSite?: string
     myProjectCheckBox: boolean
-    tagsString: string
+    tags: string[]
     addresses: string[]
     description: string
 }
@@ -55,11 +55,11 @@ export class AuthorizedArea extends CommonPage {
 
     ACCOUNT_MENU_PROFILE = `text=Profile`
 
-    PROFILE_NAME = `#static-name`
+    PROFILE_NAME = `#name`
 
-    PROFILE_NICKNAME = `#static-nickname`
+    PROFILE_NICKNAME = `#nickname`
 
-    PROFILE_EMAIL = `#static-email`
+    PROFILE_EMAIL = `#email`
 
     WATCHLIST_TAB = `text=Watch list`
 
@@ -81,7 +81,7 @@ export class AuthorizedArea extends CommonPage {
 
     WATCHLIST_EMAIL_NOTIFICATIONS = `text=Email notifications`
 
-    SAVE_BTN = `text=Save`
+    SAVE_BTN = `section >> button >> nth=1`
 
     ADD_ADDRESS_BUTTON = `text=Add address`
 
@@ -91,51 +91,63 @@ export class AuthorizedArea extends CommonPage {
 
     WARN_ADDRESS_INVALID = `text=is invalid`
 
-    ADDRESS_TAGS_TAB = `section >> text=Address Tags >> nth=0`
+    PRIVATE_TAGS_TAB = `text=Private tags`
+
+    ADDRESS_TAGS_TAB = `//button[text()="Address"]`
+
+    TRANSACTION_TAGS_TAB = `//button[text()="Transaction"]`
 
     ADDRESS_TAGS_TAB_ADD_ADDRESS = `text=Add address tag`
 
-    ADDRESS_TAGS_ADDRESS_INPUT = `#tag_address_address_hash`
+    ADDRESS_TAGS_ADDRESS_INPUT = `#address`
 
-    ADDRESS_TAGS_NAME_INPUT = `#tag_address_name`
+    ADDRESS_TAGS_NAME_INPUT = `#tag`
 
     TX_TAGS_TAB = `section >> text=Transaction Tags`
 
     TX_TAGS_TAB_ADD_TX = `text=Add transaction tag`
 
-    TX_TAGS_TX_INPUT = `#tag_transaction_tx_hash`
+    TX_TAGS_TX_INPUT = `#transaction`
 
-    TX_TAGS_NAME_INPUT = `#tag_transaction_name`
+    TX_TAGS_NAME_INPUT = `#tag`
 
-    API_KEYS_TAB = `section >> text=API Keys`
+    API_KEYS_TAB = `text=API Keys`
 
     API_KEYS_ADD_BTN = `text=Add API Key`
 
-    API_KEYS_NAME_INPUT = `#key_name`
+    API_KEYS_NAME_INPUT = `#name`
 
-    PUBLIC_TAGS_TAB = `section >> text=Public Tags`
+    PUBLIC_TAGS_TAB = `text=Public Tags`
 
     PUBLIC_TAGS_TAB_BTN = `text=Request to add public tag`
 
-    PUBLIC_TAGS_NAME_INPUT = `#public_tags_request_full_name`
+    PUBLIC_TAGS_NAME_INPUT = `#fullName`
 
-    PUBLIC_TAGS_EMAIL_INPUT = `#public_tags_request_email`
+    PUBLIC_TAGS_EMAIL_INPUT = `#email`
 
-    PUBLIC_TAGS_COMPANY_INPUT = `#public_tags_request_company`
+    PUBLIC_TAGS_COMPANY_INPUT = `#companyName`
 
-    PUBLIC_TAGS_WEBSITE_INPUT = `#public_tags_request_website`
+    PUBLIC_TAGS_WEBSITE_INPUT = `#companyUrl`
 
-    PUBLIC_TAGS_PROJECT_CHECKBOX = `#public_tags_request_is_owner_true`
+    PUBLIC_TAGS_PROJECT_CHECKBOX = `text=I want to add tags to my project`
 
-    PUBLIC_TAGS_INCORRECT_CHECKBOX = `#public_tags_request_is_owner_false`
+    PUBLIC_TAGS_INCORRECT_CHECKBOX = `text=I want to report an incorrect public tag`
 
-    PUBLIC_TAGS_TAGS_INPUT = `#public_tags_request_tags`
+    PUBLIC_TAGS_TAGS_INPUT = `#tags`
 
-    PUBLIC_TAGS_ADDRESSES_INPUT = `#public_tags_request_addresses`
+    PUBLIC_TAGS_ADDRESSES_INPUT = `#address`
 
-    PUBLIC_TAGS_DESCRIPTION_INPUT = `#public_tags_request_additional_comment`
+    PUBLIC_TAGS_ALIAS_ADDRESSES_INPUT = `#address >> nth=1`
+
+    PUBLIC_TAGS_DESCRIPTION_INPUT = `#comment`
+
+    PUBLIC_TAGS_ADD_FIELD = `[aria-label="add"]`
 
     PUBLIC_TAGS_SEND_BTN = `text=Send request`
+
+    DELETE_ROW_ICON = `[aria-label="delete"]`
+
+    DELETE_ROW_BTN = `text=Delete`
 
     constructor(page: Page, ms: MailSlurp, contracts: Contracts) {
         super(page)
@@ -152,7 +164,11 @@ export class AuthorizedArea extends CommonPage {
     async openAccount(options?: Object): Promise<void> {
         await this.actions.navigateToURL(`/`, options)
         await this.actions.clickElement(this.ACCOUNT_MENU)
-        await this.actions.clickElement(this.WATCHLIST_TAB)
+        await this.actions.clickElement(this.ACCOUNT_MENU_PROFILE)
+    }
+
+    async selectPrivateTagsTab(): Promise<void> {
+        await this.actions.clickElement(this.PRIVATE_TAGS_TAB)
     }
 
     async selectAddressTagTab(): Promise<void> {
@@ -160,7 +176,7 @@ export class AuthorizedArea extends CommonPage {
     }
 
     async selectTXTagTab(): Promise<void> {
-        await this.actions.clickElement(this.TX_TAGS_TAB)
+        await this.actions.clickElement(this.TRANSACTION_TAGS_TAB)
     }
 
     async selectAPIKeysTab(): Promise<void> {
@@ -196,8 +212,6 @@ export class AuthorizedArea extends CommonPage {
     }
 
     async checkProfile(): Promise<void> {
-        await this.actions.clickElement(this.ACCOUNT_MENU)
-        await this.actions.clickElement(this.ACCOUNT_MENU_PROFILE)
         await this.actions.verifyElementAttribute(this.PROFILE_NAME, `value`, `3cad691b-44e3-4613-bab2-c3ef59ae1f03@mailslurp.com`)
         await this.actions.verifyElementAttribute(this.PROFILE_NICKNAME, `value`, `3cad691b-44e3-4613-bab2-c3ef59ae1f03`)
         await this.actions.verifyElementAttribute(this.PROFILE_EMAIL, `value`, `3cad691b-44e3-4613-bab2-c3ef59ae1f03@mailslurp.com`)
@@ -240,14 +254,13 @@ export class AuthorizedArea extends CommonPage {
         if (spec.companyWebSite) {
             await this.actions.enterElementText(this.PUBLIC_TAGS_WEBSITE_INPUT, spec.companyWebSite)
         }
-        if (spec.myProjectCheckBox) {
-            await this.actions.clickElement(this.PUBLIC_TAGS_PROJECT_CHECKBOX)
-        } else {
-            await this.actions.clickElement(this.PUBLIC_TAGS_INCORRECT_CHECKBOX)
-        }
-        await this.actions.enterElementText(this.PUBLIC_TAGS_TAGS_INPUT, spec.tagsString)
+        await this.actions.enterElementText(this.PUBLIC_TAGS_TAGS_INPUT, `${spec.tags[0]};${spec.tags[1]}`)
         await this.actions.enterElementText(this.PUBLIC_TAGS_ADDRESSES_INPUT, spec.addresses[0])
         await this.actions.enterElementText(this.PUBLIC_TAGS_DESCRIPTION_INPUT, spec.description)
+
+        await this.actions.clickElement(this.PUBLIC_TAGS_ADD_FIELD)
+        await this.actions.enterElementText(this.PUBLIC_TAGS_ALIAS_ADDRESSES_INPUT, spec.addresses[1])
+
         await this.actions.clickElement(this.PUBLIC_TAGS_SEND_BTN)
     }
 
@@ -261,6 +274,12 @@ export class AuthorizedArea extends CommonPage {
     async addAPIKey(name: string): Promise<void> {
         await this.actions.clickElement(this.API_KEYS_ADD_BTN)
         await this.actions.enterElementText(this.API_KEYS_NAME_INPUT, name)
+        await this.actions.clickElement(this.SAVE_BTN)
+    }
+
+    async deleteRow(): Promise<void> {
+        await this.page.reload()
+        await this.actions.clickElement(this.DELETE_ROW_ICON)
         await this.actions.clickElement(this.SAVE_BTN)
     }
 
