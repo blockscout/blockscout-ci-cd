@@ -17,6 +17,15 @@ blockscout:
   # init container
   init:
     enabled: false
+    image:
+      _default: blockscout/blockscout:latest
+    command: '["/bin/bash"]'
+    args: '["-c", "bin/blockscout eval \"Elixir.Explorer.ReleaseTasks.create_and_migrate()\" && bin/blockscout start"]'
+    volumes:
+      enabled: false
+      list:
+        tmpdir: /tmp/mountdir
+
 
   service:
     # ClusterIP, NodePort or LoadBalancer
