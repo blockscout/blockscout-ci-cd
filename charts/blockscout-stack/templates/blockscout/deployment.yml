@@ -32,6 +32,8 @@ spec:
           {{- end }}
           command:  {{ .Values.blockscout.init.command }}
           args: {{ .Values.blockscout.init.args }}
+          env:
+{{- include "app_env" . | indent 10 }}
         {{- if .Values.blockscout.init.volumes.enabled }}
           {{- range $key, $value := .Values.blockscout.init.volumes.list }}
           volumeMounts:
