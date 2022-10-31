@@ -16,11 +16,11 @@ blockscout:
 
   # init container
   init:
-    enabled: false
+    enabled: true
     image:
-      _default: blockscout/blockscout:latest
+      _default: blockscout/blockscout-sokol:latest
     command: '["/bin/bash"]'
-    args: '["-c", "bin/blockscout eval \"Elixir.Explorer.ReleaseTasks.create_and_migrate()\" && bin/blockscout start"]'
+    args: '["-c", "bin/blockscout eval \"Elixir.Explorer.ReleaseTasks.create_and_migrate()\""]'
     volumes:
       enabled: false
       list:
@@ -32,7 +32,7 @@ blockscout:
     type: ClusterIP
 
   command: '["/bin/bash"]'
-  args: '["-c", "bin/blockscout eval \"Elixir.Explorer.ReleaseTasks.create_and_migrate()\" && bin/blockscout start"]'
+  args: '["-c", "bin/blockscout start"]'
 
   # enable ingress
   ingress:
