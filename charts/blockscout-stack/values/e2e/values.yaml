@@ -17,7 +17,7 @@ blockscout:
   init:
     enabled: true
     image:
-      _default: blockscout/blockscout:latest
+      _default: blockscout/blockscout-sokol:latest
     command: '["/bin/bash"]'
     args: '["-c", "bin/blockscout eval \"Elixir.Explorer.ReleaseTasks.create_and_migrate()\""]'
     volumes:
