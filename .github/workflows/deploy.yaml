@@ -245,9 +245,9 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blockscoutImage }} "
           fi
           if ${{ inputs.blockscoutIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_CALLBACK_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/poa/sokol/auth/auth0/callback "
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/poa/sokol/auth/logout "
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/poa/sokol/auth/logout "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_CALLBACK_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/auth/auth0/callback "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/auth/logout "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/auth/logout "
             BLOCKSCOUT_URL=https://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN "
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_API_ENDPOINT._default=$BLOCKSCOUT_URL "
