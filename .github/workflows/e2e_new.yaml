@@ -412,7 +412,7 @@ jobs:
           ssh-add - <<< "$BASTION_SSH_KEY" || true
           sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
           grep 9443 ~/.kube/config || sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
-          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST; kubectl config view --minify; kubectl delete ns $APP_NAMESPACE
+          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST; kubectl delete ns $APP_NAMESPACE
 
 defaults:
   run:
