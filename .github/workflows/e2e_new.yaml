@@ -307,8 +307,6 @@ jobs:
           sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
           sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
           ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
-          pwd
-          ls -la
           helm secrets upgrade --install --repo https://blockscout.github.io/blockscout-ci-cd/ \
             $APP_NAME blockscout-stack \
             -f $VALUES_DIR/values.yaml \
