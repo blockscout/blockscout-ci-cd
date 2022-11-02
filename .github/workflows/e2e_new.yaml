@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       env_vars:
-        description: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack
+        description: VALUES_DIR=charts/blockscout-stack/values/e2e-test,APP_NAME=e2e-bs-stack
         required: false
         type: string
       globalEnv:
@@ -57,7 +57,7 @@ on:
   workflow_call:
     inputs:
       env_vars:
-        description: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack
+        description: VALUES_DIR=charts/blockscout-stack/values/e2e-test,APP_NAME=e2e-bs-stack
         required: false
         type: string
       globalEnv:
@@ -153,8 +153,13 @@ jobs:
       # url:  ${{ steps.deploy-args.outputs.app_url }}
       #https://${{ inputs.appNamespace }}.${{ env.K8S_DOMAIN }}
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
+      # - name: Check out the repo
+      #   uses: actions/checkout@v3
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          repository: blockscout/blockscout-ci-cd
+          path: blockscout-ci-cd
 
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v4
@@ -321,11 +326,11 @@ jobs:
         uses: runforesight/foresight-workflow-kit-action@v1
         with:
           api_key: ${{ secrets.THUNDRA_APIKEY }}
-      - name: checkout
-        uses: actions/checkout@v2
-        with:
-          repository: blockscout/blockscout-ci-cd
-          path: blockscout-ci-cd
+      # - name: checkout
+      #   uses: actions/checkout@v2
+      #   with:
+      #     repository: blockscout/blockscout-ci-cd
+      #     path: blockscout-ci-cd
       - name: Setup node
         uses: actions/setup-node@v3
         with:
