@@ -5,6 +5,8 @@ metadata:
   name: {{ .Release.Name }}-geth
 spec:
   replicas: {{ .Values.geth.replicas.app }}
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: {{ .Release.Name }}-geth
