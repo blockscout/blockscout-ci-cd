@@ -158,11 +158,11 @@ export class AuthorizedArea extends CommonPage {
     }
 
     async open(options?: Object): Promise<void> {
-        await this.actions.navigateToURL(`/`, options)
+        await this.actions.navigateToURL(process.env.BLOCKSCOUT_URL, options)
     }
 
     async openAccount(options?: Object): Promise<void> {
-        await this.actions.navigateToURL(`/`, options)
+        await this.actions.navigateToURL(process.env.BLOCKSCOUT_URL, options)
         await this.actions.clickElement(this.ACCOUNT_MENU)
         await this.actions.clickElement(this.ACCOUNT_MENU_PROFILE)
     }
