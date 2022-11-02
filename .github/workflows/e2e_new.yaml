@@ -298,6 +298,7 @@ jobs:
       # Deploy newly built changes to EKS cluster.
       - name: Deploy To Cluster
         shell: bash
+        working-directory: blockscout-ci-cd
         run: |
           mkdir ~/.ssh
           ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
