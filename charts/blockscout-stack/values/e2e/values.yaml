@@ -96,6 +96,8 @@ blockscout:
       _default: 'true'
     DISABLE_REALTIME_INDEXER:
       _default: 'false'
+    BLOCKSCOUT_HOST:
+      _default: 'blockscout.test.aws-k8s.blockscout.com'
     SOCKET_ROOT:
       _default: "/"
     NETWORK_PATH:
@@ -111,7 +113,7 @@ blockscout:
     EXTERNAL_APPS:
       _default: '[{"title": "Marketplace", "url": "/apps"}]'
     JSON_RPC:
-      _default: https://sokol.poa.network
+      _default: http://geth-svc:8545
     API_V2_ENABLED:
       _default: 'true'
 
