@@ -259,6 +259,8 @@ jobs:
           fi
           if ${{ inputs.blockscoutImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blockscoutImage }} "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.init.image._default=${{ inputs.blockscoutImage }} "
+
           fi
           if ${{ inputs.blockscoutIngressHost != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_CALLBACK_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/poa/sokol/auth/auth0/callback "
