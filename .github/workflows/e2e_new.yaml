@@ -4,8 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       env_vars:
-        description: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack
+        description: VALUES_DIR and APP_NAME environment variables
         required: false
+        default: 'VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack'
         type: string
       globalEnv:
         description: 'Network type'
@@ -57,8 +58,9 @@ on:
   workflow_call:
     inputs:
       env_vars:
-        description: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack
+        description: VALUES_DIR and APP_NAME environment variables
         required: false
+        default: 'VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack'
         type: string
       globalEnv:
         description: 'Network type'
@@ -153,8 +155,13 @@ jobs:
       # url:  ${{ steps.deploy-args.outputs.app_url }}
       #https://${{ inputs.appNamespace }}.${{ env.K8S_DOMAIN }}
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
+      # - name: Check out the repo
+      #   uses: actions/checkout@v3
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          repository: blockscout/blockscout-ci-cd
+          path: blockscout-ci-cd
 
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v4
@@ -186,7 +193,7 @@ jobs:
           if ${{ inputs.appNamespace != '' }}; then
               echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> "$GITHUB_ENV"
           else
-              echo "APP_NAMESPACE=bs-${{ steps.generate.outputs.uuid }}" >> "$GITHUB_ENV"
+              echo "APP_NAMESPACE=e2e-${{ steps.generate.outputs.uuid }}" >> "$GITHUB_ENV"
           fi
 
       - name: Configure Kubectl
@@ -259,6 +266,8 @@ jobs:
           fi
           if ${{ inputs.blockscoutImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blockscoutImage }} "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.init.image._default=${{ inputs.blockscoutImage }} "
+
           fi
           if ${{ inputs.blockscoutIngressHost != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_CALLBACK_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/poa/sokol/auth/auth0/callback "
@@ -289,6 +298,7 @@ jobs:
       # Deploy newly built changes to EKS cluster.
       - name: Deploy To Cluster
         shell: bash
+        working-directory: blockscout-ci-cd
         run: |
           mkdir ~/.ssh
           ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
@@ -311,6 +321,7 @@ jobs:
         run: |
           kubectl delete secret regcred -n $APP_NAMESPACE --ignore-not-found
           kubectl get secret regcred -o yaml | sed "s/namespace: .*/namespace: $APP_NAMESPACE/" | kubectl apply -f -
+          pkill -f "ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST"
 
 
 ################### tests
@@ -318,11 +329,11 @@ jobs:
         uses: runforesight/foresight-workflow-kit-action@v1
         with:
           api_key: ${{ secrets.THUNDRA_APIKEY }}
-      - name: checkout
-        uses: actions/checkout@v2
-        with:
-          repository: blockscout/blockscout-ci-cd
-          path: blockscout-ci-cd
+      # - name: checkout
+      #   uses: actions/checkout@v2
+      #   with:
+      #     repository: blockscout/blockscout-ci-cd
+      #     path: blockscout-ci-cd
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -411,7 +422,7 @@ jobs:
           ssh-add - <<< "$BASTION_SSH_KEY" || true
           sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
           grep 9443 ~/.kube/config || sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
-          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST }; kubectl delete ns $APP_NAMESPACE
+          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST; kubectl delete ns $APP_NAMESPACE
 
 defaults:
   run:
