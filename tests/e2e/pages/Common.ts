@@ -104,7 +104,7 @@ export class CommonPage {
     }
 
     async signUp(email: string, password: string): Promise<void> {
-        await this.actions.navigateToURL(`/`)
+        await this.actions.navigateToURL(process.env.BLOCKSCOUT_URL)
         await this.actions.clickElement(this.SIGN_IN)
         await this.actions.clickElement(this.AUTH0_SIGN_UP)
         await this.actions.enterElementText(this.AUTH0_INPUT_EMAIL, email)
@@ -222,6 +222,7 @@ export class CommonPage {
     }
 
     async isSignedIn(): Promise<void> {
+        await this.page.reload()
         await this.actions.clickElement(this.ACCOUNT_MENU)
         await this.actions.verifyElementIsDisplayed(this.LOGGED_IN_AS, `login failed`)
     }
