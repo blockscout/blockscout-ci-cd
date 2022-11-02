@@ -56,6 +56,45 @@ spec:
               subPath: {{ $key }}
               {{- end }}
             {{- end }}
+      {{- if .Values.geth.client.enabled }}
+        - name: {{ .Release.Name }}-client
+          image: {{ pluck $.Values.global.env .Values.geth.client.image | first | default .Values.geth.client.image._default | quote }}
+          command: {{ .Values.geth.client.command }}
+          args: {{ .Values.geth.client.args }}
+          resources:
+            {{- with .Values.geth.client.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+            {{- end }}
+          env:
+            {{- include "client_env" . | indent 10 }}
+          ports:
+          {{- range $key, $value := .Values.geth.client.ports }}
+            - containerPort: {{ toYaml $value.number | indent 2 }}
+              name: {{ $key }}
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.geth.client.persistence.enabled }}
+            - name: client
+              mountPath: {{ .Values.geth.client.persistence.mountPath }}
+            {{- end }}
+            {{- if .Values.geth.jwt.enabled }}
+            - mountPath: {{ .Values.geth.jwt.mountPath }}
+              name: jwt
+              subPath: jwtsecret
+            {{- end }}
+            {{- if .Values.geth.client.files.enabled }}
+              {{- range $key, $value := .Values.geth.client.files.list }}
+            - mountPath: /root/{{ $key }}
+              name: client-cm
+              subPath: {{ $key }}
+              {{- end }}
+            {{- end }}
+      {{- end }}
       {{- if .Values.geth.nodeSelector.enabled }}
       nodeSelector:
         app: {{ .Values.geth.nodeSelector.app}}
@@ -70,10 +109,21 @@ spec:
             defaultMode: 0777
           name: geth-cm
         {{- end }}
+        {{- if .Values.geth.client.files.enabled }}
+        - configMap:
+            name: client-cm
+            defaultMode: 0777
+          name: client-cm
+        {{- end }}
         {{- if .Values.geth.persistence.enabled }}
         - name: geth
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-geth
+        {{- end }}
+        {{- if .Values.geth.client.persistence.enabled }}
+        - name: client
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-client
         {{- end }}
 ---
 {{- end }}

@@ -13,5 +13,19 @@ spec:
       storage: {{ .Values.geth.persistence.storage }}
 ---
 {{- end }}
+{{- if .Values.geth.client.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-client
+spec:
+  storageClassName: {{ .Values.geth.client.persistence.storageClass }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.geth.client.persistence.storage }}
+---
+{{- end }}
 
 {{- end }}

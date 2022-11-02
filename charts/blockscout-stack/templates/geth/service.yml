@@ -21,4 +21,22 @@ spec:
   selector:
     app: {{ .Release.Name }}-geth
 ---
+{{- if .Values.geth.client.enabled }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: client-svc
+spec:
+  type: {{ .Values.geth.client.service.type}}
+  ports:
+  {{- range $key, $value := .Values.geth.client.ports }}
+    - port: {{ toYaml $value.number | indent 2 }}
+      targetPort: {{ toYaml $value.number | indent 2 }}
+      protocol: {{ toYaml $value.protocol | indent 2 }}
+      name: {{ $key }}
+  {{- end }}
+  selector:
+    app: {{ .Release.Name }}-geth
+---
+{{- end }}
 {{- end }}

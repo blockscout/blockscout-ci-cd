@@ -132,6 +132,57 @@ geth:
   command: '["sh","./root/init.sh"]'
   args: ''
 
+  # enable client deploy (Prysm, lighthouse, nimbus, etc.)
+  client:
+    enabled: false
+    image:
+      _default: ethereum/client-go:stable
+    command: '["sh","./root/init.sh"]'
+    args: ''
+    ports:
+      portTcp:
+        number: 13000
+        protocol: TCP
+      portUdp:
+        number: 12000
+        protocol: TCP
+      portRpc:
+        number: 4000
+        protocol: TCP
+      portMonitoring:
+        number: 8080
+        protocol: TCP
+    persistence:
+      enabled: false
+      mountPath: path
+      storageClass: gp3-new
+      storage: 100Gi
+    files:
+      enabled: false
+      list: {}
+    service:
+      # ClusterIP, NodePort or LoadBalancer
+      type: ClusterIP
+    # enable ingress
+    ingress:
+      enabled: false
+      host:
+      # enable https
+      tls:
+        enabled: false
+    environment: {}
+    resources:
+      limits:
+        memory:
+          _default: "6Gi"
+        cpu:
+          _default: "3"
+      requests:
+        memory:
+          _default: "6Gi"
+        cpu:
+          _default: "3"
+
   resources:
     limits:
       memory:
