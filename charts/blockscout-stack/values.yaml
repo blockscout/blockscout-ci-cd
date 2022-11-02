@@ -219,6 +219,7 @@ geth:
   jwt:
     enabled: false
     token: ''
+    mountPath: /geth/geth/jwtsecret
 
 # enable Node l2geth deploy
 node:
