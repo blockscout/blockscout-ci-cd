@@ -17,7 +17,6 @@ jobs:
   deploy_and_tests:
     uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
     with:
-      env_vars: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack
       blockscoutIngressHost: blockscout-e2e-$GITHUB_SHA_SHORT
       frontendIngressHost: blockscout-e2e-$GITHUB_SHA_SHORT
       gethIngressHost: geth-e2e-$GITHUB_SHA_SHORT
