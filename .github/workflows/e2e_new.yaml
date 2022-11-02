@@ -4,8 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       env_vars:
-        description: VALUES_DIR=charts/blockscout-stack/values/e2e-test,APP_NAME=e2e-bs-stack
+        description: VALUES_DIR and APP_NAME environment variables
         required: false
+        default: 'VALUES_DIR=charts/blockscout-stack/values/e2e-test,APP_NAME=e2e-bs-stack'
         type: string
       globalEnv:
         description: 'Network type'
@@ -57,8 +58,9 @@ on:
   workflow_call:
     inputs:
       env_vars:
-        description: VALUES_DIR=charts/blockscout-stack/values/e2e-test,APP_NAME=e2e-bs-stack
+        description: VALUES_DIR and APP_NAME environment variables
         required: false
+        default: 'VALUES_DIR=charts/blockscout-stack/values/e2e-test,APP_NAME=e2e-bs-stack'
         type: string
       globalEnv:
         description: 'Network type'
