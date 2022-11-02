@@ -275,7 +275,7 @@ jobs:
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/poa/sokol/auth/logout "
             BLOCKSCOUT_URL=https://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN
             DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN "
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_API_ENDPOINT._default=$BLOCKSCOUT_URL "
+            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_API_HOST._default=${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN "
             echo "BLOCKSCOUT_URL=$BLOCKSCOUT_URL" >> "$GITHUB_ENV"
             echo "::set-output name=app_url::$BLOCKSCOUT_URL"
           fi
