@@ -3,14 +3,14 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: geth
+  name: {{ .Release.Name }}-geth
 spec:
-  storageClassName: gp2
+  storageClassName: {{ .Values.geth.persistence.storageClass }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1000Gi
+      storage: {{ .Values.geth.persistence.storage }}
 ---
 {{- end }}
 

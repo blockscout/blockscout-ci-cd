@@ -125,6 +125,9 @@ geth:
 
   persistence:
     enabled: false
+    mountPath: path
+    storageClass: gp3-new
+    storage: 10Gi
 
   command: '["sh","./root/init.sh"]'
   args: ''
@@ -188,7 +191,7 @@ node:
 
   persistence:
     enabled: false
-    storageClass: gp3
+    storageClass: gp3-new
     storage: 10Gi
 
   files:

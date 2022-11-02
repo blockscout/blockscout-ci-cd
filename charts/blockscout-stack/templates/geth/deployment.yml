@@ -71,7 +71,7 @@ spec:
         {{- if .Values.geth.persistence.enabled }}
         - name: geth
           persistentVolumeClaim:
-            claimName: geth
+            claimName: {{ .Release.Name }}-geth
         {{- end }}
 ---
 {{- end }}
