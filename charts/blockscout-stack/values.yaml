@@ -140,16 +140,16 @@ geth:
     command: '["sh","./root/init.sh"]'
     args: ''
     ports:
-      portTcp:
+      port-tcp:
         number: 13000
         protocol: TCP
-      portUdp:
+      port-udp:
         number: 12000
-        protocol: TCP
-      portRpc:
+        protocol: UDP
+      port-rpc:
         number: 4000
         protocol: TCP
-      portMonitoring:
+      port-monitoring:
         number: 8080
         protocol: TCP
     persistence:
