@@ -421,7 +421,7 @@ jobs:
           path: blockscout-ci-cd/test-results/
       - name: Display structure of downloaded files
         if: always()
-        run: pwd && ls -la && ls -la blockscout-ci-cd
+        run: pwd && ls -la && ls -la blockscout-ci-cd && ls -la blockscout-ci-cd/tests
         # working-directory: blockscout-ci-cd/test-results/
       - name: Remove namespace
         if: always()
