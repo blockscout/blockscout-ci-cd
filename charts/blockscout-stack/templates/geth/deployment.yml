@@ -16,10 +16,14 @@ spec:
         app: {{ .Release.Name }}-geth
     spec:
       containers:
-        - name: {{ .Release.Name }}-geth
+        - name: geth
           image: {{ pluck $.Values.global.env .Values.geth.image | first | default .Values.geth.image._default | quote }}
+          {{- if .Values.geth.command }}
           command: {{ .Values.geth.command }}
+          {{- end }}
+          {{- if .Values.geth.args }}
           args: {{ .Values.geth.args }}
+          {{- end }}
           # args: [ "--http", "--http.addr=0.0.0.0", "--http.vhosts=geth-mainnet-full", "--http.api=eth,net,web3,txpool", "--ws", "--ws.addr=0.0.0.0", "--datadir=/data", ]
           resources:
             {{- with .Values.geth.resources }}
@@ -57,10 +61,14 @@ spec:
               {{- end }}
             {{- end }}
       {{- if .Values.geth.client.enabled }}
-        - name: {{ .Release.Name }}-client
+        - name: client
           image: {{ pluck $.Values.global.env .Values.geth.client.image | first | default .Values.geth.client.image._default | quote }}
+          {{- if .Values.geth.client.command }}
           command: {{ .Values.geth.client.command }}
+          {{- end }}
+          {{- if .Values.geth.client.args }}
           args: {{ .Values.geth.client.args }}
+          {{- end }}
           resources:
             {{- with .Values.geth.client.resources }}
             limits:

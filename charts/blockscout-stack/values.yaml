@@ -136,22 +136,22 @@ geth:
   client:
     enabled: false
     image:
-      _default: ethereum/client-go:stable
-    command: '["sh","./root/init.sh"]'
-    args: ''
+      _default: gcr.io/prysmaticlabs/prysm/beacon-chain:stable
+    # command: '["sh","./root/init.sh"]'
+    # args: ''
     ports:
       port-tcp:
         number: 13000
         protocol: TCP
-      port-udp:
-        number: 12000
-        protocol: UDP
-      port-rpc:
-        number: 4000
-        protocol: TCP
-      port-monitoring:
-        number: 8080
-        protocol: TCP
+      # port-udp:
+      #   number: 12000
+      #   protocol: UDP
+      # port-rpc:
+      #   number: 4000
+      #   protocol: TCP
+      # port-monitoring:
+      #   number: 8080
+      #   protocol: TCP
     persistence:
       enabled: false
       mountPath: path
@@ -462,50 +462,50 @@ node:
     port: 7878
     persistence:
       enabled: false
-      storageClass: gp3
+      storageClass: gp3-new
       storage: 10Gi
     service:
       # ClusterIP, NodePort or LoadBalancer
       type: ClusterIP
-    environment:
-      DATA_TRANSPORT_LAYER__ADDRESS_MANAGER:
-        _default: 0xa6f73589243a6A7a9023b1Fa0651b1d89c177111
-      DATA_TRANSPORT_LAYER__SYNC_FROM_L1:
-        _default: 'true'
-      DATA_TRANSPORT_LAYER__SYNC_FROM_L2:
-        _default: 'false'
-      DATA_TRANSPORT_LAYER__L1_START_HEIGHT:
-        _default: '7017096'
-      DATA_TRANSPORT_LAYER__CONFIRMATIONS:
-        _default: 12
-      DATA_TRANSPORT_LAYER__DANGEROUSLY_CATCH_ALL_ERRORS:
-        _default: 'true'
-      DATA_TRANSPORT_LAYER__DB_PATH:
-        _default: /db
-      DATA_TRANSPORT_LAYER__DEFAULT_BACKEND:
-        _default: l1
-      DATA_TRANSPORT_LAYER__L1_GAS_PRICE_BACKEND:
-        _default: l1
-      DATA_TRANSPORT_LAYER__ENABLE_METRICS:
-        _default: 'true'
-      DATA_TRANSPORT_LAYER__ETH_NETWORK_NAME:
-        _default: goerli
-      DATA_TRANSPORT_LAYER__L2_CHAIN_ID:
-        _default: 420
-      DATA_TRANSPORT_LAYER__LOGS_PER_POLLING_INTERVAL:
-        _default: 2000
-      DATA_TRANSPORT_LAYER__NODE_ENV:
-        _default: production
-      DATA_TRANSPORT_LAYER__POLLING_INTERVAL:
-        _default: 500
-      DATA_TRANSPORT_LAYER__SENTRY_TRACE_RATE:
-        _default: 0.05
-      DATA_TRANSPORT_LAYER__SERVER_HOSTNAME:
-        _default: 0.0.0.0
-      DATA_TRANSPORT_LAYER__SERVER_PORT:
-        _default: 7878
-      DATA_TRANSPORT_LAYER__TRANSACTIONS_PER_POLLING_INTERVAL:
-        _default: 1000
+    environment: {}
+      # DATA_TRANSPORT_LAYER__ADDRESS_MANAGER:
+      #   _default: 0xa6f73589243a6A7a9023b1Fa0651b1d89c177111
+      # DATA_TRANSPORT_LAYER__SYNC_FROM_L1:
+      #   _default: 'true'
+      # DATA_TRANSPORT_LAYER__SYNC_FROM_L2:
+      #   _default: 'false'
+      # DATA_TRANSPORT_LAYER__L1_START_HEIGHT:
+      #   _default: '7017096'
+      # DATA_TRANSPORT_LAYER__CONFIRMATIONS:
+      #   _default: 12
+      # DATA_TRANSPORT_LAYER__DANGEROUSLY_CATCH_ALL_ERRORS:
+      #   _default: 'true'
+      # DATA_TRANSPORT_LAYER__DB_PATH:
+      #   _default: /db
+      # DATA_TRANSPORT_LAYER__DEFAULT_BACKEND:
+      #   _default: l1
+      # DATA_TRANSPORT_LAYER__L1_GAS_PRICE_BACKEND:
+      #   _default: l1
+      # DATA_TRANSPORT_LAYER__ENABLE_METRICS:
+      #   _default: 'true'
+      # DATA_TRANSPORT_LAYER__ETH_NETWORK_NAME:
+      #   _default: goerli
+      # DATA_TRANSPORT_LAYER__L2_CHAIN_ID:
+      #   _default: 420
+      # DATA_TRANSPORT_LAYER__LOGS_PER_POLLING_INTERVAL:
+      #   _default: 2000
+      # DATA_TRANSPORT_LAYER__NODE_ENV:
+      #   _default: production
+      # DATA_TRANSPORT_LAYER__POLLING_INTERVAL:
+      #   _default: 500
+      # DATA_TRANSPORT_LAYER__SENTRY_TRACE_RATE:
+      #   _default: 0.05
+      # DATA_TRANSPORT_LAYER__SERVER_HOSTNAME:
+      #   _default: 0.0.0.0
+      # DATA_TRANSPORT_LAYER__SERVER_PORT:
+      #   _default: 7878
+      # DATA_TRANSPORT_LAYER__TRANSACTIONS_PER_POLLING_INTERVAL:
+      #   _default: 1000
 
   healthcheck:
     enabled: true
