@@ -418,10 +418,10 @@ jobs:
         if: always()
         with:
           name: tests-results
-          path: blockscout-ci-cd/test-results/
+          path: blockscout-ci-cd/tests/e2e/test-results
       - name: Display structure of downloaded files
         if: always()
-        run: pwd && ls -la && ls -la blockscout-ci-cd && ls -la blockscout-ci-cd/tests
+        run: pwd && ls -la && ls -la blockscout-ci-cd && ls -la blockscout-ci-cd/tests/e2e/test-results
         # working-directory: blockscout-ci-cd/test-results/
       - name: Remove namespace
         if: always()
