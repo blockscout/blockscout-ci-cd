@@ -422,7 +422,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: tests-results
+          name: state
           path: blockscout-ci-cd/tests/e2e/state.json
       - name: Display structure of downloaded files
         if: always()
