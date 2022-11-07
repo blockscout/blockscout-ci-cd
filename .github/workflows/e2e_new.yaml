@@ -419,6 +419,11 @@ jobs:
         with:
           name: tests-results
           path: blockscout-ci-cd/tests/e2e/test-results
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: tests-results
+          path: blockscout-ci-cd/tests/e2e/state.json
       - name: Display structure of downloaded files
         if: always()
         run: pwd && ls -la && ls -la blockscout-ci-cd && ls -la blockscout-ci-cd/tests/e2e/test-results
