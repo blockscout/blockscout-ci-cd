@@ -23,7 +23,7 @@ blockscout:
       - /bin/bash
     args:
       - -c
-      - bin/blockscout eval \"Elixir.Explorer.ReleaseTasks.create_and_migrate()\"
+      - bin/blockscout eval "Elixir.Explorer.ReleaseTasks.create_and_migrate()"
     volumes:
       enabled: false
       list:
