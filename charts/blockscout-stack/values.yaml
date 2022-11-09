@@ -19,8 +19,11 @@ blockscout:
     enabled: true
     image:
       _default: blockscout/blockscout:latest
-    command: '["/bin/bash"]'
-    args: '["-c", "bin/blockscout eval \"Elixir.Explorer.ReleaseTasks.create_and_migrate()\""]'
+    command:
+      - /bin/bash
+    args:
+      - -c
+      - bin/blockscout eval \"Elixir.Explorer.ReleaseTasks.create_and_migrate()\"
     volumes:
       enabled: false
       list:
@@ -31,8 +34,11 @@ blockscout:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
 
-  command: '["/bin/bash"]'
-  args: '["-c", "bin/blockscout start"]'
+  command:
+    - /bin/bash
+  args:
+    - -c
+    - bin/blockscout start
 
   # enable ingress
   ingress:
@@ -129,16 +135,21 @@ geth:
     storageClass: gp3-new
     storage: 10Gi
 
-  command: '["sh","./root/init.sh"]'
-  args: ''
+  command:
+    - sh
+    - ./root/init.sh
+  args: []
 
   # init container
   init:
     enabled: false
     image:
       _default: blockscout/blockscout:latest
-    command: '["/bin/bash"]'
-    # args: '["-c", "sleep", "100"]'
+    command:
+      - /bin/bash
+    args:
+      - -c
+      - sleep 100
     volumes:
       enabled: false
       list: {}
