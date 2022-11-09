@@ -138,7 +138,7 @@ geth:
     image:
       _default: blockscout/blockscout:latest
     command: '["/bin/bash"]'
-    args: '["-c", "sleep", "100"]'
+    # args: '["-c", "sleep", "100"]'
     volumes:
       enabled: false
       list: {}
