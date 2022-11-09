@@ -28,8 +28,12 @@ spec:
               memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
               cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
           {{- end }}
-          command:  {{ .Values.geth.init.command }}
-          args: {{ .Values.geth.init.args }}
+          {{- with .Values.geth.init.command }}
+          command:  {{ . | toYaml | nindent 12 }}
+          {{- end }}
+          {{- with .Values.geth.init.args }}
+          args: {{ . | toYaml | nindent 12 }}
+          {{- end }}
           env:
             {{- include "geth_env" . | indent 10 }}
         {{- if .Values.geth.init.volumes.enabled }}
@@ -44,10 +48,14 @@ spec:
         - name: geth
           image: {{ pluck $.Values.global.env .Values.geth.image | first | default .Values.geth.image._default | quote }}
           {{- if .Values.geth.command }}
-          command: {{ .Values.geth.command }}
+          {{- with .Values.geth.command }}
+          command:  {{ . | toYaml | nindent 12 }}
+          {{- end }}
           {{- end }}
           {{- if .Values.geth.args }}
-          args: {{ .Values.geth.args }}
+          {{- with .Values.geth.args }}
+          args: {{ . | toYaml | nindent 12 }}
+          {{- end }}
           {{- end }}
           # args: [ "--http", "--http.addr=0.0.0.0", "--http.vhosts=geth-mainnet-full", "--http.api=eth,net,web3,txpool", "--ws", "--ws.addr=0.0.0.0", "--datadir=/data", ]
           resources:
