@@ -132,6 +132,18 @@ geth:
   command: '["sh","./root/init.sh"]'
   args: ''
 
+  # init container
+  init:
+    enabled: false
+    image:
+      _default: blockscout/blockscout:latest
+    command: '["/bin/bash"]'
+    args: '["-c", "sleep", "100"]'
+    volumes:
+      enabled: false
+      list:
+        tmpdir: /tmp/mountdir
+
   # enable client deploy (Prysm, lighthouse, nimbus, etc.)
   client:
     enabled: false

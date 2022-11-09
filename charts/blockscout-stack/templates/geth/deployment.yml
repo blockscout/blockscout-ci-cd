@@ -15,6 +15,31 @@ spec:
       labels:
         app: {{ .Release.Name }}-geth
     spec:
+      {{- if .Values.geth.init.enabled }}
+      initContainers:
+        - name: init
+          image: {{ pluck $.Values.global.env .Values.geth.init.image | first | default .Values.geth.init.image._default | quote }}
+          resources:
+          {{- with .Values.geth.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+          {{- end }}
+          command:  {{ .Values.geth.init.command }}
+          args: {{ .Values.geth.init.args }}
+          env:
+            {{- include "geth_env" . | indent 10 }}
+        {{- if .Values.geth.init.volumes.enabled }}
+          {{- range $key, $value := .Values.geth.init.volumes.list }}
+          volumeMounts:
+            - name: {{ $key }}
+              mountPath: {{ toYaml $value | indent 2 }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
       containers:
         - name: geth
           image: {{ pluck $.Values.global.env .Values.geth.image | first | default .Values.geth.image._default | quote }}
