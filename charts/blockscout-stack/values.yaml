@@ -141,8 +141,8 @@ geth:
     args: '["-c", "sleep", "100"]'
     volumes:
       enabled: false
-      list:
-        tmpdir: /tmp/mountdir
+      list: {}
+        # geth: /tmp/mountdir
 
   # enable client deploy (Prysm, lighthouse, nimbus, etc.)
   client:
