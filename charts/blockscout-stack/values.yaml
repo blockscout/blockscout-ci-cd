@@ -123,12 +123,12 @@ geth:
   replicas:
     app: 1
 
-  # port-http and port-ws required, everything else is optional
+  # porthttp and portws required, everything else is optional
   ports:
-    port-http:
+    http:
       number: 8545
       protocol: TCP
-    port-ws:
+    ws:
       number: 8546
       protocol: TCP
     # port-discovery:

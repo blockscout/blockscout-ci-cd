@@ -150,13 +150,13 @@ geth:
   replicas:
     app: 1
   ports:
-    port-http:
+    http:
       number: 8545
       protocol: TCP
-    port-ws:
+    ws:
       number: 8546
       protocol: TCP
-    port-auth:
+    auth:
       number: 8551
       protocol: TCP
   command:
