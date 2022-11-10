@@ -237,6 +237,7 @@ geth:
 
   files:
     enabled: false
+    mountPath: /root
     list: {}
 
   jwt:
