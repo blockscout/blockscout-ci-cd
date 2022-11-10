@@ -15,7 +15,7 @@ blockscout:
   init:
     enabled: true
     image:
-      _default: *image blockscout/blockscout:latest
+      _default: *image
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
