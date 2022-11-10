@@ -122,7 +122,8 @@ geth:
 
   replicas:
     app: 1
-    
+
+  # port-http and port-ws required, everything else is optional
   ports:
     port-http:
       number: 8545

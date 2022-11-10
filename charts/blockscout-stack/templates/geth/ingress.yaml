@@ -27,14 +27,14 @@ spec:
               service:
                 name: geth-svc
                 port:
-                  number: {{ .Values.geth.portHttp }}
+                  number: {{ .Values.geth.ports.port-http.number }}
           - path: /ws(/|$)(.*)
             pathType: Prefix
             backend:
               service:
                 name: geth-svc
                 port:
-                  number: {{ .Values.geth.portWs }}
+                  number: {{ .Values.geth.ports.port-ws.number }}
           # - path: /discovery(/|$)(.*)
           #   pathType: Prefix
           #   backend:
