@@ -141,7 +141,8 @@ geth:
     enabled: false
     mountPath: path
     storageClass: gp3-new
-    storage: 10Gi
+    storage:
+      _default: 10Gi
 
   command:
     - sh
@@ -187,7 +188,8 @@ geth:
       enabled: false
       mountPath: path
       storageClass: gp3-new
-      storage: 100Gi
+      storage:
+        _default: 100Gi
     files:
       enabled: false
       list: {}
@@ -276,7 +278,8 @@ node:
   persistence:
     enabled: false
     storageClass: gp3-new
-    storage: 10Gi
+    storage:
+      _default: 10Gi
 
   files:
     enabled: false
@@ -495,7 +498,8 @@ node:
     persistence:
       enabled: false
       storageClass: gp3-new
-      storage: 10Gi
+      storage:
+        _default: 10Gi
     service:
       # ClusterIP, NodePort or LoadBalancer
       type: ClusterIP

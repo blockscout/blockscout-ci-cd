@@ -10,7 +10,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.node.persistence.storage }}
+      storage: {{ pluck $.Values.global.env .Values.node.persistence.storage | first | default .Values.node.persistence.storage._default | quote }}
 ---
 {{- end }}
 {{- if .Values.node.dtl.persistence.enabled }}
@@ -24,7 +24,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.node.dtl.persistence.storage }}
+      storage: {{ pluck $.Values.global.env .Values.node.dtl.persistence.storage | first | default .Values.node.dtl.persistence.storage._default | quote }}
 ---
 {{- end }}
 
