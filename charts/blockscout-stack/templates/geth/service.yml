@@ -6,18 +6,12 @@ metadata:
 spec:
   type: {{ .Values.geth.service.type}}
   ports:
-    - port: {{ .Values.geth.portHttp }}
-      targetPort: {{ .Values.geth.portHttp }}
-      protocol: TCP
-      name: http
-    - port: {{ .Values.geth.portWs }}
-      targetPort: {{ .Values.geth.portWs }}
-      protocol: TCP
-      name: ws
-    - port: {{ .Values.geth.portAuth }}
-      targetPort: {{ .Values.geth.portAuth }}
-      protocol: TCP
-      name: auth
+  {{- range $key, $value := .Values.geth.ports }}
+    - port: {{ toYaml $value.number | indent 2 }}
+      targetPort: {{ toYaml $value.number | indent 2 }}
+      protocol: {{ toYaml $value.protocol | indent 2 }}
+      name: {{ $key }}
+  {{- end }}
   selector:
     app: {{ .Release.Name }}-geth
 ---

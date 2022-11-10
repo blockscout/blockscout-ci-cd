@@ -70,12 +70,10 @@ spec:
           env:
             {{- include "geth_env" . | indent 10 }}
           ports:
-            - containerPort: {{ .Values.geth.portHttp }}
-              name: gethrpchttp
-            - containerPort: {{ .Values.geth.portWs }}
-              name: gethrpctcp
-            - containerPort: {{ .Values.geth.portAuth }}
-              name: gethrpcauth
+          {{- range $key, $value := .Values.geth.client.ports }}
+            - containerPort: {{ toYaml $value.number | indent 2 }}
+              name: {{ $key }}
+          {{- end }}
           volumeMounts:
             {{- if .Values.geth.persistence.enabled }}
             - name: geth

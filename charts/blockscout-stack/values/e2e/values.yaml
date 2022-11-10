@@ -5,7 +5,7 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: blockscout/blockscout:latest
+    _default: &image blockscout/blockscout:latest
   replicas:
     app: 1
   docker:
@@ -15,7 +15,7 @@ blockscout:
   init:
     enabled: true
     image:
-      _default: blockscout/blockscout:latest
+      _default: *image blockscout/blockscout:latest
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
@@ -149,9 +149,16 @@ geth:
     _default: ethereum/client-go:stable
   replicas:
     app: 1
-  portHttp: 8545
-  portWs: 8546
-  portAuth: 8551
+  ports:
+    port-http:
+      number: 8545
+      protocol: TCP
+    port-ws:
+      number: 8546
+      protocol: TCP
+    port-auth:
+      number: 8551
+      protocol: TCP
   command:
     - /bin/sh
     - -c

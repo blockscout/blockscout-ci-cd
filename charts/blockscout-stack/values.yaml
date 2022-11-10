@@ -122,10 +122,17 @@ geth:
 
   replicas:
     app: 1
-
-  portHttp: 8545
-  portWs: 8546
-  portDiscovery: 30303
+    
+  ports:
+    port-http:
+      number: 8545
+      protocol: TCP
+    port-ws:
+      number: 8546
+      protocol: TCP
+    # port-discovery:
+    #   number: 30303
+    #   protocol: TCP
 
   environment: {}
 
