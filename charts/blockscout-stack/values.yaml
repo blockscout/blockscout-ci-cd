@@ -676,6 +676,10 @@ frontend:
   docker:
     port: 80
     targetPort: 3000
+    
+  service:
+    # ClusterIP, NodePort or LoadBalancer
+    type: ClusterIP
 
   ingress:
     enabled: true
