@@ -4,7 +4,7 @@ import { VerificationFlattenForm } from '@pages/Verification'
 
 test.describe.configure({ mode: `parallel` })
 
-test.skip(`@Ethereum @Verification @Data Can verify ERC20 contract with flatten`, async ({ verificationPage, transactionPage, transactionsListPage }) => {
+test(`@Ethereum @Verification @Data Can verify ERC20 contract with flatten`, async ({ verificationPage, transactionPage, transactionsListPage }) => {
     const {
         TestTokenAddressV,
         TestTokenNameV,
@@ -42,34 +42,34 @@ test.skip(`@Ethereum @Verification @Data Can verify ERC20 contract with flatten`
         contractABIText: `Contract ABI`,
         deployedByteCodeText: `Deployed ByteCode`,
     })
-    await transactionPage.open(TestTokenTXMintHashV)
-    await transactionPage.select_logs_tab()
-    await transactionPage.check_tx_logs(0, {
-        address: [`Address`, `TestToken`],
-    } as TXLogProps)
-    await transactionPage.check_decoded_inputs(1, {
-        methodIDText: `Method Id`,
-        methodID: `0x40c10f19`,
-        callText: `Call`,
-        call: `mint(address to, uint256 amount)`,
-        logFields: [
-            [`to`, `address`, MinerAddress.toLowerCase()],
-            [`amount`, `uint256`, `10000`],
-        ],
-    } as TXDecodedLogProps)
-    await transactionPage.check_decoded_tx_logs(1, {
-        methodIDText: `Method Id`,
-        methodID: `0xddf252ad`,
-        callText: `Call`,
-        call: `Transfer(address indexed from, address indexed to, uint256 value)`,
-        logFields: [
-            [`from`, `address`, `true`, ZeroAddress],
-            [`to`, `address`, `true`, MinerAddress.toLowerCase()],
-            [`value`, `uint256`, `false`, `10000`],
-        ],
-    } as TXDecodedLogProps)
-    await transactionsListPage.open()
-    await transactionsListPage.findText([`Mint`])
+    // await transactionPage.open(TestTokenTXMintHashV)
+    // await transactionPage.select_logs_tab()
+    // await transactionPage.check_tx_logs(0, {
+    //     address: [`Address`, `TestToken`],
+    // } as TXLogProps)
+    // await transactionPage.check_decoded_inputs(1, {
+    //     methodIDText: `Method Id`,
+    //     methodID: `0x40c10f19`,
+    //     callText: `Call`,
+    //     call: `mint(address to, uint256 amount)`,
+    //     logFields: [
+    //         [`to`, `address`, MinerAddress.toLowerCase()],
+    //         [`amount`, `uint256`, `10000`],
+    //     ],
+    // } as TXDecodedLogProps)
+    // await transactionPage.check_decoded_tx_logs(1, {
+    //     methodIDText: `Method Id`,
+    //     methodID: `0xddf252ad`,
+    //     callText: `Call`,
+    //     call: `Transfer(address indexed from, address indexed to, uint256 value)`,
+    //     logFields: [
+    //         [`from`, `address`, `true`, ZeroAddress],
+    //         [`to`, `address`, `true`, MinerAddress.toLowerCase()],
+    //         [`value`, `uint256`, `false`, `10000`],
+    //     ],
+    // } as TXDecodedLogProps)
+    // await transactionsListPage.open()
+    // await transactionsListPage.findText([`Mint`])
 })
 
 test.skip(`@Ethereum @Verification @Data Can verify NFT contract with flatten`, async ({ verificationPage, transactionPage, transactionsListPage }) => {
