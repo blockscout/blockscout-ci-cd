@@ -2,14 +2,10 @@ import { WebActions } from "@lib/WebActions"
 import type { BrowserContext, Page } from 'playwright'
 import { HomePage } from "./Home"
 
-export class GnosisHome extends HomePage {
+export class GnosisOptimismHome extends HomePage {
     readonly page: Page
 
     actions: WebActions
-
-    DAILY_TXNS = `text=Daily transactions`
-
-    DAILY_TXNS_DATA = `[data-selector="tx_per_day"]`
 
     constructor(page: Page) {
         super(page)
@@ -18,7 +14,7 @@ export class GnosisHome extends HomePage {
     }
 
     async open(): Promise<void> {
-        await this.actions.navigateToURL(`https://blockscout.com/xdai/mainnet`)
+        await this.actions.navigateToURL(`https://blockscout.com/xdai/optimism`)
     }
 
     async verifyNavbarComponents(): Promise<void> {
@@ -36,9 +32,7 @@ export class GnosisHome extends HomePage {
     async verifyComponents(ctx: BrowserContext): Promise<void> {
         await this.verifyWidgetTiles()
         await this.verifyNavbarComponents()
-        await this.verifyNetworkDashboardStats([`xDai Price`, `$`, `Total Value Locked`, `$`, `Gas tracker`, `Gwei`])
-        await this.actions.verifyElementIsDisplayed(this.DAILY_TXNS, `no daily txns stats are displayed`)
-        await this.actions.verifyElementContainsText(this.DAILY_TXNS_DATA, `,`)
+        await this.verifyNetworkDashboardStats()
         await this.verifyNetworksDashboardChartComponents()
         await this.visitGithubRelease(ctx)
     }
@@ -54,5 +48,10 @@ export class GnosisHome extends HomePage {
         await this.actions.verifyElementIsDisplayed(this.NETWORK_CHART_TOTAL_BLOCKS_DATA, `no total blocks data is displayed`)
         await this.actions.verifyElementIsDisplayed(this.NETWORK_CHART_WALLET_ADDRESSES, `no wallet addresses is displayed`)
         await this.actions.verifyElementIsDisplayed(this.NETWORK_CHART_WALLET_ADDRESSES_DATA, `no wallet addresses data is displayed`)
+    }
+
+    async verifyNetworkDashboardStats(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_STATS_DIVS}0 >> text=Gas tracker`, ``)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_STATS_DIVS}0 >> text=/\\d+/`, ``)
     }
 }

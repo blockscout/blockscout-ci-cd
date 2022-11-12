@@ -12,6 +12,8 @@ import { GnosisHome } from '@pages/HomeGnosis'
 import { ETHHome } from '@pages/HomeETH'
 import { VerificationPage } from '@pages/Verification'
 import { TransactionsListPage } from '@pages/TransactionsList'
+import { GnosisOptimismHome } from '@pages/HomeOptimismGnosis'
+import { BlockListPage } from '@pages/BlocksList'
 import Contracts from './Contracts'
 import testConfig from '../testConfig'
 
@@ -19,10 +21,12 @@ const test = baseTest.extend<{
     commonPage: CommonPage,
     ethHomePage: ETHHome,
     gnosisHomePage: GnosisHome,
+    gnosisOptimismHomePage: GnosisOptimismHome,
     authorized: AuthorizedArea,
     transactionPage: TransactionPage,
     transactionsListPage: TransactionsListPage,
     blocksPage: BlocksPage,
+    blocksListPage: BlockListPage,
     tokensPage: TokensPage
     tokenPage: TokenPage,
     addressPage: AddressPage,
@@ -37,6 +41,9 @@ const test = baseTest.extend<{
     gnosisHomePage: async ({ page }, use) => {
         await use(new GnosisHome(page))
     },
+    gnosisOptimismHomePage: async ({ page }, use) => {
+        await use(new GnosisOptimismHome(page))
+    },
     authorized: async ({ browser }, use) => {
         const ctx = await browser.newContext({ storageState: `state.json` })
         const page = await ctx.newPage()
@@ -50,6 +57,9 @@ const test = baseTest.extend<{
     },
     blocksPage: async ({ page }, use) => {
         await use(new BlocksPage(page))
+    },
+    blocksListPage: async ({ page }, use) => {
+        await use(new BlockListPage(page))
     },
     tokensPage: async ({ page }, use) => {
         await use(new TokensPage(page))

@@ -4,7 +4,7 @@ import { VerificationFlattenForm } from '@pages/Verification'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@Ethereum @Verification @Data Can verify ERC20 contract with flatten`, async ({ verificationPage, transactionPage, transactionsListPage }) => {
+test.skip(`@Ethereum @Verification @Data Can verify ERC20 contract with flatten`, async ({ verificationPage, transactionPage, transactionsListPage }) => {
     const {
         TestTokenAddressV,
         TestTokenNameV,

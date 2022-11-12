@@ -15,6 +15,14 @@ export class HomePage {
     // navbar
     LOGO = `#navbar-logo`
 
+    BLOCKCHAIN_TAB = `text=Blockchain`
+
+    BLOCKCHAIN_TAB_BLOCKS = `a:has-text("Blocks") >> nth=0`
+
+    BLOCKCHAIN_TAB_TRANSACTIONS = `text=Validated`
+
+    BLOCKCHAIN_TAB_VERIFIED_CONTRACTS = `text=Verifier contracts`
+
     BLOCKS_TAB = `#navbarBlocksDropdown`
 
     TRANSACTIONS_TAB = `#navbarTransactionsDropdown`
@@ -29,6 +37,8 @@ export class HomePage {
 
     // Small text on dashboard under the plot
     NETWORK_STATS_BAR = `[class="dashboard-banner-chart-legend"]`
+
+    NETWORK_STATS_DIVS = `[class="dashboard-banner-chart-legend"] >> div >> nth=0`
 
     // Network dashboard
     NETWORK_DASHBOARD_CHART = `[class=dashboard-banner-chart]`
@@ -111,8 +121,8 @@ export class HomePage {
     async verifyNavbarComponents(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(this.LOGO, `no logo have been found`)
         await this.actions.verifyElementIsDisplayed(this.SEARCH_INPUT, `no search have been found`)
-        await this.actions.verifyElementIsDisplayed(this.BLOCKS_TAB, `no blocks tab have been found`)
-        await this.actions.verifyElementIsDisplayed(this.TRANSACTIONS_TAB, `no transactions tab have been found`)
+        await this.actions.verifyElementIsDisplayed(this.BLOCKS_TAB, `no blockchain tab have been found`)
+        await this.actions.verifyElementIsDisplayed(this.TRANSACTIONS_TAB, `no blocks tab have been found`)
         await this.actions.verifyElementIsDisplayed(this.TOKENS_TAB, `no tokens tab have been found`)
         await this.actions.verifyElementIsDisplayed(this.NETWORKS_SELECT_TAB, `no networks select tab have been found`)
         await this.actions.verifyElementIsDisplayed(this.DARK_MODE_CHANGER, `no dark mode selector tab have been found`)
