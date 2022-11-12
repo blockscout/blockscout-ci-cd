@@ -95,10 +95,14 @@ spec:
         - name: client
           image: {{ pluck $.Values.global.env .Values.geth.client.image | first | default .Values.geth.client.image._default | quote }}
           {{- if .Values.geth.client.command }}
-          command: {{ .Values.geth.client.command }}
+          {{- with .Values.geth.client.command }}
+          command:  {{ . | toYaml | nindent 12 }}
+          {{- end }}
           {{- end }}
           {{- if .Values.geth.client.args }}
-          args: {{ .Values.geth.client.args }}
+          {{- with .Values.geth.client.args }}
+          args: {{ . | toYaml | nindent 12 }}
+          {{- end }}
           {{- end }}
           resources:
             {{- with .Values.geth.client.resources }}
