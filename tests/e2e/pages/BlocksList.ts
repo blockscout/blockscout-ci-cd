@@ -29,6 +29,8 @@ export class BlockListPage extends CommonPage {
 
     TABLE_HEADING_7 = `th:has-text("Burnt fees SPOA")`
 
+    TABLE_GRID_CELL = `[role="gridcell"] >> nth=`
+
     actions: WebActions
 
     constructor(page: Page) {
@@ -51,5 +53,16 @@ export class BlockListPage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(this.TABLE_HEADING_5, `no table header - gas used`)
         await this.actions.verifyElementIsDisplayed(this.TABLE_HEADING_6, `no table header - reward SPOA`)
         await this.actions.verifyElementIsDisplayed(this.TABLE_HEADING_7, `no table header - burnt fees SPOA`)
+    }
+
+    async check_table(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}0 >> text=/\\d+/`, `no block number in a grid cell`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}0 >> text=/sec/`, `no elapsed time in a grid cell`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}1 >> text=/\\d+.*bytes/`, `no block size in a grid cell`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}2 >> text=0x`, `no validator addr in a grid cell`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}3 >> text=/\\d+/`, `no transactions in a grid cell`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}4 >> text=/\\d+.*\\%.*\\%/`, `no transactions in a grid cell`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}5 >> text=/\\d/`, `no transactions in a grid cell`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}6 >> text=/\\d/`, `no transactions in a grid cell`)
     }
 }

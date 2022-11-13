@@ -21,7 +21,7 @@ export class HomePage {
 
     BLOCKCHAIN_TAB_TRANSACTIONS = `text=Validated`
 
-    BLOCKCHAIN_TAB_VERIFIED_CONTRACTS = `text=Verifier contracts`
+    BLOCKCHAIN_TAB_VERIFIED_CONTRACTS = `text=Verified contracts`
 
     BLOCKS_TAB = `#navbarBlocksDropdown`
 
@@ -94,6 +94,8 @@ export class HomePage {
 
     TRANSACTIONS = `[data-test='chain_transaction']`
 
+    // Verified contracts
+
     readonly page: Page
 
     actions: WebActions
@@ -105,6 +107,41 @@ export class HomePage {
 
     async open(): Promise<void> {
         await this.actions.navigateToURL(`/`)
+    }
+
+    async open_verificated_contracts(): Promise<void> {
+        await this.actions.navigateToURL(`/`)
+        await this.actions.clickElement(this.BLOCKCHAIN_TAB)
+        await this.actions.clickElement(this.BLOCKCHAIN_TAB_VERIFIED_CONTRACTS)
+    }
+
+    async check_verified_contracts_list(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`h2 >> text=Contracts`, `no contracts header`)
+        await this.actions.verifyElementIsDisplayed(`h2 >> text=Verified contracts`, `no verified contracts header`)
+        await this.actions.verifyElementIsDisplayed(`[class="d-flex flex-column"] >> nth=0 >> text=/\\d+/`, `no verified contracts header`)
+        await this.actions.verifyElementIsDisplayed(`[class="d-flex flex-column"] >> nth=1 >> text=/\\d+/`, `no verified contracts header`)
+        await this.actions.verifyElementIsDisplayed(`[class="d-flex flex-column"] >> nth=2 >> text=/\\d+/`, `no verified contracts header`)
+        await this.actions.verifyElementIsDisplayed(`[class="d-flex flex-column"] >> nth=3 >> text=/\\d+/`, `no verified contracts header`)
+        await this.actions.verifyElementIsDisplayed(`th >> nth=0 >> text=Address`, `no verified contracts header`)
+        await this.actions.verifyElementIsDisplayed(`th >> nth=1 >> text=Balance`, `no verified contracts header`)
+        await this.actions.verifyElementIsDisplayed(`th >> nth=2 >> text=Txns`, `no verified contracts header`)
+        await this.actions.verifyElementIsDisplayed(`th >> nth=3 >> text=Compiler`, `no verified contracts header`)
+        await this.actions.verifyElementIsDisplayed(`th >> nth=4 >> text=Version`, `no verified contracts header`)
+        await this.actions.verifyElementIsDisplayed(`th >> nth=5 >> text=Optimization`, `no verified contracts header`)
+        await this.actions.verifyElementIsDisplayed(`th >> nth=6 >> text=Constructor args`, `no verified contracts header`)
+        await this.actions.verifyElementIsDisplayed(`th >> nth=7 >> text=Verified`, `no verified contracts header`)
+        await this.actions.verifyElementIsDisplayed(`th >> nth=8 >> text=Market cap`, `no verified contracts header`)
+
+        await this.actions.verifyElementIsDisplayed(`td >> nth=0 >> a >> text=/TestToken/`, `no test contracts address`)
+        await this.actions.verifyElementIsDisplayed(`td >> nth=0 >> a >> text=0x`, `no test contracts address`)
+        // await this.actions.verifyElementIsDisplayed(`td >> nth=1 >> text=//`, `no test contracts address`)
+        await this.actions.verifyElementIsDisplayed(`td >> nth=2 >> text=/\\d+|N/A/`, `no test contracts transactions`)
+        await this.actions.verifyElementIsDisplayed(`td >> nth=3 >> text=Solidity`, `no test contracts compiler type`)
+        await this.actions.verifyElementIsDisplayed(`td >> nth=4 >> text=/v\\d+/`, `no test contracts compiler version`)
+        await this.actions.verifyElementIsDisplayed(`td >> nth=5 >> i`, `no optimizations icon`)
+        await this.actions.verifyElementIsDisplayed(`td >> nth=6 >> i`, `no constructor args icon`)
+        await this.actions.verifyElementIsDisplayed(`td >> nth=7 >> text=ago`, `no verified date`)
+        await this.actions.verifyElementIsDisplayed(`td >> nth=8 >> text=N/A`, `no market cap`)
     }
 
     async delay(amount: number): Promise<void> {

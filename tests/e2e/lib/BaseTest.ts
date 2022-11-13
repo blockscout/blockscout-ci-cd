@@ -19,6 +19,7 @@ import testConfig from '../testConfig'
 
 const test = baseTest.extend<{
     commonPage: CommonPage,
+    homePage: HomePage,
     ethHomePage: ETHHome,
     gnosisHomePage: GnosisHome,
     gnosisOptimismHomePage: GnosisOptimismHome,
@@ -34,6 +35,9 @@ const test = baseTest.extend<{
 }>({
     commonPage: async ({ page }, use) => {
         await use(new CommonPage(page))
+    },
+    homePage: async ({ page }, use) => {
+        await use(new HomePage(page))
     },
     ethHomePage: async ({ page }, use) => {
         await use(new ETHHome(page))

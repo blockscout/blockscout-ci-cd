@@ -11,7 +11,7 @@ test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Block with a create tx 
 })
 
 test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check blocks list (new frontend)`, async ({ blocksListPage }) => {
-    const { TestTokenDeployTXBlockNumber } = process.env
     await blocksListPage.open()
     await blocksListPage.check_header()
+    await blocksListPage.check_table()
 })
