@@ -4,7 +4,11 @@ import { VerificationFlattenForm } from '@pages/Verification'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@Ethereum @Verification @Data Can list verified contracts`, async ({ homePage, verificationPage, transactionPage, transactionsListPage }) => {
+test(`@Ethereum @Verification @Data Can list verified contracts`, async (
+    {
+        homePage, verificationPage, transactionPage, transactionsListPage,
+    },
+) => {
     const {
         TestTokenAddressV,
         TestTokenNameV,
