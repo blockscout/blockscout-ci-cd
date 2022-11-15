@@ -73,7 +73,7 @@ export class BlocksPage extends CommonPage {
         await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}62`, `Hash`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}65 >> text=0x`, `no hash is present in details`)
         await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}67`, `Parent hash`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}70 >> text=0x`, `no parent hash is present in details`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}70 >> text=/\\d+/`, `no parent hash is present in details`)
         await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}71`, `Nonce`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}74 >> text=0x`, `no nonce is present in details`)
     }
