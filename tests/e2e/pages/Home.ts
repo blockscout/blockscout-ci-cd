@@ -21,6 +21,8 @@ export class HomePage {
 
     BLOCKCHAIN_TAB_TRANSACTIONS = `text=Validated`
 
+    BLOCKCHAIN_TAB_TRANSACTIONS_MINED = `text=Mined`
+
     BLOCKCHAIN_TAB_VERIFIED_CONTRACTS = `text=Verified contracts`
 
     BLOCKS_TAB = `#navbarBlocksDropdown`
