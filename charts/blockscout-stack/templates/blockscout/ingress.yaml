@@ -27,7 +27,16 @@ spec:
     - host: {{ pluck $.Values.global.env .Values.blockscout.ingress.host | first | default .Values.blockscout.ingress.host._default | quote }}
       http:
         paths:
-        {{- range .Values.blockscout.ingress.path }}
+        {{- range .Values.blockscout.ingress.path.exact }}
+          - path: {{ . }}
+            pathType: Exact
+            backend:
+              service:
+                name: {{ $.Release.Name }}-blockscout-svc
+                port:
+                  number: {{ $.Values.blockscout.docker.port }}
+        {{- end }}
+        {{- range .Values.blockscout.ingress.path.prefix }}
           - path: {{ . }}
             pathType: Prefix
             backend:

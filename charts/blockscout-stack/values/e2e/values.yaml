@@ -31,8 +31,9 @@ blockscout:
     tls:
       enabled: true
     path:
-      # - "/poa/sokol(/|$)(.*)"
-      - "/"
+      prefix:
+        # - "/poa/sokol(/|$)(.*)"
+        - "/"
   # probes
   livenessProbe:
     enabled: true
@@ -301,17 +302,18 @@ frontend:
     tls:
       enabled: true
     path:
-      # - "/(apps|auth/profile|account)"
-      - "/apps"
-      - "/_next"
-      - "/node-api"
-      - "/static"
-      - "/auth/profile"
-      - "/account"
-      - "/txs"
-      - "/tx"
-      - "/blocks"
-      - "/block"
+      prefix:
+        # - "/(apps|auth/profile|account)"
+        - "/apps"
+        - "/_next"
+        - "/node-api"
+        - "/static"
+        - "/auth/profile"
+        - "/account"
+        - "/txs"
+        - "/tx"
+        - "/blocks"
+        - "/block"
   resources:
     limits:
       memory:

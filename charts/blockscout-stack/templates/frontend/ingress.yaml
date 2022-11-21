@@ -21,7 +21,16 @@ spec:
     - host: {{ pluck $.Values.global.env .Values.frontend.ingress.host | first | default .Values.frontend.ingress.host._default | quote }}
       http:
         paths:
-        {{- range .Values.frontend.ingress.path }}
+        {{- range .Values.frontend.ingress.path.exact }}
+          - path: {{ . }}
+            pathType: exact
+            backend:
+              service:
+                name: {{ $.Release.Name }}-frontend-svc
+                port:
+                  number: {{ $.Values.frontend.docker.port }}
+        {{- end}}
+        {{- range .Values.frontend.ingress.path.prefix }}
           - path: {{ . }}
             pathType: Prefix
             backend:

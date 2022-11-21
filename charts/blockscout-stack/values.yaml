@@ -50,7 +50,9 @@ blockscout:
     tls:
       enabled: false
     path:
-      - "/"
+      prefix:
+        - "/"
+      exact: {}
 
   # probes
   livenessProbe:
@@ -676,7 +678,7 @@ frontend:
   docker:
     port: 80
     targetPort: 3000
-    
+
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
@@ -690,7 +692,9 @@ frontend:
     tls:
       enabled: true
     path:
-      - "/"
+      prefix:
+        - "/"
+      exact: {}
 
   resources:
     limits:
