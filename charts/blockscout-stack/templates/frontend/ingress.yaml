@@ -23,7 +23,7 @@ spec:
         paths:
         {{- range .Values.frontend.ingress.path.exact }}
           - path: {{ . }}
-            pathType: exact
+            pathType: Exact
             backend:
               service:
                 name: {{ $.Release.Name }}-frontend-svc
