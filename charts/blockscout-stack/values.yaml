@@ -96,6 +96,8 @@ postgres:
   command:
   args:
 
+  strategy: RollingUpdate
+
   resources:
     limits:
       memory:

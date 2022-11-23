@@ -5,6 +5,8 @@ metadata:
   name: {{ .Release.Name }}-postgres
 spec:
   replicas: 1
+  strategy:
+    type: {{ .Values.postgres.strategy }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}-postgres
