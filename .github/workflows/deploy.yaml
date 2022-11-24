@@ -272,12 +272,22 @@ jobs:
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
 
       - uses: chrnorm/deployment-action@v2
+        if: "${{ env.GITHUB_REF_SLUG != 'main' }}"
         name: Create GitHub deployment
         id: deployment
         with:
           token: '${{ github.token }}'
           environment-url: ${{env.BLOCKSCOUT_URL}}
           environment: review
+
+      - uses: chrnorm/deployment-action@v2
+        name: Create GitHub deployment
+        if: "${{ env.GITHUB_REF_SLUG == 'main' }}"
+        id: deployment
+        with:
+          token: '${{ github.token }}'
+          environment-url: ${{env.BLOCKSCOUT_URL}}
+          environment: main
 
       # Deploy newly built changes to EKS cluster.
       - name: Deploy To Cluster
