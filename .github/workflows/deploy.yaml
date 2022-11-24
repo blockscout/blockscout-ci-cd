@@ -272,7 +272,6 @@ jobs:
 
       - uses: chrnorm/deployment-action@v2
         name: Create GitHub deployment
-        if: "${{ inputs.appNamespace == '' }}"
         id: deployment
         with:
           token: '${{ github.token }}'
