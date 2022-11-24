@@ -122,9 +122,10 @@ env:
 jobs:
   deploy:
     name: Deploy
-    permissions:
-      id-token: write
-      contents: read
+    permissions: write-all
+    # permissions:
+    #   id-token: write
+    #   contents: read
     runs-on: ubuntu-latest
     # strategy:
     #   fail-fast: true
@@ -132,8 +133,8 @@ jobs:
       # matrix:
       #   environment: [Dev]
       #   region: [us-east-1]
-    environment:
-      name: Dev
+    # environment:
+    #   name: Dev
       # url:  ${{ steps.deploy-args.outputs.app_url }}
       #https://${{ inputs.appNamespace }}.${{ env.K8S_DOMAIN }}
     steps:
