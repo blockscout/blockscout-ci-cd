@@ -5,12 +5,12 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-postgres-pv-claim
 spec:
-  storageClassName: {{ .Values.geth.persistence.storageClass }}
+  storageClassName: {{ .Values.postgres.storageClass }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ pluck $.Values.global.env .Values.geth.persistence.storage | first | default .Values.geth.persistence.storage._default | quote }}
+      storage: {{ .Values.postgres.storage | quote }}
 ---
 {{- end }}
 

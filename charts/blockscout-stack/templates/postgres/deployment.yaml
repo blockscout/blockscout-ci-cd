@@ -39,7 +39,7 @@ spec:
 {{- include "postgres_env" . | indent 10 }}
           {{- if .Values.postgres.persistence }}
           volumeMounts:
-            - mountPath: /var/lib/postgresql/data
+            - mountPath: {{ .Values.postgres.mountPath }}
               name: postgredb
       volumes:
         - name: postgredb

@@ -98,7 +98,10 @@ postgres:
 
   strategy: RollingUpdate
 
-  persistence: false 
+  persistence: false
+  storageClass: gp3-new
+  storage: 100Gi
+  mountPath: /var/lib/postgresql
 
   resources:
     limits:
