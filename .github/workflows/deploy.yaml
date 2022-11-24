@@ -276,7 +276,7 @@ jobs:
         id: deployment
         with:
           token: '${{ github.token }}'
-          environment-url: https://test.com
+          environment-url: $BLOCKSCOUT_URL
           environment: review
 
       # Deploy newly built changes to EKS cluster.
