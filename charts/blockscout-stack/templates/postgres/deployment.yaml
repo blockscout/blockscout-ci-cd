@@ -37,12 +37,14 @@ spec:
             - containerPort: {{ .Values.postgres.port }}
           env:
 {{- include "postgres_env" . | indent 10 }}
-          # volumeMounts:
-          #   - mountPath: /var/lib/postgresql/data
-          #     name: postgredb
-      # volumes:
-      #   - name: postgredb
-      #     persistentVolumeClaim:
-      #       claimName: postgres-pv-claim
+          {{- if .Values.postgres.persistence }}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgredb
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
+          {{- end }}
 ---
 {{- end }}

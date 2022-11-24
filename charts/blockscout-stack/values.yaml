@@ -98,6 +98,8 @@ postgres:
 
   strategy: RollingUpdate
 
+  persistence: false 
+
   resources:
     limits:
       memory:
