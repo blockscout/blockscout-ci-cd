@@ -143,15 +143,6 @@ jobs:
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v4
 
-      - uses: chrnorm/deployment-action@v2
-        name: Create GitHub deployment
-        if: "${{ inputs.appNamespace == '' }}"
-        id: deployment
-        with:
-          token: '${{ github.token }}'
-          environment-url: https://${{ inputs.appNamespace }}.${{ env.K8S_DOMAIN }}
-          environment: review
-
       - name: Set environment variables
         run: |
           env_vars=${{ inputs.env_vars }}
@@ -279,6 +270,15 @@ jobs:
           echo "$DEPLOY_ARGS"
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
 
+      - uses: chrnorm/deployment-action@v2
+        name: Create GitHub deployment
+        if: "${{ inputs.appNamespace == '' }}"
+        id: deployment
+        with:
+          token: '${{ github.token }}'
+          environment-url: $BLOCKSCOUT_URL
+          environment: review
+
       # Deploy newly built changes to EKS cluster.
       - name: Deploy To Cluster
         shell: bash
@@ -310,7 +310,7 @@ jobs:
         uses: chrnorm/deployment-status@v2
         with:
           token: '${{ github.token }}'
-          environment-url: ${{ steps.deployment.outputs.environment_url }}
+          environment-url: $BLOCKSCOUT_URL
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
           state: 'success'
 
@@ -319,7 +319,7 @@ jobs:
         uses: chrnorm/deployment-status@v2
         with:
           token: '${{ github.token }}'
-          environment-url: ${{ steps.deployment.outputs.environment_url }}
+          environment-url: $BLOCKSCOUT_URL
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
           state: 'failure'
 
