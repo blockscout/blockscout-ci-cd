@@ -1,0 +1,17 @@
+{{- if .Values.postgres.enabled }}
+{{- if .Values.postgres.persistence }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-postgres-pv-claim
+spec:
+  storageClassName: {{ .Values.geth.persistence.storageClass }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ pluck $.Values.global.env .Values.geth.persistence.storage | first | default .Values.geth.persistence.storage._default | quote }}
+---
+{{- end }}
+
+{{- end }}
