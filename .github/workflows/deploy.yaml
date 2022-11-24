@@ -276,7 +276,7 @@ jobs:
         id: deployment
         with:
           token: '${{ github.token }}'
-          environment-url: $BLOCKSCOUT_URL
+          environment-url: ${{env.BLOCKSCOUT_URL}}
           environment: review
 
       # Deploy newly built changes to EKS cluster.
@@ -310,7 +310,7 @@ jobs:
         uses: chrnorm/deployment-status@v2
         with:
           token: '${{ github.token }}'
-          environment-url: $BLOCKSCOUT_URL
+          environment-url: ${{env.BLOCKSCOUT_URL}}
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
           state: 'success'
 
@@ -319,7 +319,7 @@ jobs:
         uses: chrnorm/deployment-status@v2
         with:
           token: '${{ github.token }}'
-          environment-url: $BLOCKSCOUT_URL
+          environment-url: ${{env.BLOCKSCOUT_URL}}
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
           state: 'failure'
 
