@@ -143,6 +143,15 @@ jobs:
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v4
 
+      - uses: chrnorm/deployment-action@v2
+        name: Create GitHub deployment
+        if: "${{ inputs.appNamespace == '' }}"
+        id: deployment
+        with:
+          token: '${{ github.token }}'
+          environment-url: https://${{ inputs.appNamespace }}.${{ env.K8S_DOMAIN }}
+          environment: review
+
       - name: Set environment variables
         run: |
           env_vars=${{ inputs.env_vars }}
@@ -295,6 +304,24 @@ jobs:
         run: |
           kubectl delete secret regcred -n $APP_NAMESPACE --ignore-not-found
           kubectl get secret regcred -o yaml | sed "s/namespace: .*/namespace: $APP_NAMESPACE/" | kubectl apply -f -
+
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: '${{ github.token }}'
+          environment-url: ${{ steps.deployment.outputs.environment_url }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: 'success'
+
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: '${{ github.token }}'
+          environment-url: ${{ steps.deployment.outputs.environment_url }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: 'failure'
 
       # Show app URLs
       - name: Print URLs of blockscout-stack
