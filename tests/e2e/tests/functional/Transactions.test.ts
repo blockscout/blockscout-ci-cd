@@ -4,7 +4,12 @@ import test from '@lib/BaseTest'
 test.describe.configure({ mode: `parallel` })
 
 test(`@Ethereum @Transactions @Data @AccountImage Check transactions list`, async ({ transactionsListPage }) => {
-    const { TestNFTSymbolV, TestTokenSymbolV, TestNFTSymbol, TestTokenSymbol } = process.env
+    const {
+        TestNFTSymbolV,
+        TestTokenSymbolV,
+        TestNFTSymbol,
+        TestTokenSymbol,
+    } = process.env
     await transactionsListPage.open()
     await transactionsListPage.check_header()
     await transactionsListPage.check_table_data(TestNFTSymbolV, TestNFTSymbol, TestTokenSymbolV, TestTokenSymbol)
