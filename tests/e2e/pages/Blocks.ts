@@ -35,7 +35,7 @@ export class BlocksPage extends CommonPage {
 
     async check_block_description_new(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(this.BLOCK_HEADER, `no block header is displayed`)
-        await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}0`, `Block height`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}1 >> text=Block height`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}3 >> text=/\\d+/`, `no block height is displayed`)
         await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}5`, `Size`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}8 >> text=/\\d+/`, `no block size is present`)
@@ -54,8 +54,8 @@ export class BlocksPage extends CommonPage {
         await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}34`, `Base fee per gas`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}37 >> text=/\\d+.*SPOA.*Gwei/`, `no base fee per gas is present`)
         await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}38`, `Burnt fees`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}41 >> text=/\\d+.*SPOA/`, `no burnt fees is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}43 >> text=/\\d+\\%/`, `no burnt fees percent is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}41 >> text=/.*SPOA/`, `no burnt fees is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}43 >> text=/\\%/`, `no burnt fees percent is present`)
         await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}47`, `Priority fee / Tip`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}49 >> text=/\\d+.*SPOA/`, `no burnt fees is present`)
     }

@@ -13,7 +13,7 @@ test(`@Ethereum @TokenPage @Data @PublicImage @AccountImage Check token page`, a
             contract: [`Contract`, TestTokenAddress.toLowerCase()],
             totalSupply: [`Total supply`, `0.00000000000001 ${TestTokenSymbol}`],
             holders: [`Holders`, `1 Addresses`],
-            transfers: [`Transfers`, `1 Transfers`],
+            transfers: [`Transfers`, `Transfers`],
             decimals: [`Decimals`, `18`],
             tokenType: [`Token type`, `ERC-20`],
         } as TokenProps)
