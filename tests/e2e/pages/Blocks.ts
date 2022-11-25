@@ -13,10 +13,6 @@ export class BlocksPage extends CommonPage {
 
     TRANSACTIONS_TAB = `button[role="tab"]:has-text("Details")`
 
-    TABLE_TABPANEL_DIV = `[role="tabpanel"] >> div >> div >> nth=`
-
-    DETAILS_TAB_FOOTER = `text=View details`
-
     actions: WebActions
 
     constructor(page: Page) {

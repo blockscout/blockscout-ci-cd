@@ -68,7 +68,7 @@ const setupContracts = async (): Promise<void> => {
 
     console.log(`deploying ERC20 contract (verified)`)
     const tokenNameV = `EPICV`
-    const tokenSymbolV = `EPCV`
+    const tokenSymbolV = `EPICV`
     const tokenV = await contracts.deploySymbolContract(tokenNameV, tokenSymbolV, `TestToken`) as TestToken
     const receipt0V = await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
 
