@@ -97,6 +97,12 @@ export class CommonPage {
 
     VERIFY_ALERT_ROW = `[data-items] >> [class='alert alert-info'] >> nth=0`
 
+    TABLE_TABPANEL_DIV = `[role="tabpanel"] >> div >> div >> nth=`
+
+    DETAILS_TAB_FOOTER = `text=View details`
+
+    ALERT_DIV = `[role="alert"]`
+
     constructor(page: Page) {
         this.page = page
         this.actions = new WebActions(this.page)
@@ -110,6 +116,10 @@ export class CommonPage {
         await this.actions.enterElementText(this.AUTH0_INPUT_EMAIL, email)
         await this.actions.enterElementText(this.AUTH0_INPUT_PASSWORD, password)
         await this.actions.clickElement(this.AUTH0_SUBMIT)
+    }
+
+    async alert_div_has_text(text: string): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`${this.ALERT_DIV} >> text=${text}`)
     }
 
     async delay(amount: number): Promise<void> {

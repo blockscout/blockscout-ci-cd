@@ -155,7 +155,7 @@ export class WebActions {
         expect(textValue.trim()).toBe(value)
     }
 
-    async verifyElementIsDisplayed(locator: string, errorMessage: string, timeout: number = waitForElement): Promise<void> {
+    async verifyElementIsDisplayed(locator: string, errorMessage: string = ``, timeout: number = waitForElement): Promise<void> {
         await this.page.waitForSelector(locator, { state: `visible`, timeout })
             .catch(() => { throw new Error(`${errorMessage}`) })
     }
