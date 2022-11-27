@@ -1,6 +1,5 @@
 name: E2E Prod tests
 on:
-  push:
   schedule:
     - cron: '0 */3 * * *'
 env:
