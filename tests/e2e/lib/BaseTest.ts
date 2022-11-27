@@ -14,11 +14,13 @@ import { VerificationPage } from '@pages/Verification'
 import { TransactionsListPage } from '@pages/TransactionsList'
 import { GnosisOptimismHome } from '@pages/HomeOptimismGnosis'
 import { BlockListPage } from '@pages/BlocksList'
+import { MarketplacePage } from '@pages/Marketplace'
 import Contracts from './Contracts'
 import testConfig from '../testConfig'
 
 const test = baseTest.extend<{
     commonPage: CommonPage,
+    marketplace: MarketplacePage,
     homePage: HomePage,
     ethHomePage: ETHHome,
     gnosisHomePage: GnosisHome,
@@ -35,6 +37,9 @@ const test = baseTest.extend<{
 }>({
     commonPage: async ({ page }, use) => {
         await use(new CommonPage(page))
+    },
+    marketplace: async ({ page }, use) => {
+        await use(new MarketplacePage(page))
     },
     homePage: async ({ page }, use) => {
         await use(new HomePage(page))
