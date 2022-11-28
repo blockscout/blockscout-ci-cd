@@ -290,6 +290,7 @@ jobs:
           token: '${{ github.token }}'
           environment-url: ${{env.BLOCKSCOUT_URL}}
           environment: ${{env.DEPLOYMENT_NAME}}
+          auto-inactive: false
 
       # Deploy newly built changes to EKS cluster.
       - name: Deploy To Cluster
@@ -351,6 +352,7 @@ jobs:
 
       # check if instance is ready
       - name: Check the deployed service URL
+        if: "${{ env.BLOCKSCOUT_URL != '' }}"
         uses: jtalk/url-health-check-action@v2
         with:
           # Check the following URLs one by one sequentially
