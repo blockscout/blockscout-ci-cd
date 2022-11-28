@@ -115,7 +115,9 @@ postgres:
       cpu:
         _default: "0.2"
 
-  environment: {}
+  environment:
+    # PGDATA:
+    #   _default: /var/lib/postgresql/data/pgdata
     # POSTGRES_USER:
     #   _default:
     # POSTGRES_PASSWORD:
