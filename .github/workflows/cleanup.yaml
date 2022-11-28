@@ -73,7 +73,7 @@ jobs:
           aws eks update-kubeconfig --name ${{ secrets.AWS_CLUSTER_NAME }} --region=${{ matrix.region }}
 
       # Deploy newly built changes to EKS cluster.
-      - name: Deploy To Cluster
+      - name: Delete app from cluster
         shell: bash
         run: |
           mkdir ~/.ssh
