@@ -326,6 +326,7 @@ jobs:
           environment-url: ${{env.BLOCKSCOUT_URL}}
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
           state: 'success'
+          auto-inactive: false
 
       - name: Update deployment status (failure)
         if: failure()
