@@ -101,7 +101,7 @@ postgres:
   persistence: false
   storageClass: gp3-new
   storage: 100Gi
-  mountPath: /var/lib/postgresql
+  mountPath: /var/lib/postgresql/data
 
   resources:
     limits:
@@ -115,7 +115,7 @@ postgres:
       cpu:
         _default: "0.2"
 
-  environment:
+  environment: {}
     # PGDATA:
     #   _default: /var/lib/postgresql/data/pgdata
     # POSTGRES_USER:
