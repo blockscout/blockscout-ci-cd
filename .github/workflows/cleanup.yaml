@@ -108,4 +108,4 @@ jobs:
           name: ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}
           # NOTE: using Personal Access Token
           token: '${{ github.token }}'
-          tag: '${{ input.dockerImage }}'
+          tag: '${{ inputs.dockerImage }}'
