@@ -369,7 +369,7 @@ jobs:
           retry-all: true # Optional, defaults to "false"
 
       - name: Delete image
-        if: "${{ env.DOCKER_IMAGE != ''}}"
+        if: "${{ always() && env.DOCKER_IMAGE != ''}}"
         uses: bots-house/ghcr-delete-image-action@v1.0.0
         with:
           # NOTE: at now only orgs is supported
