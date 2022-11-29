@@ -9,20 +9,12 @@ on:
         required: true
         default: 'review-blockscout'
         type: string
-      dockerImage:
-        description: 'Docker image to delete'
-        required: false
-        type: string
   workflow_call:
     inputs:
       appNamespace:
         description: 'Namespace to delete'
         required: true
         default: 'review-blockscout'
-        type: string
-      dockerImage:
-        description: 'Docker image to delete'
-        required: false
         type: string
 
 env:
@@ -92,4 +84,3 @@ jobs:
           sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
           ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
           kubectl delete ns $APP_NAMESPACE
-
