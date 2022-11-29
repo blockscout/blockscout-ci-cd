@@ -376,5 +376,5 @@ jobs:
           owner: ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}
           name: ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}
           # NOTE: using Personal Access Token
-          token: '${{ github.token }}'
+          token: ${{ secrets.PAT }}
           tag: ${{ env.DOCKER_IMAGE }}
