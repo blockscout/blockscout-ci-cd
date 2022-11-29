@@ -95,7 +95,7 @@ jobs:
 
   purge-image:
     name: Delete image from ghcr.io
-    if: "${{ input.dockerImage != ''}}"
+    if: "${{ inputs.dockerImage != ''}}"
     runs-on: ubuntu-latest
     steps:
       - name: Inject slug/short variables
