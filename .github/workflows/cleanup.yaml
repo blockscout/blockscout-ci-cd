@@ -93,19 +93,3 @@ jobs:
           ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
           kubectl delete ns $APP_NAMESPACE
 
-  purge-image:
-    name: Delete image from ghcr.io
-    if: "${{ inputs.dockerImage != ''}}"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v4
-      - name: Delete image
-        uses: bots-house/ghcr-delete-image-action@v1.0.0
-        with:
-          # NOTE: at now only orgs is supported
-          owner: ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}
-          name: ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}
-          # NOTE: using Personal Access Token
-          token: '${{ github.token }}'
-          tag: ${{ inputs.dockerImage }}
