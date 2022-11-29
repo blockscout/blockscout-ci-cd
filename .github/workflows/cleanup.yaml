@@ -9,12 +9,20 @@ on:
         required: true
         default: 'review-blockscout'
         type: string
+      dockerImage:
+        description: 'Docker image to delete'
+        required: false
+        type: string
   workflow_call:
     inputs:
       appNamespace:
         description: 'Namespace to delete'
         required: true
         default: 'review-blockscout'
+        type: string
+      dockerImage:
+        description: 'Docker image to delete'
+        required: false
         type: string
 
 env:
@@ -26,7 +34,7 @@ env:
   BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
 
 jobs:
-  Cleanup:
+  cleanup:
     name: Cleanup
     permissions:
       id-token: write
@@ -84,3 +92,20 @@ jobs:
           sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
           ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
           kubectl delete ns $APP_NAMESPACE
+
+  purge-image:
+    name: Delete image from ghcr.io
+    if: "${{ input.dockerImage != ''}}"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4
+      - name: Delete image
+        uses: bots-house/ghcr-delete-image-action@v1.0.0
+        with:
+          # NOTE: at now only orgs is supported
+          owner: ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}
+          name: ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}
+          # NOTE: using Personal Access Token
+          token: '${{ github.token }}'
+          tag: '${{ input.dockerImage }}'
