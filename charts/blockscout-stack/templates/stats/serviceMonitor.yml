@@ -1,4 +1,4 @@
-# {{- if .Values.stats.enabled }}
+{{- if .Values.stats.enabled }}
 # apiVersion: monitoring.coreos.com/v1
 # kind: ServiceMonitor
 # metadata:
@@ -11,4 +11,4 @@
 #   selector:
 #     matchLabels:
 #       app: {{ .Release.Name }}-stats
-# {{- end }}
+{{- end }}
