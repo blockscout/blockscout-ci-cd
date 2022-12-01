@@ -718,13 +718,13 @@ stats:
     enabled: true
     app: blockscout
 
-  # probes
-  # livenessProbe:
-  #   enabled: true
-  #   path: /health
-  # readinessProbe:
-  #   enabled: true
-  #   path: /health
+  probes
+  livenessProbe:
+    enabled: false
+    path: /health
+  readinessProbe:
+    enabled: false
+    path: /health
 
   # enable Horizontal Pod Autoscaler
   hpa:
