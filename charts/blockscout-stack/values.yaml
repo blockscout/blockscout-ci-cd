@@ -675,6 +675,66 @@ scVerifier:
     SMART_CONTRACT_VERIFIER__JAEGER__AGENT_ENDPOINT:
       _default:
 
+# enable stats deploy
+stats:
+  enabled: false
+  image:
+    _default: ghcr.io/blockscout/stats:main
+
+  replicas:
+    app: 1
+  docker:
+    port: 80
+    targetPort: 8050
+    #metricsPort: 6060
+
+  service:
+    # ClusterIP, NodePort or LoadBalancer
+    type: ClusterIP
+
+  # enable ingress
+  ingress:
+    enabled: false
+    host:
+      _default: <url>
+    # enable https
+    tls:
+      enabled: false
+
+  resources:
+    limits:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+    requests:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+
+  # node label
+  nodeSelector:
+    enabled: true
+    app: blockscout
+
+  # probes
+  # livenessProbe:
+  #   enabled: true
+  #   path: /health
+  # readinessProbe:
+  #   enabled: true
+  #   path: /health
+
+  # enable Horizontal Pod Autoscaler
+  hpa:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 10
+    cpuTarget: 90
+
+  environment:
+
 frontend:
   app: frontend
   enabled: false
