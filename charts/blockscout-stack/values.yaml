@@ -686,7 +686,7 @@ stats:
   docker:
     port: 80
     targetPort: 8050
-    #metricsPort: 6060
+    metricsPort: 6060
 
   service:
     # ClusterIP, NodePort or LoadBalancer
