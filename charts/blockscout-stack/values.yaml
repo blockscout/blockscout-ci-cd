@@ -733,7 +733,7 @@ stats:
     maxReplicas: 10
     cpuTarget: 90
 
-  environment:
+  environment: {}
 
 frontend:
   app: frontend
