@@ -718,7 +718,7 @@ stats:
     enabled: true
     app: blockscout
 
-  probes
+  # probes
   livenessProbe:
     enabled: false
     path: /health
