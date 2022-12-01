@@ -9,7 +9,7 @@ MAX_JOBS=1 #$(nproc)
 JOBS=""
 
 # Iterate over commits
-for commit in $(git rev-list --reverse HEAD -- 'charts/*/Chart.yaml'); do
+for commit in $(git rev-list -n 1 --reverse HEAD -- 'charts/*/Chart.yaml'); do
     # Process commit
     printf "Processing commit: %s\n" "$commit"
 
