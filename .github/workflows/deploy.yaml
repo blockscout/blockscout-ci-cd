@@ -121,7 +121,7 @@ env:
 
 jobs:
   deploy:
-    name: Deploy
+    name: Deploy ${{ inputs.appNamespace }}
     permissions: write-all
     # permissions:
     #   id-token: write
