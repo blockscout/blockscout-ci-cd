@@ -10,7 +10,7 @@ test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Block with a create tx 
     await blocksPage.check_details()
 })
 
-test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check blocks list (new frontend)`, async ({ blocksListPage }) => {
+test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check blocks list  (new frontend)`, async ({ blocksListPage }) => {
     await blocksListPage.open()
     await blocksListPage.check_header()
     await blocksListPage.check_table()
