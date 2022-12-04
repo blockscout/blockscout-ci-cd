@@ -1,6 +1,6 @@
 apiVersion: v1
 appVersion: 0.2.11
-version: 0.2.11s
+version: 0.2.11
 name: blockscout-stack
 description: '''
 Helm chart for deploying blockscout-stack in K8S
