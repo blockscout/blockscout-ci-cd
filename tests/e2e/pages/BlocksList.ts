@@ -45,7 +45,6 @@ export class BlockListPage extends CommonPage {
 
     async check_header(): Promise<void> {
         await this.actions.clickElement(this.TAB_ALL)
-        await this.actions.verifyElementIsDisplayed(this.TOTAL_BLOCKS_COUNT, `no total blocks count is displayed`)
         await this.actions.verifyElementIsDisplayed(this.TABLE_HEADING_1, `no table header - block`)
         await this.actions.verifyElementIsDisplayed(this.TABLE_HEADING_2, `no table header - size`)
         await this.actions.verifyElementIsDisplayed(this.TABLE_HEADING_3, `no table header - validator`)
