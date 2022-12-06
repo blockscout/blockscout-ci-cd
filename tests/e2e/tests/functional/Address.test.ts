@@ -5,7 +5,7 @@ import { TXLogProps, TXProps } from '@pages/Common'
 
 test.describe.configure({ mode: `parallel` })
 
-test.only(`@Ethereum @Address @Data @AccountImage Check address page`, async ({ addressPage }) => {
+test(`@Ethereum @Address @Data @AccountImage Check address page`, async ({ addressPage }) => {
     await test.step(`Check address page`, async () => {
         const { TestTokenSymbol, TestTokenName, TestTokenAddress } = process.env
         await addressPage.open(TestTokenAddress)
