@@ -5,7 +5,7 @@ import { TXLogProps, TXProps } from '@pages/Common'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@Ethereum @Address @Data @AccountImage Check address page`, async ({ addressPage }) => {
+test.only(`@Ethereum @Address @Data @AccountImage Check address page`, async ({ addressPage }) => {
     await test.step(`Check address page`, async () => {
         const { TestTokenSymbol, TestTokenName, TestTokenAddress } = process.env
         await addressPage.open(TestTokenAddress)
@@ -57,7 +57,7 @@ test(`@Ethereum @Address @Data @AccountImage Check address page`, async ({ addre
         await addressPage.check_tx_logs(0, {
             address: [`Transaction`, `0x`],
             topics: [`Topics`, `[0]`, `[1]`, `[2]`],
-            data: [`Data`, `0x0000000000000000000000000000000000000000000000000000000000002710`],
+            data: [`Data`, `0x`],
         } as TXLogProps)
         await addressPage.check_tx_logs(1, {
             address: [`Transaction`, `0x`],
@@ -66,7 +66,7 @@ test(`@Ethereum @Address @Data @AccountImage Check address page`, async ({ addre
         } as TXLogProps)
         await addressPage.check_tx_logs(2, {
             address: [`Transaction`, `0x`],
-            topics: [`Topics`, `[0]`, `[1]`, `[2]`, `[3]`],
+            topics: [`Topics`, `[0]`, `[1]`, `[2]`],
             data: [`Data`, `0x`],
         } as TXLogProps)
         await addressPage.check_verify_alert()
