@@ -3,9 +3,6 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: {{ .Release.Name }}-visualizer
-  # annotations:
-  #   prometheus.io/scrape: "true"
-  #   prometheus.io/port: "http-metrics"
 spec:
   replicas: {{ .Values.visualizer.replicas.app }}
   selector:
@@ -16,7 +13,6 @@ spec:
       labels:
         app: {{ .Release.Name }}-visualizer
     spec:
-      # serviceAccountName: vault-auth
       containers:
         - name: {{ .Release.Name }}-visualizer
           image: {{ pluck $.Values.global.env .Values.visualizer.image | first | default .Values.visualizer.image._default | quote }}
@@ -35,10 +31,10 @@ spec:
             - containerPort: {{ .Values.visualizer.docker.metricsPort }}
               name: http-metrics
           env:
-# {{- include "visualizer_env" . | indent 10 }}
+{{- include "visualizer_env" . | indent 10 }}
           # volumeMounts:
           #   - name: {{ .Release.Name }}-logs
-          #     mountPath: /usr/local/gkretail/sm-web-server/log
+          #     mountPath: /usr/local/path
           {{- if .Values.visualizer.livenessProbe.enabled }}
           readinessProbe:
             httpGet:
