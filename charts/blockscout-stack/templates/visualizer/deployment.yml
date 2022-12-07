@@ -1,23 +1,23 @@
-{{- if .Values.stats.enabled }}
+{{- if .Values.visualizer.enabled }}
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: {{ .Release.Name }}-stats
+  name: {{ .Release.Name }}-visualizer
 spec:
-  replicas: {{ .Values.stats.replicas.app }}
+  replicas: {{ .Values.visualizer.replicas.app }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-stats
+      app: {{ .Release.Name }}-visualizer
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-stats
+        app: {{ .Release.Name }}-visualizer
     spec:
       containers:
-        - name: {{ .Release.Name }}-stats
-          image: {{ pluck $.Values.global.env .Values.stats.image | first | default .Values.stats.image._default | quote }}
+        - name: {{ .Release.Name }}-visualizer
+          image: {{ pluck $.Values.global.env .Values.visualizer.image | first | default .Values.visualizer.image._default | quote }}
           resources:
-          {{- with .Values.stats.resources }}
+          {{- with .Values.visualizer.resources }}
             limits:
               memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
               cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
@@ -27,28 +27,28 @@ spec:
           {{- end }}
           imagePullPolicy: Always
           ports:
-            - containerPort: {{ .Values.stats.docker.targetPort }}
-            - containerPort: {{ .Values.stats.docker.metricsPort }}
+            - containerPort: {{ .Values.visualizer.docker.targetPort }}
+            - containerPort: {{ .Values.visualizer.docker.metricsPort }}
               name: http-metrics
           env:
-{{- include "stats_env" . | indent 10 }}
+{{- include "visualizer_env" . | indent 10 }}
           # volumeMounts:
           #   - name: {{ .Release.Name }}-logs
           #     mountPath: /usr/local/path
-          {{- if .Values.stats.livenessProbe.enabled }}
+          {{- if .Values.visualizer.livenessProbe.enabled }}
           readinessProbe:
             httpGet:
-              path: {{ .Values.stats.livenessProbe.path }}
-              port: {{ .Values.stats.docker.targetPort }}
+              path: {{ .Values.visualizer.livenessProbe.path }}
+              port: {{ .Values.visualizer.docker.targetPort }}
               scheme: HTTP
             initialDelaySeconds: 60
             periodSeconds: 10
           {{- end }}
-          {{- if .Values.stats.livenessProbe.enabled }}
+          {{- if .Values.visualizer.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
-              path: {{ .Values.stats.livenessProbe.path }}
-              port: {{ .Values.stats.docker.targetPort }}
+              path: {{ .Values.visualizer.livenessProbe.path }}
+              port: {{ .Values.visualizer.docker.targetPort }}
               scheme: HTTP
             initialDelaySeconds: 100
             periodSeconds: 100
@@ -60,9 +60,9 @@ spec:
       #     configMap:
       #       name: {{ .Release.Name }}-promtail-configmap
       restartPolicy: Always
-      {{- if .Values.stats.nodeSelector.enabled }}
+      {{- if .Values.visualizer.nodeSelector.enabled }}
       nodeSelector:
-        app: {{ .Values.stats.nodeSelector.app}}
+        app: {{ .Values.visualizer.nodeSelector.app}}
       {{- end }}
 ---
 {{- end}}
