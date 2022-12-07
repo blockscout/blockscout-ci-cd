@@ -735,6 +735,72 @@ stats:
 
   environment: {}
 
+# enable visualizer deploy
+visualizer:
+  enabled: false
+  image:
+    _default: ghcr.io/blockscout/visualizer:main
+
+  replicas:
+    app: 1
+  docker:
+    port: 80
+    targetPort: 8050
+    metricsPort: 6060
+
+  service:
+    # ClusterIP, NodePort or LoadBalancer
+    type: ClusterIP
+
+  # enable ingress
+  ingress:
+    enabled: false
+    host:
+      _default: <url>
+    # enable https
+    tls:
+      enabled: false
+
+  resources:
+    limits:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+    requests:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+
+  # node label
+  nodeSelector:
+    enabled: true
+    app: blockscout
+
+  # probes
+  livenessProbe:
+    enabled: false
+    path: /health
+  readinessProbe:
+    enabled: false
+    path: /health
+
+  # enable Horizontal Pod Autoscaler
+  hpa:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 10
+    cpuTarget: 90
+
+  environment:
+    VISUALIZER__SERVER__HTTP__ENABLED:
+      _default: 'true'
+    VISUALIZER__SERVER__HTTP__ADDR:
+      _default: 0.0.0.0:8050
+    VISUALIZER__SERVER__GRPC__ENABLED:
+      _default: 'false'
+
 frontend:
   app: frontend
   enabled: false

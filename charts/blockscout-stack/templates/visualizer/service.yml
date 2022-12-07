@@ -1,0 +1,26 @@
+{{- if .Values.visualizer.enabled }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: visualizer-svc
+  # annotations:
+  #   service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+  #   service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+  #   service.beta.kubernetes.io/aws-load-balancer-type: external
+  labels:
+    app: {{ .Release.Name }}-visualizer
+spec:
+  type: {{ .Values.visualizer.service.type}}
+  ports:
+    - port: {{ .Values.visualizer.docker.port }}
+      targetPort: {{ .Values.visualizer.docker.targetPort }}
+      protocol: TCP
+      name: web
+    # - port: {{ .Values.visualizer.docker.metricsPort }}
+    #   targetPort: {{ .Values.visualizer.docker.metricsPort }}
+    #   protocol: TCP
+    #   name: http-metrics
+  selector:
+    app: {{ .Release.Name }}-visualizer
+{{- end }}
+---
