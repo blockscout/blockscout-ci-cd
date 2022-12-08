@@ -368,13 +368,3 @@ jobs:
           # Retry all errors, including 404. This option might trigger curl upgrade.
           retry-all: true # Optional, defaults to "false"
 
-      - name: Delete image
-        if: "${{ always() && env.DOCKER_IMAGE != ''}}"
-        uses: bots-house/ghcr-delete-image-action@v1.0.0
-        with:
-          # NOTE: at now only orgs is supported
-          owner: ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}
-          name: ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}
-          # NOTE: using Personal Access Token
-          token: ${{ secrets.PAT }}
-          tag: ${{ env.DOCKER_IMAGE }}
