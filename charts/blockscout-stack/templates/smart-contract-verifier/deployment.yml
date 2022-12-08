@@ -8,6 +8,8 @@ metadata:
     prometheus.io/port: "http-metrics"
 spec:
   replicas: {{ .Values.scVerifier.replicas.app }}
+  strategy:
+    type: {{ .Values.scVerifier.strategy }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}-sc-verifier

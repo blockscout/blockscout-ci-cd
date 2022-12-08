@@ -5,6 +5,8 @@ metadata:
   name: {{ .Release.Name }}-stats
 spec:
   replicas: {{ .Values.stats.replicas.app }}
+  strategy:
+    type: {{ .Values.stats.strategy }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}-stats

@@ -5,6 +5,8 @@ metadata:
   name: {{ .Release.Name }}-visualizer
 spec:
   replicas: {{ .Values.visualizer.replicas.app }}
+  strategy:
+    type: {{ .Values.visualizer.strategy }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}-visualizer

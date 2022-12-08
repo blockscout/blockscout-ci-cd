@@ -582,6 +582,8 @@ scVerifier:
     targetPort: 8043
     metricsPort: 6060
 
+  strategy: Recreate
+
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
@@ -688,6 +690,8 @@ stats:
     targetPort: 8050
     metricsPort: 6060
 
+  strategy: Recreate
+
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
@@ -747,6 +751,8 @@ visualizer:
     port: 80
     targetPort: 8050
     metricsPort: 6060
+
+  strategy: Recreate
 
   service:
     # ClusterIP, NodePort or LoadBalancer
