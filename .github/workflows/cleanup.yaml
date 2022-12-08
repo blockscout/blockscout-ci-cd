@@ -94,7 +94,7 @@ jobs:
           kubectl delete ns $APP_NAMESPACE
 
       - name: Delete image
-        if: "${{ always() && inputs.DOCKER_IMAGE != ''}}"
+        if: "${{ always() && env.DOCKER_IMAGE != ''}}"
         uses: bots-house/ghcr-delete-image-action@v1.0.0
         with:
           # NOTE: at now only orgs is supported
@@ -102,4 +102,4 @@ jobs:
           name: ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}
           # NOTE: using Personal Access Token
           token: ${{ secrets.PAT }}
-          tag: ${{ inputs.DOCKER_IMAGE }}
+          tag: ${{ env.DOCKER_IMAGE }}
