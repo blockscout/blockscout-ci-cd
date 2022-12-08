@@ -230,8 +230,7 @@ jobs:
         shell: bash
         run: |
           aws eks update-kubeconfig --name ${{ secrets.AWS_CLUSTER_NAME }} --region=${{ env.REGION }}
-          gpg --version
-
+          
       # Import GPG key
       - name: Import GPG key
         id: import_gpg
