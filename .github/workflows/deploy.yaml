@@ -58,7 +58,7 @@ on:
   workflow_call:
     inputs:
       env_vars:
-        description: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=bs-stack
+        description: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=bs-stack,DOCKER_IMAGE=1
         required: false
         type: string
       globalEnv:
