@@ -14,6 +14,8 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-stats
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
     spec:
       containers:
         - name: {{ .Release.Name }}-stats

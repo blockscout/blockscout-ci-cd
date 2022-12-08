@@ -582,7 +582,7 @@ scVerifier:
     targetPort: 8043
     metricsPort: 6060
 
-  strategy: Recreate
+  strategy: RollingUpdate
 
   service:
     # ClusterIP, NodePort or LoadBalancer

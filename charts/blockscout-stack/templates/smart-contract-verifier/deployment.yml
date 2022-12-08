@@ -17,6 +17,8 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-sc-verifier
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
     spec:
       # serviceAccountName: vault-auth
       containers:
