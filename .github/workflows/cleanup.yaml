@@ -58,6 +58,7 @@ jobs:
       - name: Add inputs to GITHUB_ENV
         run: |
           echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> $GITHUB_ENV
+          echo "DOCKER_IMAGE=${{ inputs.dockerImage }}" >> $GITHUB_ENV
 
       - name: Configure Kubectl
         uses: azure/setup-kubectl@v2.0
@@ -93,7 +94,7 @@ jobs:
           kubectl delete ns $APP_NAMESPACE
 
       - name: Delete image
-        if: "${{ always() && inputs.dockerImage != ''}}"
+        if: "${{ always() && inputs.DOCKER_IMAGE != ''}}"
         uses: bots-house/ghcr-delete-image-action@v1.0.0
         with:
           # NOTE: at now only orgs is supported
@@ -101,4 +102,4 @@ jobs:
           name: ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}
           # NOTE: using Personal Access Token
           token: ${{ secrets.PAT }}
-          tag: ${{ inputs.dockerImage }}
+          tag: ${{ inputs.DOCKER_IMAGE }}
