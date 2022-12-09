@@ -514,6 +514,9 @@ node:
     service:
       # ClusterIP, NodePort or LoadBalancer
       type: ClusterIP
+    # enable ingress
+    ingress:
+      enabled: false
     environment: {}
       # DATA_TRANSPORT_LAYER__ADDRESS_MANAGER:
       #   _default: 0xa6f73589243a6A7a9023b1Fa0651b1d89c177111

@@ -35,6 +35,15 @@ spec:
                 name: {{ .Release.Name }}-node-svc
                 port:
                   number: {{ .Values.node.portWs }}
+          {{- if .Values.node.dtl.ingress.enabled }}
+          - path: /dtl(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-dtl-svc
+                port:
+                  number: {{ .Values.node.dtl.port }}
+          {{- end }}
   {{- if .Values.node.ingress.tls.enabled }}
   tls:
     - hosts:
