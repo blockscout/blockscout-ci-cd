@@ -9,7 +9,7 @@ export class GnosisHome extends HomePage {
 
     DAILY_TXNS = `text=Daily transactions`
 
-    DAILY_TXNS_DATA = `[data-selector="tx_per_day"]`
+    DAILY_TXNS_DATA = `[data-selector="tx_per_day"] >> text=`
 
     constructor(page: Page) {
         super(page)
@@ -38,7 +38,7 @@ export class GnosisHome extends HomePage {
         await this.verifyNavbarComponents()
         await this.verifyNetworkDashboardStats([`xDai Price`, `$`, `Total Value Locked`, `$`, `Gas tracker`, `Gwei`])
         await this.actions.verifyElementIsDisplayed(this.DAILY_TXNS, `no daily txns stats are displayed`)
-        await this.actions.verifyElementContainsText(this.DAILY_TXNS_DATA, `,`)
+        await this.actions.verifyElementIsDisplayed(this.DAILY_TXNS_DATA, `/,|0/`)
         await this.verifyNetworksDashboardChartComponents()
         await this.visitGithubRelease(ctx)
     }
