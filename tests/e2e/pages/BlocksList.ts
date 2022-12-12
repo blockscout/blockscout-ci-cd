@@ -31,6 +31,10 @@ export class BlockListPage extends CommonPage {
 
     TABLE_GRID_CELL = `[role="gridcell"] >> nth=`
 
+    async grid(row: number, col: number, regex: string): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`tbody >> tr >> nth=${row} >> td >> nth=${col} >> text=/${regex}/`)
+    }
+
     actions: WebActions
 
     constructor(page: Page) {
@@ -55,13 +59,13 @@ export class BlockListPage extends CommonPage {
     }
 
     async check_table(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}0 >> text=/\\d+/`, `no block number in a grid cell`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}0 >> text=/sec/`, `no elapsed time in a grid cell`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}1 >> text=/\\d+.*bytes/`, `no block size in a grid cell`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}2 >> text=0x`, `no validator addr in a grid cell`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}3 >> text=/\\d+/`, `no transactions in a grid cell`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}4 >> text=/\\d+.*\\%.*\\%/`, `no transactions in a grid cell`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}5 >> text=/\\d/`, `no transactions in a grid cell`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_GRID_CELL}6 >> text=/\\d/`, `no transactions in a grid cell`)
+        await this.grid(0, 0, `\\d+`)
+        await this.grid(0, 0, `sec`)
+        await this.grid(0, 1, `\\d+.*bytes`)
+        await this.grid(0, 2, `0x`)
+        await this.grid(0, 3, `\\d+`)
+        await this.grid(0, 4, `\\d+.*\\%.*\\%`)
+        await this.grid(0, 5, `\\d+`)
+        await this.grid(0, 6, `\\d+`)
     }
 }

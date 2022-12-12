@@ -237,6 +237,7 @@ export class AuthorizedArea extends CommonPage {
         await this.actions.clickElement(this.ADDRESS_TAGS_TAB_ADD_ADDRESS)
         await this.actions.enterElementText(this.ADDRESS_TAGS_ADDRESS_INPUT, address)
         await this.actions.enterElementText(this.ADDRESS_TAGS_NAME_INPUT, name)
+        await this.actions.focusElement(this.SAVE_BTN)
         await this.actions.clickElement(this.SAVE_BTN)
     }
 
@@ -268,12 +269,14 @@ export class AuthorizedArea extends CommonPage {
         await this.actions.clickElement(this.TX_TAGS_TAB_ADD_TX)
         await this.actions.enterElementText(this.TX_TAGS_TX_INPUT, txHash)
         await this.actions.enterElementText(this.TX_TAGS_NAME_INPUT, name)
+        await this.actions.focusElement(this.SAVE_BTN)
         await this.actions.clickElement(this.SAVE_BTN)
     }
 
     async addAPIKey(name: string): Promise<void> {
         await this.actions.clickElement(this.API_KEYS_ADD_BTN)
         await this.actions.enterElementText(this.API_KEYS_NAME_INPUT, name)
+        await this.actions.focusElement(this.SAVE_BTN)
         await this.actions.clickElement(this.SAVE_BTN)
     }
 
