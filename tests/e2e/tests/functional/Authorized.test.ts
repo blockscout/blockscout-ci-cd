@@ -26,6 +26,7 @@ test(`@AccountImage @Authorized Check address tag`, async ({ authorized }) => {
     await authorized.selectAddressTagTab()
     const tagName = faker.random.alphaNumeric(8)
     await authorized.addAddressTag(TestTokenAddress, tagName)
+    await authorized.delay(3000)
     await authorized.checkListRow(0, [TestTokenAddress.toLowerCase(), tagName])
     await authorized.hasText(tagName)
     await authorized.page.click(`text=${TestTokenAddress}`)
