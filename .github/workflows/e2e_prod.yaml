@@ -54,7 +54,6 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run playwright
         run: |
-          npx playwright install-deps chrome firefox
           npm run test:prod:smoke
       - name: Analyze Test and/or Coverage Results
         uses: runforesight/foresight-test-kit-action@v1
