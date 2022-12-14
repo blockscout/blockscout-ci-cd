@@ -49,6 +49,7 @@ blockscout:
     # enable https
     tls:
       enabled: false
+      createSecret: false
     path:
       prefix:
         - "/"
@@ -214,6 +215,7 @@ geth:
       # enable https
       tls:
         enabled: false
+        createSecret: false
     environment: {}
     resources:
       limits:
@@ -255,6 +257,7 @@ geth:
     # enable https
     tls:
       enabled: false
+      createSecret: false
 
   files:
     enabled: false
@@ -500,6 +503,7 @@ node:
     # enable https
     tls:
       enabled: false
+      createSecret: false
 
   dtl:
     enabled: true
@@ -599,6 +603,7 @@ scVerifier:
     # enable https
     tls:
       enabled: false
+      createSecret: false
 
   resources:
     limits:
@@ -707,6 +712,7 @@ stats:
     # enable https
     tls:
       enabled: false
+      createSecret: false
 
   resources:
     limits:
@@ -769,6 +775,7 @@ visualizer:
     # enable https
     tls:
       enabled: false
+      createSecret: false
 
   resources:
     limits:
@@ -835,6 +842,7 @@ frontend:
     # enable https
     tls:
       enabled: true
+      createSecret: false
     path:
       prefix:
         - "/"

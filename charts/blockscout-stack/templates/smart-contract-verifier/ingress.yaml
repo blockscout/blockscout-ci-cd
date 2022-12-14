@@ -36,7 +36,9 @@ spec:
   tls:
     - hosts:
         - {{ pluck $.Values.global.env .Values.scVerifier.ingress.host | first | default .Values.scVerifier.ingress.host._default | quote }}
+      {{- if .Values.scVerifier.ingress.tls.createSecret }}
       secretName: {{ .Release.Name }}-sc-verifier-tls
+      {{- end }}
   {{- end }}
 {{- end }}
 {{- end }}

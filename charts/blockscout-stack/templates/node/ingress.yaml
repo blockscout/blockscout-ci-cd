@@ -48,7 +48,9 @@ spec:
   tls:
     - hosts:
         - {{ pluck $.Values.global.env .Values.node.ingress.host | first | default .Values.node.ingress.host._default | quote }}
+      {{- if .Values.node.ingress.tls.createSecret }}
       secretName: {{ .Release.Name }}-node-tls
+      {{- end }}
   {{- end }}
 {{- end }}
 {{- end }}

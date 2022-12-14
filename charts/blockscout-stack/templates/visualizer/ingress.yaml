@@ -36,7 +36,9 @@ spec:
   tls:
     - hosts:
         - {{ pluck $.Values.global.env .Values.visualizer.ingress.host | first | default .Values.visualizer.ingress.host._default | quote }}
+      {{- if .Values.visualizer.ingress.tls.createSecret }}
       secretName: {{ .Release.Name }}-visualizer-tls
+      {{- end }}
   {{- end }}
 {{- end }}
 {{- end }}

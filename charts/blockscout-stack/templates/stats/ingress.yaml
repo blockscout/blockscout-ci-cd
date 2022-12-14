@@ -36,7 +36,9 @@ spec:
   tls:
     - hosts:
         - {{ pluck $.Values.global.env .Values.stats.ingress.host | first | default .Values.stats.ingress.host._default | quote }}
+      {{- if .Values.stats.ingress.tls.createSecret }}
       secretName: {{ .Release.Name }}-stats-tls
+      {{- end }}
   {{- end }}
 {{- end }}
 {{- end }}

@@ -46,7 +46,9 @@ spec:
   tls:
     - hosts:
         - {{ pluck $.Values.global.env .Values.geth.ingress.host | first | default .Values.geth.ingress.host._default | quote }}
+      {{- if .Values.geth.ingress.tls.createSecret }}
       secretName: {{ .Release.Name }}-geth-tls
+      {{- end }}
   {{- end }}
 {{- end }}
 ---
@@ -90,7 +92,9 @@ spec:
   tls:
     - hosts:
         - {{ pluck $.Values.global.env .Values.geth.client.ingress.host | first | default .Values.geth.client.ingress.host._default | quote }}
+      {{- if .Values.geth.ingress.tls.createSecret }}
       secretName: {{ .Release.Name }}-client-tls
+      {{- end }}
   {{- end }}
 {{- end }}
 {{- end }}
