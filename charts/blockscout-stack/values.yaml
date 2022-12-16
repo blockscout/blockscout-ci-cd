@@ -84,7 +84,8 @@ blockscout:
   # node label
   nodeSelector:
     enabled: true
-    app: blockscout
+    labels:
+      app: blockscout
 
   # Blockscout environment variables
   environment: {}
@@ -125,6 +126,12 @@ postgres:
     #   _default:
     # POSTGRES_DB:
     #   _default:
+
+  # node label
+  nodeSelector:
+    enabled: true
+    labels:
+      app: blockscout
 
 # enable geth deploy
 geth:
@@ -244,7 +251,8 @@ geth:
   # node label
   nodeSelector:
     enabled: true
-    app: blockscout
+    labels:
+      app: blockscout
 
   service:
     # ClusterIP, NodePort or LoadBalancer
@@ -284,7 +292,9 @@ node:
 
   # node label
   nodeSelector:
-    app: blockscout
+    enabled: true
+    labels:
+      app: blockscout
 
   portHttp: 8545
   portWs: 8546
@@ -620,7 +630,8 @@ scVerifier:
   # node label
   nodeSelector:
     enabled: true
-    app: blockscout
+    labels:
+      app: blockscout
 
   # probes
   livenessProbe:
@@ -729,7 +740,8 @@ stats:
   # node label
   nodeSelector:
     enabled: true
-    app: blockscout
+    labels:
+      app: blockscout
 
   # probes
   livenessProbe:
@@ -792,7 +804,8 @@ visualizer:
   # node label
   nodeSelector:
     enabled: true
-    app: blockscout
+    labels:
+      app: blockscout
 
   # probes
   livenessProbe:
@@ -863,7 +876,8 @@ frontend:
   # node label
   nodeSelector:
     enabled: true
-    app: blockscout
+    labels:
+      app: blockscout
 
   environment: {}
     # NEXT_PUBLIC_APP_PROTOCOL:

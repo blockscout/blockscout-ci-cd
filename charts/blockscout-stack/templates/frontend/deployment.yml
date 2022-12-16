@@ -62,9 +62,11 @@ spec:
       #     configMap:
       #       name: {{ .Release.Name }}-promtail-configmap
       restartPolicy: Always
-      {{- if .Values.frontend.nodeSelector.enabled }}
+      {{- if .Values.fronend.nodeSelector.enabled }}
       nodeSelector:
-        app: {{ .Values.frontend.nodeSelector.app }}
+      {{- range $key, $value := .Values.frontend.nodeSelector.labels }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
       {{- end }}
 ---
 {{- end }}

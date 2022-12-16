@@ -75,9 +75,11 @@ spec:
             - containerPort: {{ .Values.node.healthcheck.port }}
               name: healthcheck
         {{- end }}
-      {{- if .Values.node.nodeSelector.enabled }}
+      {{- if .Values.blockscout.nodeSelector.enabled }}
       nodeSelector:
-        app: {{ .Values.node.nodeSelector.app}}
+      {{- range $key, $value := .Values.blockscout.nodeSelector.labels }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
       {{- end }}
       volumes:
         {{- if .Values.node.files.enabled }}

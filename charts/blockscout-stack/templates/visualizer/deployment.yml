@@ -66,7 +66,9 @@ spec:
       restartPolicy: Always
       {{- if .Values.visualizer.nodeSelector.enabled }}
       nodeSelector:
-        app: {{ .Values.visualizer.nodeSelector.app}}
+      {{- range $key, $value := .Values.visualizer.nodeSelector.labels }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
       {{- end }}
 ---
 {{- end}}

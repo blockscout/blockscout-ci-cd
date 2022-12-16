@@ -42,6 +42,12 @@ spec:
             - mountPath: {{ .Values.postgres.mountPath }}
               name: postgredb
               subPath: postgres
+      {{- if .Values.postgres.nodeSelector.enabled }}
+      nodeSelector:
+      {{- range $key, $value := .Values.postgres.nodeSelector.labels }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
+      {{- end }}
       volumes:
         - name: postgredb
           persistentVolumeClaim:

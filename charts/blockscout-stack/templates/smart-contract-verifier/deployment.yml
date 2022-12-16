@@ -70,7 +70,9 @@ spec:
       restartPolicy: Always
       {{- if .Values.scVerifier.nodeSelector.enabled }}
       nodeSelector:
-        app: {{ .Values.scVerifier.nodeSelector.app}}
+      {{- range $key, $value := .Values.scVerifier.nodeSelector.labels }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
       {{- end }}
 ---
 {{- end}}

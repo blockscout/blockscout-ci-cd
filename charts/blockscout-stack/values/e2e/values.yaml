@@ -60,7 +60,8 @@ blockscout:
   # node label
   nodeSelector:
     enabled: true
-    app: blockscout
+    labels:
+      app: blockscout
   # Blockscout environment variables
   environment:
     ENV:
@@ -182,7 +183,8 @@ geth:
   # node label
   nodeSelector:
     enabled: true
-    app: blockscout
+    labels:
+      app: blockscout
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
@@ -234,7 +236,8 @@ scVerifier:
   # node label
   nodeSelector:
     enabled: true
-    app: blockscout
+    labels:
+      app: blockscout
   # probes
   livenessProbe:
     enabled: true
@@ -318,7 +321,8 @@ stats:
   # node label
   nodeSelector:
     enabled: true
-    app: blockscout
+    labels:
+      app: blockscout
   # probes
   # livenessProbe:
   #   enabled: true
@@ -379,7 +383,8 @@ frontend:
   # node label
   nodeSelector:
     enabled: true
-    app: blockscout
+    labels:
+      app: blockscout
   environment:
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
       _default: v4.1.8-beta

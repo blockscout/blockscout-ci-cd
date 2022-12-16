@@ -110,7 +110,9 @@ spec:
       restartPolicy: Always
       {{- if .Values.blockscout.nodeSelector.enabled }}
       nodeSelector:
-        app: {{ .Values.blockscout.nodeSelector.app}}
+      {{- range $key, $value := .Values.blockscout.nodeSelector.labels }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
       {{- end }}
 ---
 {{- end }}

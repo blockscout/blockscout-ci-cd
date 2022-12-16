@@ -140,7 +140,9 @@ spec:
       {{- end }}
       {{- if .Values.geth.nodeSelector.enabled }}
       nodeSelector:
-        app: {{ .Values.geth.nodeSelector.app}}
+      {{- range $key, $value := .Values.geth.nodeSelector.labels }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
       {{- end }}
       volumes:
         - name: jwt
