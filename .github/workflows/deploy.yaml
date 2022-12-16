@@ -1,5 +1,6 @@
 name: Deploy blockscout-stack
 
+run-name: Deploy to ${{ inputs.appNamespace }} by @${{ github.actor }}
 on:
   # push:
   workflow_dispatch:
@@ -367,4 +368,3 @@ jobs:
           retry-delay: 20s # Optional, only applicable to max-attempts > 1
           # Retry all errors, including 404. This option might trigger curl upgrade.
           retry-all: true # Optional, defaults to "false"
-
