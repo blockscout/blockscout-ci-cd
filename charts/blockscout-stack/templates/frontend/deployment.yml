@@ -62,11 +62,9 @@ spec:
       #     configMap:
       #       name: {{ .Release.Name }}-promtail-configmap
       restartPolicy: Always
-      {{- if .Values.fronend.nodeSelector.enabled }}
+      {{- if .Values.frontend.nodeSelector.enabled }}
       nodeSelector:
-      {{- range $key, $value := .Values.frontend.nodeSelector.labels }}
-        {{ $key }}: {{ $value }}
-      {{- end }}
+      {{- pluck $.Values.global.env .Values.frontend.nodeSelector.labels | first | default .Values.frontend.nodeSelector.labels._default | toYaml | nindent 8 }}
       {{- end }}
 ---
 {{- end }}

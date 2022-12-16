@@ -61,7 +61,8 @@ blockscout:
   nodeSelector:
     enabled: true
     labels:
-      app: blockscout
+      _default:
+        app: blockscout
   # Blockscout environment variables
   environment:
     ENV:

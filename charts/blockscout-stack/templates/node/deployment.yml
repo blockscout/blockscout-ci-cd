@@ -75,11 +75,9 @@ spec:
             - containerPort: {{ .Values.node.healthcheck.port }}
               name: healthcheck
         {{- end }}
-      {{- if .Values.blockscout.nodeSelector.enabled }}
+      {{- if .Values.node.nodeSelector.enabled }}
       nodeSelector:
-      {{- range $key, $value := .Values.blockscout.nodeSelector.labels }}
-        {{ $key }}: {{ $value }}
-      {{- end }}
+      {{- pluck $.Values.global.env .Values.node.nodeSelector.labels | first | default .Values.node.nodeSelector.labels._default | toYaml | nindent 8 }}
       {{- end }}
       volumes:
         {{- if .Values.node.files.enabled }}

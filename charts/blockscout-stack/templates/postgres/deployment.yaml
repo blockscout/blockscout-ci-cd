@@ -44,9 +44,7 @@ spec:
               subPath: postgres
       {{- if .Values.postgres.nodeSelector.enabled }}
       nodeSelector:
-      {{- range $key, $value := .Values.postgres.nodeSelector.labels }}
-        {{ $key }}: {{ $value }}
-      {{- end }}
+      {{- pluck $.Values.global.env .Values.postgres.nodeSelector.labels | first | default .Values.postgres.nodeSelector.labels._default | toYaml | nindent 8 }}
       {{- end }}
       volumes:
         - name: postgredb

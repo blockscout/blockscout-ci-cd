@@ -66,9 +66,7 @@ spec:
       restartPolicy: Always
       {{- if .Values.stats.nodeSelector.enabled }}
       nodeSelector:
-      {{- range $key, $value := .Values.stats.nodeSelector.labels }}
-        {{ $key }}: {{ $value }}
-      {{- end }}
+      {{- pluck $.Values.global.env .Values.stats.nodeSelector.labels | first | default .Values.stats.nodeSelector.labels._default | toYaml | nindent 8 }}
       {{- end }}
 ---
 {{- end}}
