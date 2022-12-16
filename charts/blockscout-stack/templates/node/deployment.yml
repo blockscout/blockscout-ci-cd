@@ -56,6 +56,15 @@ spec:
           env:
             {{- include "node_dtl_env" . | indent 10 }}
             {{- include "node_common_env" . | indent 10 }}
+          resources:
+            {{- with .Values.node.dtl.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+            {{- end }}
           ports:
             - containerPort: {{ .Values.node.dtl.port }}
               name: dtl
@@ -71,6 +80,15 @@ spec:
           env:
             {{- include "node_healthcheck_env" . | indent 10 }}
             {{- include "node_common_env" . | indent 10 }}
+          resources:
+            {{- with .Values.node.healthcheck.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+            {{- end }}
           ports:
             - containerPort: {{ .Values.node.healthcheck.port }}
               name: healthcheck

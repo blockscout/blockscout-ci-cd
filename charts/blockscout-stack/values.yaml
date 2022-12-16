@@ -535,6 +535,17 @@ node:
     # enable ingress
     ingress:
       enabled: false
+    resources:
+      limits:
+        memory:
+          _default: "200m"
+        cpu:
+          _default: "0.1"
+      requests:
+        memory:
+          _default: "200m"
+        cpu:
+          _default: "0.1"
     environment: {}
       # DATA_TRANSPORT_LAYER__ADDRESS_MANAGER:
       #   _default: 0xa6f73589243a6A7a9023b1Fa0651b1d89c177111
@@ -580,6 +591,17 @@ node:
     image:
       _default: ethereumoptimism/replica-healthcheck:latest
     port: 7300
+    resources:
+      limits:
+        memory:
+          _default: "200m"
+        cpu:
+          _default: "0.1"
+      requests:
+        memory:
+          _default: "200m"
+        cpu:
+          _default: "0.1"
     environment:
       HEALTHCHECK__TARGET_RPC_PROVIDER:
         _default: http://node-svc:8545
