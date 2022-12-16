@@ -1,6 +1,6 @@
 name: Deploy blockscout-stack
 
-run-name: Deploy to ${{ inputs.appNamespace }} by @${{ github.actor }}
+# run-name: Deploy to ${{ inputs.appNamespace }} by @${{ github.actor }}
 on:
   # push:
   workflow_dispatch:
