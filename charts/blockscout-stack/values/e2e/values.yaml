@@ -318,7 +318,7 @@ stats:
   # node label
   nodeSelector:
     enabled: true
-    app: tests
+    app: blockscout
   # probes
   # livenessProbe:
   #   enabled: true
