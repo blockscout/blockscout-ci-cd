@@ -235,6 +235,7 @@ jobs:
           fi
           if $DOCKER_IMAGE; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set $APP.image.${{ inputs.globalEnv }}=$DOCKER_IMAGE "
+          fi
           if ${{ inputs.frontendImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
           fi
