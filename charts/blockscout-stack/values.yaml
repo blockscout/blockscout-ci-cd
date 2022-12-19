@@ -105,6 +105,7 @@ postgres:
   storageClass: gp3-new
   storage: 100Gi
   mountPath: /var/lib/postgresql/data
+  existingPV: ''
 
   resources:
     limits:
@@ -164,6 +165,7 @@ geth:
     storageClass: gp3-new
     storage:
       _default: 10Gi
+    existingPV: ''
 
   command:
     - sh
@@ -211,6 +213,7 @@ geth:
       storageClass: gp3-new
       storage:
         _default: 100Gi
+      existingPV: ''
     files:
       enabled: false
       list: {}
@@ -308,6 +311,7 @@ node:
     storageClass: gp3-new
     storage:
       _default: 10Gi
+    existingPV: ''
 
   files:
     enabled: false
@@ -529,6 +533,7 @@ node:
       storageClass: gp3-new
       storage:
         _default: 10Gi
+      existingPV: ''
     service:
       # ClusterIP, NodePort or LoadBalancer
       type: ClusterIP

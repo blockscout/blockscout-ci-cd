@@ -8,6 +8,9 @@ spec:
   storageClassName: {{ .Values.postgres.storageClass }}
   accessModes:
     - ReadWriteOnce
+  {{- with .Values.postgres.persistence.existingPV }}
+  volumeName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
   resources:
     requests:
       storage: {{ .Values.postgres.storage | quote }}

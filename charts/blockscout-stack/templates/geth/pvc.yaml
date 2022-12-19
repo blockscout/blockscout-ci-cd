@@ -8,6 +8,9 @@ spec:
   storageClassName: {{ .Values.geth.persistence.storageClass }}
   accessModes:
     - ReadWriteOnce
+  {{- with .Values.geth.persistence.existingPV }}
+  volumeName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
   resources:
     requests:
       storage: {{ pluck $.Values.global.env .Values.geth.persistence.storage | first | default .Values.geth.persistence.storage._default | quote }}
@@ -22,6 +25,9 @@ spec:
   storageClassName: {{ .Values.geth.client.persistence.storageClass }}
   accessModes:
     - ReadWriteOnce
+  {{- with .Values.geth.client.persistence.existingPV }}
+  volumeName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
   resources:
     requests:
       storage: {{ pluck $.Values.global.env .Values.geth.client.persistence.storage | first | default .Values.geth.client.persistence.storage._default | quote }}
