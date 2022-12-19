@@ -6,13 +6,13 @@ on:
   workflow_dispatch:
     inputs:
       env_vars:
-        description: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=bs-stack,DOCKER_IMAGE=1
+        description: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=bs-stack,DOCKER_IMAGE=1,APP=app-name
         required: false
         type: string
       globalEnv:
         description: 'Network type'
         required: false
-        default: 'testnet'
+        default: '_default'
         type: string
       # valuesDir:
       #   description: 'Directory with values'
@@ -59,13 +59,13 @@ on:
   workflow_call:
     inputs:
       env_vars:
-        description: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=bs-stack,DOCKER_IMAGE=1
+        description: VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=bs-stack,DOCKER_IMAGE=1,APP=app-name
         required: false
         type: string
       globalEnv:
         description: 'Network type'
         required: false
-        default: 'testnet'
+        default: '_default'
         type: string
       # valuesDir:
       #   description: 'Directory with values'
@@ -233,6 +233,8 @@ jobs:
           if ${{ inputs.globalEnv != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set global.env=${{ inputs.globalEnv }} "
           fi
+          if $DOCKER_IMAGE; then
+            DEPLOY_ARGS="$DEPLOY_ARGS--set $APP.image.${{ inputs.globalEnv }}=$DOCKER_IMAGE "
           if ${{ inputs.frontendImage != '' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
           fi
