@@ -611,7 +611,6 @@ node:
     image:
       _default: ethereumoptimism/fault-detector:latest
 
-
 # enable Smart-contract-verifier deploy
 scVerifier:
   enabled: false
@@ -952,3 +951,55 @@ frontend:
     #   _default: https://fdcd971162e04694bf03564c5be3d291@o1222505.ingest.sentry.io/4503902500421632
     # SENTRY_CSP_REPORT_URI:
     #   _default: https://o1222505.ingest.sentry.io/api/4503902500421632/security/?sentry_key=fdcd971162e04694bf03564c5be3d291
+
+# enable blockscout-allowance
+allowance:
+  enabled: false
+
+  image:
+    _default: ghcr.io/blockscout/blockscout-allowance:main
+
+  replicas:
+    app: 1
+  docker:
+    port: 80
+    targetPort: 3000
+
+  service:
+    # ClusterIP, NodePort or LoadBalancer
+    type: ClusterIP
+
+  ingress:
+    enabled: true
+    annotations: {}
+    host:
+      _default: blockscout-allowance.apps.aws-k8s.blockscout.com
+    # enable https
+    tls:
+      enabled: true
+      createSecret: false
+    path:
+      prefix:
+        - "/"
+      exact: {}
+
+  resources:
+    limits:
+      memory:
+        _default: "0.3Gi"
+      cpu:
+        _default: "0.2"
+    requests:
+      memory:
+        _default: "0.3Gi"
+      cpu:
+        _default: "0.2"
+
+  # node label
+  nodeSelector:
+    enabled: true
+    labels:
+      _default:
+        app: blockscout
+
+  environment: {}
