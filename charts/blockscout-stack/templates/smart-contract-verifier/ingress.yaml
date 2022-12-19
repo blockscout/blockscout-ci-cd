@@ -12,6 +12,9 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "15m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
     cert-manager.io/cluster-issuer: "zerossl-prod"
+    {{- range .Values.scVerifier.ingress.annotations }}
+    {{ . }}
+    {{- end}}
   name: {{ .Release.Name }}-sc-verifier-ingress
 spec:
   rules:

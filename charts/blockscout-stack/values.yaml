@@ -633,6 +633,7 @@ scVerifier:
   # enable ingress
   ingress:
     enabled: false
+    annotations: {}
     host:
       _default: <url>
     # enable https
@@ -744,6 +745,7 @@ stats:
   # enable ingress
   ingress:
     enabled: false
+    annotations: {}
     host:
       _default: <url>
     # enable https
@@ -809,6 +811,7 @@ visualizer:
   # enable ingress
   ingress:
     enabled: false
+    annotations: {}
     host:
       _default: <url>
     # enable https
