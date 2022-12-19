@@ -995,6 +995,14 @@ allowance:
       cpu:
         _default: "0.2"
 
+  # probes
+  livenessProbe:
+    enabled: true
+    path: /healthz
+  readinessProbe:
+    enabled: true
+    path: /healthz
+
   # node label
   nodeSelector:
     enabled: true
