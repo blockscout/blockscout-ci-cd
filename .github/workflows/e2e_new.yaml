@@ -230,7 +230,7 @@ jobs:
         shell: bash
         run: |
           aws eks update-kubeconfig --name ${{ secrets.AWS_CLUSTER_NAME }} --region=${{ env.REGION }}
-          
+
       # Import GPG key
       - name: Import GPG key
         id: import_gpg
@@ -375,7 +375,7 @@ jobs:
         working-directory: blockscout-ci-cd/tests/e2e
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
-          echo "deb http://ftp.us.debian.org/debian buster main non-free" >> /etc/apt/sources.list.d/fonts.list
+          # echo "deb http://ftp.us.debian.org/debian buster main non-free" >> /etc/apt/sources.list.d/fonts.list
           npx playwright install --with-deps
 
       # check if instance is ready
