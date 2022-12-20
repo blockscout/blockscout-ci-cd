@@ -371,6 +371,12 @@ jobs:
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-build-${{ env.cache-name }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
+      - name: add deb repository
+        uses: myci-actions/add-deb-repo@10
+        with:
+          repo: deb http://ftp.us.debian.org/debian buster main non-free
+          # repo-name: cppfw
+          # keys-asc: http://gagis.hopto.org/repo/cppfw/pubkey.gpg
       - name: Install Playwright
         working-directory: blockscout-ci-cd/tests/e2e
         if: steps.playwright-cache.outputs.cache-hit != 'true'
