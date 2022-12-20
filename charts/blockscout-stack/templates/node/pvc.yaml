@@ -5,11 +5,17 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-node
 spec:
-  storageClassName: {{ .Values.node.persistence.storageClass }}
+  {{- if .Values.node.persistence.storageClass }}
+  {{- with .Values.node.persistence.storageClass }}
+  storageClassName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
+  {{- end }}
   accessModes:
     - ReadWriteOnce
+  {{- if .Values.node.persistence.existingPV }}
   {{- with .Values.node.persistence.existingPV }}
   volumeName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
   {{- end }}
   resources:
     requests:
@@ -22,11 +28,17 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-dtl
 spec:
-  storageClassName: {{ .Values.node.dtl.persistence.storageClass }}
+  {{- if .Values.node.dtl.persistence.storageClass }}
+  {{- with .Values.node.dtl.persistence.storageClass }}
+  storageClassName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
+  {{- end }}
   accessModes:
     - ReadWriteOnce
+  {{- if .Values.node.dtl.persistence.existingPV }}
   {{- with .Values.node.dtl.persistence.existingPV }}
   volumeName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
   {{- end }}
   resources:
     requests:

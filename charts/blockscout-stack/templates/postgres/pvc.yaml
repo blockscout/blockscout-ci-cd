@@ -5,11 +5,17 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-postgres-pv-claim
 spec:
-  storageClassName: {{ .Values.postgres.storageClass }}
+  {{- if .Values.postgres.storageClass }}
+  {{- with .Values.postgres.storageClass }}
+  storageClassName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
+  {{- end }}
   accessModes:
     - ReadWriteOnce
-  {{- with .Values.postgres.persistence.existingPV }}
+  {{- if .Values.postgres.existingPV }}
+  {{- with .Values.postgres.existingPV }}
   volumeName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
   {{- end }}
   resources:
     requests:
