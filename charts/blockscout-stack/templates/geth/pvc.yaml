@@ -5,11 +5,17 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-geth
 spec:
-  storageClassName: {{ .Values.geth.persistence.storageClass }}
+  {{- if .Values.geth.persistence.storageClass }}
+  {{- with .Values.geth.persistence.storageClass }}
+  storageClassName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
+  {{- end }}
   accessModes:
     - ReadWriteOnce
+  {{- if .Values.geth.persistence.existingPV }}
   {{- with .Values.geth.persistence.existingPV }}
   volumeName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
   {{- end }}
   resources:
     requests:
@@ -22,11 +28,15 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-client
 spec:
+  {{- if .Values.geth.client.persistence.storageClass }}
   storageClassName: {{ .Values.geth.client.persistence.storageClass }}
+  {{- end }}
   accessModes:
     - ReadWriteOnce
+  {{- if .Values.geth.client.persistence.existingPV }}
   {{- with .Values.geth.client.persistence.existingPV }}
   volumeName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
   {{- end }}
   resources:
     requests:
