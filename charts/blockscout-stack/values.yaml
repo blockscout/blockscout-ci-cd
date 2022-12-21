@@ -106,6 +106,8 @@ postgres:
   storage: 100Gi
   mountPath: /var/lib/postgresql/data
   existingPV: {}
+    # testnet: 'pvc-testnet'
+    # mainnet: 'pvc-mainnet'
 
   resources:
     limits:
@@ -166,6 +168,8 @@ geth:
     storage:
       _default: 10Gi
     existingPV: {}
+      # testnet: 'pvc-testnet'
+      # mainnet: 'pvc-mainnet'
 
   command:
     - sh
@@ -214,6 +218,8 @@ geth:
       storage:
         _default: 100Gi
       existingPV: {}
+        # testnet: 'pvc-testnet'
+        # mainnet: 'pvc-mainnet'
     files:
       enabled: false
       list: {}
@@ -312,6 +318,8 @@ node:
     storage:
       _default: 10Gi
     existingPV: {}
+      # testnet: 'pvc-testnet'
+      # mainnet: 'pvc-mainnet'
 
   files:
     enabled: false
@@ -534,6 +542,8 @@ node:
       storage:
         _default: 10Gi
       existingPV: {}
+        # testnet: 'pvc-testnet'
+        # mainnet: 'pvc-mainnet'
     service:
       # ClusterIP, NodePort or LoadBalancer
       type: ClusterIP

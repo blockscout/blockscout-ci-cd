@@ -12,7 +12,7 @@ spec:
   {{- end }}
   accessModes:
     - ReadWriteOnce
-  {{- if .Values.geth.persistence.existingPV }}
+  {{- if hasKey .Values.geth.persistence.existingPV $.Values.global.env }}
   volumeName: {{ pluck $.Values.global.env .Values.geth.persistence.existingPV | first | default .Values.geth.persistence.existingPV._default | quote }}
   {{- end }}
   resources:
@@ -31,7 +31,7 @@ spec:
   {{- end }}
   accessModes:
     - ReadWriteOnce
-  {{- if .Values.geth.client.persistence.existingPV }}
+  {{- if hasKey .Values.geth.client.persistence.existingPV $.Values.global.env }}
   volumeName: {{ pluck $.Values.global.env .Values.geth.client.persistence.existingPV | first | default .Values.geth.client.persistence.existingPV._default | quote }}
   {{- end }}
   resources:

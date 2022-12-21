@@ -12,7 +12,7 @@ spec:
   {{- end }}
   accessModes:
     - ReadWriteOnce
-  {{- if .Values.postgres.existingPV }}
+  {{- if hasKey .Values.postgres.existingPV $.Values.global.env }}
   volumeName: {{ pluck $.Values.global.env .Values.postgres.existingPV | first | default .Values.postgres.existingPV._default | quote }}
   {{- end }}
   resources:
