@@ -43,14 +43,15 @@ spec:
           # volumeMounts:
           #   - name: {{ .Release.Name }}-logs
           #     mountPath: /usr/local/gkretail/sm-web-server/log
-          {{- if .Values.scVerifier.livenessProbe.enabled }}
+          {{- if .Values.scVerifier.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
-              path: {{ .Values.scVerifier.livenessProbe.path }}
+              path: {{ .Values.scVerifier.readinessProbe.path }}
               port: {{ .Values.scVerifier.docker.targetPort }}
               scheme: HTTP
-            initialDelaySeconds: 60
-            periodSeconds: 10
+            {{- with .Values.scVerifier.readinessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
           {{- end }}
           {{- if .Values.scVerifier.livenessProbe.enabled }}
           livenessProbe:
@@ -58,8 +59,9 @@ spec:
               path: {{ .Values.scVerifier.livenessProbe.path }}
               port: {{ .Values.scVerifier.docker.targetPort }}
               scheme: HTTP
-            initialDelaySeconds: 100
-            periodSeconds: 100
+            {{- with .Values.scVerifier.livenessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
           {{- end }}
       # volumes:
       #   - name: {{ .Release.Name }}-logs

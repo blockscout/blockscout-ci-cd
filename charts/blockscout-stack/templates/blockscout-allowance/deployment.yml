@@ -44,8 +44,9 @@ spec:
               path: {{ .Values.allowance.readinessProbe.path }}
               port: {{ .Values.allowance.docker.targetPort }}
               scheme: HTTP
-            initialDelaySeconds: 60
-            periodSeconds: 10
+            {{- with .Values.allowance.readinessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
           {{- end }}
           {{- if .Values.allowance.livenessProbe.enabled }}
           livenessProbe:
@@ -53,8 +54,9 @@ spec:
               path: {{ .Values.allowance.livenessProbe.path }}
               port: {{ .Values.allowance.docker.targetPort }}
               scheme: HTTP
-            initialDelaySeconds: 100
-            periodSeconds: 100
+            {{- with .Values.allowance.livenessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
           {{- end }}
       restartPolicy: Always
       {{- if .Values.allowance.nodeSelector.enabled }}

@@ -70,7 +70,7 @@ spec:
           env:
             {{- include "geth_env" . | indent 10 }}
           ports:
-          {{- range $key, $value := .Values.geth.client.ports }}
+          {{- range $key, $value := .Values.geth.ports }}
             - containerPort: {{ toYaml $value.number | indent 2 }}
               name: {{ $key }}
           {{- end }}
@@ -91,6 +91,26 @@ spec:
               subPath: {{ $key }}
               {{- end }}
             {{- end }}
+          # {{- if .Values.geth.readinessProbe.enabled }}
+          # readinessProbe:
+          #   httpGet:
+          #     path: {{ .Values.geth.readinessProbe.path }}
+          #     port: {{ .Values.geth.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.geth.readinessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
+          # {{- if .Values.geth.livenessProbe.enabled }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: {{ .Values.geth.livenessProbe.path }}
+          #     port: {{ .Values.geth.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.geth.livenessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
       {{- if .Values.geth.client.enabled }}
         - name: client
           image: {{ pluck $.Values.global.env .Values.geth.client.image | first | default .Values.geth.client.image._default | quote }}
@@ -137,6 +157,26 @@ spec:
               subPath: {{ $key }}
               {{- end }}
             {{- end }}
+          # {{- if .Values.geth.client.readinessProbe.enabled }}
+          # readinessProbe:
+          #   httpGet:
+          #     path: {{ .Values.geth.client.readinessProbe.path }}
+          #     port: {{ .Values.geth.client.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.geth.client.readinessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
+          # {{- if .Values.geth.client.livenessProbe.enabled }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: {{ .Values.geth.client.livenessProbe.path }}
+          #     port: {{ .Values.geth.client.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.geth.client.livenessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
       {{- end }}
       {{- if .Values.geth.nodeSelector.enabled }}
       nodeSelector:

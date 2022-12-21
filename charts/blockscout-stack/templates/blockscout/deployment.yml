@@ -80,8 +80,9 @@ spec:
               path: {{ .Values.blockscout.readinessProbe.path }}
               port: {{ .Values.blockscout.docker.targetPort }}
               scheme: HTTP
-            initialDelaySeconds: 60
-            periodSeconds: 10
+            {{- with .Values.blockscout.readinessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
           {{- end }}
           {{- if .Values.blockscout.livenessProbe.enabled }}
           livenessProbe:
@@ -89,8 +90,9 @@ spec:
               path: {{ .Values.blockscout.livenessProbe.path }}
               port: {{ .Values.blockscout.docker.targetPort }}
               scheme: HTTP
-            initialDelaySeconds: 100
-            periodSeconds: 100
+            {{- with .Values.blockscout.livenessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
           {{- end }}
       volumes:
       - name: workdir

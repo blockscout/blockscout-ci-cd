@@ -59,9 +59,16 @@ blockscout:
   livenessProbe:
     enabled: true
     path: /
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
   readinessProbe:
     enabled: true
     path: /
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
 
   resources:
     limits:
@@ -121,6 +128,21 @@ postgres:
       cpu:
         _default: "0.2"
 
+  # probes
+  livenessProbe:
+    enabled: false
+    path: /
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
+  readinessProbe:
+    enabled: false
+    path: /
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
+
   environment: {}
     # PGDATA:
     #   _default: /var/lib/postgresql/data/pgdata
@@ -170,6 +192,21 @@ geth:
     existingPV: {}
       # testnet: 'pvc-testnet'
       # mainnet: 'pvc-mainnet'
+
+  # probes
+  livenessProbe:
+    enabled: false
+    path: /
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
+  readinessProbe:
+    enabled: false
+    path: /
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
 
   command:
     - sh
@@ -246,6 +283,20 @@ geth:
           _default: "6Gi"
         cpu:
           _default: "3"
+    # probes
+    livenessProbe:
+      enabled: false
+      path: /
+      params:
+        initialDelaySeconds: 100
+        periodSeconds: 100
+    readinessProbe:
+      enabled: false
+      path: /
+      params:
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        timeoutSeconds: 60
 
   resources:
     limits:
@@ -320,6 +371,21 @@ node:
     existingPV: {}
       # testnet: 'pvc-testnet'
       # mainnet: 'pvc-mainnet'
+
+  # probes
+  livenessProbe:
+    enabled: false
+    path: /
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
+  readinessProbe:
+    enabled: false
+    path: /
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
 
   files:
     enabled: false
@@ -561,6 +627,20 @@ node:
           _default: "200m"
         cpu:
           _default: "0.1"
+    # probes
+    livenessProbe:
+      enabled: false
+      path: /
+      params:
+        initialDelaySeconds: 100
+        periodSeconds: 100
+    readinessProbe:
+      enabled: false
+      path: /
+      params:
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        timeoutSeconds: 60
     environment: {}
       # DATA_TRANSPORT_LAYER__ADDRESS_MANAGER:
       #   _default: 0xa6f73589243a6A7a9023b1Fa0651b1d89c177111
@@ -617,6 +697,20 @@ node:
           _default: "200m"
         cpu:
           _default: "0.1"
+    # probes
+    livenessProbe:
+      enabled: false
+      path: /
+      params:
+        initialDelaySeconds: 100
+        periodSeconds: 100
+    readinessProbe:
+      enabled: false
+      path: /
+      params:
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        timeoutSeconds: 60
     environment:
       HEALTHCHECK__TARGET_RPC_PROVIDER:
         _default: http://node-svc:8545
@@ -679,9 +773,16 @@ scVerifier:
   livenessProbe:
     enabled: true
     path: /health
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
   readinessProbe:
     enabled: true
     path: /health
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
 
   # enable Horizontal Pod Autoscaler
   hpa:
@@ -791,9 +892,16 @@ stats:
   livenessProbe:
     enabled: false
     path: /health
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
   readinessProbe:
     enabled: false
     path: /health
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
 
   # enable Horizontal Pod Autoscaler
   hpa:
@@ -855,11 +963,18 @@ visualizer:
 
   # probes
   livenessProbe:
-    enabled: false
+    enabled: true
     path: /health
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
   readinessProbe:
-    enabled: false
+    enabled: true
     path: /health
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
 
   # enable Horizontal Pod Autoscaler
   hpa:
@@ -925,6 +1040,21 @@ frontend:
     labels:
       _default:
         app: blockscout
+
+  # probes
+  livenessProbe:
+    enabled: false
+    path: /
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
+  readinessProbe:
+    enabled: false
+    path: /
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
 
   environment: {}
     # NEXT_PUBLIC_APP_PROTOCOL:
@@ -1017,9 +1147,16 @@ allowance:
   livenessProbe:
     enabled: true
     path: /healthz
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
   readinessProbe:
     enabled: true
     path: /healthz
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
 
   # node label
   nodeSelector:

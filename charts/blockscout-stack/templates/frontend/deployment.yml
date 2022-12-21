@@ -41,20 +41,26 @@ spec:
           # volumeMounts:
           #   - name: smweb-logs
           #     mountPath: /usr/local/sm-web-server/log
+          # {{- if .Values.frontend.readinessProbe.enabled }}
           # readinessProbe:
           #   httpGet:
-          #     path: /appversion
-          #     port: {{ .Values.frontend.docker.port }}
+          #     path: {{ .Values.frontend.readinessProbe.path }}
+          #     port: {{ .Values.frontend.docker.targetPort }}
           #     scheme: HTTP
-          #   initialDelaySeconds: 60
-          #   periodSeconds: 10
+          #   {{- with .Values.frontend.readinessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
+          # {{- if .Values.frontend.livenessProbe.enabled }}
           # livenessProbe:
           #   httpGet:
-          #     path: /appversion
-          #     port: {{ .Values.frontend.docker.port }}
+          #     path: {{ .Values.frontend.livenessProbe.path }}
+          #     port: {{ .Values.frontend.docker.targetPort }}
           #     scheme: HTTP
-          #   initialDelaySeconds: 100
-          #   periodSeconds: 100
+          #   {{- with .Values.frontend.livenessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
       # volumes:
       #   - name: smweb-logs
       #     emptyDir: { }

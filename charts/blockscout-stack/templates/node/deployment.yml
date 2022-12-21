@@ -50,6 +50,26 @@ spec:
               subPath: {{ $key }}
             {{- end }}
             {{- end }}
+          # {{- if .Values.node.readinessProbe.enabled }}
+          # readinessProbe:
+          #   httpGet:
+          #     path: {{ .Values.node.readinessProbe.path }}
+          #     port: {{ .Values.node.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.node.readinessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
+          # {{- if .Values.node.livenessProbe.enabled }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: {{ .Values.node.livenessProbe.path }}
+          #     port: {{ .Values.node.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.node.livenessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
         {{ if .Values.node.dtl.enabled }}
         - name: {{ .Release.Name }}-dtl
           image: {{ pluck $.Values.global.env .Values.node.dtl.image | first | default .Values.node.dtl.image._default | quote }}
@@ -73,6 +93,26 @@ spec:
             - name: dtl
               mountPath: "/db"
             {{- end }}
+          # {{- if .Values.node.dtl.readinessProbe.enabled }}
+          # readinessProbe:
+          #   httpGet:
+          #     path: {{ .Values.node.dtl.readinessProbe.path }}
+          #     port: {{ .Values.node.dtl.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.node.dtl.readinessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
+          # {{- if .Values.node.dtl.livenessProbe.enabled }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: {{ .Values.node.dtl.livenessProbe.path }}
+          #     port: {{ .Values.node.dtl.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.node.dtl.livenessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
         {{- end }}
         {{ if .Values.node.healthcheck.enabled }}
         - name: {{ .Release.Name }}-healthcheck
@@ -92,6 +132,26 @@ spec:
           ports:
             - containerPort: {{ .Values.node.healthcheck.port }}
               name: healthcheck
+          # {{- if .Values.node.healthcheck.readinessProbe.enabled }}
+          # readinessProbe:
+          #   httpGet:
+          #     path: {{ .Values.node.healthcheck.readinessProbe.path }}
+          #     port: {{ .Values.node.healthcheck.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.node.healthcheck.readinessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
+          # {{- if .Values.node.healthcheck.livenessProbe.enabled }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: {{ .Values.node.healthcheck.livenessProbe.path }}
+          #     port: {{ .Values.node.healthcheck.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.node.healthcheck.livenessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
         {{- end }}
       {{- if .Values.node.nodeSelector.enabled }}
       nodeSelector:

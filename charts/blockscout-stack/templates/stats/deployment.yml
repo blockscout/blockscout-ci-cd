@@ -39,14 +39,15 @@ spec:
           # volumeMounts:
           #   - name: {{ .Release.Name }}-logs
           #     mountPath: /usr/local/path
-          {{- if .Values.stats.livenessProbe.enabled }}
+          {{- if .Values.stats.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
-              path: {{ .Values.stats.livenessProbe.path }}
+              path: {{ .Values.stats.readinessProbe.path }}
               port: {{ .Values.stats.docker.targetPort }}
               scheme: HTTP
-            initialDelaySeconds: 60
-            periodSeconds: 10
+            {{- with .Values.stats.readinessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
           {{- end }}
           {{- if .Values.stats.livenessProbe.enabled }}
           livenessProbe:
@@ -54,8 +55,9 @@ spec:
               path: {{ .Values.stats.livenessProbe.path }}
               port: {{ .Values.stats.docker.targetPort }}
               scheme: HTTP
-            initialDelaySeconds: 100
-            periodSeconds: 100
+            {{- with .Values.stats.livenessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
           {{- end }}
       # volumes:
       #   - name: {{ .Release.Name }}-logs
