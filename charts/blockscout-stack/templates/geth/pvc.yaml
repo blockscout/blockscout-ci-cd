@@ -13,9 +13,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   {{- if .Values.geth.persistence.existingPV }}
-  {{- with .Values.geth.persistence.existingPV }}
-  volumeName: {{ . | toYaml | nindent 6 }}
-  {{- end }}
+  volumeName: {{ pluck $.Values.global.env .Values.geth.persistence.existingPV | first | default .Values.geth.persistence.existingPV._default | quote }}
   {{- end }}
   resources:
     requests:
@@ -34,9 +32,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   {{- if .Values.geth.client.persistence.existingPV }}
-  {{- with .Values.geth.client.persistence.existingPV }}
-  volumeName: {{ . | toYaml | nindent 6 }}
-  {{- end }}
+  volumeName: {{ pluck $.Values.global.env .Values.geth.client.persistence.existingPV | first | default .Values.geth.client.persistence.existingPV._default | quote }}
   {{- end }}
   resources:
     requests:

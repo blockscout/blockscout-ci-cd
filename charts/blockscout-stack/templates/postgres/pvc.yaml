@@ -13,9 +13,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   {{- if .Values.postgres.existingPV }}
-  {{- with .Values.postgres.existingPV }}
-  volumeName: {{ . | toYaml | nindent 6 }}
-  {{- end }}
+  volumeName: {{ pluck $.Values.global.env .Values.postgres.existingPV | first | default .Values.postgres.existingPV._default | quote }}
   {{- end }}
   resources:
     requests:

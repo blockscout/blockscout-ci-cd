@@ -13,9 +13,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   {{- if .Values.node.persistence.existingPV }}
-  {{- with .Values.node.persistence.existingPV }}
-  volumeName: {{ . | toYaml | nindent 6 }}
-  {{- end }}
+  volumeName: {{ pluck $.Values.global.env .Values.node.persistence.existingPV | first | default .Values.node.persistence.existingPV._default | quote }}
   {{- end }}
   resources:
     requests:
@@ -36,9 +34,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   {{- if .Values.node.dtl.persistence.existingPV }}
-  {{- with .Values.node.dtl.persistence.existingPV }}
-  volumeName: {{ . | toYaml | nindent 6 }}
-  {{- end }}
+  volumeName: {{ pluck $.Values.global.env .Values.node.dtl.persistence.existingPV | first | default .Values.node.dtl.persistence.existingPV._default | quote }}
   {{- end }}
   resources:
     requests:
