@@ -71,7 +71,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ $key }}-additionalVolume
+  name: {{ $key }}-dtl-additionalVolume
 spec:
   {{- if $.Values.node.dtl.persistence.storageClass }}
   {{- with $.Values.node.dtl.persistence.storageClass }}
@@ -95,11 +95,10 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ $key }}-additionalVolume
+  name: {{ $key }}-healthcheck-additionalVolume
 spec:
-  {{- if $.Values.node.persistence.healthcheck.storageClass }}
-  {{- if $.Values.node..persistence.storageClass }}
-  {{- with $.Values.node.persistence.storageClass }}
+  {{- if $.Values.node.healthcheck.persistence.storageClass }}
+  {{- with $.Values.node.healthcheck.persistence.storageClass }}
   storageClassName: {{ . | toYaml | nindent 6 }}
   {{- end }}
   {{- end }}

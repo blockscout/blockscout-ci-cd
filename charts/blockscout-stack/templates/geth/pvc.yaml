@@ -72,8 +72,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ $key }}-client-additionalVolume
 spec:
-  {{- if $.Values.geth.persistence.storageClass }}
-  {{- with $.Values.geth.persistence.storageClass }}
+  {{- if $.Values.geth.client.persistence.storageClass }}
+  {{- with $.Values.geth.client.persistence.storageClass }}
   storageClassName: {{ . | toYaml | nindent 6 }}
   {{- end }}
   {{- end }}
