@@ -47,7 +47,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ $key }}-additionalVolume
+  name: {{ $key }}-additional-volume
 spec:
   {{- if $.Values.node.persistence.storageClass }}
   {{- with $.Values.node.persistence.storageClass }}
@@ -71,7 +71,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ $key }}-dtl-additionalVolume
+  name: {{ $key }}-dtl-additional-volume
 spec:
   {{- if $.Values.node.dtl.persistence.storageClass }}
   {{- with $.Values.node.dtl.persistence.storageClass }}
@@ -95,7 +95,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ $key }}-healthcheck-additionalVolume
+  name: {{ $key }}-healthcheck-additional-volume
 spec:
   {{- if $.Values.node.healthcheck.persistence.storageClass }}
   {{- with $.Values.node.healthcheck.persistence.storageClass }}

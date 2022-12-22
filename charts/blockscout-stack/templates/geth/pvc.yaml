@@ -46,7 +46,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ $key }}-additionalVolume
+  name: {{ $key }}-additional-volume
 spec:
   {{- if $.Values.geth.persistence.storageClass }}
   {{- with $.Values.geth.persistence.storageClass }}
@@ -70,7 +70,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ $key }}-client-additionalVolume
+  name: {{ $key }}-client-additional-volume
 spec:
   {{- if $.Values.geth.client.persistence.storageClass }}
   {{- with $.Values.geth.client.persistence.storageClass }}

@@ -224,14 +224,14 @@ spec:
           {{- range $key, $value := .Values.geth.persistence.additionalVolumes }}
         - name: {{ $key }}
           persistentVolumeClaim:
-            claimName: {{ $key }}-additionalVolume
+            claimName: {{ $key }}-additional-volume
           {{- end }}
         {{- end }}
         {{- if .Values.geth.client.persistence.additionalVolumes }}
           {{- range $key, $value := .Values.geth.client.persistence.additionalVolumes }}
         - name: {{ $key }}
           persistentVolumeClaim:
-            claimName: {{ $key }}-client-additionalVolume
+            claimName: {{ $key }}-client-additional-volume
           {{- end }}
         {{- end }}
 ---

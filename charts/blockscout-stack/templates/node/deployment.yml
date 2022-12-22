@@ -199,21 +199,21 @@ spec:
           {{- range $key, $value := .Values.node.persistence.additionalVolumes }}
         - name: {{ $key }}
           persistentVolumeClaim:
-            claimName: {{ $key }}-additionalVolume
+            claimName: {{ $key }}-additional-volume
           {{- end }}
         {{- end }}
         {{- if .Values.node.dtl.persistence.additionalVolumes }}
           {{- range $key, $value := .Values.node.dtl.persistence.additionalVolumes }}
         - name: {{ $key }}
           persistentVolumeClaim:
-            claimName: {{ $key }}-dtl-additionalVolume
+            claimName: {{ $key }}-dtl-additional-volume
           {{- end }}
         {{- end }}
         {{- if .Values.node.healthcheck.persistence.additionalVolumes }}
           {{- range $key, $value := .Values.node.healthcheck.persistence.additionalVolumes }}
         - name: {{ $key }}
           persistentVolumeClaim:
-            claimName: {{ $key }}-healthcheck-additionalVolume
+            claimName: {{ $key }}-healthcheck-additional-volume
           {{- end }}
         {{- end }}
 ---
