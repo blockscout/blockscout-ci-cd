@@ -2,7 +2,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ .Release.Name }}-sigProvider
+  name: {{ .Release.Name }}-sig-provider
 spec:
   endpoints:
   - scrapeTimeout: 10s
@@ -10,5 +10,5 @@ spec:
     path: /metrics
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-sigProvider
+      app: {{ .Release.Name }}-sig-provider
 {{- end }}
