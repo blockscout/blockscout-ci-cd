@@ -42,4 +42,77 @@ spec:
 ---
 {{- end }}
 
+{{- if .Values.node.persistence.additionalVolumes }}
+{{- range $key, $value := .Values.node.persistence.additionalVolumes }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $key }}-additionalVolume
+spec:
+  {{- if $.Values.node.persistence.storageClass }}
+  {{- with $.Values.node.persistence.storageClass }}
+  storageClassName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  {{- if hasKey $value.existingPV $.Values.global.env }}
+  volumeName: {{ pluck $.Values.global.env $value.existingPV | first | default $value.existingPV._default | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ pluck $.Values.global.env $value.storage | first | default $value.storage._default | quote }}
+---
+{{- end }}
+{{- end }}
+
+{{- if .Values.node.dtl.persistence.additionalVolumes }}
+{{- range $key, $value := .Values.node.dtl.persistence.additionalVolumes }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $key }}-additionalVolume
+spec:
+  {{- if $.Values.node.dtl.persistence.storageClass }}
+  {{- with $.Values.node.dtl.persistence.storageClass }}
+  storageClassName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  {{- if hasKey $value.existingPV $.Values.global.env }}
+  volumeName: {{ pluck $.Values.global.env $value.existingPV | first | default $value.existingPV._default | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ pluck $.Values.global.env $value.storage | first | default $value.storage._default | quote }}
+---
+{{- end }}
+{{- end }}
+
+{{- if .Values.node.healthcheck.persistence.additionalVolumes }}
+{{- range $key, $value := .Values.node.healthcheck.persistence.additionalVolumes }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $key }}-additionalVolume
+spec:
+  {{- if $.Values.node.persistence.healthcheck.storageClass }}
+  {{- if $.Values.node..persistence.storageClass }}
+  {{- with $.Values.node.persistence.storageClass }}
+  storageClassName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  {{- if hasKey $value.existingPV $.Values.global.env }}
+  volumeName: {{ pluck $.Values.global.env $value.existingPV | first | default $value.existingPV._default | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ pluck $.Values.global.env $value.storage | first | default $value.storage._default | quote }}
+---
+{{- end }}
+{{- end }}
+
 {{- end }}

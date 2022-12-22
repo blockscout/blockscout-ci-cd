@@ -192,6 +192,15 @@ geth:
     existingPV: {}
       # testnet: 'pvc-testnet'
       # mainnet: 'pvc-mainnet'
+    # additional volumes
+    additionalVolumes: {}
+      # vol1:
+      #   name: vol11
+      #   mountPath: /opt/bas
+      #   existingPV: {}
+      #     # e2e: 'fgg'
+      #   storage: {}
+      #     # e2e: '10Gi'
 
   # probes
   livenessProbe:
@@ -257,6 +266,14 @@ geth:
       existingPV: {}
         # testnet: 'pvc-testnet'
         # mainnet: 'pvc-mainnet'
+      additionalVolumes: {}
+        # vol1:
+        #   name: vol11
+        #   mountPath: /opt/bas
+        #   existingPV: {}
+        #     # e2e: 'fgg'
+        #   storage: {}
+        #     # e2e: '10Gi'
     files:
       enabled: false
       list: {}
@@ -371,6 +388,14 @@ node:
     existingPV: {}
       # testnet: 'pvc-testnet'
       # mainnet: 'pvc-mainnet'
+    additionalVolumes: {}
+      # vol1:
+      #   name: vol11
+      #   mountPath: /opt/bas
+      #   existingPV: {}
+      #     # e2e: 'fgg'
+      #   storage: {}
+      #     # e2e: '10Gi'
 
   # probes
   livenessProbe:
@@ -610,6 +635,14 @@ node:
       existingPV: {}
         # testnet: 'pvc-testnet'
         # mainnet: 'pvc-mainnet'
+      additionalVolumes: {}
+        # vol1:
+        #   name: vol11
+        #   mountPath: /opt/bas
+        #   existingPV: {}
+        #     # e2e: 'fgg'
+        #   storage: {}
+        #     # e2e: '10Gi'
     service:
       # ClusterIP, NodePort or LoadBalancer
       type: ClusterIP
@@ -697,6 +730,22 @@ node:
           _default: "200m"
         cpu:
           _default: "0.1"
+    persistence:
+      enabled: false
+      storageClass: gp3-new
+      storage:
+        _default: 10Gi
+      existingPV: {}
+        # testnet: 'pvc-testnet'
+        # mainnet: 'pvc-mainnet'
+      additionalVolumes: {}
+        # vol1:
+        #   name: vol11
+        #   mountPath: /opt/bas
+        #   existingPV: {}
+        #     # e2e: 'fgg'
+        #   storage: {}
+        #     # e2e: '10Gi'
     # probes
     livenessProbe:
       enabled: false
@@ -1166,3 +1215,78 @@ allowance:
         app: blockscout
 
   environment: {}
+
+# enable sig-provider deploy
+sigProvider:
+  enabled: false
+  image:
+    _default: ghcr.io/blockscout/sig-provider:main
+
+  replicas:
+    app: 1
+  docker:
+    port: 80
+    targetPort: 8050
+    metricsPort: 6060
+
+  strategy: RollingUpdate
+
+  service:
+    # ClusterIP, NodePort or LoadBalancer
+    type: ClusterIP
+
+  # enable ingress
+  ingress:
+    enabled: false
+    annotations: {}
+    host:
+      _default: <url>
+    # enable https
+    tls:
+      enabled: false
+      createSecret: false
+
+  resources:
+    limits:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+    requests:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+
+  # node label
+  nodeSelector:
+    enabled: true
+    labels:
+      _default:
+        app: blockscout
+
+  # probes
+  livenessProbe:
+    enabled: true
+    path: /health
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
+  readinessProbe:
+    enabled: true
+    path: /health
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
+
+  # enable Horizontal Pod Autoscaler
+  hpa:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 10
+    cpuTarget: 90
+
+  environment: {}
+    # ENV:
+    #   _default: 'true'

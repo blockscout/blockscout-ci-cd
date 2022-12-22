@@ -91,6 +91,12 @@ spec:
               subPath: {{ $key }}
               {{- end }}
             {{- end }}
+            {{- if .Values.geth.persistence.additionalVolumes }}
+              {{- range $key, $value := .Values.geth.persistence.additionalVolumes }}
+            - name: {{ $key }}
+              mountPath: {{ $value.mountPath }}
+              {{- end }}
+            {{- end }}
           # {{- if .Values.geth.readinessProbe.enabled }}
           # readinessProbe:
           #   httpGet:
@@ -140,11 +146,10 @@ spec:
             - containerPort: {{ toYaml $value.number | indent 2 }}
               name: {{ $key }}
           {{- end }}
+          {{- if .Values.geth.client.persistence.enabled }}
           volumeMounts:
-            {{- if .Values.geth.client.persistence.enabled }}
             - name: client
               mountPath: {{ .Values.geth.client.persistence.mountPath }}
-            {{- end }}
             {{- if .Values.geth.jwt.enabled }}
             - mountPath: {{ .Values.geth.jwt.mountPath }}
               name: jwt
@@ -157,6 +162,13 @@ spec:
               subPath: {{ $key }}
               {{- end }}
             {{- end }}
+            {{- if .Values.geth.client.persistence.additionalVolumes }}
+              {{- range $key, $value := .Values.geth.client.persistence.additionalVolumes }}
+            - name: {{ $key }}
+              mountPath: {{ $value.mountPath }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
           # {{- if .Values.geth.client.readinessProbe.enabled }}
           # readinessProbe:
           #   httpGet:
@@ -207,6 +219,20 @@ spec:
         - name: client
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-client
+        {{- end }}
+        {{- if .Values.geth.persistence.additionalVolumes }}
+          {{- range $key, $value := .Values.geth.persistence.additionalVolumes }}
+        - name: {{ $key }}
+          persistentVolumeClaim:
+            claimName: {{ $key }}-additionalVolume
+          {{- end }}
+        {{- end }}
+        {{- if .Values.geth.client.persistence.additionalVolumes }}
+          {{- range $key, $value := .Values.geth.client.persistence.additionalVolumes }}
+        - name: {{ $key }}
+          persistentVolumeClaim:
+            claimName: {{ $key }}-client-additionalVolume
+          {{- end }}
         {{- end }}
 ---
 {{- end }}

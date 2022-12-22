@@ -38,11 +38,10 @@ spec:
               name: noderpchttp
             - containerPort: {{ .Values.node.portWs }}
               name: noderpctcp
+          {{- if .Values.node.persistence.enabled }}
           volumeMounts:
-            {{- if .Values.node.persistence.enabled }}
             - name: node
               mountPath: "/geth"
-            {{- end }}
             {{- if .Values.node.files.enabled }}
             {{- range $key, $value := .Values.node.files.list }}
             - mountPath: /scripts/{{ $key }}
@@ -50,6 +49,13 @@ spec:
               subPath: {{ $key }}
             {{- end }}
             {{- end }}
+            {{- if .Values.node.persistence.additionalVolumes }}
+              {{- range $key, $value := .Values.node.persistence.additionalVolumes }}
+            - name: {{ $key }}
+              mountPath: {{ $value.mountPath }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
           # {{- if .Values.node.readinessProbe.enabled }}
           # readinessProbe:
           #   httpGet:
@@ -88,11 +94,17 @@ spec:
           ports:
             - containerPort: {{ .Values.node.dtl.port }}
               name: dtl
+          {{- if .Values.node.dtl.persistence.enabled }}
           volumeMounts:
-            {{- if .Values.node.dtl.persistence.enabled }}
             - name: dtl
               mountPath: "/db"
+            {{- if .Values.node.dtl.persistence.additionalVolumes }}
+              {{- range $key, $value := .Values.node.dtl.persistence.additionalVolumes }}
+            - name: {{ $key }}
+              mountPath: {{ $value.mountPath }}
+              {{- end }}
             {{- end }}
+          {{- end }}
           # {{- if .Values.node.dtl.readinessProbe.enabled }}
           # readinessProbe:
           #   httpGet:
@@ -132,6 +144,15 @@ spec:
           ports:
             - containerPort: {{ .Values.node.healthcheck.port }}
               name: healthcheck
+          {{- if .Values.node.healthcheck.persistence.enabled }}
+          volumeMounts:
+            {{- if .Values.node.healthcheck.persistence.additionalVolumes }}
+              {{- range $key, $value := .Values.node.healthcheck.persistence.additionalVolumes }}
+            - name: {{ $key }}
+              mountPath: {{ $value.mountPath }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
           # {{- if .Values.node.healthcheck.readinessProbe.enabled }}
           # readinessProbe:
           #   httpGet:
@@ -173,6 +194,27 @@ spec:
         - name: dtl
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-dtl
+        {{- end }}
+        {{- if .Values.node.persistence.additionalVolumes }}
+          {{- range $key, $value := .Values.node.persistence.additionalVolumes }}
+        - name: {{ $key }}
+          persistentVolumeClaim:
+            claimName: {{ $key }}-additionalVolume
+          {{- end }}
+        {{- end }}
+        {{- if .Values.node.dtl.persistence.additionalVolumes }}
+          {{- range $key, $value := .Values.node.dtl.persistence.additionalVolumes }}
+        - name: {{ $key }}
+          persistentVolumeClaim:
+            claimName: {{ $key }}-dtl-additionalVolume
+          {{- end }}
+        {{- end }}
+        {{- if .Values.node.healthcheck.persistence.additionalVolumes }}
+          {{- range $key, $value := .Values.node.healthcheck.persistence.additionalVolumes }}
+        - name: {{ $key }}
+          persistentVolumeClaim:
+            claimName: {{ $key }}-healthcheck-additionalVolume
+          {{- end }}
         {{- end }}
 ---
 {{- end }}
