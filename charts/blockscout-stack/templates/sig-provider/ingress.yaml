@@ -15,7 +15,7 @@ metadata:
     {{- range .Values.sigProvider.ingress.annotations }}
     {{ . }}
     {{- end}}
-  name: {{ .Release.Name }}-sigProvider-ingress
+  name: {{ .Release.Name }}-sig-provider-ingress
 spec:
   rules:
     - host: {{ pluck $.Values.global.env .Values.sigProvider.ingress.host | first | default .Values.sigProvider.ingress.host._default | quote }}
@@ -32,7 +32,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: sigProvider-svc
+                name: sig-provider-svc
                 port:
                   number: {{ .Values.sigProvider.docker.port }}
   {{- if .Values.sigProvider.ingress.tls.enabled }}
@@ -40,7 +40,7 @@ spec:
     - hosts:
         - {{ pluck $.Values.global.env .Values.sigProvider.ingress.host | first | default .Values.sigProvider.ingress.host._default | quote }}
       {{- if .Values.sigProvider.ingress.tls.createSecret }}
-      secretName: {{ .Release.Name }}-sigProvider-tls
+      secretName: {{ .Release.Name }}-sig-provider-tls
       {{- end }}
   {{- end }}
 {{- end }}

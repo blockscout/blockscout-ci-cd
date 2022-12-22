@@ -2,23 +2,23 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: {{ .Release.Name }}-sigProvider
+  name: {{ .Release.Name }}-sig-provider
 spec:
   replicas: {{ .Values.sigProvider.replicas.app }}
   strategy:
     type: {{ .Values.sigProvider.strategy }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-sigProvider
+      app: {{ .Release.Name }}-sig-provider
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-sigProvider
+        app: {{ .Release.Name }}-sig-provider
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
     spec:
       containers:
-        - name: {{ .Release.Name }}-sigProvider
+        - name: {{ .Release.Name }}-sig-provider
           image: {{ pluck $.Values.global.env .Values.sigProvider.image | first | default .Values.sigProvider.image._default | quote }}
           resources:
           {{- with .Values.sigProvider.resources }}
