@@ -918,6 +918,12 @@ stats:
       enabled: false
       createSecret: false
 
+  # enable service to connect to RDS
+  rds:
+    enabled: false
+    endpoint:
+      _default: <endpoint>.<region>.rds.amazonaws.com
+
   resources:
     limits:
       memory:
@@ -960,6 +966,11 @@ stats:
     cpuTarget: 90
 
   environment: {}
+    # DATABASE_URL:
+    # # postgres pod
+    #   _default: postgresql://<user>:<pass>@postgres:5432/<db>
+    # # RDS
+    #   _default: postgresql://<user>:<pass>@db-stats-svc:5432/<db>
 
 # enable visualizer deploy
 visualizer:
@@ -1321,6 +1332,12 @@ ethBytecodeDb:
       enabled: false
       createSecret: false
 
+  # enable service to connect to RDS
+  rds:
+    enabled: false
+    endpoint:
+      _default: <endpoint>.<region>.rds.amazonaws.com
+
   resources:
     limits:
       memory:
@@ -1365,3 +1382,8 @@ ethBytecodeDb:
   environment: {}
     # ENV:
     #   _default: 'true'
+    # DATABASE_URL:
+    # # postgres pod
+    #   _default: postgresql://<user>:<pass>@postgres:5432/<db>
+    # # RDS
+    #   _default: postgresql://<user>:<pass>@db-eth-bytecode-db-svc:5432/<db>

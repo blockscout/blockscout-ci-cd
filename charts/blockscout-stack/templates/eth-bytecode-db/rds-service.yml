@@ -1,0 +1,17 @@
+{{- if .Values.ethBytecodeDb.enabled }}
+{{- if .Values.ethBytecodeDb.rds.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ .Release.Name }}-eth-bytecode-db-rds-svc
+  name: db-eth-bytecode-db-svc
+spec:
+  externalName: {{ pluck $.Values.global.env .Values.ethBytecodeDb.rds.endpoint | first | default .Values.ethBytecodeDb.rds.endpoint._default | quote }}
+  selector:
+    app: {{ .Release.Name }}-eth-bytecode-db-rds-svc
+  type: ExternalName
+status:
+  loadBalancer: {}
+{{- end }}
+{{- end }}
