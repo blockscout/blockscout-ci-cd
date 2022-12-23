@@ -1290,3 +1290,78 @@ sigProvider:
   environment: {}
     # ENV:
     #   _default: 'true'
+
+# enable eth-bytecode-db deploy
+ethBytecodeDb:
+  enabled: false
+  image:
+    _default: ghcr.io/blockscout/eth-bytecode-db:main
+
+  replicas:
+    app: 1
+  docker:
+    port: 80
+    targetPort: 8050
+    metricsPort: 6060
+
+  strategy: RollingUpdate
+
+  service:
+    # ClusterIP, NodePort or LoadBalancer
+    type: ClusterIP
+
+  # enable ingress
+  ingress:
+    enabled: false
+    annotations: {}
+    host:
+      _default: <url>
+    # enable https
+    tls:
+      enabled: false
+      createSecret: false
+
+  resources:
+    limits:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+    requests:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+
+  # node label
+  nodeSelector:
+    enabled: true
+    labels:
+      _default:
+        app: blockscout
+
+  # probes
+  livenessProbe:
+    enabled: true
+    path: /health
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
+  readinessProbe:
+    enabled: true
+    path: /health
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
+
+  # enable Horizontal Pod Autoscaler
+  hpa:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 10
+    cpuTarget: 90
+
+  environment: {}
+    # ENV:
+    #   _default: 'true'
