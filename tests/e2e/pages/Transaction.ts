@@ -55,7 +55,6 @@ export class TransactionPage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}16 >> text=/ago.*UTC.*Confirmed/`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}18 >> text=From`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}21 >> text=0x`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}25 >> text=Interacted with contract`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}28 >> text=/Contract.*0x.*created/`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}31 >> text=Value`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}34 >> text=SPOA`)

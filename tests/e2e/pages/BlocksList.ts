@@ -17,7 +17,7 @@ export class BlockListPage extends CommonPage {
 
     TABLE_HEADING_1 = `th:has-text("Block")`
 
-    TABLE_HEADING_2 = `th:has-text("Size")`
+    TABLE_HEADING_2 = `th:has-text("Size, bytes")`
 
     TABLE_HEADING_3 = `th:has-text("Validator")`
 
@@ -61,7 +61,7 @@ export class BlockListPage extends CommonPage {
     async check_table(): Promise<void> {
         await this.grid(0, 0, `\\d+`)
         await this.grid(0, 0, `sec`)
-        await this.grid(0, 1, `\\d+.*bytes`)
+        await this.grid(0, 1, `\\d+`)
         await this.grid(0, 2, `0x`)
         await this.grid(0, 3, `\\d+`)
         await this.grid(0, 4, `\\d+.*\\%.*\\%`)
