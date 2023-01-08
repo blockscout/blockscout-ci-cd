@@ -103,10 +103,22 @@ export class CommonPage {
 
     ALERT_DIV = `[role="alert"]`
 
+    HEADER_AD = `main >> div >> nth=3 >> a`
+
+    HEADER_TX_AD = `main >> div >> nth=0 >> a`
+
     constructor(page: Page) {
         this.page = page
         this.actions = new WebActions(this.page)
         this.apiActions = new APIActions()
+    }
+
+    async check_header_ad(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(this.HEADER_AD)
+    }
+
+    async check_header_tx_ad(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(this.HEADER_TX_AD)
     }
 
     async signUp(email: string, password: string): Promise<void> {

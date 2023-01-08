@@ -31,6 +31,16 @@ export class BlockListPage extends CommonPage {
 
     TABLE_GRID_CELL = `[role="gridcell"] >> nth=`
 
+    NETWORK_MENU = `[aria-label="Network menu"]`
+
+    NETWORK_GROUP_MAINNETS = `text=mainnets`
+
+    NETWORK_GROUP_TESTNETS = `text=testnets`
+
+    NETWORK_GROUP_OTHER = `text=other`
+
+    NETWORK_LIST_ITEM = `section >> ul >> li >> nth=`
+
     async grid(row: number, col: number, regex: string): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`tbody >> tr >> nth=${row} >> td >> nth=${col} >> text=/${regex}/`)
     }
@@ -45,6 +55,25 @@ export class BlockListPage extends CommonPage {
 
     async open(): Promise<void> {
         await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}/blocks`)
+    }
+
+    async check_network_menu(): Promise<void> {
+        await this.actions.clickElement(this.NETWORK_MENU)
+        await this.actions.clickElement(this.NETWORK_GROUP_MAINNETS)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}0 >> text=Gnosis Chain`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}1 >> text=Optimism on Gnosis Chain`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}2 >> text=Arbitrum on xDai`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}3 >> text=Ethereum`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}4 >> text=Ethereum Classic`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}5 >> text=POA`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}6 >> text=RSK`)
+        await this.actions.clickElement(this.NETWORK_GROUP_TESTNETS)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}0 >> text=Gnosis Chain Testnet`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}1 >> text=POA Sokol`)
+        await this.actions.clickElement(this.NETWORK_GROUP_OTHER)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}0 >> text=ARTIS`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}1 >> text=LUKSO L14`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}2 >> text=Astar`)
     }
 
     async check_header(): Promise<void> {
