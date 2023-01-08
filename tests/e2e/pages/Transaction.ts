@@ -40,6 +40,8 @@ export class TransactionPage extends CommonPage {
 
     RAW_TRACE_TEXT = `textarea`
 
+    DESCRIPTION_AD_BANNER = `#adBanner`
+
     async open(hash: string): Promise<void> {
         await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}/tx/${hash}`)
     }
@@ -70,6 +72,7 @@ export class TransactionPage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}59 >> text=/Base.*\\d+.*Max.*\\d+.*Max priority.*\\d+/`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}63 >> text=Burnt fees`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}66 >> text=/\\d+.*SPOA/`)
+        await this.actions.verifyElementIsDisplayed(this.DESCRIPTION_AD_BANNER)
     }
 
     async check_tx_details(): Promise<void> {
