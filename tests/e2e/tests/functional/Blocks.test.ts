@@ -15,3 +15,13 @@ test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check blocks list  (new
     await blocksListPage.check_header()
     await blocksListPage.check_table()
 })
+
+test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check network options are present`, async ({ blocksListPage }) => {
+    await blocksListPage.open()
+    await blocksListPage.check_network_menu()
+})
+
+test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check header ad is present`, async ({ blocksListPage }) => {
+    await blocksListPage.open()
+    await blocksListPage.check_header_ad()
+})
