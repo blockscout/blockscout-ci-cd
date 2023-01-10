@@ -293,28 +293,38 @@ scVerifier:
       _default: /metrics
     SMART_CONTRACT_VERIFIER__JAEGER__ENABLED:
       _default: 'false'
+
 # enable stats deploy
 stats:
-  enabled: false
+  enabled: true
   image:
     _default: ghcr.io/blockscout/stats:main
+
   replicas:
     app: 1
   docker:
     port: 80
     targetPort: 8050
     #metricsPort: 6060
+
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
+
   # enable ingress
   ingress:
     enabled: true
+    annotations:
+      - 'nginx.ingress.kubernetes.io/cors-allow-origin: "https://*.blockscout-main.test.aws-k8s.blockscout.com, https://*.test.aws-k8s.blockscout.com, https://*.blockscout.com, http://localhost:3000"'
+      - 'nginx.ingress.kubernetes.io/cors-allow-credentials: "true"'
+      - 'nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS, DELETE, PATCH'
+      - 'nginx.ingress.kubernetes.io/enable-cors: "true"'
     host:
-      _default: stats.test.aws-k8s.blockscout.com
+      _default: stats-e2e.test.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true
+
   resources:
     limits:
       memory:
@@ -326,25 +336,18 @@ stats:
         _default: "0.5Gi"
       cpu:
         _default: "0.25"
+
   # node label
   nodeSelector:
     enabled: true
-    labels:
-      app: blockscout
-  # probes
-  # livenessProbe:
-  #   enabled: true
-  #   path: /health
-  # readinessProbe:
-  #   enabled: true
-  #   path: /health
-  # enable Horizontal Pod Autoscaler
-  # hpa:
-  #   enabled: true
-  #   minReplicas: 1
-  #   maxReplicas: 10
-  #   cpuTarget: 90
+    app: blockscout
+
   environment:
+    RUST_LOG:
+      _default: info
+    STATS__RUN_MIGRATIONS:
+      _default: 'true'
+
 frontend:
   app: blockscout
   enabled: true

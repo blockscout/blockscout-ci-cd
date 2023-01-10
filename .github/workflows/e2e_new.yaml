@@ -252,46 +252,48 @@ jobs:
           fi
           echo "DEPLOY_SUFFIX=$DEPLOY_SUFFIX" >> "$GITHUB_ENV"
           if ${{ inputs.globalEnv != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set global.env=${{ inputs.globalEnv }} "
+            DEPLOY_ARGS="$DEPLOY_ARGS --set global.env=${{ inputs.globalEnv }}"
           fi
           if ${{ inputs.frontendImage != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.image._default=${{ inputs.frontendImage }} "
+            DEPLOY_ARGS="$DEPLOY_ARGS --set frontend.image._default=${{ inputs.frontendImage }}"
           fi
           if ${{ inputs.frontendIngressHost != '' }}; then
             FRONTEND_INGRESS_URL=${{ inputs.frontendIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN
             FRONTEND_URL=https://$FRONTEND_INGRESS_URL
             echo "FRONTEND_URL=$FRONTEND_URL" >> "$GITHUB_ENV"
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.ingress.host._default=$FRONTEND_INGRESS_URL "
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_APP_HOST._default=$FRONTEND_INGRESS_URL "
+            DEPLOY_ARGS="$DEPLOY_ARGS --set frontend.ingress.host._default=$FRONTEND_INGRESS_URL"
+            DEPLOY_ARGS="$DEPLOY_ARGS --set frontend.environment.NEXT_PUBLIC_APP_HOST._default=$FRONTEND_INGRESS_URL"
           fi
           if ${{ inputs.blockscoutImage != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.image._default=${{ inputs.blockscoutImage }} "
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.init.image._default=${{ inputs.blockscoutImage }} "
+            DEPLOY_ARGS="$DEPLOY_ARGS --set blockscout.image._default=${{ inputs.blockscoutImage }}"
+            DEPLOY_ARGS="$DEPLOY_ARGS --set blockscout.init.image._default=${{ inputs.blockscoutImage }}"
 
           fi
           if ${{ inputs.blockscoutIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_CALLBACK_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/auth/auth0/callback "
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.environment.ACCOUNT_AUTH0_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/auth/logout "
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/auth/logout "
+            DEPLOY_ARGS="$DEPLOY_ARGS --set blockscout.environment.ACCOUNT_AUTH0_CALLBACK_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/auth/auth0/callback"
+            DEPLOY_ARGS="$DEPLOY_ARGS --set blockscout.environment.ACCOUNT_AUTH0_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/auth/logout"
+            DEPLOY_ARGS="$DEPLOY_ARGS --set frontend.environment.NEXT_PUBLIC_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/auth/logout"
             BLOCKSCOUT_URL=https://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN
-            DEPLOY_ARGS="$DEPLOY_ARGS--set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN "
-            DEPLOY_ARGS="$DEPLOY_ARGS--set frontend.environment.NEXT_PUBLIC_API_HOST._default=${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN "
+            DEPLOY_ARGS="$DEPLOY_ARGS --set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN"
+            DEPLOY_ARGS="$DEPLOY_ARGS --set frontend.environment.NEXT_PUBLIC_API_HOST._default=${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN"
             echo "BLOCKSCOUT_URL=$BLOCKSCOUT_URL" >> "$GITHUB_ENV"
             echo "::set-output name=app_url::$BLOCKSCOUT_URL"
           fi
           if ${{ inputs.scVerifierImage != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.image._default=${{ inputs.scVerifierImage }} "
+            DEPLOY_ARGS="$DEPLOY_ARGS --set scVerifier.image._default=${{ inputs.scVerifierImage }}"
           fi
           if ${{ inputs.scVerifierIngressHost != '' }}; then
             SC_VERIFIER_URL=https://${{ inputs.scVerifierIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN
             echo "SC_VERIFIER_URL=$SC_VERIFIER_URL" >> "$GITHUB_ENV"
-            DEPLOY_ARGS="$DEPLOY_ARGS--set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN "
+            DEPLOY_ARGS="$DEPLOY_ARGS --set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN"
           fi
           if ${{ inputs.gethIngressHost != '' }}; then
             NETWORK_URL=${{ inputs.gethIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/http
             echo "NETWORK_URL=http://$NETWORK_URL" >> "$GITHUB_ENV"
-            DEPLOY_ARGS="$DEPLOY_ARGS--set geth.ingress.host._default=${{ inputs.gethIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN "
+            DEPLOY_ARGS="$DEPLOY_ARGS --set geth.ingress.host._default=${{ inputs.gethIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN"
           fi
+          STATS_URL=${{ inputs.gethIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/http
+          DEPLOY_ARGS="$DEPLOY_ARGS --set stats.ingress.host._default=stats-$DEPLOY_SUFFIX.$K8S_DOMAIN"
           echo "$DEPLOY_ARGS"
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
 
