@@ -42,6 +42,13 @@ spec:
             - mountPath: {{ .Values.postgres.mountPath }}
               name: postgredb
               subPath: postgres
+            {{- if .Values.postgres.files.enabled }}
+              {{- range $key, $value := .Values.postgres.files.list }}
+            - mountPath: {{ $.Values.postgres.files.mountPath }}/{{ $key }}
+              name: postgres-cm
+              subPath: {{ $key }}
+              {{- end }}
+            {{- end }}
           # {{- if .Values.postgres.readinessProbe.enabled }}
           # readinessProbe:
           #   httpGet:
@@ -71,5 +78,11 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-postgres-pv-claim
           {{- end }}
+        {{- if .Values.geth.files.enabled }}
+        - configMap:
+            name: postgres-cm
+            defaultMode: 0777
+          name: {{ .Release.Name }}-postgres-cm
+        {{- end }}
 ---
 {{- end }}

@@ -116,6 +116,19 @@ postgres:
     # testnet: 'pvc-testnet'
     # mainnet: 'pvc-mainnet'
 
+  files:
+    enabled: false
+    mountPath: /docker-entrypoint-initdb.d
+    list: {}
+      # init.sql: |
+      #   CREATE USER myUser;
+
+      #   CREATE DATABASE myApp_dev;
+      #   GRANT ALL PRIVILEGES ON DATABASE myApp_dev TO myUser;
+
+      #   CREATE DATABASE myApp_test;
+      #   GRANT ALL PRIVILEGES ON DATABASE myApp_test TO myUser;
+
   resources:
     limits:
       memory:

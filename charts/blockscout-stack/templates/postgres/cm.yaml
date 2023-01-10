@@ -1,0 +1,15 @@
+{{- if .Values.postgres.enabled }}
+{{- if .Values.postgres.files.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-postgres-cm
+data:
+  {{- range $key, $value := .Values.postgres.files.list }}
+  {{ $key }}: {{ toYaml $value | indent 2 }}
+  {{- end }}
+{{- end }}
+---
+
+{{- end }}

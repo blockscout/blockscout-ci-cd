@@ -135,6 +135,14 @@ postgres:
   command: '["docker-entrypoint.sh", "-c"]'
   args: '["max_connections=300"]'
 
+  files:
+    enabled: true
+    mountPath: /docker-entrypoint-initdb.d
+    list:
+      init.sql: |
+        CREATE DATABASE stats;
+        GRANT ALL PRIVILEGES ON DATABASE stats TO postgres;
+
   resources:
     limits:
       memory:
