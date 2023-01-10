@@ -80,7 +80,7 @@ spec:
           {{- end }}
         {{- if .Values.geth.files.enabled }}
         - configMap:
-            name: {{ .Release.Name }}-postgres-cm
+            name: postgres-cm
             defaultMode: 0777
           name: postgres-cm
         {{- end }}

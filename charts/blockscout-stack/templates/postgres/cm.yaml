@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Release.Name }}-postgres-cm
+  name: postgres-cm
 data:
   {{- range $key, $value := .Values.postgres.files.list }}
   {{ $key }}: {{ toYaml $value | indent 2 }}
