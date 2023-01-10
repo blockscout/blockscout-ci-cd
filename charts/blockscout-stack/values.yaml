@@ -108,6 +108,9 @@ postgres:
 
   strategy: RollingUpdate
 
+  service:
+    type: ClusterIP
+
   persistence: false
   storageClass: gp3-new
   storage: 100Gi
