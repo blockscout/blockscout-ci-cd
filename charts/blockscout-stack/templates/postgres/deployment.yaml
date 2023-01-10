@@ -37,11 +37,13 @@ spec:
             - containerPort: {{ .Values.postgres.port }}
           env:
 {{- include "postgres_env" . | indent 10 }}
-          {{- if .Values.postgres.persistence }}
+          {{- if or ( .Values.postgres.persistence ) ( .Values.postgres.files.enabled ) }}
           volumeMounts:
+            {{- if .Values.postgres.persistence }}
             - mountPath: {{ .Values.postgres.mountPath }}
               name: postgredb
               subPath: postgres
+            {{- end }}
             {{- if .Values.postgres.files.enabled }}
               {{- range $key, $value := .Values.postgres.files.list }}
             - mountPath: {{ $.Values.postgres.files.mountPath }}/{{ $key }}
@@ -49,6 +51,7 @@ spec:
               subPath: {{ $key }}
               {{- end }}
             {{- end }}
+          {{- end }}
           # {{- if .Values.postgres.readinessProbe.enabled }}
           # readinessProbe:
           #   httpGet:
@@ -73,16 +76,19 @@ spec:
       nodeSelector:
       {{- pluck $.Values.global.env .Values.postgres.nodeSelector.labels | first | default .Values.postgres.nodeSelector.labels._default | toYaml | nindent 8 }}
       {{- end }}
+      {{- if or ( .Values.postgres.persistence ) ( .Values.postgres.files.enabled ) }}
       volumes:
+        {{- if .Values.postgres.persistence }}
         - name: postgredb
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-postgres-pv-claim
-          {{- end }}
-        {{- if .Values.geth.files.enabled }}
+        {{- end }}
+        {{- if .Values.postgres.files.enabled }}
         - configMap:
             name: postgres-cm
             defaultMode: 0777
           name: postgres-cm
         {{- end }}
+      {{- end }}
 ---
 {{- end }}
