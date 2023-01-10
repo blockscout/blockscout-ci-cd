@@ -5,7 +5,7 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: &image blockscout/blockscout:pr-3c92070f@sha256:306599314647b07f4cd3b873c991c01c38e4a48924c268adc79a21b40496f60f
+    _default: &image blockscout/blockscout:latest
   replicas:
     app: 1
   docker:
@@ -365,18 +365,25 @@ frontend:
     tls:
       enabled: true
     path:
-      prefix:
+      exact:
         # - "/(apps|auth/profile|account)"
+        - "/"
+      prefix:
+      # - "/(apps|auth/profile|account)"
+        - "/account"
         - "/apps"
         - "/_next"
         - "/node-api"
         - "/static"
         - "/auth/profile"
-        - "/account"
         - "/txs"
         - "/tx"
         - "/blocks"
         - "/block"
+        - "/login"
+        - "/address"
+        - "/stats"
+        - "/token"
   resources:
     limits:
       memory:
