@@ -34,11 +34,11 @@ export class NewHomePage {
     }
 
     async check_heaader(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.HEADER_TOTAL_BLOCKS} >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.HEADER_AVG_BLOCK_TIME} >> text=/\\d+.*sec/`)
-        await this.actions.verifyElementIsDisplayed(`${this.HEADER_TOTAL_TXNS} >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.HEADER_WALLETS} >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.HEADER_GAS_TRACKER} >> text=/\\d+.*Gwei/`)
+        await this.actions.verifyElementIsDisplayed(`${this.HEADER_TOTAL_BLOCKS} >> text=/\\d+/`, `total blocks are wrong`)
+        await this.actions.verifyElementIsDisplayed(`${this.HEADER_AVG_BLOCK_TIME} >> text=/\\d+.*s/`, `avg block time is wrong`)
+        await this.actions.verifyElementIsDisplayed(`${this.HEADER_TOTAL_TXNS} >> text=/\\d+/`, `total txns is wrong`)
+        await this.actions.verifyElementIsDisplayed(`${this.HEADER_WALLETS} >> text=/\\d+/`, `total wallets is wrong`)
+        await this.actions.verifyElementIsDisplayed(`${this.HEADER_GAS_TRACKER} >> text=/\\d+.*Gwei/`, `no gas tracker data`)
     }
 
     async check_blocks_widget(): Promise<void> {
