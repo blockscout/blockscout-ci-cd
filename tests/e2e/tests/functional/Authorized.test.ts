@@ -27,7 +27,8 @@ test(`@AccountImage @Authorized Check address tag`, async ({ authorized }) => {
     const tagName = faker.random.alphaNumeric(8)
     await authorized.addAddressTag(TestTokenAddress, tagName)
     await authorized.delay(3000)
-    await authorized.checkListRow(0, [TestTokenAddress.toLowerCase(), tagName])
+    await authorized.check_tag_list(0, 0, TestTokenAddress.toLowerCase())
+    await authorized.check_tag_list(0, 1, tagName)
     await authorized.hasText(tagName)
     await authorized.page.click(`text=${TestTokenAddress}`)
     await authorized.hasText(tagName)
@@ -47,7 +48,8 @@ test(`@AccountImage @Authorized Check transaction tag`, async ({ authorized }) =
     await authorized.selectTXTagTab()
     const tagName = faker.random.alphaNumeric(8)
     await authorized.addTXTag(TestTokenDeployTXHash, tagName)
-    await authorized.checkListRow(0, [TestTokenDeployTXHash.toLowerCase(), tagName])
+    await authorized.check_tag_list(0, 0, TestTokenDeployTXHash.toLowerCase())
+    await authorized.check_tag_list(0, 1, tagName)
     await authorized.page.click(`text=${TestTokenDeployTXHash}`)
     await authorized.hasText(tagName)
 
@@ -62,7 +64,7 @@ test(`@AccountImage @Authorized Check API keys creation`, async ({ authorized })
     await authorized.selectAPIKeysTab()
     const keyName = faker.random.alphaNumeric(8)
     await authorized.addAPIKey(keyName)
-    await authorized.checkListRow(0, [keyName])
+    await authorized.check_tag_list(0, 0, keyName)
     await authorized.deleteRow()
     // TODO: check key perms by using it?
 })
@@ -85,7 +87,10 @@ test(`@AccountImage @Authorized Check public tags creation`, async ({ authorized
         addresses: [TestTokenAddress, TestNFTAddress],
         description: `skldfhskdjfha`,
     } as PublicTagSpec)
-    await authorized.checkListRow(0, [[TestTokenAddress.toLowerCase(), TestNFTAddress.toLowerCase()], [tagName1, tagName2]])
+    await authorized.check_tag_list(0, 0, TestTokenAddress.toLowerCase())
+    await authorized.check_tag_list(0, 1, TestNFTAddress.toLowerCase())
+    await authorized.check_tag_list(0, 2, tagName1)
+    await authorized.check_tag_list(0, 3, tagName2)
 
     await authorized.deleteRow()
 })

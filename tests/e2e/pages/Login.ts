@@ -163,7 +163,7 @@ export class AuthorizedArea extends CommonPage {
 
     async openAccount(options?: Object): Promise<void> {
         await this.actions.navigateToURL(process.env.BLOCKSCOUT_URL, options)
-        await this.actions.clickElement(this.ACCOUNT_MENU)
+        await this.actions.clickElement(this.SIGNED_IN)
         await this.actions.clickElement(this.ACCOUNT_MENU_PROFILE)
     }
 
@@ -217,16 +217,8 @@ export class AuthorizedArea extends CommonPage {
         await this.actions.verifyElementAttribute(this.PROFILE_EMAIL, `value`, `3cad691b-44e3-4613-bab2-c3ef59ae1f03@mailslurp.com`)
     }
 
-    async checkListRow(row: number, data: any[]): Promise<void> {
-        for (const col in data) {
-            if (Array.isArray(data[col])) {
-                for (const assert of data[col]) {
-                    await this.actions.verifyElementContainsText(`tbody >> tr >> nth=${row} >> td >> nth=${col}`, assert)
-                }
-            } else {
-                await this.actions.verifyElementContainsText(`tbody >> tr >> nth=${row} >> td >> nth=${col}`, data[col])
-            }
-        }
+    async check_tag_list(row: number, col: number, text: string): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`tbody >> tr >> nth=${row} >> td >> nth=${col} >> text=/${text}/`)
     }
 
     async clickListRow(row: number, col: number): Promise<void> {

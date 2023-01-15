@@ -4,36 +4,6 @@ import { APIActions } from "@lib/APIActions"
 import { WebActions } from "@lib/WebActions"
 import type { Page } from 'playwright'
 
-export interface TXProps {
-    name: string
-    status: string
-    from1: string
-    to1: string
-    nativeAmount: string
-    nativeName: string
-}
-
-export interface TXTokenProps {
-    name: string
-    status: string
-    from1: string
-    to1: string
-    tokenAmount: string
-    tokenSymbol: string
-}
-
-export interface TokenHoldersProps {
-    holder: string[]
-    value: string[]
-}
-
-export interface TXLogProps {
-    address: string[]
-    topics?: string[]
-    data?: string[]
-    logIndex?: string[]
-}
-
 export interface TXDecodedLogProps {
     methodIDText: string
     methodID: string
@@ -49,7 +19,9 @@ export class CommonPage {
 
     apiActions: APIActions
 
-    SIGN_IN = `text=Sign in`
+    SIGN_IN = `main >> a >> nth=0`
+
+    SIGNED_IN = `button >> nth=1`
 
     ACCOUNT_MENU = `#navbarBlocksDropdown >> nth=1`
 
@@ -93,8 +65,6 @@ export class CommonPage {
 
     TOKEN_HOLDERS_LIST = `[data-test='token_holders']`
 
-    TX_LOG = `[data-test='transaction_log']`
-
     VERIFY_ALERT_ROW = `[data-items] >> [class='alert alert-info'] >> nth=0`
 
     TABLE_TABPANEL_DIV = `[role="tabpanel"] >> div >> div >> nth=`
@@ -107,10 +77,16 @@ export class CommonPage {
 
     HEADER_TX_AD = `main >> div >> nth=0 >> a`
 
+    LOG_DIV = `div[role="tabpanel"] >> div >> nth=`
+
     constructor(page: Page) {
         this.page = page
         this.actions = new WebActions(this.page)
         this.apiActions = new APIActions()
+    }
+
+    async check_tx_list_row(row: number, col: number, text: string): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`table >> tr >> nth=${row} >> td >> nth=${col} >> text=/${text}/`)
     }
 
     async check_header_ad(): Promise<void> {
@@ -166,57 +142,67 @@ export class CommonPage {
         await this.actions.verifyElementContainsText(this.VERIFY_ALERT_ROW, this.VERIFY_MSG)
     }
 
-    async check_token_holders(num: number, p: TokenHoldersProps): Promise<void> {
-        await this.actions.verifyElementContainsText(`${this.TOKEN_HOLDERS_LIST} >> nth=${num} >> ${this.TX_ADDR_BAR}`, p.holder[0])
-        await this.actions.verifyElementContainsText(`${this.TOKEN_HOLDERS_LIST} >> nth=${num}`, p.value[0])
-        await this.actions.verifyElementContainsText(`${this.TOKEN_HOLDERS_LIST} >> nth=${num}`, p.value[1])
-    }
-
-    async check_internal_txs_list(num: number, p: TXProps): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.TX_INTERNAL} >> nth=${num} >> text=${p.name}`, `wrong header name`)
-        await this.actions.verifyElementIsDisplayed(`${this.TX_INTERNAL} >> nth=${num} >> [data-internal-transaction-type='${p.status}']`, `wrong status`)
-        await this.actions.verifyElementIsDisplayed(`${this.TX_INTERNAL} >> nth=${num} >> ${this.TX_HASH}`, `no tx hash link`)
-        await this.actions.verifyElementIsDisplayed(`${this.TX_INTERNAL} >> nth=${num} >> ${this.TX_ADDR_BAR} >> nth=0 >> text=${p.from1}`, `no from addr`)
-        // different html tags on every page for (from -> to) lines, rewrite to a component when testing more than 2 targets
-        await this.actions.verifyElementContainsText(`${this.TX_INTERNAL} >> nth=${num}`, p.to1)
-        await this.actions.verifyElementContainsText(`${this.TX_INTERNAL} >> nth=${num} >> text=${p.nativeName}`, p.nativeAmount)
-        await this.actions.verifyElementContainsText(`${this.TX_INTERNAL}`, `Block`)
-    }
-
     // checks tx fields across different pages when it displayed as a tile
-    async check_tx_in_list(num: number, p: TXProps): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.TX} >> nth=${num} >> text=${p.name}`, `header text is wrong`)
-        await this.actions.verifyElementIsDisplayed(`${this.TX} >> nth=${num} >> ${this.TX_STATUS} >> text=${p.status}`, `status is wrong`)
-        await this.actions.verifyElementIsDisplayed(`${this.TX} >> nth=${num} >> ${this.TX_HASH}`, `no tx hash link`)
-        await this.actions.verifyElementContainsText(`${this.TX} >> nth=${num} >> ${this.TX_ADDR_BAR} >> nth=0`, p.from1)
-        // different html tags on every page for (from -> to) lines, rewrite to a component when testing more than 2 targets
-        await this.actions.verifyElementContainsText(`${this.TX} >> nth=${num}`, p.to1)
-        await this.actions.verifyElementContainsText(`${this.TX} >> nth=${num} >> text=${p.nativeName}`, p.nativeAmount)
-        await this.actions.verifyElementContainsText(`${this.TX} >> nth=${num} >> text=TX Fee`, `0`)
-        await this.actions.verifyElementContainsText(`${this.TX} >> nth=${num}`, `Block`)
+    async check_tx_in_list(): Promise<void> {
+        await this.check_tx_list_row(1, 1, `0x.*ago`)
+        await this.check_tx_list_row(1, 2, `Contract call.*Failed`)
+        await this.check_tx_list_row(1, 3, `0x`)
+        await this.check_tx_list_row(1, 4, `\\d+`)
+        await this.check_tx_list_row(1, 5, `0x`)
+        await this.check_tx_list_row(1, 6, `IN`)
+        await this.check_tx_list_row(1, 7, `EPIC`)
+        await this.check_tx_list_row(1, 8, `0`)
+        await this.check_tx_list_row(1, 9, `\\d+`)
+
+        await this.check_tx_list_row(2, 1, `0x.*ago`)
+        await this.check_tx_list_row(2, 2, `Contract call.*Success`)
+        await this.check_tx_list_row(2, 3, `0x`)
+        await this.check_tx_list_row(2, 4, `\\d+`)
+        await this.check_tx_list_row(2, 5, `0x`)
+        await this.check_tx_list_row(2, 6, `IN`)
+        await this.check_tx_list_row(2, 7, `EPIC`)
+        await this.check_tx_list_row(2, 8, `0`)
+        await this.check_tx_list_row(2, 9, `\\d+`)
+
+        await this.check_tx_list_row(3, 1, `0x.*ago`)
+        await this.check_tx_list_row(3, 2, `Contract creation.*Success`)
+        await this.check_tx_list_row(3, 3, `-`)
+        await this.check_tx_list_row(3, 4, `\\d+`)
+        await this.check_tx_list_row(3, 5, `0x`)
+        await this.check_tx_list_row(3, 7, `EPIC`)
+        await this.check_tx_list_row(3, 8, `0`)
+        await this.check_tx_list_row(3, 9, `\\d+`)
     }
 
-    // checks token transfer fields across different pages when it displayed as a tile
-    async check_token_txs_list(num: number, p: TXTokenProps): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.TOKEN_TILES} >> nth=${num} >> text=${p.name}`, `wrong header name`)
-        await this.actions.verifyElementIsDisplayed(`${this.TOKEN_TILES} >> nth=${num} >> ${this.TX_HASH}`, `no tx hash link`)
-        await this.actions.verifyElementIsDisplayed(`${this.TOKEN_TILES} >> nth=${num} >> ${this.TX_ADDR_BAR} >> nth=0 >> text=${p.from1}`, `no from addr`)
-        await this.actions.verifyElementIsDisplayed(`${this.TOKEN_TILES} >> nth=${num} >> ${this.TX_ADDR_BAR} >> nth=1 >> text=${p.to1}`, `no tx to addr`)
-        await this.actions.verifyElementIsDisplayed(`${this.TOKEN_TILES} >> nth=${num} >> span:has-text("${p.tokenAmount} ${p.tokenSymbol}")`, `no token amount`)
-    }
+    async check_tx_logs(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}1 >> text=/Address/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}3 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}6 >> text=/Topics/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}8 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}13 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}17 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}18 >> text=/Data/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}19 >> text=/0x/`)
 
-    async check_tx_logs(num: number, p: TXLogProps): Promise<void> {
-        let row = 0
-        for (const field in p) {
-            const [name, ...assertions] = p[field]
-            console.log(`field: ${field}`)
-            await this.actions.verifyElementContainsText(`${this.TX_LOG} >> nth=${num} >> dt >> nth=${row}`, p[field][0])
-            for (const a of assertions) {
-                console.log(`assertion: ${a}`)
-                await this.actions.verifyElementContainsText(`${this.TX_LOG} >> nth=${num} >> dd >> nth=${row}`, a)
-            }
-            row += 1
-        }
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}21 >> text=/Address/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}23 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}26 >> text=/Topics/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}28 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}33 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}37 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}41 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}42 >> text=/Data/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}43 >> text=/0x/`)
+
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}45 >> text=/Address/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}47 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}50 >> text=/Topics/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}53 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}57 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}61 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}65 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}66 >> text=/Data/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}67 >> text=/0x/`)
     }
 
     async check_decoded_tx_logs(num: number, p: TXDecodedLogProps): Promise<void> {
@@ -245,7 +231,7 @@ export class CommonPage {
 
     async isSignedIn(): Promise<void> {
         await this.page.reload()
-        await this.actions.clickElement(this.ACCOUNT_MENU)
+        await this.actions.clickElement(this.SIGNED_IN)
         await this.actions.verifyElementIsDisplayed(this.LOGGED_IN_AS, `login failed`)
     }
 }

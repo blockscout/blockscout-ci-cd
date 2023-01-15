@@ -1,5 +1,5 @@
 import test from '@lib/BaseTest'
-import { TXDecodedLogProps, TXLogProps } from '@pages/Common'
+import { TXDecodedLogProps } from '@pages/Common'
 import { VerificationFlattenForm } from '@pages/Verification'
 
 test.describe.configure({ mode: `parallel` })
@@ -93,9 +93,6 @@ test.skip(`@Ethereum @Verification @Data Can verify NFT contract with flatten`, 
     })
     await transactionPage.open(TestNFTTXMintHashV)
     await transactionPage.select_logs_tab()
-    await transactionPage.check_tx_logs(0, {
-        address: [`Address`, `TestNFT`],
-    } as TXLogProps)
     await transactionPage.check_decoded_inputs(1, {
         methodIDText: `Method Id`,
         methodID: `0xeacabe14`,

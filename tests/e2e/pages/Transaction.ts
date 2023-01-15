@@ -3,7 +3,7 @@
 import { WebActions } from "@lib/WebActions"
 import { expect } from "@playwright/test"
 import type { Page } from 'playwright'
-import { CommonPage, TXProps } from "./Common"
+import { CommonPage } from "./Common"
 
 export class TransactionPage extends CommonPage {
     readonly page: Page
