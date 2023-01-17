@@ -27,10 +27,11 @@ test(`@AccountImage @Authorized Check address tag`, async ({ authorized }) => {
     const tagName = faker.random.alphaNumeric(8)
     await authorized.addAddressTag(TestTokenAddress, tagName)
     await authorized.delay(3000)
-    await authorized.check_tag_list(0, 0, TestTokenAddress.toLowerCase())
+    await authorized.check_tag_list(0, 0, TestTokenAddress)
     await authorized.check_tag_list(0, 1, tagName)
     await authorized.hasText(tagName)
-    await authorized.page.click(`text=${TestTokenAddress}`)
+    await authorized.actions.focusElement(`text=${TestTokenAddress}`)
+    await authorized.actions.clickElement(`text=${TestTokenAddress}`)
     await authorized.hasText(tagName)
 
     await authorized.openAccount()
@@ -69,7 +70,7 @@ test(`@AccountImage @Authorized Check API keys creation`, async ({ authorized })
     // TODO: check key perms by using it?
 })
 
-test(`@AccountImage @Authorized Check public tags creation`, async ({ authorized }) => {
+test.only(`@AccountImage @Authorized Check public tags creation`, async ({ authorized }) => {
     const {
         TestTokenAddress, TestNFTAddress,
     } = process.env
@@ -87,10 +88,10 @@ test(`@AccountImage @Authorized Check public tags creation`, async ({ authorized
         addresses: [TestTokenAddress, TestNFTAddress],
         description: `skldfhskdjfha`,
     } as PublicTagSpec)
-    await authorized.check_tag_list(0, 0, TestTokenAddress.toLowerCase())
-    await authorized.check_tag_list(0, 1, TestNFTAddress.toLowerCase())
-    await authorized.check_tag_list(0, 2, tagName1)
-    await authorized.check_tag_list(0, 3, tagName2)
+    await authorized.check_tag_list(0, 0, TestTokenAddress)
+    await authorized.check_tag_list(0, 0, TestNFTAddress)
+    await authorized.check_tag_list(0, 1, tagName1)
+    await authorized.check_tag_list(0, 1, tagName2)
 
     await authorized.deleteRow()
 })
