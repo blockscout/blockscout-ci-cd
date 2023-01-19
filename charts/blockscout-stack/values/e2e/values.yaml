@@ -458,7 +458,7 @@ frontend:
     NEXT_PUBLIC_APP_HOST:
       _default: blockscout.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_STATS_API_HOST:
-      _default: https://stats-test.aws-k8s.blockscout.com/
+      _default: stats-test.aws-k8s.blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
       _default: /
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:

@@ -70,7 +70,7 @@ test(`@AccountImage @Authorized Check API keys creation`, async ({ authorized })
     // TODO: check key perms by using it?
 })
 
-test.only(`@AccountImage @Authorized Check public tags creation`, async ({ authorized }) => {
+test(`@AccountImage @Authorized Check public tags creation`, async ({ authorized }) => {
     const {
         TestTokenAddress, TestNFTAddress,
     } = process.env
