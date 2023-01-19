@@ -58,12 +58,12 @@ blockscout:
       memory:
         _default: "1Gi"
       cpu:
-        _default: "2"
+        _default: "1"
     requests:
       memory:
         _default: "1Gi"
       cpu:
-        _default: "2"
+        _default: "1"
   # enable service to connect to RDS
   rds:
     enabled: false
@@ -469,6 +469,8 @@ frontend:
       _default: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_LOGOUT_RETURN_URL:
       _default: http://blockscout.test.aws-k8s.blockscout.com/auth/logout
+    NEXT_PUBLIC_STATS_API_HOST:
+      _default: http://stats-svc:80
 # enable blockscout-allowance
 allowance:
   enabled: false
