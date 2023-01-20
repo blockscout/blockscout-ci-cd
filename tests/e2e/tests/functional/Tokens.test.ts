@@ -36,7 +36,7 @@ test(`@Ethereum @Tokens @Data @PublicImage @AccountImage Search a token by the s
     })
 })
 
-test(`@Ethereum @Tokens @Data @PublicImage Check native currency list`, async ({ tokensPage }) => {
+test(`@Ethereum @Tokens @Data @PublicImage @AccountImage Check native currency list`, async ({ tokensPage }) => {
     await test.step(`Check native currency list`, async () => {
         const { MinerAddress } = process.env
         await tokensPage.openAccounts()

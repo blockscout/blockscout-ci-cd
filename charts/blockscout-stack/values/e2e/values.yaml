@@ -5,7 +5,7 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: &image blockscout/blockscout:frontend-main
+    _default: &image blockscout/blockscout:latest
   replicas:
     app: 1
   docker:
@@ -457,8 +457,6 @@ frontend:
       _default: blockscout.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_APP_HOST:
       _default: blockscout.test.aws-k8s.blockscout.com
-    NEXT_PUBLIC_STATS_API_HOST:
-      _default: stats-test.aws-k8s.blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
       _default: /
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:
