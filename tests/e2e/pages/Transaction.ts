@@ -38,7 +38,7 @@ export class TransactionPage extends CommonPage {
 
     TAB_RAW_TRACE = `[role="tab"] >> text=Raw trace`
 
-    RAW_TRACE_TEXT = `textarea`
+    RAW_TRACE_TEXT = `section >> div >> nth=1`
 
     DESCRIPTION_AD_BANNER = `#adBanner`
 

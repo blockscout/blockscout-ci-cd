@@ -37,14 +37,12 @@ test(`@Ethereum @Tokens @Data @PublicImage @AccountImage Search a token by the s
 })
 
 test(`@Ethereum @Tokens @Data @PublicImage @AccountImage Check native currency list`, async ({ tokensPage }) => {
-    await test.step(`Check native currency list`, async () => {
-        const { MinerAddress } = process.env
-        await tokensPage.openAccounts()
-        await tokensPage.check_native_row(0, {
-            position: `1`,
-            address: MinerAddress,
-            balance: `Ether`,
-            txnCount: `Transactions sent`,
-        } as NativeCurrencyProps)
-    })
+    const { MinerAddress } = process.env
+    await tokensPage.openAccounts()
+    await tokensPage.check_native_row(0, {
+        position: `1`,
+        address: MinerAddress,
+        balance: `Ether`,
+        txnCount: `Transactions sent`,
+    } as NativeCurrencyProps)
 })
