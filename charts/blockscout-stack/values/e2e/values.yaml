@@ -468,7 +468,7 @@ frontend:
     NEXT_PUBLIC_LOGOUT_RETURN_URL:
       _default: http://blockscout.test.aws-k8s.blockscout.com/auth/logout
     NEXT_PUBLIC_STATS_API_HOST:
-      _default: http://stats-svc:80
+      _default: https://stats-e2e.test.aws-k8s.blockscout.com
 # enable blockscout-allowance
 allowance:
   enabled: false
