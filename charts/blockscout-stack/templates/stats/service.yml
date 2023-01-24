@@ -16,10 +16,10 @@ spec:
       targetPort: {{ .Values.stats.docker.targetPort }}
       protocol: TCP
       name: web
-    # - port: {{ .Values.stats.docker.metricsPort }}
-    #   targetPort: {{ .Values.stats.docker.metricsPort }}
-    #   protocol: TCP
-    #   name: http-metrics
+    - port: {{ .Values.stats.docker.metricsPort }}
+      targetPort: {{ .Values.stats.docker.metricsPort }}
+      protocol: TCP
+      name: http-metrics
   selector:
     app: {{ .Release.Name }}-stats
 {{- end }}
