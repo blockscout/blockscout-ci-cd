@@ -93,8 +93,8 @@ const setupContracts = async (): Promise<void> => {
 
     // console.log(`transferring tokens`)
     // const w2 = contracts.newWallet()
-    // await token.connect(contracts.wallet.provider).transfer(w2.address, 10)
-    // await nftV.connect(contracts.wallet.provider).transferFrom(contracts.wallet.address, w2.address, 1)
+    // await token.connect(contracts.wallet).transfer(w2.address, 10)
+    // await nftV.connect(contracts.wallet).transferFrom(contracts.wallet.address, w2.address, 1)
 
     shareData({
         ZeroAddress: `0x0000000000000000000000000000000000000000`,

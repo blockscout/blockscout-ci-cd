@@ -387,6 +387,7 @@ frontend:
       prefix:
       # - "/(apps|auth/profile|account)"
         - "/account"
+        - "/accounts"
         - "/apps"
         - "/_next"
         - "/node-api"
@@ -400,6 +401,8 @@ frontend:
         - "/address"
         - "/stats"
         - "/token"
+        - "/tokens"
+        - "/search-results"
   resources:
     limits:
       memory:
@@ -469,6 +472,8 @@ frontend:
       _default: http://blockscout.test.aws-k8s.blockscout.com/auth/logout
     NEXT_PUBLIC_STATS_API_HOST:
       _default: https://stats-e2e.test.aws-k8s.blockscout.com
+    NEXT_PUBLIC_NETWORK_RPC_URL:
+      _default: https://core.poa.network
 # enable blockscout-allowance
 allowance:
   enabled: false
