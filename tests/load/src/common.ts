@@ -20,8 +20,10 @@ export const defaultSession = () => {
 export const defaultStressStages = {
     stages: [
         { target: 3, duration: `30s` },
-        { target: 4, duration: `10m` },
-        { target: 5, duration: `10m` },
+        { target: 4, duration: `5m` },
+        { target: 5, duration: `5m` },
+        { target: 6, duration: `5m` },
+        { target: 7, duration: `5m` },
     ],
 }
 
@@ -416,7 +418,9 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
 
 export const selectTestData = (scenarioName: string) => {
     switch (scenarioName) {
-    case `stress`:
+    case `stressFrontend`:
+        return defaultTestData
+    case `stressBackend`:
         return defaultTestData
     case `baseline`:
         return defaultTestData
@@ -429,8 +433,10 @@ export const selectTestData = (scenarioName: string) => {
 
 export const selectThresholds = (scenarioName: string) => {
     switch (scenarioName) {
-    case `stress`:
+    case `stressFrontend`:
         return defaultThresholds
+    case `stressBackend`:
+        return defaultTestData
     case `baseline`:
         return defaultThresholds
     case `profile`:
