@@ -5,13 +5,11 @@ import type { Page } from 'playwright'
 import { CommonPage } from "./Common"
 
 export interface TokenRowProps {
-    position: string
+    summary: string[]
     // remove that field after fixing html
-    fill: string
-    name: string
-    address: string[]
-    totalSupply: string
-    holdersCount: string
+    price: string
+    marketCap: string
+    holders: string
 }
 
 export interface NativeCurrencyProps {
@@ -27,11 +25,11 @@ export class TokensPage extends CommonPage {
 
     actions: WebActions
 
-    TOKENS_TABLE = `[data-selector='top-tokens-list']`
+    TOKENS_TABLE = `main >> table`
 
     ADDRESSES_TABLE = `[data-selector='top-addresses-list']`
 
-    SEARCH = `[data-search-field]`
+    SEARCH = `[placeholder="Token name or symbol"] >> nth=1`
 
     constructor(page: Page) {
         super(page)

@@ -31,15 +31,15 @@ export class TokenPage extends CommonPage {
 
     async check_token(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}1 >> text=/EPIC.*(EPC).*token/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}3 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}6 >> text=/Max total supply/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}9 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}10 >> text=/Holders/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}13 >> text=/1/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}14 >> text=/Transfers/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}17 >> text=/1/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}19 >> text=/Decimals/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}21 >> text=/18/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}5 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}8 >> text=/Max total supply/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}11 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}13 >> text=/Holders/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}15 >> text=/1/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}16 >> text=/Transfers/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}19 >> text=/1/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}20 >> text=/Decimals/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}23 >> text=/18/`)
     }
 
     async select_holders_tab(): Promise<void> {
