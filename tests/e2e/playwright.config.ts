@@ -35,7 +35,7 @@ const config: PlaywrightTestConfig = {
                 acceptDownloads: true,
                 screenshot: `on`,
                 video: `retain-on-failure`,
-                trace: `on`,
+                trace: `retain-on-failure`,
                 launchOptions: {
                     slowMo: 0,
                 },
