@@ -20,6 +20,12 @@ const shareData = (data: Object): void => {
     writeFileSync(CONTRACTS_DATA_FILE, JSON.stringify(data))
 }
 
+async function delay(time: number): Promise<void> {
+    return new Promise((resolve) => {
+        setTimeout(resolve, time)
+    })
+}
+
 // waitReceiptWithBlock waits for tx receipt even if tx is reverted until it has block assigned
 // safe tx.wait(), because original throws
 const waitReceiptWithBlock = async (provider: JsonRpcProvider, hash: string): Promise<TransactionResponse> => {
@@ -179,5 +185,7 @@ async function globalSetup(): Promise<void> {
     } else {
         console.log(`authorization context loaded from: ${storageStateFile}`)
     }
+    console.log(`awaiting indexing`)
+    await delay(90000)
 }
 export default globalSetup
