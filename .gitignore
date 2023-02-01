@@ -8,3 +8,5 @@ commands
 charts/blockscout-stack/key.*.pub
 charts/blockscout-stack/key.*.sec
 **node_optimism**
+
+**.dec**
