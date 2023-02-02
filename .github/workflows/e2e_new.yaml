@@ -292,8 +292,12 @@ jobs:
             echo "NETWORK_URL=http://$NETWORK_URL" >> "$GITHUB_ENV"
             DEPLOY_ARGS="$DEPLOY_ARGS --set geth.ingress.host._default=${{ inputs.gethIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN"
           fi
-          STATS_URL=${{ inputs.gethIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/http
-          DEPLOY_ARGS="$DEPLOY_ARGS --set stats.ingress.host._default=stats-$DEPLOY_SUFFIX.$K8S_DOMAIN"
+          if ${{ env.VISUALIZER == 'true' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS --set visualizer.ingress.host._default=visualizer-$DEPLOY_SUFFIX-${{ github.sha }}.$K8S_DOMAIN"
+          fi
+          if ${{ env.STATS == 'true' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS --set stats.ingress.host._default=stats-$DEPLOY_SUFFIX-${{ github.sha }}.$K8S_DOMAIN"
+          fi
           echo "$DEPLOY_ARGS"
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
 
