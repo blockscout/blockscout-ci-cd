@@ -73,8 +73,6 @@ export class CommonPage {
 
     ALERT_DIV = `[role="alert"]`
 
-    HEADER_AD = `main >> div >> nth=3 >> a`
-
     HEADER_TX_AD = `main >> div >> nth=0 >> a`
 
     LOG_DIV = `div[role="tabpanel"] >> div >> nth=`
@@ -102,10 +100,6 @@ export class CommonPage {
 
     async check_tx_list_row(row: number, col: number, text: string): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`table >> tr >> nth=${row} >> td >> nth=${col} >> text=/${text}/`)
-    }
-
-    async check_header_ad(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(this.HEADER_AD)
     }
 
     async check_header_tx_ad(): Promise<void> {
