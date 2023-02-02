@@ -5,6 +5,7 @@ test.describe.configure({ mode: `parallel` })
 
 test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Block with a create tx (new frontend)`, async ({ blocksPage }) => {
     const { TestTokenDeployTXBlockNumber } = process.env
+    await blocksPage.mock_ads()
     await blocksPage.open(TestTokenDeployTXBlockNumber)
     await blocksPage.check_block_description_new()
     await blocksPage.check_details()
