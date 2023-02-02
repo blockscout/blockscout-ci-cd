@@ -6,7 +6,7 @@ on:
       env_vars:
         description: VALUES_DIR and APP_NAME environment variables
         required: false
-        default: 'VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack'
+        default: 'VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack,VISUALIZER=true,STATS=true'
         type: string
       globalEnv:
         description: 'Network type'
@@ -60,7 +60,7 @@ on:
       env_vars:
         description: VALUES_DIR and APP_NAME environment variables
         required: false
-        default: 'VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack'
+        default: 'VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack,VISUALIZER=true,STATS=true'
         type: string
       globalEnv:
         description: 'Network type'
