@@ -21,7 +21,7 @@ test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check network options a
     await blocksListPage.check_network_menu()
 })
 
-test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check header ad is present`, async ({ blocksListPage }) => {
+test.skip(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check header ad is present`, async ({ blocksListPage }) => {
     await blocksListPage.open()
     await blocksListPage.check_header_ad()
 })

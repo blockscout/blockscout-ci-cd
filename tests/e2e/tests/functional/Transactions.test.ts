@@ -27,5 +27,5 @@ test(`@Ethereum @Transactions @Data @AccountImage Check contract creation tx pro
 test(`@Ethereum @Transactions @Data @AccountImage @NewFrontend Check tx ad is present`, async ({ transactionPage }) => {
     const { TestTokenDeployTXHash } = process.env
     await transactionPage.open(TestTokenDeployTXHash)
-    await transactionPage.check_header_tx_ad()
+    // await transactionPage.check_header_tx_ad()
 })

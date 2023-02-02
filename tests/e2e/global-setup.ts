@@ -185,7 +185,5 @@ async function globalSetup(): Promise<void> {
     } else {
         console.log(`authorization context loaded from: ${storageStateFile}`)
     }
-    console.log(`awaiting indexing`)
-    await delay(90000)
 }
 export default globalSetup
