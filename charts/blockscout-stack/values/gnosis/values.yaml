@@ -92,7 +92,7 @@ blockscout:
     PORT_NETWORK_WS:
       _default: 8546
     ETHEREUM_JSONRPC_VARIANT:
-      _default: geth
+      _default: nethermind
     COIN:
       _default: DAI
     MIX_ENV:
