@@ -85,6 +85,21 @@ export class CommonPage {
         this.apiActions = new APIActions()
     }
 
+    async mock_ads(): Promise<void> {
+        await this.page.route(`https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242`, async (route) => {
+            const duck = {
+                ad: {
+                    name: `Hello utia!`,
+                    description_short: `Utia is the best! Go with utia! Utia is the best! Go with utia!`,
+                    thumbnail: `https://utia.utia`,
+                    url: `https://test.url`,
+                    cta_button: `Click me!`,
+                },
+            }
+            await route.fulfill({ status: 200, body: JSON.stringify(duck) })
+        })
+    }
+
     async check_tx_list_row(row: number, col: number, text: string): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`table >> tr >> nth=${row} >> td >> nth=${col} >> text=/${text}/`)
     }
