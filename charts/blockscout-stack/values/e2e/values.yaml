@@ -359,7 +359,11 @@ stats:
     RUST_LOG:
       _default: info
     STATS__RUN_MIGRATIONS:
-      _default: 'true'
+      _default: true
+    STATS__TRACING__FORMAT:
+      _default: json
+    STATS__METRICS__ENABLED:
+      _default: true
 
 frontend:
   app: blockscout
