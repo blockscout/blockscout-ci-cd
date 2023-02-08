@@ -18,27 +18,24 @@ metadata:
   name: {{ .Release.Name }}-sc-verifier-ingress
 spec:
   rules:
-    - host: {{ pluck $.Values.global.env .Values.scVerifier.ingress.host | first | default .Values.scVerifier.ingress.host._default | quote }}
+  {{- range $key, $value := .Values.scVerifier.ports }}
+    - host: {{ toYaml $value.host | indent 2 }}{{ pluck $.Values.global.env $.Values.scVerifier.ingress.host | first | default $.Values.scVerifier.ingress.host._default }}
       http:
         paths:
-          - path: "/metrics"
-            pathType: Exact
+          - path: {{ toYaml $value.path | indent 2 }}
+            pathType: {{ toYaml $value.pathType | indent 2 }}
             backend:
               service:
-                name: sc-verifier-svc
+                name: {{ $.Release.Name }}-sc-verifier
                 port:
-                  number: {{ .Values.scVerifier.docker.metricsPort }}
-          - path: "/"
-            pathType: Prefix
-            backend:
-              service:
-                name: sc-verifier-svc
-                port:
-                  number: {{ .Values.scVerifier.docker.port }}
+                  number: {{ toYaml $value.number | indent 2 }}
+  {{- end }}
   {{- if .Values.scVerifier.ingress.tls.enabled }}
   tls:
     - hosts:
-        - {{ pluck $.Values.global.env .Values.scVerifier.ingress.host | first | default .Values.scVerifier.ingress.host._default | quote }}
+      {{- range $key, $value := .Values.scVerifier.ports }}
+        - {{ toYaml $value.host | indent 2 }}{{ pluck $.Values.global.env $.Values.scVerifier.ingress.host | first | default $.Values.scVerifier.ingress.host._default }}
+      {{- end }}
       {{- if .Values.scVerifier.ingress.tls.createSecret }}
       secretName: {{ .Release.Name }}-sc-verifier-tls
       {{- end }}

@@ -35,9 +35,10 @@ spec:
           {{- end }}
           imagePullPolicy: Always
           ports:
-            - containerPort: {{ .Values.scVerifier.docker.targetPort }}
-            - containerPort: {{ .Values.scVerifier.docker.metricsPort }}
-              name: http-metrics
+          {{- range $key, $value := .Values.scVerifier.ports }}
+            - containerPort: {{ toYaml $value.number | indent 2 }}
+              name: {{ $key }}
+          {{- end }}
           env:
 {{- include "scVerifier_env" . | indent 10 }}
           # volumeMounts:
@@ -47,7 +48,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .Values.scVerifier.readinessProbe.path }}
-              port: {{ .Values.scVerifier.docker.targetPort }}
+              port: {{ .Values.scVerifier.ports.http.number }}
               scheme: HTTP
             {{- with .Values.scVerifier.readinessProbe.params }}
             {{ . | toYaml | nindent 12 }}
@@ -57,7 +58,7 @@ spec:
           livenessProbe:
             httpGet:
               path: {{ .Values.scVerifier.livenessProbe.path }}
-              port: {{ .Values.scVerifier.docker.targetPort }}
+              port: {{ .Values.scVerifier.ports.http.number }}
               scheme: HTTP
             {{- with .Values.scVerifier.livenessProbe.params }}
             {{ . | toYaml | nindent 12 }}

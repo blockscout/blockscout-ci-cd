@@ -12,14 +12,12 @@ metadata:
 spec:
   type: {{ .Values.scVerifier.service.type}}
   ports:
-    - port: {{ .Values.scVerifier.docker.port }}
-      targetPort: {{ .Values.scVerifier.docker.targetPort }}
-      protocol: TCP
-      name: web
-    - port: {{ .Values.scVerifier.docker.metricsPort }}
-      targetPort: {{ .Values.scVerifier.docker.metricsPort }}
-      protocol: TCP
-      name: http-metrics
+  {{- range $key, $value := .Values.scVerifier.ports }}
+    - port: {{ toYaml $value.number | indent 2 }}
+      targetPort: {{ toYaml $value.number | indent 2 }}
+      protocol: {{ toYaml $value.protocol | indent 2 }}
+      name: {{ $key }}
+  {{- end }}
   selector:
     app: {{ .Release.Name }}-sc-verifier
 {{- end }}
