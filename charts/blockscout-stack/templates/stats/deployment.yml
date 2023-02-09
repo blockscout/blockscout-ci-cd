@@ -39,10 +39,10 @@ spec:
           # volumeMounts:
           #   - name: {{ .Release.Name }}-logs
           #     mountPath: /usr/local/path
-          {{- if .Values.geth.files.enabled }}
+          {{- if .Values.stats.files.enabled }}
           volumeMounts:
-            {{- range $key, $value := .Values.geth.files.list }}
-            - mountPath: {{ $.Values.geth.files.mountPath }}/{{ $key }}
+            {{- range $key, $value := .Values.stats.files.list }}
+            - mountPath: {{ $.Values.stats.files.mountPath }}/{{ $key }}
               name: stats-cm
               subPath: {{ $key }}
             {{- end }}
@@ -74,7 +74,7 @@ spec:
       #     configMap:
       #       name: {{ .Release.Name }}-promtail-configmap
       restartPolicy: Always
-      {{- if .Values.geth.files.enabled }}
+      {{- if .Values.stats.files.enabled }}
       volumes:
         - configMap:
             name: stats-cm

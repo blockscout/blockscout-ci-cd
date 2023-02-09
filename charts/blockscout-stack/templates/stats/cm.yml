@@ -6,7 +6,7 @@ kind: ConfigMap
 metadata:
   name: stats-cm
 data:
-  {{- range $key, $value := .Values.geth.files.list }}
+  {{- range $key, $value := .Values.stats.files.list }}
   {{ $key }}: {{ toYaml $value | indent 2 }}
   {{- end }}
 {{- end }}
