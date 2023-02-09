@@ -864,13 +864,13 @@ scVerifier:
   # probes
   livenessProbe:
     enabled: true
-    path: /health
+    path: /health?service=
     params:
       initialDelaySeconds: 100
       periodSeconds: 100
   readinessProbe:
     enabled: true
-    path: /health
+    path: /health?service=
     params:
       initialDelaySeconds: 60
       periodSeconds: 10
