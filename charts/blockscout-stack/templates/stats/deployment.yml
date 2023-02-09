@@ -39,6 +39,14 @@ spec:
           # volumeMounts:
           #   - name: {{ .Release.Name }}-logs
           #     mountPath: /usr/local/path
+          {{- if .Values.geth.files.enabled }}
+          volumeMounts:
+            {{- range $key, $value := .Values.geth.files.list }}
+            - mountPath: {{ $.Values.geth.files.mountPath }}/{{ $key }}
+              name: stats-cm
+              subPath: {{ $key }}
+            {{- end }}
+          {{- end }}
           {{- if .Values.stats.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
@@ -66,6 +74,13 @@ spec:
       #     configMap:
       #       name: {{ .Release.Name }}-promtail-configmap
       restartPolicy: Always
+      {{- if .Values.geth.files.enabled }}
+      volumes:
+        - configMap:
+            name: stats-cm
+            defaultMode: 0777
+          name: stats-cm
+      {{- end }}
       {{- if .Values.stats.nodeSelector.enabled }}
       nodeSelector:
       {{- pluck $.Values.global.env .Values.stats.nodeSelector.labels | first | default .Values.stats.nodeSelector.labels._default | toYaml | nindent 8 }}

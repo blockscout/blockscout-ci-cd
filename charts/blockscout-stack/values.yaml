@@ -199,6 +199,13 @@ geth:
 
   environment: {}
 
+  files:
+    enabled: false
+    list: {}
+      # file.txt: |
+      #   test
+    mountPath: /tmp/path
+
   persistence:
     enabled: false
     mountPath: path
@@ -973,6 +980,13 @@ stats:
         _default: "0.5Gi"
       cpu:
         _default: "0.25"
+
+  files:
+    enabled: false
+    list: {}
+      # file.txt: |
+      #   test
+    mountPath: /tmp/path
 
   # node label
   nodeSelector:
