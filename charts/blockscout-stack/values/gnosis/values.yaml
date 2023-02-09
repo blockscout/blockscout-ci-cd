@@ -163,7 +163,7 @@ postgres:
 scVerifier:
   enabled: true
   image:
-    _default: ghcr.io/blockscout/smart-contract-verifier:latest
+    _default: ghcr.io/blockscout/smart-contract-verifier:main
   replicas:
     app: 1
   ports:
