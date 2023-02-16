@@ -16,6 +16,7 @@ import { GnosisOptimismHome } from '@pages/HomeOptimismGnosis'
 import { BlockListPage } from '@pages/BlocksList'
 import { MarketplacePage } from '@pages/Marketplace'
 import { NewHomePage } from '@pages/NewHome'
+import { Etherscan } from '@pages/Etherscan'
 import Contracts from './Contracts'
 import testConfig from '../testConfig'
 
@@ -36,6 +37,7 @@ const test = baseTest.extend<{
     tokenPage: TokenPage,
     addressPage: AddressPage,
     verificationPage: VerificationPage,
+    etherscanPage: Etherscan,
 }>({
     commonPage: async ({ page }, use) => {
         await use(new CommonPage(page))
@@ -86,6 +88,9 @@ const test = baseTest.extend<{
     },
     verificationPage: async ({ page }, use) => {
         await use(new VerificationPage(page))
+    },
+    etherscanPage: async ({ page }, use) => {
+        await use(new Etherscan(page))
     },
 })
 

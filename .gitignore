@@ -10,3 +10,5 @@ charts/blockscout-stack/key.*.sec
 **node_optimism**
 
 **.dec**
+tokens.compare
+tests/zbroken

@@ -143,7 +143,7 @@ export class WebActions {
 
     async verifyElementContainsText(locator: string, text: string): Promise<void> {
         await this.waitForElementAttached(locator)
-        await expect(this.page.locator(locator)).toContainText(text.trim())
+        await expect(this.page.locator(locator)).toContainText(text.trim(), { timeout: testConfig.textRenderTimeout })
     }
 
     async verifyJSElementValue(locator: string, text: string): Promise<void> {
