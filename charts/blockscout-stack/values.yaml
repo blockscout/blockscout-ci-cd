@@ -62,6 +62,7 @@ blockscout:
     params:
       initialDelaySeconds: 100
       periodSeconds: 100
+      timeoutSeconds: 30
   readinessProbe:
     enabled: true
     path: /
