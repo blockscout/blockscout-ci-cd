@@ -4,8 +4,8 @@ import Contracts from '@lib/Contracts'
 import { expect } from '@playwright/test'
 import { JsonRpcProvider } from '@ethersproject/providers'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
-import { TestToken } from '../../../contracts/typechain/contracts/TestToken'
 import { ethers } from 'ethers'
+import { TestToken } from '../../../contracts/typechain/contracts/TestToken'
 
 test.describe.configure({ mode: `parallel` })
 
