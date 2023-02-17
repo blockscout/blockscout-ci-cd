@@ -18,6 +18,7 @@
     "test:token": "npx playwright test --grep=@TokenPage",
     "test:address": "npx playwright test --grep=@Address",
     "test:api": "npx playwright test --grep @API",
+    "test:token:transfers": "npx playwright test --grep @TransferTokens",
     "test:record": "npx playwright codegen",
     "test:visual": "npx playwright test visualComparision.test.ts --project=Chrome",
     "lighthouse": "node lighthouse.js",

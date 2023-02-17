@@ -109,6 +109,10 @@ blockscout:
       _default: http://sc-verifier-svc:8043
     ACCOUNT_ENABLED:
       _default: 'true'
+    CACHE_TOKEN_HOLDERS_COUNTER_PERIOD:
+      _default: '10'
+    CACHE_TOKEN_TRANSFERS_COUNTER_PERIOD:
+      _default: '10'
     DISABLE_REALTIME_INDEXER:
       _default: 'false'
     BLOCKSCOUT_HOST:

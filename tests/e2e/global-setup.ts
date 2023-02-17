@@ -28,7 +28,7 @@ async function delay(time: number): Promise<void> {
 
 // waitReceiptWithBlock waits for tx receipt even if tx is reverted until it has block assigned
 // safe tx.wait(), because original throws
-const waitReceiptWithBlock = async (provider: JsonRpcProvider, hash: string): Promise<TransactionResponse> => {
+export const waitReceiptWithBlock = async (provider: JsonRpcProvider, hash: string): Promise<TransactionResponse> => {
     for (let i = 0; i < RECEIPT_RETRIES; i++) {
         const r = await provider.getTransaction(hash)
         if (r.blockNumber) {
@@ -96,11 +96,6 @@ const setupContracts = async (): Promise<void> => {
     console.log(`minting NFT`)
     const txNFT1V = await nftV.mintNFT(contracts.wallet.address, ``)
     const receiptNFT1V = await txNFT1V.wait()
-
-    // console.log(`transferring tokens`)
-    // const w2 = contracts.newWallet()
-    // await token.connect(contracts.wallet).transfer(w2.address, 10)
-    // await nftV.connect(contracts.wallet).transferFrom(contracts.wallet.address, w2.address, 1)
 
     shareData({
         ZeroAddress: `0x0000000000000000000000000000000000000000`,
