@@ -23,7 +23,7 @@ const shortID = (): string => {
 }
 
 const waitReceiptWithBlock = async (provider: JsonRpcProvider, hash: string): Promise<TransactionResponse> => {
-    for (let i = 0; i < RECEIPT_RETRIES; i++) {
+    for (let i = 0; i < RECEIPT_RETRIES; i += 1) {
         // eslint-disable-next-line no-await-in-loop
         const r = await provider.getTransaction(hash)
         if (r.blockNumber) {
@@ -55,9 +55,9 @@ test(`@TransferTokens Test token transfers`, async () => {
     const TOTAL_SHARE = 3000000000000000
     const HOLDER_SHARE = TOTAL_SHARE / HOLDERS
 
-    for (let j = 0; j < 1; j++) {
+    for (let j = 0; j < 1; j += 1) {
         const holders = []
-        for (let i = 0; i < HOLDERS; i++) {
+        for (let i = 0; i < HOLDERS; i += 1) {
             const w = contracts.newWallet()
             holders.push(w)
         }
