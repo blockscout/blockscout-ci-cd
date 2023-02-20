@@ -6,11 +6,11 @@
 
 The goal of this repository is to contain:
 - Infra deployments for EKS cluster and other testing infra
-- Applications [deployments](./blockscout) for testing
-- UI/API [tests](tests/e2e)
-- Load [tests](tests/load)
+- Applications [deployments](./charts/blockscout-stack/) for testing
+- UI/API [tests](./tests/e2e/README.md)
+- Load [tests](./tests/load/README.md)
 - Chaos tests
 
-To setup `k8s` locally, read [this](./blockscout/k3d.md)
+To setup `k8s` locally, read [this](https://k3d.io/v5.4.7/)
 
-To debug CI please first use [act](https://github.com/nektos/act)
+To debug CI locally you can use [act](https://github.com/nektos/act)

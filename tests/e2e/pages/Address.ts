@@ -14,9 +14,7 @@ export class AddressPage extends CommonPage {
 
     TX_LOG = `[data-test='address_log']`
 
-    HEADER_TITLE = `text=Contract details`
-
-    DESCRIPTION_BLOCK = `main >> div >> nth=4 >> div >> nth=`
+    DESCRIPTION_BLOCK = `main >> div >> nth=`
 
     constructor(page: Page) {
         super(page)
@@ -34,19 +32,19 @@ export class AddressPage extends CommonPage {
     }
 
     async check_address_description(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(this.HEADER_TITLE, `no header title is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}0 >> text=/0x/`, `no addr is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}3 >> text=/Token name/`, `no token header is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}6 >> text=/EPIC.*(EPC)/`, `no token name is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}7 >> text=/Creator/`, `no creator is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}10 >> text=/0x.*at.*0x.*/`, `no creator address is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}11 >> text=/Balance/`, `no transactions aare displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}14 >> text=/\\d+ SPOA/`, `no transactions aare displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}15 >> text=/Transactions/`, `no transactions aare displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}18 >> text=/\\d+/`, `no transactions amount is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}19 >> text=/Gas used/`, `no gas used header is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}22 >> text=/\\d+/`, `no gas used amount is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}23 >> text=/Last balance update/`, `no last balance update is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}26 >> text=/\\d+/`, `no last balance update block is displayed`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}3 >> text=/Contract details/`, `no contract details is displayed`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}7 >> text=/0x/`, `no addr is displayed`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}10 >> text=/Token name/`, `no token header is displayed`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}12 >> text=/EPIC.*(EPC)/`, `no token name is displayed`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}13 >> text=/Creator/`, `no creator is displayed`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}15 >> text=/0x.*at.*0x.*/`, `no creator address is displayed`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}16 >> text=/Balance/`, `no transactions aare displayed`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}18 >> text=/\\d+ SPOA/`, `no transactions aare displayed`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}19 >> text=/Transactions/`, `no transactions aare displayed`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}21 >> text=/\\d+/`, `no transactions amount is displayed`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}22 >> text=/Gas used/`, `no gas used header is displayed`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}24 >> text=/\\d+/`, `no gas used amount is displayed`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}25 >> text=/Last balance update/`, `no last balance update is displayed`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}27 >> text=/\\d+/`, `no last balance update block is displayed`)
     }
 }

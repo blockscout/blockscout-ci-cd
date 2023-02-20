@@ -67,7 +67,7 @@ export class CommonPage {
 
     VERIFY_ALERT_ROW = `[data-items] >> [class='alert alert-info'] >> nth=0`
 
-    TABLE_TABPANEL_DIV = `[role="tabpanel"] >> div >> div >> nth=`
+    TABLE_TABPANEL_DIV = `[role="tabpanel"] >> div >> nth=`
 
     DETAILS_TAB_FOOTER = `text=View details`
 

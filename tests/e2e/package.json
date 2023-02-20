@@ -21,7 +21,7 @@
     "test:token:transfers": "npx playwright test --grep @TransferTokens",
     "test:record": "npx playwright codegen",
     "test:visual": "npx playwright test visualComparision.test.ts --project=Chrome",
-    "lighthouse": "node lighthouse.js",
+    "lighthouse": "node lighthouse.js --preset desktop --view",
     "lint": "eslint --ext .ts ."
   },
   "repository": {

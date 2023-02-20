@@ -4,21 +4,21 @@ import type { Page } from 'playwright'
 export class NewHomePage {
     SEARCH_BAR = `input >> nth=0`
 
-    HEADER_TOTAL_BLOCKS = `main >> div >> nth=11`
+    HEADER_TOTAL_BLOCKS = `main >> div >> nth=13`
 
-    HEADER_AVG_BLOCK_TIME = `main >> div >> nth=13`
+    HEADER_AVG_BLOCK_TIME = `main >> div >> nth=15`
 
-    HEADER_TOTAL_TXNS = `main >> div >> nth=14`
+    HEADER_TOTAL_TXNS = `main >> div >> nth=16`
 
-    HEADER_WALLETS = `main >> div >> nth=16`
+    HEADER_WALLETS = `main >> div >> nth=18`
 
-    HEADER_GAS_TRACKER = `main >> div >> nth=18`
+    HEADER_GAS_TRACKER = `main >> div >> nth=20`
 
-    BLOCKS_WIDGET = `main >> div >> nth=25`
+    BLOCKS_WIDGET = `main >> div >> nth=26`
 
-    BLOCKS_WIDGET_LAST_BLOCK = `main >> div >> nth=26`
+    BLOCKS_WIDGET_LAST_BLOCK = `main >> div >> nth=27`
 
-    TXNS_WIDGET = `main >> div >> nth=59`
+    TXNS_WIDGET = `main >> div >> nth=60`
 
     readonly page: Page
 
@@ -47,7 +47,7 @@ export class NewHomePage {
     }
 
     async check_last_block(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=0 >> text=/\\d+.*secs ago/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=0 >> text=/.*sec.*ago/`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=3 >> text=/Txn/`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=4 >> text=/\\d+/`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=5 >> text=/Reward/`)

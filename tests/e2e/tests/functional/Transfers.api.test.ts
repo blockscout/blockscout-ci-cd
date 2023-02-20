@@ -12,8 +12,6 @@ test.describe.configure({ mode: `parallel` })
 const RECEIPT_RETRIES = 5
 
 const shortID = (): string => {
-    // I generate the UID from two parts here
-    // to ensure the random number provide enough bits.
     // eslint-disable-next-line no-bitwise
     let firstPart = (Math.random() * 46656) | 0
     // eslint-disable-next-line no-bitwise

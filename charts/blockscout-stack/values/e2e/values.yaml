@@ -113,6 +113,8 @@ blockscout:
       _default: '10'
     CACHE_TOKEN_TRANSFERS_COUNTER_PERIOD:
       _default: '10'
+    CACHE_BLOCK_COUNT_PERIOD:
+      _default: '10'
     DISABLE_REALTIME_INDEXER:
       _default: 'false'
     BLOCKSCOUT_HOST:
