@@ -5,7 +5,7 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: &image blockscout/blockscout-optimism-l2-advanced:5.1.0-prerelease-6fc04947
+    _default: &image blockscout/blockscout-optimism-l2-advanced:5.1.0-prerelease-3097e10c
   replicas:
     app: 1
   docker:
@@ -395,7 +395,7 @@ frontend:
       app: blockscout
   environment:
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
-      _default: v4.1.8-beta
+      _default: v5.1.0-beta
     NEXT_PUBLIC_FOOTER_GITHUB_LINK:
       _default: https://github.com/blockscout/blockscout
     NEXT_PUBLIC_FOOTER_TWITTER_LINK:
@@ -404,24 +404,20 @@ frontend:
       _default: preview
     NEXT_PUBLIC_APP_INSTANCE:
       _default: unknown
-    NEXT_PUBLIC_FOOTER_TELEGRAM_LINK:
-      _default: https://t.me/poa_network
-    NEXT_PUBLIC_FOOTER_STAKING_LINK:
-      _default: https://duneanalytics.com/maxaleks/xdai-staking
     NEXT_PUBLIC_NETWORK_NAME:
-      _default: Sokol
+      _default: Optimism Goerli
     NEXT_PUBLIC_NETWORK_SHORT_NAME:
-      _default: POA
+      _default: OP Goerli
     NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
-      _default: poa
+      _default: optimism
     NEXT_PUBLIC_NETWORK_TYPE:
-      _default: poa_core
+      _default: goerli
     NEXT_PUBLIC_NETWORK_ID:
-      _default: 77
+      _default: 420
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME:
-      _default: POA Network Sokol
+      _default: Ethereum
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL:
-      _default: SPOA
+      _default: ETH
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS:
       _default: 18
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE:
