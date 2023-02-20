@@ -94,17 +94,21 @@ blockscout:
     ETHEREUM_JSONRPC_VARIANT:
       _default: geth
     COIN:
-      _default: DAI
+      _default: ETH
+    COIN_NAME:
+      _default: ETH
     MIX_ENV:
       _default: prod
     ECTO_USE_SSL:
       _default: 'false'
+    ENABLE_RUST_VERIFICATION_SERVICE:
+      _default: 'true'
     RUST_VERIFICATION_SERVICE_URL:
       _default: http://sc-verifier-svc:8043
     ACCOUNT_ENABLED:
       _default: 'true'
-    DISABLE_REALTIME_INDEXER:
-      _default: 'false'
+    DISABLE_EXCHANGE_RATES:
+      _default: 'true'
     BLOCKSCOUT_HOST:
       _default: 'blockscout-optimism-goerli.test.aws-k8s.blockscout.com'
     SOCKET_ROOT:
@@ -113,8 +117,6 @@ blockscout:
       _default: "/"
     API_PATH:
       _default: "/"
-    ETHEREUM_JSONRPC_DISABLE_ARCHIVE_BALANCES:
-      _default: 'true'
     API_BASE_PATH:
       _default: "/"
     APPS_MENU:
@@ -122,9 +124,13 @@ blockscout:
     EXTERNAL_APPS:
       _default: '[{"title": "Marketplace", "url": "/apps"}]'
     JSON_RPC:
-      _default: http://geth-svc:8545
+      _default: https://goerli.optimism.io
     API_V2_ENABLED:
       _default: 'true'
+    FIRST_BLOCK:
+      _default: '4066066'
+    TRACE_FIRST_BLOCK:
+      _default: '4066066'    
 
 postgres:
   enabled: true
