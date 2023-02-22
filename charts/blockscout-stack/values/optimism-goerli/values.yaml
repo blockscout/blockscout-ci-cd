@@ -131,6 +131,12 @@ blockscout:
       _default: '4066066'
     TRACE_FIRST_BLOCK:
       _default: '4066066'  
+    LAST_BLOCK:
+      _default: '4067066'
+    TRACE_LAST_BLOCK:
+      _default: '4067066'
+    DISABLE_REALTIME_INDEXER:
+      _default: 'true'
     INDEXER_OPTIMISM_PORTAL_L1:
       _default: 0x5b47E1A08Ea6d985D6649300584e6722Ec4B1383
     INDEXER_OPTIMISM_WITHDRAWALS_START_BLOCK_L1:
