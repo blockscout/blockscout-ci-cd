@@ -81,7 +81,8 @@ jobs:
         run: |
           aws eks update-kubeconfig --name ${{ secrets.AWS_CLUSTER_NAME }} --region=${{ matrix.region }}
 
-      - name: Delete app from cluster
+      - name: Check namespace
+        id: check
         shell: bash
         run: |
           mkdir ~/.ssh
@@ -91,6 +92,13 @@ jobs:
           sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
           sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
           ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+          kubectl get ns $APP_NAMESPACE
+          echo ::set-output name=exit_code::$?
+
+      - name: Delete app from cluster
+        if: steps.check.outputs.exit_code == 0
+        shell: bash
+        run: |
           kubectl delete ns $APP_NAMESPACE
 
       - name: Delete image
