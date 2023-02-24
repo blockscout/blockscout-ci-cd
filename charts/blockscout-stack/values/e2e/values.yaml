@@ -621,3 +621,29 @@ visualizer:
       _default: 0.0.0.0:8050
     VISUALIZER__SERVER__GRPC__ENABLED:
       _default: 'false'
+
+# enable sig-provider deploy
+sigProvider:
+  enabled: true
+  image:
+    _default: ghcr.io/blockscout/sig-provider:main
+
+  # enable ingress
+  ingress:
+    enabled: true
+    # enable https
+    tls:
+      enabled: true
+      createSecret: false
+
+  # enable Horizontal Pod Autoscaler
+  hpa:
+    enabled: false
+
+  environment:
+    SIG_PROVIDER__METRICS__ENABLED:
+      _default: 'true'
+    SIG_PROVIDER__SERVER__HTTP__ADDR:
+      _default: 0.0.0.0:8043
+    SIG_PROVIDER__SERVER__GRPC__ENABLED:
+      _default: 'false'
