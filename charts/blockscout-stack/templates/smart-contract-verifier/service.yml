@@ -3,16 +3,12 @@ kind: Service
 apiVersion: v1
 metadata:
   name: sc-verifier-svc
-  # annotations:
-  #   service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
-  #   service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-  #   service.beta.kubernetes.io/aws-load-balancer-type: external
   labels:
     app: {{ .Release.Name }}-sc-verifier
 spec:
   type: {{ .Values.scVerifier.service.type}}
   ports:
-  {{- range $key, $value := .Values.scVerifier.ports }}
+  {{- range $key, $value := .Values.scVerifier.ports.http }}
     - port: {{ toYaml $value.number | indent 2 }}
       targetPort: {{ toYaml $value.number | indent 2 }}
       protocol: {{ toYaml $value.protocol | indent 2 }}
@@ -20,5 +16,23 @@ spec:
   {{- end }}
   selector:
     app: {{ .Release.Name }}-sc-verifier
+---
+{{- if .Values.scVerifier.ports.grpc.enabled }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: sc-verifier-grpc-svc
+  labels:
+    app: {{ .Release.Name }}-sc-verifier
+spec:
+  type: {{ .Values.scVerifier.service.type}}
+  ports:
+    - port: {{ toYaml .Values.scVerifier.ports.grpc.number | indent 2 }}
+      targetPort: {{ toYaml .Values.scVerifier.ports.grpc.number | indent 2 }}
+      protocol: {{ toYaml .Values.scVerifier.ports.grpc.protocol | indent 2 }}
+      name: {{ $key }}
+  selector:
+    app: {{ .Release.Name }}-sc-verifier
 {{- end }}
 ---
+{{- end }}

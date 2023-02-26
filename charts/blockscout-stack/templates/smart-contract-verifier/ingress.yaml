@@ -69,7 +69,7 @@ spec:
             pathType: {{ toYaml .Values.scVerifier.ports.grpc.pathType | indent 2 }}
             backend:
               service:
-                name: sc-verifier-svc
+                name: sc-verifier-grpc-svc
                 port:
                   number: {{ toYaml .Values.scVerifier.ports.grpc.number | indent 2 }}
   {{- if .Values.scVerifier.ingress.tls.enabled }}
