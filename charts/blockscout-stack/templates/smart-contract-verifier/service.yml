@@ -30,7 +30,7 @@ spec:
     - port: {{ toYaml .Values.scVerifier.ports.grpc.number | indent 2 }}
       targetPort: {{ toYaml .Values.scVerifier.ports.grpc.number | indent 2 }}
       protocol: {{ toYaml .Values.scVerifier.ports.grpc.protocol | indent 2 }}
-      name: {{ $key }}
+      name: grpc
   selector:
     app: {{ .Release.Name }}-sc-verifier
 {{- end }}
