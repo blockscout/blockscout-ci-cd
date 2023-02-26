@@ -35,9 +35,13 @@ spec:
           {{- end }}
           imagePullPolicy: Always
           ports:
-          {{- range $key, $value := .Values.scVerifier.ports }}
+          {{- range $key, $value := .Values.scVerifier.ports.http }}
             - containerPort: {{ toYaml $value.number | indent 2 }}
               name: {{ $key }}
+          {{- end }}
+          {{- if .Values.scVerifier.ports.grpc.enabled }}
+            - containerPort: {{ toYaml .Values.scVerifier.ports.grpc.number | indent 2 }}
+              name: grpc
           {{- end }}
           env:
 {{- include "scVerifier_env" . | indent 10 }}
@@ -48,7 +52,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .Values.scVerifier.readinessProbe.path }}
-              port: {{ .Values.scVerifier.ports.http.number }}
+              port: {{ .Values.scVerifier.ports.http.http.number }}
               scheme: HTTP
             {{- with .Values.scVerifier.readinessProbe.params }}
             {{ . | toYaml | nindent 12 }}
@@ -58,7 +62,7 @@ spec:
           livenessProbe:
             httpGet:
               path: {{ .Values.scVerifier.livenessProbe.path }}
-              port: {{ .Values.scVerifier.ports.http.number }}
+              port: {{ .Values.scVerifier.ports.http.http.number }}
               scheme: HTTP
             {{- with .Values.scVerifier.livenessProbe.params }}
             {{ . | toYaml | nindent 12 }}
