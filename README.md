@@ -6,10 +6,11 @@
 
 The goal of this repository is to contain:
 - Infra deployments for EKS cluster and other testing infra
-- Applications [deployments](./charts/blockscout-stack/) for testing
+- Applications [deployments](./charts/blockscout-stack/values) for testing (e2e, testing gnosis stand)
 - UI/API [tests](./tests/e2e/README.md)
 - Load [tests](./tests/load/README.md)
 - Chaos tests
+- Blockscout-stack [helm chart](./charts/blockscout-stack/README.md)
 
 To setup `k8s` locally, read [this](https://k3d.io/v5.4.7/)
 
