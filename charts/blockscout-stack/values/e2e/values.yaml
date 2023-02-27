@@ -240,6 +240,17 @@ scVerifier:
     # enable https
     tls:
       enabled: true
+  resources:
+    limits:
+      memory:
+        _default: "2Gi"
+      cpu:
+        _default: "2"
+    requests:
+      memory:
+        _default: "2Gi"
+      cpu:
+        _default: "2"
   environment:
     SMART_CONTRACT_VERIFIER__SERVER__HTTP__ADDR:
       _default: 0.0.0.0:8050
@@ -276,6 +287,8 @@ scVerifier:
       _default: /metrics
     SMART_CONTRACT_VERIFIER__JAEGER__ENABLED:
       _default: 'false'
+    RUST_LOG:
+      _default: 'debug'
 
 # enable stats deploy
 stats:
