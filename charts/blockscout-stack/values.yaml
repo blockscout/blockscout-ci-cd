@@ -49,6 +49,7 @@ blockscout:
     # enable https
     tls:
       enabled: false
+      # do we need to create a secret or use existing one (for example, wildcard)
       createSecret: false
     path:
       prefix:
@@ -98,6 +99,8 @@ blockscout:
 
   # Blockscout environment variables
   environment: {}
+    # ENV:
+    #   _default: test
 
 postgres:
   enabled: false
@@ -152,6 +155,7 @@ postgres:
     params:
       initialDelaySeconds: 100
       periodSeconds: 100
+      timeoutSeconds: 30
   readinessProbe:
     enabled: false
     path: /
@@ -233,6 +237,7 @@ geth:
     params:
       initialDelaySeconds: 100
       periodSeconds: 100
+      timeoutSeconds: 30
   readinessProbe:
     enabled: false
     path: /
@@ -331,6 +336,7 @@ geth:
       params:
         initialDelaySeconds: 100
         periodSeconds: 100
+        timeoutSeconds: 30
     readinessProbe:
       enabled: false
       path: /
@@ -428,6 +434,7 @@ node:
     params:
       initialDelaySeconds: 100
       periodSeconds: 100
+      timeoutSeconds: 30
   readinessProbe:
     enabled: false
     path: /
@@ -691,6 +698,7 @@ node:
       params:
         initialDelaySeconds: 100
         periodSeconds: 100
+        timeoutSeconds: 30
     readinessProbe:
       enabled: false
       path: /
@@ -777,6 +785,7 @@ node:
       params:
         initialDelaySeconds: 100
         periodSeconds: 100
+        timeoutSeconds: 30
     readinessProbe:
       enabled: false
       path: /
@@ -823,10 +832,6 @@ scVerifier:
       host: 'grpc.'
       path: "/"
       pathType: Prefix
-  # docker:
-  #   port: 80
-  #   targetPort: 8043
-  #   metricsPort: 6060
 
   strategy: RollingUpdate
 
@@ -843,6 +848,7 @@ scVerifier:
     # enable https
     tls:
       enabled: false
+      # do we need to create a secret or use existing one (for example, wildcard)
       createSecret: false
 
   resources:
@@ -871,6 +877,7 @@ scVerifier:
     params:
       initialDelaySeconds: 100
       periodSeconds: 100
+      timeoutSeconds: 30
   readinessProbe:
     enabled: true
     path: /health?service=
@@ -964,6 +971,7 @@ stats:
     # enable https
     tls:
       enabled: false
+      # do we need to create a secret or use existing one (for example, wildcard)
       createSecret: false
 
   # enable service to connect to RDS
@@ -984,6 +992,7 @@ stats:
       cpu:
         _default: "0.25"
 
+  # if we want to mount some files in container
   files:
     enabled: false
     list: {}
@@ -1005,6 +1014,7 @@ stats:
     params:
       initialDelaySeconds: 100
       periodSeconds: 100
+      timeoutSeconds: 30
   readinessProbe:
     enabled: false
     path: /health
@@ -1055,6 +1065,7 @@ visualizer:
     # enable https
     tls:
       enabled: false
+      # do we need to create a secret or use existing one (for example, wildcard)
       createSecret: false
 
   resources:
@@ -1083,6 +1094,7 @@ visualizer:
     params:
       initialDelaySeconds: 100
       periodSeconds: 100
+      timeoutSeconds: 30
   readinessProbe:
     enabled: true
     path: /health
@@ -1107,6 +1119,7 @@ visualizer:
       _default: 'false'
 
 frontend:
+  # set this value same as in blockscout to use one URL for blockscout and frontend
   app: frontend
   enabled: false
 
@@ -1131,6 +1144,7 @@ frontend:
     # enable https
     tls:
       enabled: true
+      # do we need to create a secret or use existing one (for example, wildcard)
       createSecret: false
     path:
       prefix:
@@ -1163,6 +1177,7 @@ frontend:
     params:
       initialDelaySeconds: 100
       periodSeconds: 100
+      timeoutSeconds: 30
   readinessProbe:
     enabled: false
     path: /
@@ -1240,6 +1255,7 @@ allowance:
     # enable https
     tls:
       enabled: true
+      # do we need to create a secret or use existing one (for example, wildcard)
       createSecret: false
     path:
       prefix:
@@ -1265,6 +1281,7 @@ allowance:
     params:
       initialDelaySeconds: 100
       periodSeconds: 100
+      timeoutSeconds: 30
   readinessProbe:
     enabled: true
     path: /healthz
@@ -1310,6 +1327,7 @@ sigProvider:
     # enable https
     tls:
       enabled: false
+      # do we need to create a secret or use existing one (for example, wildcard)
       createSecret: false
 
   resources:
@@ -1338,6 +1356,7 @@ sigProvider:
     params:
       initialDelaySeconds: 100
       periodSeconds: 100
+      timeoutSeconds: 30
   readinessProbe:
     enabled: true
     path: /health
@@ -1385,6 +1404,7 @@ ethBytecodeDb:
     # enable https
     tls:
       enabled: false
+      # do we need to create a secret or use existing one (for example, wildcard)
       createSecret: false
 
   # enable service to connect to RDS
@@ -1419,6 +1439,7 @@ ethBytecodeDb:
     params:
       initialDelaySeconds: 100
       periodSeconds: 100
+      timeoutSeconds: 30
   readinessProbe:
     enabled: true
     path: /health
