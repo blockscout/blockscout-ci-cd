@@ -106,7 +106,7 @@ blockscout:
     ECTO_USE_SSL:
       _default: 'false'
     RUST_VERIFICATION_SERVICE_URL:
-      _default: http://sc-verifier-svc:8043
+      _default: http://sc-verifier-svc:8050
     ACCOUNT_ENABLED:
       _default: 'true'
     CACHE_TOKEN_HOLDERS_COUNTER_PERIOD:
@@ -136,6 +136,8 @@ blockscout:
     JSON_RPC:
       _default: http://geth-svc:8545
     API_V2_ENABLED:
+      _default: 'true'
+    ENABLE_RUST_VERIFICATION_SERVICE:
       _default: 'true'
 
 postgres:
