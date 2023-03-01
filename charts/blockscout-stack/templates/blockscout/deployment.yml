@@ -110,6 +110,9 @@ spec:
         #       mountPath: /etc/promtail/config.yml
         #       subPath: config-node.yml
       restartPolicy: Always
+      {{- with .Values.blockscout.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ . | toYaml | nindent 8 }}
+      {{- end }}
       {{- if .Values.blockscout.nodeSelector.enabled }}
       nodeSelector:
       {{- pluck $.Values.global.env .Values.blockscout.nodeSelector.labels | first | default .Values.blockscout.nodeSelector.labels._default | toYaml | nindent 8 }}

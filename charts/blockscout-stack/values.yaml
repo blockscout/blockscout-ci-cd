@@ -29,7 +29,6 @@ blockscout:
       list:
         tmpdir: /tmp/mountdir
 
-
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
@@ -96,6 +95,8 @@ blockscout:
     labels:
       _default:
         app: blockscout
+
+  terminationGracePeriodSeconds: 300
 
   # Blockscout environment variables
   environment: {}
