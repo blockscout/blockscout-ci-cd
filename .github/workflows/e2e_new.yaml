@@ -6,7 +6,7 @@ on:
       env_vars:
         description: VALUES_DIR and APP_NAME environment variables
         required: false
-        default: 'VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack,VISUALIZER=true,STATS=true'
+        default: 'VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack,VISUALIZER=true,STATS=true,SIG_PROVIDER=true'
         type: string
       globalEnv:
         description: 'Network type'
@@ -297,6 +297,9 @@ jobs:
           fi
           if ${{ env.STATS == 'true' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS --set stats.ingress.host._default=stats-$DEPLOY_SUFFIX-${{ github.sha }}.$K8S_DOMAIN"
+          fi
+          if ${{ env.SIG_PROVIDER == 'true' }}; then
+            DEPLOY_ARGS="$DEPLOY_ARGS --set sigProvider.ingress.host._default=sig-provider-$DEPLOY_SUFFIX-${{ github.sha }}.$K8S_DOMAIN"
           fi
           echo "$DEPLOY_ARGS"
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
