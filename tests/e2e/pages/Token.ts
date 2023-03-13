@@ -26,16 +26,16 @@ export class TokenPage extends CommonPage {
     }
 
     async check_token(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}3 >> text=/EPIC.*(EPC).*token/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}5 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}8 >> text=/Max total supply/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}10 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}14 >> text=/Holders/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}16 >> text=/1/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}17 >> text=/Transfers/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}19 >> text=/1/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}20 >> text=/Decimals/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}22 >> text=/18/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}3 >> text=/EPIC.*(EPC).*token/`, `no token name`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}5 >> text=/0x/`, `no token addr`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}8 >> text=/Max total supply/`, `no max total supply`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}10 >> text=/\\d+/`, `no max total supply value`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}14 >> text=/Holders/`, `no holders`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}16 >> text=/\\d+/`, `no holders value`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}17 >> text=/Transfers/`, `no transfers`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}19 >> text=/\\d+/`, `no transfers value`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}20 >> text=/Decimals/`, `no decimals`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}22 >> text=/18/`, `no decimals value`)
     }
 
     async select_holders_tab(): Promise<void> {

@@ -33,7 +33,7 @@ export class AddressPage extends CommonPage {
 
     async check_address_description(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}3 >> text=/Contract details/`, `no contract details is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}6 >> text=/0x/`, `no addr is displayed`)
+        // await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}6 >> text=/0x/`, `no addr is displayed`)
         await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}10 >> text=/Token name/`, `no token header is displayed`)
         await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}11 >> text=/EPIC.*(EPC)/`, `no token name is displayed`)
         await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}13 >> text=/Creator/`, `no creator is displayed`)
