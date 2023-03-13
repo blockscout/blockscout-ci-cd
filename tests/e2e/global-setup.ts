@@ -172,7 +172,7 @@ async function globalSetup(): Promise<void> {
         const page = await ctx.newPage()
         const loginPage = new AuthorizedArea(page, null, null)
         const { ACCOUNT_USERNAME, ACCOUNT_PASSWORD } = process.env
-        await loginPage.open()
+        await loginPage.open({ timeout: 90000 })
         await loginPage.signIn(ACCOUNT_USERNAME, ACCOUNT_PASSWORD)
         await ctx.storageState({ path: `state.json` })
         console.log(`authorization context saved: ${storageStateFile}`)
