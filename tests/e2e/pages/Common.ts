@@ -127,8 +127,12 @@ export class CommonPage {
         await this.actions.verifyElementIsDisplayed(`text=${text}`, `failed to find text on the page`)
     }
 
-    async waitTextReload(status: string): Promise<void> {
-        await this.actions.waitWithReload(`text=${status}`)
+    async waitBlocksSynced(): Promise<void> {
+        await this.waitNoText(`indexing this chain right now`)
+    }
+
+    async waitNoText(status: string): Promise<void> {
+        await this.actions.waitReloadNoText(`text=${status}`)
     }
 
     async select_token_holders_tab(): Promise<void> {
@@ -189,27 +193,22 @@ export class CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}4 >> text=/Topics/`)
         await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}7 >> text=/0x/`)
         await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}11 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}15 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}16 >> text=/Data/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}17 >> text=/0x/`)
-
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}19 >> text=/Transaction/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}20 >> text=/Data/`)
         await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}21 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}22 >> text=/Topics/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}25 >> text=/0x/`)
+
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}23 >> text=/Transaction/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}24 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}26 >> text=/Topics/`)
         await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}29 >> text=/0x/`)
         await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}33 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}37 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}38 >> text=/Data/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}39 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}42 >> text=/Data/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}43 >> text=/0x/`)
 
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}41 >> text=/Transaction/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}42 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}44 >> text=/Topics/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}47 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}45 >> text=/Transaction/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}46 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}48 >> text=/Topics/`)
         await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}51 >> text=/0x/`)
         await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}55 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}59 >> text=/0x/`)
         await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}60 >> text=/Data/`)
         await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}61 >> text=/0x/`)
     }

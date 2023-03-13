@@ -1,30 +1,40 @@
 import { WebActions } from "@lib/WebActions"
 import type { Page } from 'playwright'
+import { CommonPage } from "./Common"
 
-export class NewHomePage {
+export class NewHomePage extends CommonPage {
     SEARCH_BAR = `input >> nth=0`
 
-    HEADER_TOTAL_BLOCKS = `main >> div >> nth=13`
+    HEADER_TOTAL_BLOCKS = `main >> div >> nth=11`
 
-    HEADER_AVG_BLOCK_TIME = `main >> div >> nth=15`
+    HEADER_AVG_BLOCK_TIME = `main >> div >> nth=13`
 
-    HEADER_TOTAL_TXNS = `main >> div >> nth=16`
+    HEADER_TOTAL_TXNS = `main >> div >> nth=14`
 
-    HEADER_WALLETS = `main >> div >> nth=18`
+    HEADER_WALLETS = `main >> div >> nth=16`
 
-    HEADER_GAS_TRACKER = `main >> div >> nth=20`
+    HEADER_GAS_TRACKER = `main >> div >> nth=18`
 
-    BLOCKS_WIDGET = `main >> div >> nth=26`
+    BLOCKS_WIDGET = `main >> div >> nth=24`
 
-    BLOCKS_WIDGET_LAST_BLOCK = `main >> div >> nth=27`
+    BLOCKS_WIDGET_LAST_BLOCK = `main >> div >> nth=25`
 
-    TXNS_WIDGET = `main >> div >> nth=60`
+    TXNS_WIDGET = `main >> div >> nth=58`
+
+    TXN_1 = `main >> div >> nth=60`
+
+    TXN_2 = `main >> div >> nth=80`
+
+    TXN_3 = `main >> div >> nth=101`
+
+    TXN_4 = `main >> div >> nth=122`
 
     readonly page: Page
 
     actions: WebActions
 
     constructor(page: Page) {
+        super(page)
         this.page = page
         this.actions = new WebActions(this.page)
     }
@@ -57,12 +67,12 @@ export class NewHomePage {
     }
 
     async check_txn_widget(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_WIDGET} >> div >> nth=4 >> text=/Token transfer.*Success/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_WIDGET} >> div >> nth=7 >> text=/0x.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_WIDGET} >> div >> nth=12 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_WIDGET} >> div >> nth=15 >> text=/NFTV/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_WIDGET} >> div >> nth=19 >> text=/Value SPOA.*\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_WIDGET} >> div >> nth=20 >> text=/Fee SPOA.*\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=4 >> text=/Token transfer.*Success/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=5 >> text=/0x.*ago/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=10 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=13 >> text=/NFTV/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=17 >> text=/Value SPOA.*\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=18 >> text=/Fee SPOA.*\\d+/`)
 
         await this.actions.verifyElementIsDisplayed(`${this.TXNS_WIDGET} >> div >> nth=26 >> text=/Contract creation.*Success/`)
         await this.actions.verifyElementIsDisplayed(`${this.TXNS_WIDGET} >> div >> nth=28 >> text=/0x.*ago/`)

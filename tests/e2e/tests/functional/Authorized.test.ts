@@ -22,6 +22,7 @@ test(`@AccountImage @Authorized Check address tag`, async ({ authorized }) => {
         TestTokenAddress,
     } = process.env
     await authorized.openAccount()
+    await authorized.waitBlocksSynced()
     await authorized.selectPrivateTagsTab()
     await authorized.selectAddressTagTab()
     const tagName = faker.random.alphaNumeric(8)
@@ -45,6 +46,7 @@ test(`@AccountImage @Authorized Check transaction tag`, async ({ authorized }) =
         TestTokenDeployTXHash,
     } = process.env
     await authorized.openAccount()
+    await authorized.waitBlocksSynced()
     await authorized.selectPrivateTagsTab()
     await authorized.selectTXTagTab()
     const tagName = faker.random.alphaNumeric(8)

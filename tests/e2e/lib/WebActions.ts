@@ -23,11 +23,11 @@ export class WebActions {
         await this.page.waitForSelector(locator)
     }
 
-    async waitWithReload(locator: string): Promise<void> {
-        for (let i = 0; i < 20; i++) {
+    async waitReloadNoText(locator: string): Promise<void> {
+        for (let i = 0; i < 40; i++) {
             await this.page.reload()
             const here = await this.page.locator(locator).count()
-            if (here) {
+            if (here === 0) {
                 return
             }
             await this.delay(1000)

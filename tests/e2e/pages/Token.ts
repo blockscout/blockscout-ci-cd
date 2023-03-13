@@ -4,10 +4,6 @@ import { WebActions } from "@lib/WebActions"
 import type { Page } from 'playwright'
 import { CommonPage } from "./Common"
 
-export interface NativeCurrencyRowProps {
-
-}
-
 export class TokenPage extends CommonPage {
     readonly page: Page
 
@@ -31,15 +27,15 @@ export class TokenPage extends CommonPage {
 
     async check_token(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}3 >> text=/EPIC.*(EPC).*token/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}7 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}10 >> text=/Max total supply/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}12 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}13 >> text=/Holders/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}15 >> text=/1/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}16 >> text=/Transfers/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}18 >> text=/1/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}19 >> text=/Decimals/`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}21 >> text=/18/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}5 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}8 >> text=/Max total supply/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}10 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}14 >> text=/Holders/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}16 >> text=/1/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}17 >> text=/Transfers/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}19 >> text=/1/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}20 >> text=/Decimals/`)
+        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}22 >> text=/18/`)
     }
 
     async select_holders_tab(): Promise<void> {

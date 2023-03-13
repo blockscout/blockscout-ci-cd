@@ -56,8 +56,6 @@ export class MarketplacePage extends CommonPage {
 
     SUBMIT_VERIFICATION_TEXT = `text=Your responses have been emailed to you`
 
-    AIRTABLE_EMAIL_RESPONSES_CHECK = `text=Email me a copy of my responses`
-
     apps = {
         Aave: 0,
         Hop: 1,
@@ -111,8 +109,6 @@ export class MarketplacePage extends CommonPage {
         await this.page.fill(`${this.AIRTABLE_FORM_INPUT}2`, p.DiscordURL)
         await this.page.fill(`${this.AIRTABLE_FORM_INPUT}2`, p.GithubURL)
         await this.page.fill(`${this.AIRTABLE_FORM_INPUT}2`, p.Contact)
-        await this.page.click(this.AIRTABLE_EMAIL_RESPONSES_CHECK)
-        await this.page.fill(`${this.AIRTABLE_FORM_INPUT}3`, p.ResponseEmail)
         await this.page.fill(`${this.AIRTABLE_FORM_INPUT}2`, p.ContactEmail)
         await this.page.fill(this.FORM_DESCRIPTION, `fsdfksldf`)
         await this.page.click(this.ADD_CATEGORY)

@@ -74,7 +74,15 @@ test(`@TransferTokens Test token transfers`, async () => {
                 to: h.address,
                 value: ethers.utils.parseEther(`1`),
             }
+            const txBack = {
+                to: h.address,
+                value: ethers.utils.parseEther(`1`),
+            }
             console.log(`transferring Ether to: ${h.address}`)
+            // eslint-disable-next-line no-await-in-loop
+            await contracts.wallet.sendTransaction(tx)
+            // eslint-disable-next-line no-await-in-loop
+            await contracts.wallet.sendTransaction(tx)
             // eslint-disable-next-line no-await-in-loop
             await contracts.wallet.sendTransaction(tx)
             // eslint-disable-next-line no-await-in-loop
