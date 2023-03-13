@@ -2,7 +2,7 @@ import test from '@lib/BaseTest'
 
 test.describe.configure({ mode: `parallel` })
 
-test.only(`@Ethereum @Address @Data @AccountImage Check main page widgets`, async ({ newHomePage }) => {
+test(`@Ethereum @Address @Data @AccountImage Check main page widgets`, async ({ newHomePage }) => {
     await newHomePage.open()
     await newHomePage.waitBlocksSynced()
     await newHomePage.check_heaader()
