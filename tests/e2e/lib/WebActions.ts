@@ -24,9 +24,8 @@ export class WebActions {
     }
 
     async waitReloadNoText(locator: string): Promise<void> {
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 100; i++) {
             await this.page.reload()
-            await this.delay(5000)
             const here = await this.page.locator(locator).count()
             if (here === 0) {
                 return
