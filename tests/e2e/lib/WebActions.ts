@@ -24,15 +24,15 @@ export class WebActions {
     }
 
     async waitReloadNoText(locator: string): Promise<void> {
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < 20; i++) {
             await this.page.reload()
-            await this.delay(2000)
+            await this.delay(5000)
             const here = await this.page.locator(locator).count()
             if (here === 0) {
                 return
             }
         }
-        throw Error(`timeout waiting element with reload: ${locator}`)
+        throw Error(`timeout waiting element is absent with reload: ${locator}`)
     }
 
     async waitForPageNavigation(event: string): Promise<void> {
