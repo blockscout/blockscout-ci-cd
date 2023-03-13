@@ -26,11 +26,11 @@ export class WebActions {
     async waitReloadNoText(locator: string): Promise<void> {
         for (let i = 0; i < 40; i++) {
             await this.page.reload()
+            await this.delay(2000)
             const here = await this.page.locator(locator).count()
             if (here === 0) {
                 return
             }
-            await this.delay(1000)
         }
         throw Error(`timeout waiting element with reload: ${locator}`)
     }
