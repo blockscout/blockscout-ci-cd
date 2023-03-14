@@ -10,6 +10,4 @@ test(`@Ethereum @Address @Data @AccountImage Check address page`, async ({ addre
     await addressPage.waitBlocksSynced()
     await addressPage.check_address_description()
     await addressPage.check_tx_in_list()
-    await addressPage.select_logs_tab()
-    // await addressPage.check_tx_logs()
 })

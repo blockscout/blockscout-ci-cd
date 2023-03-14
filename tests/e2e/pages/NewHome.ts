@@ -5,8 +5,6 @@ import { CommonPage } from "./Common"
 export class NewHomePage extends CommonPage {
     SEARCH_BAR = `input >> nth=0`
 
-    // :below(:text("Average block time")) >> nth=3
-
     HEADER_TOTAL_BLOCKS = `:below(:text("Total blocks")) >> nth=0`
 
     HEADER_AVG_BLOCK_TIME = `:below(:text("Average block time")) >> nth=3`
