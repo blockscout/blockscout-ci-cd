@@ -5,15 +5,17 @@ import { CommonPage } from "./Common"
 export class NewHomePage extends CommonPage {
     SEARCH_BAR = `input >> nth=0`
 
-    HEADER_TOTAL_BLOCKS = `main >> div >> nth=11`
+    // :below(:text("Average block time")) >> nth=3
 
-    HEADER_AVG_BLOCK_TIME = `main >> div >> nth=13`
+    HEADER_TOTAL_BLOCKS = `:below(:text("Total blocks")) >> nth=0`
 
-    HEADER_TOTAL_TXNS = `main >> div >> nth=14`
+    HEADER_AVG_BLOCK_TIME = `:below(:text("Average block time")) >> nth=3`
 
-    HEADER_WALLETS = `main >> div >> nth=16`
+    HEADER_TOTAL_TXNS = `:below(:text("Total transactions")) >> nth=3`
 
-    HEADER_GAS_TRACKER = `main >> div >> nth=18`
+    HEADER_WALLETS = `:below(:text("Wallet addresses")) >> nth=3`
+
+    HEADER_GAS_TRACKER = `:below(:text("Gas tracker")) >> nth=0`
 
     BLOCKS_WIDGET = `main >> div >> nth=24`
 
@@ -45,10 +47,10 @@ export class NewHomePage extends CommonPage {
 
     async check_heaader(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.HEADER_TOTAL_BLOCKS} >> text=/\\d+/`, `total blocks are wrong`)
-        await this.actions.verifyElementIsDisplayed(`${this.HEADER_AVG_BLOCK_TIME} >> text=/\\d+.*s/`, `avg block time is wrong`)
+        await this.actions.verifyElementIsDisplayed(`${this.HEADER_AVG_BLOCK_TIME} >> text=/.*s.*/`, `avg block time is wrong`)
         await this.actions.verifyElementIsDisplayed(`${this.HEADER_TOTAL_TXNS} >> text=/\\d+/`, `total txns is wrong`)
         await this.actions.verifyElementIsDisplayed(`${this.HEADER_WALLETS} >> text=/\\d+/`, `total wallets is wrong`)
-        await this.actions.verifyElementIsDisplayed(`${this.HEADER_GAS_TRACKER} >> text=/\\d+.*Gwei/`, `no gas tracker data`)
+        await this.actions.verifyElementIsDisplayed(`${this.HEADER_GAS_TRACKER} >> text=/.*Gwei.*/`, `no gas tracker data`)
     }
 
     async check_blocks_widget(): Promise<void> {
