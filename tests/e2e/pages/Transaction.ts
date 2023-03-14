@@ -109,7 +109,6 @@ export class TransactionPage extends CommonPage {
     async check_raw_trace(minerAddr: string, createdAddr: string): Promise<void> {
         await this.actions.clickElement(this.TAB_RAW_TRACE)
         const text = await this.actions.getTextFromWebElements(this.RAW_TRACE_TEXT)
-        console.log(`raw trace: ${text}`)
         const rawData = JSON.parse(text[0])
         expect(rawData[0].action.from).toEqual(minerAddr.toLowerCase())
         expect(rawData[0].action.value).toEqual(`0x0`)
