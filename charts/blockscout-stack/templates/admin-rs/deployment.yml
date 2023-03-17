@@ -41,6 +41,14 @@ spec:
           # volumeMounts:
           #   - name: {{ .Release.Name }}-logs
           #     mountPath: /usr/local/path
+          {{- if .Values.adminRs.files.enabled }}
+          volumeMounts:
+            {{- range $key, $value := .Values.adminRs.files.list }}
+            - mountPath: {{ $.Values.adminRs.files.mountPath }}/{{ $key }}
+              name: admin-rs-cm
+              subPath: {{ $key }}
+            {{- end }}
+          {{- end }}
           {{- if .Values.adminRs.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
@@ -68,6 +76,13 @@ spec:
       #     configMap:
       #       name: {{ .Release.Name }}-promtail-configmap
       restartPolicy: Always
+      {{- if .Values.adminRs.files.enabled }}
+      volumes:
+        - configMap:
+            name: admin-rs-cm
+            defaultMode: 0777
+          name: admin-rs-cm
+      {{- end }}
       {{- if .Values.adminRs.nodeSelector.enabled }}
       nodeSelector:
       {{- pluck $.Values.global.env .Values.adminRs.nodeSelector.labels | first | default .Values.adminRs.nodeSelector.labels._default | toYaml | nindent 8 }}

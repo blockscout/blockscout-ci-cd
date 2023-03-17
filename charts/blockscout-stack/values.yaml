@@ -1496,6 +1496,14 @@ adminRs:
       # do we need to create a secret or use existing one (for example, wildcard)
       createSecret: false
 
+  # if we want to mount some files in container
+  files:
+    enabled: false
+    list: {}
+      # file.txt: |
+      #   test
+    mountPath: /tmp/path
+
   resources:
     limits:
       memory:
