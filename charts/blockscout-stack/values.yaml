@@ -1464,3 +1464,213 @@ ethBytecodeDb:
     #   _default: postgresql://<user>:<pass>@postgres:5432/<db>
     # # RDS
     #   _default: postgresql://<user>:<pass>@db-eth-bytecode-db-svc:5432/<db>
+
+# enable admin-rs deploy
+adminRs:
+  enabled: false
+  image:
+    _default: ghcr.io/blockscout/visualizer:main
+
+  replicas:
+    app: 1
+  docker:
+    port: 80
+    targetPort: 8050
+    # metricsPort: 6060
+
+  strategy: RollingUpdate
+
+  service:
+    # ClusterIP, NodePort or LoadBalancer
+    type: ClusterIP
+
+  # enable ingress
+  ingress:
+    enabled: false
+    annotations: {}
+    host:
+      _default: <url>
+    # enable https
+    tls:
+      enabled: false
+      # do we need to create a secret or use existing one (for example, wildcard)
+      createSecret: false
+
+  resources:
+    limits:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+    requests:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+
+  # node label
+  nodeSelector:
+    enabled: true
+    labels:
+      _default:
+        app: blockscout
+
+  # probes
+  livenessProbe:
+    enabled: true
+    path: /health
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
+      timeoutSeconds: 30
+  readinessProbe:
+    enabled: true
+    path: /health
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
+
+  environment: {}
+    # ENV:
+    #   _default: 'test'
+
+# enable admin-ts deploy
+adminTs:
+  enabled: false
+  image:
+    _default: ghcr.io/blockscout/visualizer:main
+
+  replicas:
+    app: 1
+  docker:
+    port: 80
+    targetPort: 8080
+    # metricsPort: 6060
+
+  strategy: RollingUpdate
+
+  service:
+    # ClusterIP, NodePort or LoadBalancer
+    type: ClusterIP
+
+  # enable ingress
+  ingress:
+    enabled: false
+    annotations: {}
+    host:
+      _default: <url>
+    # enable https
+    tls:
+      enabled: false
+      # do we need to create a secret or use existing one (for example, wildcard)
+      createSecret: false
+
+  resources:
+    limits:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+    requests:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+
+  # node label
+  nodeSelector:
+    enabled: true
+    labels:
+      _default:
+        app: blockscout
+
+  # probes
+  livenessProbe:
+    enabled: true
+    path: /admin
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
+      timeoutSeconds: 30
+  readinessProbe:
+    enabled: true
+    path: /admin
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
+
+  environment: {}
+    # ENV:
+    #   _default: 'test'
+
+# enable contracts-info deploy
+contractsInfo:
+  enabled: false
+  image:
+    _default: ghcr.io/blockscout/visualizer:main
+
+  replicas:
+    app: 1
+  docker:
+    port: 80
+    targetPort: 8050
+    # metricsPort: 6060
+
+  strategy: RollingUpdate
+
+  service:
+    # ClusterIP, NodePort or LoadBalancer
+    type: ClusterIP
+
+  # enable ingress
+  ingress:
+    enabled: false
+    annotations: {}
+    host:
+      _default: <url>
+    # enable https
+    tls:
+      enabled: false
+      # do we need to create a secret or use existing one (for example, wildcard)
+      createSecret: false
+
+  resources:
+    limits:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+    requests:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+
+  # node label
+  nodeSelector:
+    enabled: true
+    labels:
+      _default:
+        app: blockscout
+
+  # probes
+  livenessProbe:
+    enabled: true
+    path: /health
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
+      timeoutSeconds: 30
+  readinessProbe:
+    enabled: true
+    path: /health
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
+
+  environment: {}
+    # ENV:
+    #   _default: 'test'

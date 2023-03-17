@@ -1,0 +1,47 @@
+{{- if .Values.contractsInfo.enabled }}
+{{- if .Values.contractsInfo.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: internal-and-public
+    nginx.ingress.kubernetes.io/proxy-body-size: 500m
+    nginx.ingress.kubernetes.io/client-max-body-size: "500M"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "15m"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "15m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
+    cert-manager.io/cluster-issuer: "zerossl-prod"
+    {{- range .Values.contractsInfo.ingress.annotations }}
+    {{ . }}
+    {{- end}}
+  name: {{ .Release.Name }}-contracts-info-ingress
+spec:
+  rules:
+    - host: {{ pluck $.Values.global.env .Values.contractsInfo.ingress.host | first | default .Values.contractsInfo.ingress.host._default | quote }}
+      http:
+        paths:
+          # - path: "/metrics"
+          #   pathType: Exact
+          #   backend:
+          #     service:
+          #       name: contractsInfo-svc
+          #       port:
+          #         number: {{ .Values.contractsInfo.docker.metricsPort }}
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: contractsInfo-svc
+                port:
+                  number: {{ .Values.contractsInfo.docker.port }}
+  {{- if .Values.contractsInfo.ingress.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ pluck $.Values.global.env .Values.contractsInfo.ingress.host | first | default .Values.contractsInfo.ingress.host._default | quote }}
+      {{- if .Values.contractsInfo.ingress.tls.createSecret }}
+      secretName: {{ .Release.Name }}-contracts-info-tls
+      {{- end }}
+  {{- end }}
+{{- end }}
+{{- end }}

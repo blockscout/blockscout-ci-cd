@@ -1,0 +1,26 @@
+{{- if .Values.adminTs.enabled }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: adminTs-svc
+  # annotations:
+  #   service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+  #   service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+  #   service.beta.kubernetes.io/aws-load-balancer-type: external
+  labels:
+    app: {{ .Release.Name }}-admin-ts
+spec:
+  type: {{ .Values.adminTs.service.type}}
+  ports:
+    - port: {{ .Values.adminTs.docker.port }}
+      targetPort: {{ .Values.adminTs.docker.targetPort }}
+      protocol: TCP
+      name: web
+    # - port: {{ .Values.adminTs.docker.metricsPort }}
+    #   targetPort: {{ .Values.adminTs.docker.metricsPort }}
+    #   protocol: TCP
+    #   name: http-metrics
+  selector:
+    app: {{ .Release.Name }}-admin-ts
+{{- end }}
+---
