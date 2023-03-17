@@ -17,6 +17,8 @@ spec:
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
     spec:
+      imagePullSecrets:
+        - name: regcred
       containers:
         - name: {{ .Release.Name }}-admin-rs
           image: {{ pluck $.Values.global.env .Values.adminRs.image | first | default .Values.adminRs.image._default | quote }}

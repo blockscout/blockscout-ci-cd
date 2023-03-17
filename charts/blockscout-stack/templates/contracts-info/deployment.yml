@@ -17,6 +17,8 @@ spec:
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
     spec:
+      imagePullSecrets:
+        - name: regcred
       containers:
         - name: {{ .Release.Name }}-contracts-info
           image: {{ pluck $.Values.global.env .Values.contractsInfo.image | first | default .Values.contractsInfo.image._default | quote }}
