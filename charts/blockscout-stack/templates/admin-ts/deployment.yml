@@ -32,8 +32,8 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.adminTs.docker.targetPort }}
-            - containerPort: {{ .Values.adminTs.docker.metricsPort }}
-              name: http-metrics
+            # - containerPort: {{ .Values.adminTs.docker.metricsPort }}
+            #   name: http-metrics
           env:
 {{- include "adminTs_env" . | indent 10 }}
           # volumeMounts:

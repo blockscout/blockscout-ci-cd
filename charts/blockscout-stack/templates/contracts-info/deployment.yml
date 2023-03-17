@@ -32,8 +32,8 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.contractsInfo.docker.targetPort }}
-            - containerPort: {{ .Values.contractsInfo.docker.metricsPort }}
-              name: http-metrics
+            # - containerPort: {{ .Values.contractsInfo.docker.metricsPort }}
+            #   name: http-metrics
           env:
 {{- include "contractsInfo_env" . | indent 10 }}
           # volumeMounts:
