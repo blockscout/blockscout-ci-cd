@@ -25,7 +25,7 @@ spec:
           #   pathType: Exact
           #   backend:
           #     service:
-          #       name: adminRs-svc
+          #       name: admin-rs-svc
           #       port:
           #         number: {{ .Values.adminRs.docker.metricsPort }}
           - path: "/"

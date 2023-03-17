@@ -2,7 +2,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: adminTs-svc
+  name: admin-ts-svc
   # annotations:
   #   service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
   #   service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing

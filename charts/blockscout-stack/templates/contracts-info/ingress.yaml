@@ -25,7 +25,7 @@ spec:
           #   pathType: Exact
           #   backend:
           #     service:
-          #       name: contractsInfo-svc
+          #       name: contracts-info-svc
           #       port:
           #         number: {{ .Values.contractsInfo.docker.metricsPort }}
           - path: "/"
