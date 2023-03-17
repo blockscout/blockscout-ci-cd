@@ -32,7 +32,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: contractsInfo-svc
+                name: contracts-info-svc
                 port:
                   number: {{ .Values.contractsInfo.docker.port }}
   {{- if .Values.contractsInfo.ingress.tls.enabled }}

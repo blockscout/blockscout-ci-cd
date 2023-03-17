@@ -32,7 +32,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: adminRs-svc
+                name: admin-rs-svc
                 port:
                   number: {{ .Values.adminRs.docker.port }}
   {{- if .Values.adminRs.ingress.tls.enabled }}
