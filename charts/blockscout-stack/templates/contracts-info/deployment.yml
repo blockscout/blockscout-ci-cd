@@ -38,9 +38,14 @@ spec:
             #   name: http-metrics
           env:
 {{- include "contractsInfo_env" . | indent 10 }}
-          # volumeMounts:
-          #   - name: {{ .Release.Name }}-logs
-          #     mountPath: /usr/local/path
+          {{- if .Values.contractsInfo.files.enabled }}
+          volumeMounts:
+            {{- range $key, $value := .Values.contractsInfo.files.list }}
+            - mountPath: {{ $.Values.contractsInfo.files.mountPath }}/{{ $key }}
+              name: contracts-info-cm
+              subPath: {{ $key }}
+            {{- end }}
+          {{- end }}
           {{- if .Values.contractsInfo.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
@@ -61,12 +66,13 @@ spec:
             {{ . | toYaml | nindent 12 }}
             {{- end }}
           {{- end }}
-      # volumes:
-      #   - name: {{ .Release.Name }}-logs
-      #     emptyDir: { }
-      #   - name: config
-      #     configMap:
-      #       name: {{ .Release.Name }}-promtail-configmap
+      {{- if .Values.contractsInfo.files.enabled }}
+      volumes:
+        - configMap:
+            name: contracts-info-cm
+            defaultMode: 0777
+          name: contracts-info-cm
+      {{- end }}
       restartPolicy: Always
       {{- if .Values.contractsInfo.nodeSelector.enabled }}
       nodeSelector:

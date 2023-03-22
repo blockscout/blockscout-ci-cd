@@ -1,0 +1,13 @@
+{{- if .Values.contractsInfo.enabled }}
+{{- if .Values.contractsInfo.files.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: contracts-info-cm
+data:
+  {{- range $key, $value := .Values.contractsInfo.files.list }}
+  {{ $key }}: {{ toYaml $value | indent 2 }}
+  {{- end }}
+{{- end }}
+{{- end }}
