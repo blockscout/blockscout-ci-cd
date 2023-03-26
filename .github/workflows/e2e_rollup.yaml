@@ -1,5 +1,6 @@
 name: E2E Testnet tests (Rollup)
 on:
+  push:
   schedule:
     - cron: '0 */3 * * *'
 env:
