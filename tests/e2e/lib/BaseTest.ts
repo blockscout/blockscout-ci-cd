@@ -7,6 +7,7 @@ import { TokenPage } from '@pages/Token'
 import { AddressPage } from '@pages/Address'
 import { AuthorizedArea } from '@pages/Login'
 import { CommonPage } from '@pages/Common'
+import { HomeRollup } from '@pages/HomeRollup'
 import MailSlurp from 'mailslurp-client'
 import { GnosisHome } from '@pages/HomeGnosis'
 import { ETHHome } from '@pages/HomeETH'
@@ -23,6 +24,7 @@ import testConfig from '../testConfig'
 const test = baseTest.extend<{
     commonPage: CommonPage,
     newHomePage: NewHomePage,
+    newHomeRollup: HomeRollup,
     marketplace: MarketplacePage,
     homePage: HomePage,
     ethHomePage: ETHHome,
@@ -44,6 +46,9 @@ const test = baseTest.extend<{
     },
     newHomePage: async ({ page }, use) => {
         await use(new NewHomePage(page))
+    },
+    newHomeRollup: async ({ page }, use) => {
+        await use(new HomeRollup(page))
     },
     marketplace: async ({ page }, use) => {
         await use(new MarketplacePage(page))

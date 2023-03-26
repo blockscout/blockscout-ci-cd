@@ -8,6 +8,7 @@
     "test": "npx playwright test",
     "report": "npx playwright show-report html-report",
     "test:prod:smoke": "npx playwright test --grep=@Smoke",
+    "test:rollup": "npx playwright test --grep=@Rollup",
     "test:authorized": "npx playwright test --grep=@Authorized",
     "test:notifications": "npx playwright test --grep=@Notifications",
     "test:smoke:account": "npx playwright test --grep=@AccountImage",
