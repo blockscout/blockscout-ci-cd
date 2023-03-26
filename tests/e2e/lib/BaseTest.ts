@@ -8,6 +8,8 @@ import { AddressPage } from '@pages/Address'
 import { AuthorizedArea } from '@pages/Login'
 import { CommonPage } from '@pages/Common'
 import { HomeRollup } from '@pages/HomeRollup'
+import { RollupDepositsPage } from '@pages/RollupDeposits'
+import { RollupWithdrawalsPage } from '@pages/RollupWithdrawals'
 import MailSlurp from 'mailslurp-client'
 import { GnosisHome } from '@pages/HomeGnosis'
 import { ETHHome } from '@pages/HomeETH'
@@ -18,6 +20,7 @@ import { BlockListPage } from '@pages/BlocksList'
 import { MarketplacePage } from '@pages/Marketplace'
 import { NewHomePage } from '@pages/NewHome'
 import { Etherscan } from '@pages/Etherscan'
+import { RollupTxnBatchesPage } from '@pages/RollupTxnBatches'
 import Contracts from './Contracts'
 import testConfig from '../testConfig'
 
@@ -25,6 +28,9 @@ const test = baseTest.extend<{
     commonPage: CommonPage,
     newHomePage: NewHomePage,
     newHomeRollup: HomeRollup,
+    newRollupDeposits: RollupDepositsPage,
+    newRollupWithdrawals: RollupWithdrawalsPage,
+    newRollupTxnBatches: RollupTxnBatchesPage,
     marketplace: MarketplacePage,
     homePage: HomePage,
     ethHomePage: ETHHome,
@@ -49,6 +55,15 @@ const test = baseTest.extend<{
     },
     newHomeRollup: async ({ page }, use) => {
         await use(new HomeRollup(page))
+    },
+    newRollupDeposits: async ({ page }, use) => {
+        await use(new RollupDepositsPage(page))
+    },
+    newRollupWithdrawals: async ({ page }, use) => {
+        await use(new RollupWithdrawalsPage(page))
+    },
+    newRollupTxnBatches: async ({ page }, use) => {
+        await use(new RollupTxnBatchesPage(page))
     },
     marketplace: async ({ page }, use) => {
         await use(new MarketplacePage(page))
