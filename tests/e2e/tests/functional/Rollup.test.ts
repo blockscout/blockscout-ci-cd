@@ -21,3 +21,8 @@ test(`@Rollup Txn batches table verification`, async ({ context, newRollupTxnBat
     await newRollupTxnBatches.open()
     await newRollupTxnBatches.validateTable(context)
 })
+
+test(`@Rollup Output roots table verification`, async ({ context, newRollupOutputRoots }) => {
+    await newRollupOutputRoots.open()
+    await newRollupOutputRoots.validateTable(context)
+})

@@ -21,6 +21,7 @@ import { MarketplacePage } from '@pages/Marketplace'
 import { NewHomePage } from '@pages/NewHome'
 import { Etherscan } from '@pages/Etherscan'
 import { RollupTxnBatchesPage } from '@pages/RollupTxnBatches'
+import { RollupOutputRootsPage } from '@pages/RollupOutputRoots'
 import Contracts from './Contracts'
 import testConfig from '../testConfig'
 
@@ -31,6 +32,7 @@ const test = baseTest.extend<{
     newRollupDeposits: RollupDepositsPage,
     newRollupWithdrawals: RollupWithdrawalsPage,
     newRollupTxnBatches: RollupTxnBatchesPage,
+    newRollupOutputRoots: RollupOutputRootsPage,
     marketplace: MarketplacePage,
     homePage: HomePage,
     ethHomePage: ETHHome,
@@ -64,6 +66,9 @@ const test = baseTest.extend<{
     },
     newRollupTxnBatches: async ({ page }, use) => {
         await use(new RollupTxnBatchesPage(page))
+    },
+    newRollupOutputRoots: async ({ page }, use) => {
+        await use(new RollupOutputRootsPage(page))
     },
     marketplace: async ({ page }, use) => {
         await use(new MarketplacePage(page))
