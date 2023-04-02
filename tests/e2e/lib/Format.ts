@@ -58,12 +58,18 @@ export interface RequestTransactionsData {
 
 export interface TransactionsTexts {
     blockText: string
+    statusText: string
+    fromText: string
+    toText: string
 }
 
 export interface Transaction {
     hash: string
     texts: TransactionsTexts
     block: string
+    status: string
+    from: string
+    to: string
 }
 
 /* comparison */
@@ -107,7 +113,6 @@ export const compareAndPrintTxs = (etherscanData: ComparableData, blockscoutData
                 continue
             }
             console.log(`key: ${key}, value: ${value}`)
-            console.log(`etherscan: ${JSON.stringify(etherscanData.txs)}, goerli: ${JSON.stringify(blockscoutData.txs)}`)
             if (value !== blockscoutData.txs[bIdx][key]) {
                 console.log(chalk.red(`Etherscan: ${value}, Blockscout: ${blockscoutData.txs[bIdx][key]}`))
             } else {

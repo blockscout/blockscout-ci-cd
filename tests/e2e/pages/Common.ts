@@ -87,8 +87,8 @@ export class CommonPage {
         return `div:right-of(:text("${text}")) >> nth=0`
     }
 
-    main_block_div(text: string): string {
-        return `main >> div:right-of(:text("${text}")) >> nth=0`
+    main_block_div(text: string, path?: string): string {
+        return path ? `main >> div:right-of(:text("${text}")) >> nth=0 >> ${path}` : `main >> div:right-of(:text("${text}")) >> nth=0`
     }
 
     async mock_ads(): Promise<void> {

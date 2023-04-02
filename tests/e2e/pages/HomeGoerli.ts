@@ -30,10 +30,16 @@ export class HomeGoerli extends CommonPage implements Comparable {
         for (const i in data.txs) {
             await this.actions.navigateToURL(`${this.BASE_URL}/tx/${data.txs[i].hash}`, { waitUntil: `load` })
             const blockText = await this.actions.getTextFromWebElements(this.main_block_div(`Block`))
+            const statusText = await this.actions.getTextFromWebElements(this.main_block_div(`Status`))
+            const fromText = await this.actions.getTextFromWebElements(this.main_block_div(`From`))
+            const toText = await this.actions.getTextFromWebElements(this.main_block_div(`Interacted with contract`, `span`))
             const b = this.transform_transaction({
                 hash: data.txs[i].hash,
                 texts: {
                     blockText: blockText[0],
+                    statusText: statusText[0],
+                    fromText: fromText[0],
+                    toText: toText[0],
                 },
             } as Transaction)
             d.txs.push(b)
@@ -45,9 +51,15 @@ export class HomeGoerli extends CommonPage implements Comparable {
         console.log(`transforming tx: ${t.hash}`)
         console.log(`tx before parsing: ${JSON.stringify(t)}`)
         const [, block] = t.texts.blockText.match(/(.*)\|/)
+        const [, status] = t.texts.statusText.match(/(.*)/)
+        const [, from] = t.texts.fromText.match(/(.*)/)
+        const [, to] = t.texts.toText.match(/(.*)/)
         return {
             ...t,
             block,
+            status,
+            from,
+            to,
         } as Transaction
     }
 
