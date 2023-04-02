@@ -19,15 +19,17 @@ import { GnosisOptimismHome } from '@pages/HomeOptimismGnosis'
 import { BlockListPage } from '@pages/BlocksList'
 import { MarketplacePage } from '@pages/Marketplace'
 import { NewHomePage } from '@pages/NewHome'
-import { Etherscan } from '@pages/Etherscan'
+import { EtherscanGoerliPage } from '@pages/EtherscanGoerli'
 import { RollupTxnBatchesPage } from '@pages/RollupTxnBatches'
 import { RollupOutputRootsPage } from '@pages/RollupOutputRoots'
+import { HomeGoerli } from '@pages/HomeGoerli'
 import Contracts from './Contracts'
 import testConfig from '../testConfig'
 
 const test = baseTest.extend<{
     commonPage: CommonPage,
     newHomePage: NewHomePage,
+    newHomeGoerli: HomeGoerli,
     newHomeRollup: HomeRollup,
     newRollupDeposits: RollupDepositsPage,
     newRollupWithdrawals: RollupWithdrawalsPage,
@@ -47,7 +49,7 @@ const test = baseTest.extend<{
     tokenPage: TokenPage,
     addressPage: AddressPage,
     verificationPage: VerificationPage,
-    etherscanPage: Etherscan,
+    etherscanGoerliPage: EtherscanGoerliPage,
 }>({
     commonPage: async ({ page }, use) => {
         await use(new CommonPage(page))
@@ -57,6 +59,9 @@ const test = baseTest.extend<{
     },
     newHomeRollup: async ({ page }, use) => {
         await use(new HomeRollup(page))
+    },
+    newHomeGoerli: async ({ page }, use) => {
+        await use(new HomeGoerli(page))
     },
     newRollupDeposits: async ({ page }, use) => {
         await use(new RollupDepositsPage(page))
@@ -114,8 +119,8 @@ const test = baseTest.extend<{
     verificationPage: async ({ page }, use) => {
         await use(new VerificationPage(page))
     },
-    etherscanPage: async ({ page }, use) => {
-        await use(new Etherscan(page))
+    etherscanGoerliPage: async ({ page }, use) => {
+        await use(new EtherscanGoerliPage(page))
     },
 })
 

@@ -17,7 +17,7 @@ const config: PlaywrightTestConfig = {
     timeout: 300000,
 
     // number of retries if test case fails
-    retries: 5,
+    retries: 0,
 
     // Reporters
     reporter: [[`list`], [`html`, { outputFolder: `html-report`, open: `never` }], [`junit`, { outputFile: `results.xml` }]],
@@ -30,6 +30,24 @@ const config: PlaywrightTestConfig = {
                 channel: `chrome`,
                 baseURL: testConfig[process.env.ENV],
                 headless: true,
+                viewport: { width: 1500, height: 730 },
+                ignoreHTTPSErrors: true,
+                acceptDownloads: true,
+                screenshot: `only-on-failure`,
+                video: `retain-on-failure`,
+                trace: `retain-on-failure`,
+                launchOptions: {
+                    slowMo: 0,
+                },
+            },
+        },
+        {
+            name: `Chrome_UI`,
+            use: {
+                browserName: `chromium`,
+                channel: `chrome`,
+                baseURL: testConfig[process.env.ENV],
+                headless: false,
                 viewport: { width: 1500, height: 730 },
                 ignoreHTTPSErrors: true,
                 acceptDownloads: true,

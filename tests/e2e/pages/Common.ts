@@ -83,6 +83,14 @@ export class CommonPage {
         this.apiActions = new APIActions()
     }
 
+    table_div(text: string): string {
+        return `div:right-of(:text("${text}")) >> nth=0`
+    }
+
+    main_block_div(text: string): string {
+        return `main >> div:right-of(:text("${text}")) >> nth=0`
+    }
+
     async mock_ads(): Promise<void> {
         await this.page.route(`https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242`, async (route) => {
             const duck = {
