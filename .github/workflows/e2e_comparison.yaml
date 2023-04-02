@@ -53,6 +53,7 @@ jobs:
         uses: coactions/setup-xvfb@v1
         with:
           run: npm run test:etherscan
+          working-directory: ./tests/e2e
       - uses: actions/upload-artifact@v3
         if: always()
         with:
