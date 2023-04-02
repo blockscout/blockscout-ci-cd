@@ -29,6 +29,10 @@ Run verification service suite
     ```
     source .env && npm run test:smoke:verification
     ```
+Run comparison tests between Etherscan and Blockscout (Goerli)
+    ```
+    source .env && npm run test:etherscan
+    ```
 
 ## Debug
 You can use [VSCode addon](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright), or set `PWDEBUG=1` and run any target
