@@ -87,7 +87,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-postgres-pv-claim
         {{- end }}
-        {{- if .Values.postgres.customShm.enabled }}
+        {{- if and .Values.postgres.customShm .Values.postgres.customShm.enabled }}
         - name: dshm
           emptyDir:
             medium: Memory

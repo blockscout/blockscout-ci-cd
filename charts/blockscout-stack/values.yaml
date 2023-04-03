@@ -111,6 +111,9 @@ postgres:
   command:
   args:
 
+  customShm:
+    enabled: false
+
   strategy: RollingUpdate
 
   service:
