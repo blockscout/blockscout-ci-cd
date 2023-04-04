@@ -37,7 +37,7 @@ spec:
             - containerPort: {{ .Values.postgres.port }}
           env:
 {{- include "postgres_env" . | indent 10 }}
-          {{- if or ( .Values.postgres.persistence ) ( .Values.postgres.files.enabled ) }}
+          {{- if or ( .Values.postgres.persistence ) ( .Values.postgres.files.enabled ) ( .Values.postgres.customShm.enabled ) }}
           volumeMounts:
             {{- if .Values.postgres.persistence }}
             - mountPath: {{ .Values.postgres.mountPath }}
@@ -80,7 +80,7 @@ spec:
       nodeSelector:
       {{- pluck $.Values.global.env .Values.postgres.nodeSelector.labels | first | default .Values.postgres.nodeSelector.labels._default | toYaml | nindent 8 }}
       {{- end }}
-      {{- if or ( .Values.postgres.persistence ) ( .Values.postgres.files.enabled ) }}
+      {{- if or ( .Values.postgres.persistence ) ( .Values.postgres.files.enabled ) ( .Values.postgres.customShm.enabled ) }}
       volumes:
         {{- if .Values.postgres.persistence }}
         - name: postgredb
