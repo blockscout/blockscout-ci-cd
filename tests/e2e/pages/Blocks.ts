@@ -49,15 +49,14 @@ export class BlocksPage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}18 >> text=/Gas used/`, `no gas used is present`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}20 >> text=/\\d+/`, `no gas used is present`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}21 >> text=/\\d+.*%/`, `no gas used is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}24 >> text=/\\d+.*%/`, `no gas used is present`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}25 >> text=/Gas limit/`, `no gas limit is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}27 >> text=/\\d+/`, `no gas limit is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}26 >> text=/\\d+/`, `no gas limit is present`)
 
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}28 >> text=/Base fee per gas/`, `no base fee is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}30 >> text=/\\d+.*SPOA.*Gwei/`, `no base fee is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}31 >> text=/Burnt fees/`, `no base fee is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}33 >> text=/.*SPOA/`, `no base fee is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}34 >> text=/\\d+.*%/`, `no base fee is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}29 >> text=/\\d+.*SPOA.*Gwei/`, `no base fee is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}30 >> text=/Burnt fees/`, `no base fee is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}32 >> text=/.*SPOA/`, `no base fee is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}33 >> text=/\\d+.*%/`, `no base fee is present`)
     }
 
     async check_details(): Promise<void> {
@@ -69,8 +68,8 @@ export class BlocksPage extends CommonPage {
         await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}53`, `Hash`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}55 >> text=0x`, `no hash is present in details`)
         await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}57`, `Parent hash`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}59 >> text=/\\d+/`, `no parent hash is present in details`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}58 >> text=/\\d+/`, `no parent hash is present in details`)
         await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}60`, `Nonce`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}62 >> text=0x`, `no nonce is present in details`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}61 >> text=0x`, `no nonce is present in details`)
     }
 }

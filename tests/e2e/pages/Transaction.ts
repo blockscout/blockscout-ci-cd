@@ -67,7 +67,7 @@ export class TransactionPage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}36 >> text=/\\d+.*SPOA/`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}37 >> text=Gas price`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}39 >> text=/\\d+.*SPOA.*\\d+.*Gwei/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}40 >> text=Gas limit & usage by txn`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}40 >> text=Gas usage & limit by txn`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}42 >> text=/\\d+.*|.*\\d+%/`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}46 >> text=Gas fees (Gwei)`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}48 >> text=/Base.*\\d+.*Max.*\\d+.*Max priority.*\\d+/`)
