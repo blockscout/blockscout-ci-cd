@@ -82,15 +82,16 @@ export class EtherscanGoerliPage extends CommonPage implements Comparable {
             await this.actions.navigateToURL(`${this.BASE_URL}/block/${data.blocks[i].num}`, { waitUntil: `load` })
             const proposedText = await this.actions.getTextFromWebElements(this.mtable_div(17))
             const transactionsText = await this.actions.getTextFromWebElements(this.mtable_div(21))
-            const feeRecipientText = await this.actions.getTextFromWebElements(this.mtable_div(24))
-            const rewardText = await this.actions.getTextFromWebElements(this.mtable_div(27))
-            const totalDifficultyText = await this.actions.getTextFromWebElements(this.mtable_div(30))
-            const sizeText = await this.actions.getTextFromWebElements(this.mtable_div(33))
-            const gasUsedText = await this.actions.getTextFromWebElements(this.mtable_div(36))
-            const gasLimitText = await this.actions.getTextFromWebElements(this.mtable_div(41))
-            const baseFeePerGasText = await this.actions.getTextFromWebElements(this.mtable_div(44))
-            const burntFeesText = await this.actions.getTextFromWebElements(this.mtable_div(47))
-            const extraDataText = await this.actions.getTextFromWebElements(this.mtable_div(50))
+            const feeRecipientText = await this.actions.getTextFromWebElements(this.mtable_div(28))
+            const rewardText = await this.actions.getTextFromWebElements(this.mtable_div(31))
+            const totalDifficultyText = await this.actions.getTextFromWebElements(this.mtable_div(34))
+            const sizeText = await this.actions.getTextFromWebElements(this.mtable_div(37))
+
+            const gasUsedText = await this.actions.getTextFromWebElements(this.mtable_div(40))
+            const gasLimitText = await this.actions.getTextFromWebElements(this.mtable_div(45))
+            const baseFeePerGasText = await this.actions.getTextFromWebElements(this.mtable_div(48))
+            const burntFeesText = await this.actions.getTextFromWebElements(this.mtable_div(51))
+            const extraDataText = await this.actions.getTextFromWebElements(this.mtable_div(54))
             const b = this.transform_block({
                 num: data.blocks[i].num,
                 texts: {
