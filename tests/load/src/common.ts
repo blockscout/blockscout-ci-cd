@@ -19,11 +19,10 @@ export const defaultSession = () => {
 
 export const defaultStressStages = {
     stages: [
-        { target: 3, duration: `30s` },
-        { target: 4, duration: `5m` },
-        { target: 5, duration: `5m` },
-        { target: 6, duration: `5m` },
-        { target: 7, duration: `5m` },
+        { target: 5, duration: `150s` },
+        { target: 10, duration: `150s` },
+        { target: 15, duration: `150s` },
+        { target: 21, duration: `150s` },
     ],
 }
 
@@ -42,18 +41,19 @@ export const defaultProfileStages = {
 
 export const defaultThresholds = {
     http_req_failed: [`rate<0.01`], // http errors should be less than 1%
-    http_req_duration: [`p(95)<10000`], // 95% of requests should be below 20s, just for CI debug for now
+    http_req_duration: [`p(95)<20000`], // 95% of requests should be below 20s, just for CI debug for now
 }
 
 export const defaultScenarioSettings = {
     gracefulStop: `30s`,
     timeUnit: `1s`,
     preAllocatedVUs: 40,
-    maxVUs: 150,
+    maxVUs: 500,
 } as Scenario
 
 // goerli
 export const defaultTestData = {
+    APIKey: __ENV.API_KEY,
     blocks: [
         8386018,
         8386017,
@@ -210,6 +210,25 @@ export const defaultTestData = {
         `0x04f67C6fA446486D8Da0A3534566Bdc75Ef67004`,
         `0xa6DD2974B96e959F2c8930024451a30aFEC24203`,
     ],
+    contracts: [
+        `0xf74a5ca65E4552CfF0f13b116113cCb493c580C5`,
+        `0x7753cfAD258eFbC52A9A1452e42fFbce9bE486cb`,
+        `0x62BC478FFC429161115A6E4090f819CE5C50A5d9`,
+        `0xCc7bb2D219A0FC08033E130629C2B854b7bA9195`,
+        `0x07865c6E87B9F70255377e024ace6630C1Eaa37F`,
+        `0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6`,
+        `0x326C977E6efc84E512bB9C30f76E30c160eD06FB`,
+        `0xf5de760f2e916647fd766B4AD9E85ff943cE3A2b`,
+        `0xd35CCeEAD182dcee0F148EbaC9447DA2c4D449c4`,
+        `0x5C221E77624690fff6dd741493D735a17716c26B`,
+        `0xEC3a9c7d612E0E0326e70D97c9310A5f57f9Af9E`,
+        `0x15987A0417D14cc6f3554166bCB4A590f6891B18`,
+        `0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc`,
+        `0x317a8Fe0f1C7102e7674aB231441E485c64c178A`,
+        `0xF2d68898557cCb2Cf4C10c3Ef2B034b2a69DAD00`,
+        `0x3151B7Dd9F6e806D2709153765925c373af47089`,
+        `0x63bfb2118771bd0da7A6936667A7BB705A06c1bA`,
+    ],
     txs: [
         `0x9d972592be32cea2dd335b75320fd171db42c86bef820305b4e682d760309adf`,
         `0xdc77dd8a723668853d380f3de1d3321732058b37d63c6c8c05015f0e870351b3`,
@@ -262,54 +281,65 @@ export const defaultTestData = {
         `0xddf7f4791a723e229f70c9c6e16ea015da23140102299ed61fed6ccb3ac95759`,
         `0x84d7ed641ae1482641c5f107800887101f16bb1e02ee0c18fdc10c7b034ab43d`,
     ],
+    pagination: {
+        pages: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        offsets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    },
 }
 
 export const selectScenario = (scenarioName: string): { [name: string]: Scenario } => {
     switch (scenarioName) {
     case `stressBackend`:
         return {
-            blocks: {
+            addressHash: {
                 ...defaultScenarioSettings,
                 ...defaultStressStages,
-                exec: `frontendBlocks`,
+                exec: `backendAccountAddressHash`,
                 executor: `ramping-arrival-rate`,
             } as RampingArrivalRateScenario,
-            blocksDetails: {
+            addressBalance: {
                 ...defaultScenarioSettings,
                 ...defaultStressStages,
-                exec: `frontendBlockDetails`,
+                exec: `backendAddressBalance`,
                 executor: `ramping-arrival-rate`,
             } as RampingArrivalRateScenario,
-            txs: {
+            ETHSupply: {
                 ...defaultScenarioSettings,
                 ...defaultStressStages,
-                exec: `frontendTxs`,
+                exec: `backendETHSupply`,
                 executor: `ramping-arrival-rate`,
             } as RampingArrivalRateScenario,
-            txDetails: {
+            tokenSupply: {
                 ...defaultScenarioSettings,
                 ...defaultStressStages,
-                exec: `frontendTxDetails`,
+                exec: `backendTokenSupply`,
                 executor: `ramping-arrival-rate`,
             } as RampingArrivalRateScenario,
-            addressDetails: {
+            getToken: {
                 ...defaultScenarioSettings,
                 ...defaultStressStages,
-                exec: `frontendAddressDetails`,
+                exec: `backendGetToken`,
                 executor: `ramping-arrival-rate`,
             } as RampingArrivalRateScenario,
-            tokenDetails: {
+            getTokenHolders: {
                 ...defaultScenarioSettings,
                 ...defaultStressStages,
-                exec: `frontendTokenDetails`,
+                exec: `backendGetTokenHolders`,
                 executor: `ramping-arrival-rate`,
             } as RampingArrivalRateScenario,
-            tokenHoldersDetails: {
+            tokenBalance: {
                 ...defaultScenarioSettings,
                 ...defaultStressStages,
-                exec: `frontendTokenHoldersDetails`,
+                exec: `backendTokenBalance`,
                 executor: `ramping-arrival-rate`,
             } as RampingArrivalRateScenario,
+            // disabled due to getLogs bug
+            // getLogs: {
+            //     ...defaultScenarioSettings,
+            //     ...defaultStressStages,
+            //     exec: `backendGetLogs`,
+            //     executor: `ramping-arrival-rate`,
+            // } as RampingArrivalRateScenario,
         }
     case `stressFrontend`:
         return {
@@ -436,7 +466,7 @@ export const selectThresholds = (scenarioName: string) => {
     case `stressFrontend`:
         return defaultThresholds
     case `stressBackend`:
-        return defaultTestData
+        return defaultThresholds
     case `baseline`:
         return defaultThresholds
     case `profile`:

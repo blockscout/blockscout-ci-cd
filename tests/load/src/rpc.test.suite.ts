@@ -34,14 +34,15 @@ export function teardown(data: any) {
 
 // per API calls for VUs, backend
 
-export const backendBlocks = () => {
-    group(`blocks (frontend)`, () => {
+export const backendGetLogs = () => {
+    group(`getLogs (backend)`, () => {
+        const block = randomItem(testData.blocks)
         const res = shoot(session, {
             method: `GET`,
-            url: `/blocks`,
+            url: `?module=logs&action=getLogs&fromBlock=${block}&toBlock=${block + 1}&address=${randomItem(testData.addresses)}&apikey=${testData.APIKey}`,
             params: {
                 tags: {
-                    name: `blocks (frontend)`,
+                    name: `getLogs (backend)`,
                 },
             },
         })
@@ -49,7 +50,147 @@ export const backendBlocks = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`blocks (frontend) has failed`)
+            fail(`getLogs (backend) has failed`)
+        }
+    })
+}
+
+export const backendTokenBalance = () => {
+    group(`tokenBalance (backend)`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `?module=account&action=tokenbalance&contractaddress=${randomItem(testData.contracts)}&address=${randomItem(testData.addresses)}&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `tokenBalance (backend)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`tokenBalance (backend) has failed`)
+        }
+    })
+}
+
+export const backendGetTokenHolders = () => {
+    group(`getTokenHolders (backend)`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `?module=token&action=getTokenHolders&contractaddress=${randomItem(testData.contracts)}&page=${randomItem(testData.pagination.pages)}&offset=${randomItem(testData.pagination.offsets)}&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `getTokenHolders (backend)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`getTokenHolders (backend) has failed`)
+        }
+    })
+}
+
+export const backendGetToken = () => {
+    group(`getToken (backend)`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `?module=token&action=getToken&contractaddress=${randomItem(testData.contracts)}&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `getToken (backend)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`getToken (backend) has failed`)
+        }
+    })
+}
+
+export const backendTokenSupply = () => {
+    group(`tokenSupply (backend)`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `?module=stats&action=tokensupply&contractaddress=${randomItem(testData.contracts)}&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `tokenSupply (backend)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`tokenSupply (backend) has failed`)
+        }
+    })
+}
+
+export const backendETHSupply = () => {
+    group(`ETHSupply (backend)`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `?module=stats&action=ethsupply&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `ETHSupply (backend)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`ETHSupply (backend) has failed`)
+        }
+    })
+}
+
+export const backendAccountAddressHash = () => {
+    group(`accountAddress (backend)`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `?module=account&action=txlist&address=${randomItem(testData.addresses)}&page=${randomItem(testData.pagination.pages)}&offset=${randomItem(testData.pagination.offsets)}&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `accountAddress (backend)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`accountAddress (backend) has failed`)
+        }
+    })
+}
+
+export const backendAddressBalance = () => {
+    group(`addressBalance (backend)`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `?module=account&action=balance&address=${randomItem(testData.addresses)}&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `addressBalance (backend)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`addressBalance (backend) has failed`)
         }
     })
 }
