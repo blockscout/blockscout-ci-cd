@@ -13,6 +13,7 @@ import { RollupWithdrawalsPage } from '@pages/RollupWithdrawals'
 import MailSlurp from 'mailslurp-client'
 import { GnosisHome } from '@pages/HomeGnosis'
 import { ETHHome } from '@pages/HomeETH'
+import { HomeMainDev } from '@pages/HomeMainDev'
 import { VerificationPage } from '@pages/Verification'
 import { TransactionsListPage } from '@pages/TransactionsList'
 import { GnosisOptimismHome } from '@pages/HomeOptimismGnosis'
@@ -29,6 +30,7 @@ import testConfig from '../testConfig'
 const test = baseTest.extend<{
     commonPage: CommonPage,
     newHomePage: NewHomePage,
+    newHomeMainDev: HomeMainDev,
     newHomeGoerli: HomeGoerli,
     newHomeRollup: HomeRollup,
     newRollupDeposits: RollupDepositsPage,
@@ -56,6 +58,9 @@ const test = baseTest.extend<{
     },
     newHomePage: async ({ page }, use) => {
         await use(new NewHomePage(page))
+    },
+    newHomeMainDev: async ({ page }, use) => {
+        await use(new HomeMainDev(page))
     },
     newHomeRollup: async ({ page }, use) => {
         await use(new HomeRollup(page))
