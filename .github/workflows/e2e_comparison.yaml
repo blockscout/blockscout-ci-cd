@@ -1,6 +1,5 @@
 name: E2E Testnet comparison tests (Goerli)
 on:
-  push:
   schedule:
     - cron: '0 */3 * * *'
 env:
