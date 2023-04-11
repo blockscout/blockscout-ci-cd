@@ -52,7 +52,7 @@ export class MarketplacePage extends CommonPage {
 
     URL_BTN = `[class="fsp-content"] >> button`
 
-    URL_UPLOAD = `[class="fsp-content"] >> text=Upload >> nth=1`
+    URL_UPLOAD = `span[data-e2e="upload"]`
 
     SUBMIT_VERIFICATION_TEXT = `text=Your responses have been emailed to you`
 
