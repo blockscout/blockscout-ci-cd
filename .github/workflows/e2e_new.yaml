@@ -300,6 +300,8 @@ jobs:
           fi
           if ${{ env.SIG_PROVIDER == 'true' }}; then
             DEPLOY_ARGS="$DEPLOY_ARGS --set sigProvider.ingress.host._default=sig-provider-$DEPLOY_SUFFIX-${{ github.sha }}.$K8S_DOMAIN"
+          else
+            DEPLOY_ARGS="$DEPLOY_ARGS --set sigProvider.enabled=false"
           fi
           echo "$DEPLOY_ARGS"
           echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
