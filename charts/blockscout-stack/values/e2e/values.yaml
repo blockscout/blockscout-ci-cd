@@ -105,7 +105,7 @@ blockscout:
       _default: prod
     ECTO_USE_SSL:
       _default: 'false'
-    RUST_VERIFICATION_SERVICE_URL:
+    MICROSERVICE_SC_VERIFIER_URL:
       _default: http://sc-verifier-svc:8050
     ACCOUNT_ENABLED:
       _default: 'true'
@@ -119,13 +119,7 @@ blockscout:
       _default: 'false'
     BLOCKSCOUT_HOST:
       _default: 'blockscout.test.aws-k8s.blockscout.com'
-    SOCKET_ROOT:
-      _default: "/"
     NETWORK_PATH:
-      _default: "/"
-    API_PATH:
-      _default: "/"
-    API_BASE_PATH:
       _default: "/"
     APPS_MENU:
       _default: 'true'
@@ -135,7 +129,7 @@ blockscout:
       _default: http://geth-svc:8545
     API_V2_ENABLED:
       _default: 'true'
-    ENABLE_RUST_VERIFICATION_SERVICE:
+    MICROSERVICE_SC_VERIFIER_ENABLED:
       _default: 'true'
 
 postgres:
