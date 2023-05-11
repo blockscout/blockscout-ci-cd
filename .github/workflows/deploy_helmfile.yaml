@@ -86,4 +86,4 @@ jobs:
           echo $KUBECONFIG_BASE64 | base64 --decode > ~/.kube/config
           chmod 600 ~/.kube/config
           cd ${{ inputs.helmfileDir }}
-          helmfile -e ${{ inputs.globalEnv }} -l app=${{ inputs.appName }} diff
+          helmfile -e ${{ inputs.globalEnv }} -l app=${{ inputs.appName }} apply
