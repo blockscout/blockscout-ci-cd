@@ -13,6 +13,11 @@ on:
         required: true
         default: 'testing'
         type: string
+      helmfileDir:
+        description: 'Directory to run helmfile'
+        required: false
+        default: '.'
+        type: string
       kubeConfigSecret:
         description: 'Path to kubeconfig in vault'
         required: true
@@ -80,5 +85,5 @@ jobs:
           mkdir -p ~/.kube
           echo $KUBECONFIG_BASE64 | base64 --decode > ~/.kube/config
           chmod 600 ~/.kube/config
-          cd helmfile/k8s-dev
+          cd ${{ inputs.helmfileDir }}
           helmfile -e ${{ inputs.globalEnv }} -l app=${{ inputs.appName }} diff
