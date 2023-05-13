@@ -11,12 +11,10 @@ import { HomeRollup } from '@pages/HomeRollup'
 import { RollupDepositsPage } from '@pages/RollupDeposits'
 import { RollupWithdrawalsPage } from '@pages/RollupWithdrawals'
 import MailSlurp from 'mailslurp-client'
-import { GnosisHome } from '@pages/HomeGnosis'
 import { ETHHome } from '@pages/HomeETH'
 import { HomeMainDev } from '@pages/HomeMainDev'
 import { VerificationPage } from '@pages/Verification'
 import { TransactionsListPage } from '@pages/TransactionsList'
-import { GnosisOptimismHome } from '@pages/HomeOptimismGnosis'
 import { BlockListPage } from '@pages/BlocksList'
 import { MarketplacePage } from '@pages/Marketplace'
 import { NewHomePage } from '@pages/NewHome'
@@ -40,8 +38,6 @@ const test = baseTest.extend<{
     marketplace: MarketplacePage,
     homePage: HomePage,
     ethHomePage: ETHHome,
-    gnosisHomePage: GnosisHome,
-    gnosisOptimismHomePage: GnosisOptimismHome,
     authorized: AuthorizedArea,
     transactionPage: TransactionPage,
     transactionsListPage: TransactionsListPage,
@@ -88,12 +84,6 @@ const test = baseTest.extend<{
     },
     ethHomePage: async ({ page }, use) => {
         await use(new ETHHome(page))
-    },
-    gnosisHomePage: async ({ page }, use) => {
-        await use(new GnosisHome(page))
-    },
-    gnosisOptimismHomePage: async ({ page }, use) => {
-        await use(new GnosisOptimismHome(page))
     },
     authorized: async ({ browser }, use) => {
         const ctx = await browser.newContext({ storageState: `state.json` })
