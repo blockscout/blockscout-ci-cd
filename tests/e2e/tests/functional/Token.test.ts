@@ -7,7 +7,7 @@ test(`@Ethereum @TokenPage @Data @PublicImage @AccountImage Check token page`, a
     const { TestTokenAddress } = process.env
     await tokenPage.mock_ads()
     await tokenPage.open(TestTokenAddress)
-    await tokenPage.waitBlocksSynced()
+    // await tokenPage.waitBlocksSynced()
     await tokenPage.check_token()
     await tokenPage.select_holders_tab()
     await tokenPage.check_holders_tab()

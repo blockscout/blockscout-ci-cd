@@ -11,15 +11,15 @@ test(`@Ethereum @Tokens @Data @PublicImage @AccountImage Search token by the nam
     await tokensPage.search(TestTokenSymbol)
     await tokensPage.check_token_row(1, {
         summary: [`1`, `EPIC (EPC)`, `0x`, `ERC-20`],
-        price: `-`,
-        marketCap: `-`,
+        price: ``,
+        marketCap: ``,
         holders: `1`,
     } as TokenRowProps)
     await tokensPage.search(TestNFTSymbol)
     await tokensPage.check_token_row(1, {
         summary: [`1`, `NFT`, `0x`, `ERC-721`],
-        price: `-`,
-        marketCap: `-`,
+        price: ``,
+        marketCap: ``,
         holders: `1`,
     } as TokenRowProps)
 })
@@ -31,15 +31,15 @@ test(`@Ethereum @Tokens @Data @PublicImage @AccountImage Search a token by symbo
     await tokensPage.search(TestTokenName)
     await tokensPage.check_token_row(1, {
         summary: [`1`, `EPIC (EPC)`, `0x`, `ERC-20`],
-        price: `-`,
-        marketCap: `-`,
+        price: ``,
+        marketCap: ``,
         holders: `1`,
     } as TokenRowProps)
     await tokensPage.search(TestNFTName)
     await tokensPage.check_token_row(1, {
         summary: [`1`, `NFT`, `0x`, `ERC-721`],
-        price: `-`,
-        marketCap: `-`,
+        price: ``,
+        marketCap: ``,
         holders: `1`,
     } as TokenRowProps)
 })

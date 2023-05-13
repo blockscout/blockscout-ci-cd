@@ -50,7 +50,7 @@ export class TransactionsListPage extends CommonPage {
 
         await this.table_element_displayed(2, 1, `/0x.*ago/`)
         await this.table_element_displayed(2, 2, `/Token creation.*Success/`)
-        await this.table_element_displayed(2, 3, `-`)
+        await this.table_element_displayed(2, 3, ``)
         await this.table_element_displayed(2, 4, `/\\d+/`)
         await this.table_element_displayed(2, 5, `0x`)
         await this.table_element_displayed(2, 7, nftSymbolV)

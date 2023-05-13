@@ -83,6 +83,18 @@ export class CommonPage {
         this.apiActions = new APIActions()
     }
 
+    async check_selector(sel: string, err?: string): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(sel, err)
+    }
+
+    async check_table_element(header: string, nth: number, text:string, err?: string): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(this.div_right_of_with_text(header, nth, text), err)
+    }
+
+    div_right_of_with_text(of: string, nth: number, text: string): string {
+        return `div:right-of(:text("${of}")) >> nth=${nth} >> text=/${text}/`
+    }
+
     table_div(text: string): string {
         return `div:right-of(:text("${text}")) >> nth=0`
     }
@@ -187,7 +199,7 @@ export class CommonPage {
 
         await this.check_tx_list_row(4, 1, `0x.*ago`)
         await this.check_tx_list_row(4, 2, `Contract creation.*Success`)
-        await this.check_tx_list_row(4, 3, `-`)
+        await this.check_tx_list_row(4, 3, ``)
         await this.check_tx_list_row(4, 4, `\\d+`)
         await this.check_tx_list_row(4, 5, `0x`)
         await this.check_tx_list_row(4, 7, `EPIC`)

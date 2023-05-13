@@ -26,16 +26,12 @@ export class TokenPage extends CommonPage {
     }
 
     async check_token(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}3 >> text=/EPIC.*(EPC).*token/`, `no token name`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}5 >> text=/0x/`, `no token addr`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}8 >> text=/Max total supply/`, `no max total supply`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}10 >> text=/\\d+/`, `no max total supply value`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}14 >> text=/Holders/`, `no holders`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}16 >> text=/\\d+/`, `no holders value`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}17 >> text=/Transfers/`, `no transfers`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}19 >> text=/\\d+/`, `no transfers value`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}20 >> text=/Decimals/`, `no decimals`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_DIV}22 >> text=/18/`, `no decimals value`)
+        await this.check_selector(`text=0x5FbDB2315678afecb367f032d93F642f64180aa3`, `no token address is displayed`)
+        await this.check_table_element(`EPIC (EPC) token`, 0, `ERC-20`)
+        await this.check_table_element(`Max total supply`, 0, `\\d+`)
+        await this.check_table_element(`Holders`, 0, `\\d+`)
+        await this.check_table_element(`Transfers`, 0, `\\d+`)
+        await this.check_table_element(`Decimals`, 0, `18`)
     }
 
     async select_holders_tab(): Promise<void> {

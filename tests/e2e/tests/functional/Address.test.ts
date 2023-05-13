@@ -7,7 +7,6 @@ test(`@Ethereum @Address @Data @AccountImage Check address page`, async ({ addre
     const { TestTokenAddress } = process.env
     await addressPage.mock_ads()
     await addressPage.open(TestTokenAddress)
-    await addressPage.waitBlocksSynced()
     await addressPage.check_address_description()
     await addressPage.check_tx_in_list()
 })

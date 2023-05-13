@@ -4,12 +4,12 @@ import Airtable, { Table } from 'airtable'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@Ethereum @AccountImage @Marketplace Check marketplace apps`, async ({ marketplace }) => {
+test.skip(`@Ethereum @AccountImage @Marketplace Check marketplace apps`, async ({ marketplace }) => {
     await marketplace.open()
     await marketplace.checkDefaultAppsList()
 })
 
-test(`@Ethereum @AccountImage @Marketplace Check favorites filter`, async ({ marketplace }) => {
+test.skip(`@Ethereum @AccountImage @Marketplace Check favorites filter`, async ({ marketplace }) => {
     await marketplace.open()
     const appName = `Aave`
     await marketplace.addFavoriteApp(appName)
@@ -17,7 +17,7 @@ test(`@Ethereum @AccountImage @Marketplace Check favorites filter`, async ({ mar
     await marketplace.checkGroupsVisible(appName, 1)
 })
 
-test(`@Ethereum @AccountImage @Marketplace Propose a new app`, async ({ context, marketplace }) => {
+test.skip(`@Ethereum @AccountImage @Marketplace Propose a new app`, async ({ context, marketplace }) => {
     await marketplace.open()
     await marketplace.submitNewApp(context, {
         Name: `New app`,

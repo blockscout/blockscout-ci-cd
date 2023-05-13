@@ -32,19 +32,13 @@ export class AddressPage extends CommonPage {
     }
 
     async check_address_description(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}3 >> text=/Contract details/`, `no contract details is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}6 >> text=/0x/`, `no addr is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}10 >> text=/Token name/`, `no token header is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}11 >> text=/EPIC.*(EPC)/`, `no token name is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}13 >> text=/Creator/`, `no creator is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}14 >> text=/0x.*at.*0x.*/`, `no creator address is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}16 >> text=/Balance/`, `no transactions aare displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}17 >> text=/\\d+ SPOA/`, `no transactions aare displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}19 >> text=/Transactions/`, `no transactions aare displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}20 >> text=/\\d+/`, `no transactions amount is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}22 >> text=/Gas used/`, `no gas used header is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}23 >> text=/\\d+/`, `no gas used amount is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}25 >> text=/Last balance update/`, `no last balance update is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.DESCRIPTION_BLOCK}26 >> text=/\\d+/`, `no last balance update block is displayed`)
+        await this.check_table_element(`Contract details`, 0, `ContractToken`)
+        await this.check_selector(`text=0x5FbDB2315678afecb367f032d93F642f64180aa3`, `wrong account address`)
+        await this.check_table_element(`Token name`, 0, `EPIC.*(EPC)`)
+        await this.check_table_element(`Creator`, 0, `0x.*at.*0x.*`)
+        await this.check_selector(`text=/\\d+ SPOA/`, `no SPOA balance is displayed`)
+        await this.check_table_element(`Transactions`, 0, `\\d+`)
+        await this.check_table_element(`Gas used`, 0, `\\d+`)
+        await this.check_table_element(`Last balance update`, 0, `\\d+`)
     }
 }

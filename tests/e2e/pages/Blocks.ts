@@ -34,42 +34,24 @@ export class BlocksPage extends CommonPage {
     }
 
     async check_block_description_new(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(this.BLOCK_HEADER, `no block header is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}1 >> text=Block height`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}3 >> text=/\\d+/`, `no block height is displayed`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}5 >> text=/Size/`, `no block size is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}7 >> text=/\\d+/`, `no block size is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}8 >> text=/Timestamp/`, `no timestamp is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}10 >> text=/\\.*ago.*UTC/`, `no timestamp is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}12 >> text=/Transaction/`, `no tx link is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}13 >> text=/transaction/`, `no tx link is present`)
-
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}14 >> text=/Validated by/`, `no validated by is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}16 >> text=/0x/`, `no validated by is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}18 >> text=/Gas used/`, `no gas used is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}20 >> text=/\\d+/`, `no gas used is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}21 >> text=/\\d+.*%/`, `no gas used is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}25 >> text=/Gas limit/`, `no gas limit is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}26 >> text=/\\d+/`, `no gas limit is present`)
-
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}28 >> text=/Base fee per gas/`, `no base fee is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}29 >> text=/\\d+.*SPOA.*Gwei/`, `no base fee is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}30 >> text=/Burnt fees/`, `no base fee is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}32 >> text=/.*SPOA/`, `no base fee is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}33 >> text=/\\d+.*%/`, `no base fee is present`)
+        await this.check_selector(`h1 >> text=/Block #\\d+/`, `no block header`)
+        await this.check_table_element(`Block height`, 0, `\\d+`)
+        await this.check_table_element(`Size`, 0, `\\d+`)
+        await this.check_table_element(`Timestamp`, 0, `\\.*ago.*UTC`)
+        await this.check_table_element(`Transaction`, 0, `\\d+ transaction`)
+        await this.check_table_element(`Validated by`, 0, `0x0000000000000000000000000000000000000000`)
+        await this.check_table_element(`Gas used`, 0, `\\d+.*%`)
+        await this.check_table_element(`Gas limit`, 0, `\\d+`)
+        await this.check_table_element(`Base fee per gas`, 0, `\\d+.*SPOA.*Gwei`)
+        await this.check_table_element(`Burnt fees`, 0, `.*SPOA.*\\d+.*%`)
     }
 
     async check_details(): Promise<void> {
         await this.actions.clickElement(this.DETAILS_TAB_FOOTER)
-        await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}44`, `Difficulty`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}46 >> text=/\\d+/`, `no difficulty is present in details`)
-        await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}48`, `Total difficulty`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}50 >> text=/\\d+/`, `no total difficulty is present in details`)
-        await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}53`, `Hash`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}55 >> text=0x`, `no hash is present in details`)
-        await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}57`, `Parent hash`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}58 >> text=/\\d+/`, `no parent hash is present in details`)
-        await this.actions.verifyElementContainsText(`${this.TABLE_TABPANEL_DIV}60`, `Nonce`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}61 >> text=0x`, `no nonce is present in details`)
+        await this.check_table_element(`Difficulty`, 0, `\\d+`)
+        await this.check_table_element(`Total difficulty`, 0, `\\d+`)
+        await this.check_table_element(`Hash`, 0, `0x`)
+        await this.check_table_element(`Parent hash`, 0, `\\d+`)
+        await this.check_table_element(`Nonce`, 0, `0x`)
     }
 }

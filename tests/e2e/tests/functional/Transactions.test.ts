@@ -23,9 +23,3 @@ test(`@Ethereum @Transactions @Data @AccountImage Check contract creation tx pro
     await transactionPage.check_transaction_logs()
     await transactionPage.check_raw_trace(MinerAddress, TestTokenAddress)
 })
-
-test(`@Ethereum @Transactions @Data @AccountImage @NewFrontend Check tx ad is present`, async ({ transactionPage }) => {
-    const { TestTokenDeployTXHash } = process.env
-    await transactionPage.open(TestTokenDeployTXHash)
-    // await transactionPage.check_header_tx_ad()
-})

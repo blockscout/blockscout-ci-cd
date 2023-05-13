@@ -47,41 +47,27 @@ export class TransactionPage extends CommonPage {
     }
 
     async check_tx_description(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}1 >> text=Transaction hash`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}3 >> text=0x`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}5 >> text=Status`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}7 >> text=Success`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}8 >> text=Block`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}10 >> text=/\\d+.*\\d+.*confirmations/`)
+        await this.check_table_element(`Transaction hash`, 0, `0x`)
+        await this.check_table_element(`Status`, 0, `Success`)
+        await this.check_table_element(`Block`, 0, `\\d+.*\\d+.*confirmations`)
 
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}11 >> text=Timestamp`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}13 >> text=/ago.*UTC.*Confirmed/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}14 >> text=/Sponsored/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}20 >> text=From`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}22 >> text=0x`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}26 >> text=/To/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}28 >> text=/Contract.*0x.*created/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}31 >> text=Value`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}33 >> text=SPOA`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}34 >> text=Transaction fee`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}36 >> text=/\\d+.*SPOA/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}37 >> text=Gas price`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}39 >> text=/\\d+.*SPOA.*\\d+.*Gwei/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}40 >> text=Gas usage & limit by txn`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}42 >> text=/\\d+.*|.*\\d+%/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}46 >> text=Gas fees (Gwei)`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}48 >> text=/Base.*\\d+.*Max.*\\d+.*Max priority.*\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}52 >> text=Burnt fees`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}54 >> text=/\\d+.*SPOA/`)
+        await this.check_table_element(`Timestamp`, 0, `ago.*UTC.*Confirmed`)
+        await this.check_selector(`text=/Sponsored/`)
+        await this.check_table_element(`From`, 0, `0x`)
+        await this.check_table_element(`To`, 0, `Contract.*0x.*created`)
+        await this.check_table_element(`Value`, 0, `SPOA`)
+        await this.check_table_element(`Transaction fee`, 0, `\\d+.*SPOA`)
+        await this.check_table_element(`Gas price`, 0, `\\d+.*SPOA.*\\d+.*Gwei`)
+        await this.check_table_element(`Gas usage & limit by txn`, 0, `\\d+.*|.*\\d+%`)
+        await this.check_table_element(`Gas fees (Gwei)`, 0, `Base.*\\d+.*Max.*\\d+.*Max priority.*\\d+`)
+        await this.check_table_element(`Burnt fees`, 0, `\\d+.*SPOA`)
         await this.actions.verifyElementIsDisplayed(this.DESCRIPTION_AD_BANNER)
     }
 
     async check_tx_details(): Promise<void> {
         await this.actions.clickElement(this.DETAILS_TAB_FOOTER)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}58 >> text=Other`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}60 >> text=/Txn type: \\d+.*Nonce: \\d+.*Position: \\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}64 >> text=Raw input`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}66 >> text=0x`)
+        await this.check_table_element(`Other`, 0, `Txn type: \\d+.*Nonce: \\d+.*Position: \\d+`)
+        await this.check_table_element(`Raw input`, 0, `0x`)
     }
 
     async check_token_transfers(): Promise<void> {
