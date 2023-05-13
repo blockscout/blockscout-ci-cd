@@ -15,7 +15,7 @@ export class RollupTxnBatchesPage extends HomeRollup {
     }
 
     async open(): Promise<void> {
-        await this.actions.navigateToURL(`https://blockscout-optimism-goerli.test.aws-k8s.blockscout.com/txn-batches`)
+        await this.actions.navigateToURL(`https://blockscout-optimism-goerli.test.aws-k8s.blockscout.com/l2-txn-batches`)
     }
 
     async validateTable(ctx: BrowserContext): Promise<void> {

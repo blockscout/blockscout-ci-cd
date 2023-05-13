@@ -15,7 +15,7 @@ export class RollupOutputRootsPage extends HomeRollup {
     }
 
     async open(): Promise<void> {
-        await this.actions.navigateToURL(`https://blockscout-optimism-goerli.test.aws-k8s.blockscout.com/output-roots`)
+        await this.actions.navigateToURL(`https://blockscout-optimism-goerli.test.aws-k8s.blockscout.com/l2-output-roots`)
     }
 
     async validateTable(ctx: BrowserContext): Promise<void> {
