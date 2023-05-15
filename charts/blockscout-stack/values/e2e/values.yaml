@@ -392,7 +392,7 @@ frontend:
       memory:
         _default: "0.3Gi"
       cpu:
-        _default: "0.2"
+        _default: "0.4"
     requests:
       memory:
         _default: "0.3Gi"
@@ -584,6 +584,8 @@ sigProvider:
   enabled: true
   image:
     _default: ghcr.io/blockscout/sig-provider:main
+  docker:
+    targetPort: 8043
 
   # enable ingress
   ingress:
