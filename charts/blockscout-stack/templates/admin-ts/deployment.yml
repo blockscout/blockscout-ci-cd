@@ -41,6 +41,14 @@ spec:
           # volumeMounts:
           #   - name: {{ .Release.Name }}-logs
           #     mountPath: /usr/local/path
+          {{- if .Values.adminTs.files.enabled }}
+          volumeMounts:
+            {{- range $key, $value := .Values.adminTs.files.list }}
+            - mountPath: {{ $.Values.adminTs.files.mountPath }}/{{ $key }}
+              name: admin-ts-cm
+              subPath: {{ $key }}
+            {{- end }}
+          {{- end }}
           {{- if .Values.adminTs.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
@@ -67,6 +75,13 @@ spec:
       #   - name: config
       #     configMap:
       #       name: {{ .Release.Name }}-promtail-configmap
+      {{- if .Values.adminTs.files.enabled }}
+      volumes:
+        - configMap:
+            name: admin-ts-cm
+            defaultMode: 0777
+          name: admin-ts-cm
+      {{- end }}
       restartPolicy: Always
       {{- if .Values.adminTs.nodeSelector.enabled }}
       nodeSelector:
