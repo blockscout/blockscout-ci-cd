@@ -19,7 +19,7 @@ test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check blocks list  (new
 })
 
 // fix networks configuration
-test.skip(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check network options are present`, async ({ blocksListPage }) => {
+test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check network options are present`, async ({ blocksListPage }) => {
     await blocksListPage.open()
     await blocksListPage.check_network_menu()
 })
