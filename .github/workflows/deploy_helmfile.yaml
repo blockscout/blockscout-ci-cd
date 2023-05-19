@@ -79,7 +79,7 @@ jobs:
             ${{ inputs.kubeConfigSecret }} kubeconfig | KUBECONFIG_BASE64 ;
 
       # Deploy newly built changes to EKS cluster.
-      - name: Diff dev
+      - name: Deploy
         shell: bash
         run: |
           mkdir -p ~/.kube
