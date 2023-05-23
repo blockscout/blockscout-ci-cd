@@ -77,6 +77,25 @@ jobs:
           exportToken: true
           secrets: |
             ${{ inputs.kubeConfigSecret }} kubeconfig | KUBECONFIG_BASE64 ;
+      - name: Check GitHub deployment name
+        if: ${{ inputs.globalEnv == 'review' }}
+        id: deployment-name
+        shell: bash
+        run: |
+          cd ${{ inputs.helmfileDir }}
+          helmfile -e ${{ inputs.globalEnv }} -l app=${{ inputs.appName }} write-values --output-file-template "{{ .State.BaseName }}/{{ .Release.Name}}.yaml"
+          echo
+          echo "DEPLOYMENT_URL=https://$(cat helmfile/bs-stack.yaml|yq '.frontend.ingress.host._default')" >> "$GITHUB_ENV"
+
+      - uses: chrnorm/deployment-action@v2
+        name: Create GitHub deployment
+        if: ${{ inputs.globalEnv == 'review' }}
+        id: deployment
+        with:
+          token: '${{ github.token }}'
+          environment-url: ${{env.DEPLOYMENT_URL}}
+          environment: review
+          auto-inactive: false
 
       # Deploy newly built changes to EKS cluster.
       - name: Deploy
@@ -87,3 +106,22 @@ jobs:
           chmod 600 ~/.kube/config
           cd ${{ inputs.helmfileDir }}
           helmfile -e ${{ inputs.globalEnv }} -l app=${{ inputs.appName }} apply --suppress-diff
+
+      - name: Update deployment status (success)
+        if: ${{ success() && inputs.globalEnv == 'review' }}
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: '${{ github.token }}'
+          environment-url: ${{env.DEPLOYMENT_URL}}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: 'success'
+          auto-inactive: false
+
+      - name: Update deployment status (failure)
+        if: ${{ failure() && inputs.globalEnv == 'review' }}
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: '${{ github.token }}'
+          environment-url: ${{env.DEPLOYMENT_URL}}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: 'failure'
