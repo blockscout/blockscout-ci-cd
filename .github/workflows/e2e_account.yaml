@@ -6,6 +6,6 @@ on:
   # pull_request:
 
 jobs:
-  deploy_and_tests:
-    uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@nz-e2e-tests
+  tests:
+    uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
     secrets: inherit
