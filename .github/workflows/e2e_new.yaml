@@ -2,124 +2,11 @@ name: E2E tests account
 
 on:
   workflow_dispatch:
-    inputs:
-      env_vars:
-        description: VALUES_DIR and APP_NAME environment variables
-        required: false
-        default: 'VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack,VISUALIZER=true,STATS=true,SIG_PROVIDER=true'
-        type: string
-      globalEnv:
-        description: 'Network type'
-        required: false
-        default: 'testnet'
-        type: string
-      # valuesDir:
-      #   description: 'Directory with values'
-      #   required: true
-      #   default: 'charts/blockscout-stack/values/e2e'
-      #   type: string
-      # appName:
-      #   description: 'App name'
-      #   required: true
-      #   default: 'bs-stack'
-      #   type: string
-      appNamespace:
-        description: 'Namespace to deploy in'
-        required: false
-        type: string
-      blockscoutImage:
-        description: 'Blockscout image'
-        required: false
-        type: string
-      blockscoutIngressHost:
-        description: 'Blockscout url'
-        required: false
-        type: string
-      frontendImage:
-        description: 'Frontend image'
-        required: false
-        type: string
-      frontendIngressHost:
-        description: 'Frontend url'
-        required: false
-        type: string
-      scVerifierImage:
-        description: 'Smart-contract-verifier image'
-        required: false
-        type: string
-      scVerifierIngressHost:
-        description: 'Smart-contract-verifier url'
-        required: false
-        type: string
-      gethIngressHost:
-        description: 'Geth node url'
-        required: false
-        type: string
   workflow_call:
-    inputs:
-      env_vars:
-        description: VALUES_DIR and APP_NAME environment variables
-        required: false
-        default: 'VALUES_DIR=charts/blockscout-stack/values/e2e,APP_NAME=e2e-bs-stack,VISUALIZER=true,STATS=true'
-        type: string
-      globalEnv:
-        description: 'Network type'
-        required: false
-        default: 'testnet'
-        type: string
-      # valuesDir:
-      #   description: 'Directory with values'
-      #   required: true
-      #   default: 'charts/blockscout-stack/values/e2e'
-      #   type: string
-      # appName:
-      #   description: 'App name'
-      #   required: true
-      #   default: 'bs-stack'
-      #   type: string
-      appNamespace:
-        description: 'Namespace to deploy in'
-        required: false
-        type: string
-      blockscoutImage:
-        description: 'Blockscout image'
-        required: false
-        type: string
-      blockscoutIngressHost:
-        description: 'Blockscout url'
-        required: false
-        type: string
-      frontendImage:
-        description: 'Frontend image'
-        required: false
-        type: string
-      frontendIngressHost:
-        description: 'Frontend url'
-        required: false
-        type: string
-      scVerifierImage:
-        description: 'Smart-contract-verifier image'
-        required: false
-        type: string
-      scVerifierIngressHost:
-        description: 'Smart-contract-verifier url'
-        required: false
-        type: string
-      gethIngressHost:
-        description: 'Geth node url'
-        required: false
-        type: string
 
 env:
-  K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
-  K8S_HOST: ${{ secrets.K8S_HOST }}
-  BASTION_HOST: ${{ secrets.BASTION_HOST }}
-  K8S_PORT: ${{ secrets.K8S_PORT }}
-  USERNAME: ${{ secrets.USERNAME }}
-  BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
-  K8S_DOMAIN: test.aws-k8s.blockscout.com
-  REGION: us-east-1
-
+  BLOCKSCOUT_URL: ${{ vars.BLOCKSCOUT_URL }}
+  NETWORK_URL: ${{ vars.NETWORK_URL }}
   ACCOUNT_USERNAME: ${{ secrets.ACCOUNT_USERNAME }}
   ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
   MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
@@ -138,8 +25,8 @@ env:
   ACCOUNT: 1
 
 jobs:
-  deploy_and_tests:
-    name: Deploy
+  e2e_tests:
+    name: Tests
     permissions:
       id-token: write
       contents: read
@@ -155,8 +42,6 @@ jobs:
       # url:  ${{ steps.deploy-args.outputs.app_url }}
       #https://${{ inputs.appNamespace }}.${{ env.K8S_DOMAIN }}
     steps:
-      # - name: Check out the repo
-      #   uses: actions/checkout@v3
       - name: checkout
         uses: actions/checkout@v2
         with:
@@ -175,176 +60,6 @@ jobs:
               echo "${{ inputs.appNamespace }}.${{ env.K8S_DOMAIN }}"
           done
 
-      # - name: Add inputs to GITHUB_ENV
-      #   if: "${{ inputs.valuesDir != '' && inputs.appName != '' }}"
-      #   run: |
-      #     echo "VALUES_DIR=${{ inputs.valuesDir }}" >> $GITHUB_ENV
-      #     echo "APP_NAME=${{ inputs.appName }}" >> $GITHUB_ENV
-
-      - name: Generate namespace name
-        if: "${{ inputs.appNamespace == '' }}"
-        id: generate
-        uses: filipstefansson/uuid-action@v1
-        with:
-          name: ${{ github.sha }}
-
-      - name: Set APP_NAMESPACE
-        run: |
-          if ${{ inputs.appNamespace != '' }}; then
-              echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> "$GITHUB_ENV"
-          else
-              echo "APP_NAMESPACE=e2e-${{ steps.generate.outputs.uuid }}" >> "$GITHUB_ENV"
-          fi
-
-      - name: Configure Kubectl
-        uses: azure/setup-kubectl@v2.0
-        with:
-          version: 'v1.23.6'
-        id: install
-
-      # This action will use the GitHub OIDC id-token and request AWS STS to get temporary credentials.
-      # The temporary credentials are exported as env variables.
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-region: ${{ env.REGION }}
-          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
-
-      # Install helm, helm-secrets, sops
-      - name: Install helm and helm-secrets, sops
-        shell: bash
-        run: |
-          curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
-          sudo apt-get install apt-transport-https --yes
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
-          sudo apt-get update -y
-          sudo apt-get install helm gnupg -y
-          helm plugin install https://github.com/jkroepke/helm-secrets
-          curl -O -L -C - https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux
-          sudo mv sops-v3.7.3.linux /usr/bin/sops
-          sudo chmod +x /usr/bin/sops
-
-      # The following command will update the kube config file with our cluster information.
-      # It will use the credentials exported by the previous action.
-      - name: Update KubeConfig
-        shell: bash
-        run: |
-          aws eks update-kubeconfig --name ${{ secrets.AWS_CLUSTER_NAME }} --region=${{ env.REGION }}
-
-      # Import GPG key
-      - name: Import GPG key
-        id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@v5
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          fingerprint: ${{ secrets.GPG_FINGERPRINT }}
-          passphrase: ''
-
-      - name: Deploy args
-        id: deploy-args
-        shell: bash
-        run: |
-          echo $DEPLOY_ARGS
-          if ${{ env.GITHUB_REF_SLUG == 'main' }}; then
-            DEPLOY_SUFFIX=$GITHUB_REF_SLUG
-          else
-            DEPLOY_SUFFIX=$GITHUB_REF_SLUG
-          fi
-          echo "DEPLOY_SUFFIX=$DEPLOY_SUFFIX" >> "$GITHUB_ENV"
-          if ${{ inputs.globalEnv != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS --set global.env=${{ inputs.globalEnv }}"
-          fi
-          if ${{ inputs.frontendImage != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS --set frontend.image._default=${{ inputs.frontendImage }}"
-          fi
-          if ${{ inputs.frontendIngressHost != '' }}; then
-            FRONTEND_INGRESS_URL=${{ inputs.frontendIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN
-            FRONTEND_URL=https://$FRONTEND_INGRESS_URL
-            echo "FRONTEND_URL=$FRONTEND_URL" >> "$GITHUB_ENV"
-            DEPLOY_ARGS="$DEPLOY_ARGS --set frontend.ingress.host._default=$FRONTEND_INGRESS_URL"
-            DEPLOY_ARGS="$DEPLOY_ARGS --set frontend.environment.NEXT_PUBLIC_APP_HOST._default=$FRONTEND_INGRESS_URL"
-          fi
-          if ${{ inputs.blockscoutImage != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS --set blockscout.image._default=${{ inputs.blockscoutImage }}"
-            DEPLOY_ARGS="$DEPLOY_ARGS --set blockscout.init.image._default=${{ inputs.blockscoutImage }}"
-
-          fi
-          if ${{ inputs.blockscoutIngressHost != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS --set blockscout.environment.ACCOUNT_AUTH0_CALLBACK_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/auth/auth0/callback"
-            DEPLOY_ARGS="$DEPLOY_ARGS --set blockscout.environment.ACCOUNT_AUTH0_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/auth/logout"
-            DEPLOY_ARGS="$DEPLOY_ARGS --set frontend.environment.NEXT_PUBLIC_LOGOUT_RETURN_URL._default=http://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/auth/logout"
-            BLOCKSCOUT_URL=https://${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN
-            DEPLOY_ARGS="$DEPLOY_ARGS --set blockscout.ingress.host._default=${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN"
-            DEPLOY_ARGS="$DEPLOY_ARGS --set frontend.environment.NEXT_PUBLIC_API_HOST._default=${{ inputs.blockscoutIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN"
-            echo "BLOCKSCOUT_URL=$BLOCKSCOUT_URL" >> "$GITHUB_ENV"
-            echo "::set-output name=app_url::$BLOCKSCOUT_URL"
-          fi
-          if ${{ inputs.scVerifierImage != '' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS --set scVerifier.image._default=${{ inputs.scVerifierImage }}"
-          fi
-          if ${{ inputs.scVerifierIngressHost != '' }}; then
-            SC_VERIFIER_URL=https://${{ inputs.scVerifierIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN
-            echo "SC_VERIFIER_URL=$SC_VERIFIER_URL" >> "$GITHUB_ENV"
-            DEPLOY_ARGS="$DEPLOY_ARGS --set scVerifier.ingress.host._default=${{ inputs.scVerifierIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN"
-          fi
-          if ${{ inputs.gethIngressHost != '' }}; then
-            NETWORK_URL=${{ inputs.gethIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN/http
-            echo "NETWORK_URL=http://$NETWORK_URL" >> "$GITHUB_ENV"
-            DEPLOY_ARGS="$DEPLOY_ARGS --set geth.ingress.host._default=${{ inputs.gethIngressHost }}-$DEPLOY_SUFFIX.$K8S_DOMAIN"
-          fi
-          if ${{ env.VISUALIZER == 'true' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS --set visualizer.ingress.host._default=visualizer-$DEPLOY_SUFFIX-${{ github.sha }}.$K8S_DOMAIN"
-          fi
-          if ${{ env.STATS == 'true' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS --set stats.ingress.host._default=stats-$DEPLOY_SUFFIX-${{ github.sha }}.$K8S_DOMAIN"
-          fi
-          if ${{ env.SIG_PROVIDER == 'true' }}; then
-            DEPLOY_ARGS="$DEPLOY_ARGS --set sigProvider.ingress.host._default=sig-provider-$DEPLOY_SUFFIX-${{ github.sha }}.$K8S_DOMAIN"
-          else
-            DEPLOY_ARGS="$DEPLOY_ARGS --set sigProvider.enabled=false"
-          fi
-          echo "$DEPLOY_ARGS"
-          echo "DEPLOY_ARGS=$DEPLOY_ARGS" >> "$GITHUB_ENV"
-
-      # Deploy newly built changes to EKS cluster.
-      - name: Deploy To Cluster
-        shell: bash
-        working-directory: blockscout-ci-cd
-        run: |
-          mkdir ~/.ssh
-          ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
-          eval `ssh-agent -s`
-          ssh-add - <<< "$BASTION_SSH_KEY"
-          sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
-          sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
-          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
-          helm secrets upgrade --install --repo https://blockscout.github.io/blockscout-ci-cd/ \
-            $APP_NAME blockscout-stack \
-            -f $VALUES_DIR/values.yaml \
-            -f $VALUES_DIR/secrets.yaml \
-            $DEPLOY_ARGS \
-            -n $APP_NAMESPACE --create-namespace
-
-      # Copy registry secret if private docker repo
-      - name: Copy private registry secret
-        # if: github.repository == 'blockscout/frontend'
-        shell: bash
-        run: |
-          kubectl delete secret regcred -n $APP_NAMESPACE --ignore-not-found
-          kubectl get secret regcred -o yaml | sed "s/namespace: .*/namespace: $APP_NAMESPACE/" | kubectl apply -f -
-          pkill -f "ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST"
-
-
-################### tests
-      - name: Collect Workflow Telemetry
-        uses: runforesight/foresight-workflow-kit-action@v1
-        with:
-          api_key: ${{ secrets.THUNDRA_APIKEY }}
-      # - name: checkout
-      #   uses: actions/checkout@v2
-      #   with:
-      #     repository: blockscout/blockscout-ci-cd
-      #     path: blockscout-ci-cd
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -440,16 +155,6 @@ jobs:
       # - name: Display structure of downloaded files
       #   if: always()
       #   run: pwd && ls -la && ls -la blockscout-ci-cd && ls -la blockscout-ci-cd/tests/e2e/test-results
-      - name: Remove namespace
-        if: always()
-        run: |
-          mkdir ~/.ssh || true
-          ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts || true
-          eval `ssh-agent -s` || true
-          ssh-add - <<< "$BASTION_SSH_KEY" || true
-          sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
-          grep 9443 ~/.kube/config || sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
-          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST; kubectl delete ns $APP_NAMESPACE
 
 defaults:
   run:
