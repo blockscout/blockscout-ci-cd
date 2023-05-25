@@ -5,20 +5,7 @@ on:
   workflow_dispatch:
   # pull_request:
 
-env:
-  K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
-  K8S_HOST: ${{ secrets.K8S_HOST }}
-  BASTION_HOST: ${{ secrets.BASTION_HOST }}
-  K8S_PORT: ${{ secrets.K8S_PORT }}
-  USERNAME: ${{ secrets.USERNAME }}
-  BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
-
 jobs:
-  deploy_and_tests:
+  tests:
     uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
-    with:
-      blockscoutIngressHost: blockscout-e2e-$GITHUB_SHA_SHORT
-      frontendIngressHost: blockscout-e2e-$GITHUB_SHA_SHORT
-      gethIngressHost: geth-e2e-$GITHUB_SHA_SHORT
-      scVerifierIngressHost: sc-verifier-e2e-$GITHUB_SHA_SHORT
     secrets: inherit
