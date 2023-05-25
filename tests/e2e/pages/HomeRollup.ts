@@ -14,7 +14,7 @@ export class HomeRollup extends HomePage {
     }
 
     async open(): Promise<void> {
-        await this.actions.navigateToURL(`https://blockscout-optimism-goerli.test.aws-k8s.blockscout.com`)
+        await this.actions.navigateToURL(`https://blockscout-optimism-goerli.k8s-dev.blockscout.com`)
     }
 
     l1URL(): string {
@@ -22,7 +22,7 @@ export class HomeRollup extends HomePage {
     }
 
     l2URL(): string {
-        return `https://blockscout-optimism-goerli.test.aws-k8s.blockscout.com`
+        return `https://blockscout-optimism-goerli.k8s-dev.blockscout.com`
     }
 
     navbar(num: Number): string {

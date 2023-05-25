@@ -15,7 +15,7 @@ export class RollupWithdrawalsPage extends HomeRollup {
     }
 
     async open(): Promise<void> {
-        await this.actions.navigateToURL(`https://blockscout-optimism-goerli.test.aws-k8s.blockscout.com/l2-withdrawals`)
+        await this.actions.navigateToURL(`https://blockscout-optimism-goerli.k8s-dev.blockscout.com/l2-withdrawals`)
     }
 
     async validateTable(ctx: BrowserContext): Promise<void> {
