@@ -33,7 +33,7 @@ export class CommonPage {
 
     AUTH0_INPUT_PASSWORD = `input[name="password"]`
 
-    AUTH0_SUBMIT = `button[name="action"]`
+    AUTH0_SUBMIT = `button >> nth=2`
 
     LOGGED_IN_AS = `text=Signed in as`
 

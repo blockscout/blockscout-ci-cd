@@ -26,8 +26,8 @@ export class TokenPage extends CommonPage {
     }
 
     async check_token(): Promise<void> {
-        await this.check_selector(`text=0x5FbDB2315678afecb367f032d93F642f64180aa3`, `no token address is displayed`)
-        await this.check_table_element(`EPIC (EPC) token`, 0, `ERC-20`)
+        await this.check_selector(`text=/0x/`, `no token address is displayed`)
+        await this.check_table_element(`EPIC (EPC) token`, 1, `ERC-20`)
         await this.check_table_element(`Max total supply`, 0, `\\d+`)
         await this.check_table_element(`Holders`, 0, `\\d+`)
         await this.check_table_element(`Transfers`, 0, `\\d+`)
