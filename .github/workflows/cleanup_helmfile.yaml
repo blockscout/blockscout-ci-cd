@@ -1,0 +1,139 @@
+name: Cleanup release
+
+# Triggered when a pull request is merged
+on:
+  workflow_dispatch:
+    inputs:
+      dockerImage:
+        description: 'Docker image to delete'
+        required: false
+        type: string
+      appName:
+        description: 'Name of application to deploy'
+        required: true
+        default: ''
+        type: string
+      globalEnv:
+        description: 'Environment Name'
+        required: true
+        default: 'testing'
+        type: string
+      helmfileDir:
+        description: 'Directory to run helmfile'
+        required: false
+        default: '.'
+        type: string
+      kubeConfigSecret:
+        description: 'Path to kubeconfig in vault'
+        required: true
+        default: ''
+        type: string
+      vaultRole:
+        description: 'Role to authenticate in vault'
+        required: true
+        default: ''
+        type: string
+  workflow_call:
+    inputs:
+      appName:
+        description: 'Name of application to deploy'
+        required: true
+        default: ''
+        type: string
+      globalEnv:
+        description: 'Environment Name'
+        required: true
+        default: 'testing'
+        type: string
+      helmfileDir:
+        description: 'Directory to run helmfile'
+        required: false
+        default: '.'
+        type: string
+      kubeConfigSecret:
+        description: 'Path to kubeconfig in vault'
+        required: true
+        default: ''
+        type: string
+      vaultRole:
+        description: 'Role to authenticate in vault'
+        required: true
+        default: ''
+        type: string
+      dockerImage:
+        description: 'Docker image to delete'
+        required: false
+        type: string
+
+jobs:
+  cleanup:
+    name: Cleanup
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      max-parallel: 1
+      matrix:
+        environment: [Dev]
+        region: [us-east-1]
+    # environment:
+    #   name: ${{ matrix.environment }}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4
+
+      - name: Add inputs to GITHUB_ENV
+        run: |
+          echo "APP_NAMESPACE=${{ inputs.appNamespace }}" >> $GITHUB_ENV
+          echo "DOCKER_IMAGE=${{ inputs.dockerImage }}" >> $GITHUB_ENV
+
+      - name: Configure Kubectl
+        uses: azure/setup-kubectl@v2.0
+        with:
+          version: 'v1.23.6'
+        id: install
+
+      # Install helm, helm-secrets, sops
+      - name: Install tools
+        shell: bash
+        run: |
+          curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+          sudo apt-get install apt-transport-https --yes
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+          sudo apt-get update -y
+          sudo apt-get install helm gnupg -y
+          helm plugin install https://github.com/jkroepke/helm-secrets
+          helm plugin install https://github.com/databus23/helm-diff
+          cd /tmp
+          curl -O -L -C - https://github.com/helmfile/helmfile/releases/download/v0.153.1/helmfile_0.153.1_linux_amd64.tar.gz
+          tar -xzvf helmfile_0.153.1_linux_amd64.tar.gz
+          sudo mv helmfile /usr/bin/helmfile
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Get Vault credentials
+        id: retrieve-vault-secrets
+        uses: hashicorp/vault-action@v2.4.1
+        with:
+          url: https://vault.k8s.blockscout.com
+          role: ${{ inputs.vaultRole }}
+          path: github-jwt
+          method: jwt
+          tlsSkipVerify: false
+          exportToken: true
+          secrets: |
+            ${{ inputs.kubeConfigSecret }} kubeconfig | KUBECONFIG_BASE64 ;
+      # Delete release
+      - name: Delete
+        shell: bash
+        run: |
+          mkdir -p ~/.kube
+          echo $KUBECONFIG_BASE64 | base64 --decode > ~/.kube/config
+          chmod 600 ~/.kube/config
+          cd ${{ inputs.helmfileDir }}
+          helmfile -e ${{ inputs.globalEnv }} -l app=${{ inputs.appName }} destroy

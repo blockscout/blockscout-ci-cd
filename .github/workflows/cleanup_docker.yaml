@@ -1,0 +1,53 @@
+name: Cleanup docker
+
+# Triggered when a pull request is merged
+on:
+  workflow_dispatch:
+    inputs:
+      dockerImage:
+        description: 'Docker image to delete'
+        required: false
+        type: string
+  workflow_call:
+    inputs:
+      dockerImage:
+        description: 'Docker image to delete'
+        required: false
+        type: string
+
+jobs:
+  cleanup:
+    name: Cleanup
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      max-parallel: 1
+      matrix:
+        environment: [Dev]
+        region: [us-east-1]
+    # environment:
+    #   name: ${{ matrix.environment }}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4
+
+      - name: Add inputs to GITHUB_ENV
+        run: |
+          echo "DOCKER_IMAGE=${{ inputs.dockerImage }}" >> $GITHUB_ENV
+
+      - name: Delete image
+        if: "${{ always() && env.DOCKER_IMAGE != ''}}"
+        uses: bots-house/ghcr-delete-image-action@v1.0.0
+        with:
+          # NOTE: at now only orgs is supported
+          owner: ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}
+          name: ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}
+          # NOTE: using Personal Access Token
+          token: ${{ secrets.PAT }}
+          tag: ${{ env.DOCKER_IMAGE }}
