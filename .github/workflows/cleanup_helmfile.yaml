@@ -1,4 +1,4 @@
-name: Cleanup
+name: Cleanup release
 
 # Triggered when a pull request is merged
 on:
@@ -64,14 +64,6 @@ on:
         description: 'Docker image to delete'
         required: false
         type: string
-
-env:
-  K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
-  K8S_HOST: ${{ secrets.K8S_HOST }}
-  BASTION_HOST: ${{ secrets.BASTION_HOST }}
-  K8S_PORT: ${{ secrets.K8S_PORT }}
-  USERNAME: ${{ secrets.USERNAME }}
-  BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
 
 jobs:
   cleanup:
@@ -145,14 +137,3 @@ jobs:
           chmod 600 ~/.kube/config
           cd ${{ inputs.helmfileDir }}
           helmfile -e ${{ inputs.globalEnv }} -l app=${{ inputs.appName }} destroy
-
-      - name: Delete image
-        if: "${{ always() && env.DOCKER_IMAGE != ''}}"
-        uses: bots-house/ghcr-delete-image-action@v1.0.0
-        with:
-          # NOTE: at now only orgs is supported
-          owner: ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}
-          name: ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}
-          # NOTE: using Personal Access Token
-          token: ${{ secrets.PAT }}
-          tag: ${{ env.DOCKER_IMAGE }}
