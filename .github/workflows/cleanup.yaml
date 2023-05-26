@@ -4,21 +4,61 @@ name: Cleanup
 on:
   workflow_dispatch:
     inputs:
-      appNamespace:
-        description: 'Namespace to delete'
-        required: true
-        default: 'review-blockscout'
-        type: string
       dockerImage:
         description: 'Docker image to delete'
         required: false
         type: string
+      appName:
+        description: 'Name of application to deploy'
+        required: true
+        default: ''
+        type: string
+      globalEnv:
+        description: 'Environment Name'
+        required: true
+        default: 'testing'
+        type: string
+      helmfileDir:
+        description: 'Directory to run helmfile'
+        required: false
+        default: '.'
+        type: string
+      kubeConfigSecret:
+        description: 'Path to kubeconfig in vault'
+        required: true
+        default: ''
+        type: string
+      vaultRole:
+        description: 'Role to authenticate in vault'
+        required: true
+        default: ''
+        type: string
   workflow_call:
     inputs:
-      appNamespace:
-        description: 'Namespace to delete'
+      appName:
+        description: 'Name of application to deploy'
         required: true
-        default: 'review-blockscout'
+        default: ''
+        type: string
+      globalEnv:
+        description: 'Environment Name'
+        required: true
+        default: 'testing'
+        type: string
+      helmfileDir:
+        description: 'Directory to run helmfile'
+        required: false
+        default: '.'
+        type: string
+      kubeConfigSecret:
+        description: 'Path to kubeconfig in vault'
+        required: true
+        default: ''
+        type: string
+      vaultRole:
+        description: 'Role to authenticate in vault'
+        required: true
+        default: ''
         type: string
       dockerImage:
         description: 'Docker image to delete'
@@ -66,40 +106,45 @@ jobs:
           version: 'v1.23.6'
         id: install
 
-      # This action will use the GitHub OIDC id-token and request AWS STS to get temporary credentials.
-      # The temporary credentials are exported as env variables.
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      # Install helm, helm-secrets, sops
+      - name: Install tools
+        shell: bash
+        run: |
+          curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+          sudo apt-get install apt-transport-https --yes
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+          sudo apt-get update -y
+          sudo apt-get install helm gnupg -y
+          helm plugin install https://github.com/jkroepke/helm-secrets
+          helm plugin install https://github.com/databus23/helm-diff
+          cd /tmp
+          curl -O -L -C - https://github.com/helmfile/helmfile/releases/download/v0.153.1/helmfile_0.153.1_linux_amd64.tar.gz
+          tar -xzvf helmfile_0.153.1_linux_amd64.tar.gz
+          sudo mv helmfile /usr/bin/helmfile
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Get Vault credentials
+        id: retrieve-vault-secrets
+        uses: hashicorp/vault-action@v2.4.1
         with:
-          aws-region: ${{ matrix.region }}
-          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
-
-      # The following command will update the kube config file with our cluster information.
-      # It will use the credentials exported by the previous action.
-      - name: Update KubeConfig
+          url: https://vault.k8s.blockscout.com
+          role: ${{ inputs.vaultRole }}
+          path: github-jwt
+          method: jwt
+          tlsSkipVerify: false
+          exportToken: true
+          secrets: |
+            ${{ inputs.kubeConfigSecret }} kubeconfig | KUBECONFIG_BASE64 ;
+      # Delete release
+      - name: Delete
         shell: bash
         run: |
-          aws eks update-kubeconfig --name ${{ secrets.AWS_CLUSTER_NAME }} --region=${{ matrix.region }}
-
-      - name: Check namespace
-        id: check
-        shell: bash
-        run: |
-          mkdir ~/.ssh
-          ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
-          eval `ssh-agent -s`
-          ssh-add - <<< "$BASTION_SSH_KEY"
-          sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
-          sed -i 's/eks.amazonaws.com/eks.amazonaws.com:9443/g' ~/.kube/config
-          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
-          kubectl get ns $APP_NAMESPACE
-          echo ::set-output name=exit_code::$?
-
-      - name: Delete app from cluster
-        if: steps.check.outputs.exit_code == 0
-        shell: bash
-        run: |
-          kubectl delete ns $APP_NAMESPACE
+          mkdir -p ~/.kube
+          echo $KUBECONFIG_BASE64 | base64 --decode > ~/.kube/config
+          chmod 600 ~/.kube/config
+          cd ${{ inputs.helmfileDir }}
+          helmfile -e ${{ inputs.globalEnv }} -l app=${{ inputs.appName }} destroy
 
       - name: Delete image
         if: "${{ always() && env.DOCKER_IMAGE != ''}}"
