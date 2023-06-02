@@ -15,7 +15,7 @@ export class RollupTxnBatchesPage extends HomeRollup {
     }
 
     async open(): Promise<void> {
-        await this.actions.navigateToURL(`https://blockscout-optimism-goerli.k8s-dev.blockscout.com/l2-txn-batches`)
+        await this.actions.navigateToURL(`${this.l2URL()}/l2-txn-batches`)
     }
 
     async validateTable(ctx: BrowserContext): Promise<void> {
@@ -31,7 +31,7 @@ export class RollupTxnBatchesPage extends HomeRollup {
         expect(this.page.url()).toContain(this.l2URL())
         await this.open()
 
-        const tx1 = await this.openLinkNewPage(ctx, () => this.clickTableRowCol(4, 3))
+        const tx1 = await this.openLinkNewPage(ctx, () => this.clickTableRowCol(4, 3, `a >> nth=0`))
         expect(tx1.url()).toContain(this.l1URL())
     }
 }

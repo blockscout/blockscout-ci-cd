@@ -15,7 +15,7 @@ export class RollupDepositsPage extends HomeRollup {
     }
 
     async open(): Promise<void> {
-        await this.actions.navigateToURL(`https://blockscout-optimism-goerli.k8s-dev.blockscout.com/l2-deposits`)
+        await this.actions.navigateToURL(`${this.l2URL()}/l2-deposits`)
     }
 
     async validateTable(ctx: BrowserContext): Promise<void> {
