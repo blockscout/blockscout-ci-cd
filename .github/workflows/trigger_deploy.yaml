@@ -55,7 +55,7 @@ jobs:
               const result = await github.rest.actions.createWorkflowDispatch({
                 owner: 'blockscout',
                 repo: "deployment-values",
-                workflow_id: '$WORKFLOW_ID',
+                workflow_id: '${{env.WORKFLOW_ID}}',
                 ref: "main",
                 inputs: {
                   instance: '${{ inputs.appName }}',
