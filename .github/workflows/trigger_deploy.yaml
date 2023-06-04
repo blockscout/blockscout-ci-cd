@@ -1,0 +1,69 @@
+name: Trigger deploy
+
+on:
+  workflow_call:
+    inputs:
+      appName:
+        description: 'Name of application to deploy'
+        required: true
+        default: ''
+        type: string
+      appType:
+        description: 'Application type - service or blockscout'
+        required: false
+        default: 'blockscout'
+        type: string
+      globalEnv:
+        description: 'Environment Name'
+        required: true
+        default: 'testing'
+        type: string
+
+jobs:
+  deploy:
+    name: Deploy
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Vault credentials
+        id: retrieve-vault-secrets
+        uses: hashicorp/vault-action@v2.4.1
+        with:
+          url: https://vault.k8s.blockscout.com
+          role: ci-dev
+          path: github-jwt
+          method: jwt
+          tlsSkipVerify: false
+          exportToken: true
+          secrets: |
+            ci/data/dev/github token | WORKFLOW_TRIGGER_TOKEN ;
+      - name: Set WORKFLOW_ID
+        run: |
+          if ${{ inputs.appType == 'service' }}; then
+              echo "WORKFLOW_ID=40670344" >> "$GITHUB_ENV"
+          fi
+          if ${{ inputs.appType == 'blockscout' }}; then
+              echo "WORKFLOW_ID=40670342" >> "$GITHUB_ENV"
+          fi
+      - name: Trigger deploy
+        uses: actions/github-script@v6
+        with:
+          debug: true
+          github-token: ${{env.WORKFLOW_TRIGGER_TOKEN}}
+          script: |-
+            try {
+              const result = await github.rest.actions.createWorkflowDispatch({
+                owner: 'blockscout',
+                repo: "deployment-values",
+                workflow_id: '${{env.WORKFLOW_ID}}',
+                ref: "main",
+                inputs: {
+                  instance: '${{ inputs.appName }}',
+                  globalEnv: '${{ inputs.globalEnv }}',
+                },
+            })
+            console.log(result);
+            } catch(error) {
+              console.error(error);
+              core.setFailed(error);
+            }
