@@ -9,9 +9,9 @@ export class NewHomePage extends CommonPage {
 
     HEADER_AVG_BLOCK_TIME = `:below(:text("Average block time")) >> nth=3`
 
-    HEADER_TOTAL_TXNS = `:below(:text("Total transactions")) >> nth=4`
+    HEADER_TOTAL_TXNS = `:below(:text("Total transactions")) >> nth=0`
 
-    HEADER_WALLETS = `:below(:text("Wallet addresses")) >> nth=4`
+    HEADER_WALLETS = `:below(:text("Wallet addresses")) >> nth=0`
 
     HEADER_GAS_TRACKER = `:below(:text("Gas tracker")) >> nth=0`
 
