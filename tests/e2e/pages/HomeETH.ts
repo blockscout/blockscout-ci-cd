@@ -8,6 +8,16 @@ export class ETHHome extends NewHomePage {
 
     actions: WebActions
 
+    HEADER_TOTAL_BLOCKS = `:below(:text("Total blocks")) >> nth=0`
+
+    HEADER_AVG_BLOCK_TIME = `:below(:text("Average block time")) >> nth=3`
+
+    HEADER_TOTAL_TXNS = `:below(:text("Total transactions")) >> nth=0`
+
+    HEADER_WALLETS = `:below(:text("Wallet addresses")) >> nth=0`
+
+    HEADER_GAS_TRACKER = `:below(:text("Gas tracker")) >> nth=0`
+
     constructor(page: Page) {
         super(page)
         this.page = page
@@ -16,8 +26,5 @@ export class ETHHome extends NewHomePage {
 
     async open(): Promise<void> {
         await this.actions.navigateToURL(`https://eth.blockscout.com/`)
-    }
-
-    async verifyComponents(ctx: BrowserContext): Promise<void> {
     }
 }
