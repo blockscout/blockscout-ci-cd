@@ -38,7 +38,7 @@ export class BlocksPage extends CommonPage {
         await this.check_table_element(`Block height`, 0, `\\d+`)
         await this.check_table_element(`Size`, 0, `\\d+`)
         await this.check_table_element(`Timestamp`, 0, `\\.*ago.*UTC`)
-        await this.check_table_element(`Transaction`, 0, `\\d+ transaction`)
+        await this.check_table_element(`Transaction`, 1, `\\d+ transaction`)
         await this.check_table_element(`Validated by`, 0, `0x0000000000000000000000000000000000000000`)
         await this.check_table_element(`Gas used`, 0, `\\d+.*%`)
         await this.check_table_element(`Gas limit`, 0, `\\d+`)

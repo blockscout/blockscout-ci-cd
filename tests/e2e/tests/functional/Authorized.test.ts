@@ -30,10 +30,10 @@ test(`@AccountImage @Authorized Check address tag`, async ({ authorized }) => {
     await authorized.delay(3000)
     await authorized.check_tag_list(0, 0, TestTokenAddress)
     await authorized.check_tag_list(0, 1, tagName)
-    await authorized.hasText(tagName)
-    await authorized.actions.focusElement(`text=${TestTokenAddress}`)
-    await authorized.actions.clickElement(`text=${TestTokenAddress}`)
-    await authorized.hasText(tagName)
+    await authorized.actions.verifyElementIsDisplayed(`text=${tagName} >> nth=1`, `failed to find text on the page`)
+    await authorized.actions.focusElement(`text=${TestTokenAddress} >> nth=1`)
+    await authorized.actions.clickElement(`text=${TestTokenAddress} >> nth=1`)
+    await authorized.actions.verifyElementIsDisplayed(`text=${tagName} >> nth=1`, `failed to find text on the page`)
 
     await authorized.openAccount()
     await authorized.selectPrivateTagsTab()
@@ -52,7 +52,7 @@ test(`@AccountImage @Authorized Check transaction tag`, async ({ authorized }) =
     await authorized.addTXTag(TestTokenDeployTXHash, tagName)
     await authorized.check_tag_list(0, 0, TestTokenDeployTXHash.toLowerCase())
     await authorized.check_tag_list(0, 1, tagName)
-    await authorized.page.click(`text=${TestTokenDeployTXHash}`)
+    await authorized.page.click(`text=${TestTokenDeployTXHash} >> nth=1`)
     await authorized.hasText(tagName)
 
     await authorized.openAccount()

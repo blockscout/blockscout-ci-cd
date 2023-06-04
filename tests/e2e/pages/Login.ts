@@ -145,7 +145,7 @@ export class AuthorizedArea extends CommonPage {
 
     PUBLIC_TAGS_SEND_BTN = `text=Send request`
 
-    DELETE_ROW_ICON = `[aria-label="delete"]`
+    DELETE_ROW_ICON = `[aria-label="delete"] >> nth=1`
 
     DELETE_ROW_BTN = `text=Delete`
 

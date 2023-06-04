@@ -9,29 +9,29 @@ export class NewHomePage extends CommonPage {
 
     HEADER_AVG_BLOCK_TIME = `:below(:text("Average block time")) >> nth=3`
 
-    HEADER_TOTAL_TXNS = `:below(:text("Total transactions")) >> nth=0`
+    HEADER_TOTAL_TXNS = `:below(:text("Total transactions")) >> nth=4`
 
-    HEADER_WALLETS = `:below(:text("Wallet addresses")) >> nth=0`
+    HEADER_WALLETS = `:below(:text("Wallet addresses")) >> nth=4`
 
     HEADER_GAS_TRACKER = `:below(:text("Gas tracker")) >> nth=0`
 
     BLOCKS_WIDGET = `main >> div >> nth=24`
 
-    BLOCKS_WIDGET_LAST_BLOCK = `main >> div >> nth=25`
+    BLOCKS_WIDGET_LAST_BLOCK = `main >> div >> nth=24`
 
     TXNS_WIDGET = `main >> div >> nth=58`
 
-    TXN_1 = `main >> div >> nth=60`
+    TXN_1 = `main >> div >> nth=61`
 
-    TXN_2 = `main >> div >> nth=80`
+    TXN_2 = `main >> div >> nth=82`
 
-    TXN_3 = `main >> div >> nth=99`
+    TXN_3 = `main >> div >> nth=103`
 
-    TXN_4 = `main >> div >> nth=118`
+    TXN_4 = `main >> div >> nth=124`
 
-    TXN_5 = `main >> div >> nth=137`
+    TXN_5 = `main >> div >> nth=145`
 
-    TXN_6 = `main >> div >> nth=156`
+    TXN_6 = `main >> div >> nth=166`
 
     readonly page: Page
 
@@ -71,45 +71,45 @@ export class NewHomePage extends CommonPage {
 
     async check_txn_widget(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=4 >> text=/Token transfer.*Success/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=5 >> text=/0x.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=9 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=12 >> text=/NFTV/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=16 >> text=/SPOA.*\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=17 >> text=/Fee.*\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=7 >> text=/0x.*ago/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=10 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=16 >> text=/NFTV/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=18 >> text=/SPOA.*\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_1} >> div >> nth=19 >> text=/Fee.*\\d+/`)
 
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_2} >> div >> nth=3 >> text=/Contract creation.*Success/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_2} >> div >> nth=4 >> text=/0x.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_2} >> div >> nth=8 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_2} >> div >> nth=11 >> text=/NFTV/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_2} >> div >> nth=15 >> text=/SPOA.*\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_2} >> div >> nth=16 >> text=/Fee.*\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_2} >> div >> nth=4 >> text=/Contract creation.*Success/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_2} >> div >> nth=7 >> text=/0x.*ago/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_2} >> div >> nth=10 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_2} >> div >> nth=16 >> text=/NFTV/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_2} >> div >> nth=18 >> text=/SPOA.*\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_2} >> div >> nth=19 >> text=/Fee.*\\d+/`)
 
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_3} >> div >> nth=3 >> text=/Contract call.*Failed/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_3} >> div >> nth=4 >> text=/0x.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_3} >> div >> nth=8 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_3} >> div >> nth=11 >> text=/EPICV/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_3} >> div >> nth=15 >> text=/SPOA.*\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_3} >> div >> nth=16 >> text=/Fee.*\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_3} >> div >> nth=4 >> text=/Contract call.*Failed/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_3} >> div >> nth=7 >> text=/0x.*ago/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_3} >> div >> nth=10 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_3} >> div >> nth=16 >> text=/EPICV/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_3} >> div >> nth=18 >> text=/SPOA.*\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_3} >> div >> nth=19 >> text=/Fee.*\\d+/`)
 
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_4} >> div >> nth=3 >> text=/Token transfer.*Success/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_4} >> div >> nth=4 >> text=/0x.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_4} >> div >> nth=8 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_4} >> div >> nth=11 >> text=/EPICV/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_4} >> div >> nth=15 >> text=/SPOA.*\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_4} >> div >> nth=16 >> text=/Fee.*\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_4} >> div >> nth=4 >> text=/Token transfer.*Success/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_4} >> div >> nth=7 >> text=/0x.*ago/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_4} >> div >> nth=10 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_4} >> div >> nth=16 >> text=/EPICV/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_4} >> div >> nth=18 >> text=/SPOA.*\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_4} >> div >> nth=19 >> text=/Fee.*\\d+/`)
 
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_5} >> div >> nth=3 >> text=/Contract creation.*Success/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_5} >> div >> nth=4 >> text=/0x.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_5} >> div >> nth=8 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_5} >> div >> nth=11 >> text=/EPICV/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_5} >> div >> nth=15 >> text=/SPOA.*\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_5} >> div >> nth=16 >> text=/Fee.*\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_5} >> div >> nth=4 >> text=/Contract creation.*Success/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_5} >> div >> nth=7 >> text=/0x.*ago/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_5} >> div >> nth=10 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_5} >> div >> nth=16 >> text=/EPICV/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_5} >> div >> nth=18 >> text=/SPOA.*\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_5} >> div >> nth=19 >> text=/Fee.*\\d+/`)
 
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_6} >> div >> nth=3 >> text=/Token transfer.*Success/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_6} >> div >> nth=4 >> text=/0x.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_6} >> div >> nth=8 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_6} >> div >> nth=11 >> text=/NFT/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_6} >> div >> nth=15 >> text=/SPOA.*\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXN_6} >> div >> nth=16 >> text=/Fee.*\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_6} >> div >> nth=4 >> text=/Token transfer.*Success/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_6} >> div >> nth=7 >> text=/0x.*ago/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_6} >> div >> nth=10 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_6} >> div >> nth=16 >> text=/NFT/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_6} >> div >> nth=18 >> text=/SPOA.*\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXN_6} >> div >> nth=19 >> text=/Fee.*\\d+/`)
     }
 }

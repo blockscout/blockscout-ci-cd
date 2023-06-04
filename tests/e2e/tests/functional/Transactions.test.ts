@@ -21,5 +21,6 @@ test(`@Ethereum @Transactions @Data @AccountImage Check contract creation tx pro
     await transactionPage.check_tx_description()
     await transactionPage.check_tx_details()
     await transactionPage.check_transaction_logs()
-    await transactionPage.check_raw_trace(MinerAddress, TestTokenAddress)
+    // tracing is disabled on Geth
+    // await transactionPage.check_raw_trace(MinerAddress, TestTokenAddress)
 })
