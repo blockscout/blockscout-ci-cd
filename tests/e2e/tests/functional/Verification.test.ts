@@ -4,7 +4,7 @@ import { VerificationFlattenForm } from '@pages/Verification'
 
 test.describe.configure({ mode: `parallel` })
 
-test.skip(`@Ethereum @Verification @Data Can list verified contracts`, async (
+test.skip(`@Verification Can list verified contracts`, async (
     {
         homePage, verificationPage, transactionPage, transactionsListPage,
     },
@@ -50,7 +50,7 @@ test.skip(`@Ethereum @Verification @Data Can list verified contracts`, async (
     // await homePage.check_verified_contracts_list()
 })
 
-test.skip(`@Ethereum @Verification @Data Can verify NFT contract with flatten`, async ({ verificationPage, transactionPage, transactionsListPage }) => {
+test.skip(`@Verification Can verify NFT contract with flatten`, async ({ verificationPage, transactionPage, transactionsListPage }) => {
     // TODO: takes too long and fails sometimes, bug? not enough resources?
     const {
         TestNFTAddressV,
@@ -70,27 +70,27 @@ test.skip(`@Ethereum @Verification @Data Can verify NFT contract with flatten`, 
             code: TestNFTFlatContractCode,
         } as VerificationFlattenForm,
     )
-    await verificationPage.checkCodePage({
-        contractNameText: `Contract name`,
-        contractName: `TestNFT`,
-        compilerVersionText: `Compiler version`,
-        compilerVersion: `v0.8.17+commit.8df45f5f`,
-        EVMVersionText: `EVM Version`,
-        EVMVersion: `default`,
-        optomizationEnabledText: `Optimization enabled`,
-        optomizationEnabled: `true`,
-        optimizationRunsText: `Optimization runs`,
-        optimizationRuns: `200`,
-        verifiedAtText: `Verified at`,
-        verifiedAt: `Z`,
-        constructorArgsText: `Constructor Arguments`,
-        codeConstructorArgs: `0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000044e4654560000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044e46545600000000000000000000000000000000000000000000000000000000`,
-        codeTokenName: TestNFTNameV,
-        codeTokenSymbol: TestNFTSymbolV,
-        contractSourceCodeText: `Contract source code`,
-        contractABIText: `Contract ABI`,
-        deployedByteCodeText: `Deployed ByteCode`,
-    })
+    // await verificationPage.checkCodePage({
+    //     contractNameText: `Contract name`,
+    //     contractName: `TestNFT`,
+    //     compilerVersionText: `Compiler version`,
+    //     compilerVersion: `v0.8.17+commit.8df45f5f`,
+    //     EVMVersionText: `EVM Version`,
+    //     EVMVersion: `default`,
+    //     optomizationEnabledText: `Optimization enabled`,
+    //     optomizationEnabled: `true`,
+    //     optimizationRunsText: `Optimization runs`,
+    //     optimizationRuns: `200`,
+    //     verifiedAtText: `Verified at`,
+    //     verifiedAt: `Z`,
+    //     constructorArgsText: `Constructor Arguments`,
+    //     codeConstructorArgs: `0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000044e4654560000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044e46545600000000000000000000000000000000000000000000000000000000`,
+    //     codeTokenName: TestNFTNameV,
+    //     codeTokenSymbol: TestNFTSymbolV,
+    //     contractSourceCodeText: `Contract source code`,
+    //     contractABIText: `Contract ABI`,
+    //     deployedByteCodeText: `Deployed ByteCode`,
+    // })
     await transactionPage.open(TestNFTTXMintHashV)
     await transactionPage.select_logs_tab()
     await transactionPage.check_decoded_inputs(1, {

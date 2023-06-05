@@ -43,8 +43,8 @@ export class NewHomePage extends CommonPage {
         this.actions = new WebActions(this.page)
     }
 
-    async open(): Promise<void> {
-        await this.actions.navigateToURL(`/`)
+    async open(options = { waitUntil: `networkidle` }): Promise<void> {
+        await this.actions.navigateToURL(`/`, options)
     }
 
     async check_heaader(): Promise<void> {

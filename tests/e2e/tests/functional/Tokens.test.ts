@@ -4,7 +4,7 @@ import { NativeCurrencyProps, TokenRowProps } from '@pages/Tokens'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@Ethereum @Tokens @Data @PublicImage @AccountImage Search token by the name`, async ({ tokensPage }) => {
+test(`@AccountImage @Token Search token by the name`, async ({ tokensPage }) => {
     const { TestTokenSymbol, TestNFTSymbol } = process.env
     await tokensPage.mock_ads()
     await tokensPage.open()
@@ -24,7 +24,7 @@ test(`@Ethereum @Tokens @Data @PublicImage @AccountImage Search token by the nam
     } as TokenRowProps)
 })
 
-test(`@Ethereum @Tokens @Data @PublicImage @AccountImage Search a token by symbol`, async ({ tokensPage }) => {
+test(`@AccountImage @Token Search a token by symbol`, async ({ tokensPage }) => {
     const { TestTokenName, TestNFTName } = process.env
     await tokensPage.mock_ads()
     await tokensPage.open()
@@ -44,7 +44,7 @@ test(`@Ethereum @Tokens @Data @PublicImage @AccountImage Search a token by symbo
     } as TokenRowProps)
 })
 
-test.skip(`@Ethereum @Tokens @Data @PublicImage @AccountImage Check native currency list`, async ({ tokensPage }) => {
+test.skip(`@AccountImage @Token Check native currency list`, async ({ tokensPage }) => {
     const { MinerAddress } = process.env
     await tokensPage.openAccounts()
     await tokensPage.check_native_row(0, {

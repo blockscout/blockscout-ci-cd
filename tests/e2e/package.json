@@ -13,11 +13,12 @@
     "test:notifications": "npx playwright test --project=Chrome --grep=@Notifications",
     "test:smoke:account": "npx playwright test --project=Chrome --grep=@AccountImage",
     "test:smoke:verification": "npx playwright test --project=Chrome --grep=@Verification",
+
     "test:transactions": "npx playwright test --project=Chrome --grep=@Transactions",
     "test:blocks": "npx playwright test --project=Chrome --grep=@Blocks",
-    "test:tokens": "npx playwright test --project=Chrome --grep=@Tokens",
-    "test:token": "npx playwright test --project=Chrome --grep=@TokenPage",
+    "test:token": "npx playwright test --project=Chrome --grep=@Token",
     "test:address": "npx playwright test --project=Chrome --grep=@Address",
+
     "test:api": "npx playwright test --project=Chrome --grep @API",
     "test:etherscan": "npx playwright test --project=Chrome_UI --grep @Etherscan",
     "test:token:transfers": "npx playwright test --project=Chrome --grep @TransferTokens",

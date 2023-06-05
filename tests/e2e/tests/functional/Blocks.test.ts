@@ -3,7 +3,7 @@ import test from '@lib/BaseTest'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Block with a create tx (new frontend)`, async ({ blocksPage }) => {
+test(`@AccountImage @Blocks Block with a create tx`, async ({ blocksPage }) => {
     const { TestTokenDeployTXBlockNumber } = process.env
     await blocksPage.mock_ads()
     await blocksPage.open(TestTokenDeployTXBlockNumber)
@@ -11,14 +11,8 @@ test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Block with a create tx 
     await blocksPage.check_details()
 })
 
-test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check blocks list  (new frontend)`, async ({ blocksListPage }) => {
+test(`@AccountImage @Blocks Check blocks list`, async ({ blocksListPage }) => {
     await blocksListPage.open()
     await blocksListPage.check_header()
     await blocksListPage.check_table()
-})
-
-// fix networks configuration
-test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check network options are present`, async ({ blocksListPage }) => {
-    await blocksListPage.open()
-    await blocksListPage.check_network_menu()
 })

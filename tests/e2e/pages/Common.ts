@@ -77,10 +77,50 @@ export class CommonPage {
 
     LOG_DIV = `div[role="tabpanel"] >> div >> nth=`
 
+    NETWORK_MENU = `[aria-label="Network menu"]`
+
+    NETWORK_GROUP_MAINNETS = `text=mainnets`
+
+    NETWORK_GROUP_TESTNETS = `text=testnets`
+
+    NETWORK_GROUP_OTHER = `text=other`
+
+    NETWORK_LIST_ITEM = `section >> ul >> li >> nth=`
+
     constructor(page: Page) {
         this.page = page
         this.actions = new WebActions(this.page)
         this.apiActions = new APIActions()
+    }
+
+    async check_network_menu(): Promise<void> {
+        await this.actions.clickElement(this.NETWORK_MENU)
+        await this.actions.clickElement(this.NETWORK_GROUP_MAINNETS)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}0 >> text=Ethereum`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}1 >> text=Optimism`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}2 >> text=RSK`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}3 >> text=LightLink Phoenix`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}4 >> text=Ethereum classic`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}5 >> text=Gnosis Chain`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}6 >> text=Astar (EVM)`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}7 >> text=Shiden (EVM)`)
+
+        await this.actions.clickElement(this.NETWORK_GROUP_TESTNETS)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}0 >> text=Goerli`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}1 >> text=Base Göerli`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}2 >> text=Optimism Goerli`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}3 >> text=Optimism Bedrock Beta`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}4 >> text=ZetaChain testnet`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}5 >> text=LightLink Pegasus`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}6 >> text=Neon Devnet`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}7 >> text=Gnosis Chiado`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}8 >> text=Shibuya (EVM)`)
+        await this.actions.clickElement(this.NETWORK_GROUP_OTHER)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}0 >> text=Optimism Opcraft`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}1 >> text=/ARTIS/`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}2 >> text=/LUKSO/`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}3 >> text=/POA/`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}4 >> text=/POA Sokol/`)
     }
 
     async check_selector(sel: string, err?: string): Promise<void> {
