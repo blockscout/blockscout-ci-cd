@@ -5,7 +5,7 @@ const { ENV } = process.env
 
 const config: PlaywrightTestConfig = {
 
-    workers: 20,
+    workers: 1,
 
     // Global Setup to run before all tests
     globalSetup: `./global-setup`,
