@@ -164,7 +164,7 @@ export class AuthorizedArea extends CommonPage {
     async openAccount(options?: Object): Promise<void> {
         await this.actions.navigateToURL(process.env.BLOCKSCOUT_URL, options)
         await this.actions.clickElement(this.SIGNED_IN)
-        await this.actions.clickElement(this.ACCOUNT_MENU_PROFILE)
+        await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}/auth/profile`, options)
     }
 
     async selectPrivateTagsTab(): Promise<void> {
