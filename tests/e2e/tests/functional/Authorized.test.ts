@@ -18,7 +18,6 @@ test(`@AccountImage @Authorized Check profile info`, async ({ authorized }) => {
     await authorized.checkProfile()
 })
 
-
 test(`@AccountImage @Authorized Check address tag`, async ({ authorized }) => {
     const {
         TestTokenAddress,
