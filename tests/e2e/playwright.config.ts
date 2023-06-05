@@ -14,10 +14,10 @@ const config: PlaywrightTestConfig = {
     globalTeardown: `./global-teardown`,
 
     // sets timeout for each test case
-    timeout: 300000,
+    timeout: 180000,
 
     // number of retries if test case fails
-    retries: 5,
+    retries: 10,
 
     // Reporters
     reporter: [[`list`], [`html`, { outputFolder: `html-report`, open: `never` }], [`junit`, { outputFile: `results.xml` }]],

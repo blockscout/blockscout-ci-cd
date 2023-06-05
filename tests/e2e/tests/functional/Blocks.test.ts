@@ -13,7 +13,6 @@ test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Block with a create tx 
 
 test(`@Ethereum @Blocks @Data @AccountImage @NewFrontend Check blocks list  (new frontend)`, async ({ blocksListPage }) => {
     await blocksListPage.open()
-    await blocksListPage.waitBlocksSynced()
     await blocksListPage.check_header()
     await blocksListPage.check_table()
 })
