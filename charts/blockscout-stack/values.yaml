@@ -1177,18 +1177,18 @@ frontend:
   # probes
   livenessProbe:
     enabled: false
-    path: /
+    path: /api/healthz
     params:
       initialDelaySeconds: 100
       periodSeconds: 100
       timeoutSeconds: 30
   readinessProbe:
     enabled: false
-    path: /
+    path: /api/healthz
     params:
       initialDelaySeconds: 60
       periodSeconds: 10
-      timeoutSeconds: 60
+      timeoutSeconds: 30
 
   environment: {}
     # NEXT_PUBLIC_APP_PROTOCOL:
