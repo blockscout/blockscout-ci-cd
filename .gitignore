@@ -12,3 +12,4 @@ charts/blockscout-stack/key.*.sec
 **.dec**
 tokens.compare
 tests/zbroken
+tests/e2e/getGenesisData.js
