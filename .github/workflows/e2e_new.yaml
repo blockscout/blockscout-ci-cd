@@ -5,9 +5,9 @@ on:
   workflow_call:
 
 env:
-  BLOCKSCOUT_URL: ${{ vars.E2E_BLOCKSCOUT_URL }}
-  FRONTEND_URL: ${{ vars.E2E_FRONTEND_URL }}
-  NETWORK_URL: ${{ vars.E2E_NETWORK_URL }}
+  BLOCKSCOUT_URL: ${{ secrets.E2E_BLOCKSCOUT_URL }}
+  FRONTEND_URL: ${{ secrets.E2E_FRONTEND_URL }}
+  NETWORK_URL: ${{ secrets.E2E_NETWORK_URL }}
   ACCOUNT_USERNAME: ${{ secrets.ACCOUNT_USERNAME }}
   ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
   MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
