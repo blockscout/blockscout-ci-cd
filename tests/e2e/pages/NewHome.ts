@@ -23,7 +23,7 @@ export class NewHomePage extends CommonPage {
         this.actions = new WebActions(this.page)
     }
 
-    async open(options = { waitUntil: `networkidle` }): Promise<void> {
+    async open(options = { waitUntil: `load` }): Promise<void> {
         await this.actions.navigateToURL(`/`, options)
     }
 
