@@ -10,6 +10,11 @@ npm install
 npm run build
 ```
 
+## Minify
+```
+./node_modules/.bin/poa-solidity-flattener ./contracts/TestToken.sol
+```
+
 ## How to add a new contract
 - Add a contract in folder `tests/contracts/contracts`
 - run `npm run build`

@@ -22,6 +22,7 @@
     "test:api": "npx playwright test --project=Chrome --grep @API",
     "test:etherscan": "npx playwright test --project=Chrome_UI --grep @Etherscan",
     "test:token:transfers": "npx playwright test --project=Chrome --grep @TransferTokens",
+    "test:address:owner": "npx playwright test --project=Chrome --grep @AddressOwners",
     "test:record": "npx playwright codegen",
     "test:visual": "npx playwright test visualComparision.test.ts --project=Chrome",
     "lighthouse": "node lighthouse.js --preset desktop --view",

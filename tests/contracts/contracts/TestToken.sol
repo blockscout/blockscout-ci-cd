@@ -1,27 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
 
-/**
- * @notice test ERC20 token
- */
-contract TestToken is ERC20, AccessControl {
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+contract TestToken is ERC20, Ownable {
 
-    constructor(string memory name, string memory symbol) ERC20(name, symbol) {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _setupRole(MINTER_ROLE, msg.sender);
+    constructor(string memory _name, string memory _symbol) ERC20(_name, _symbol) {
+        _mint(msg.sender, 100 * 10 ** uint(decimals()));
     }
 
-    function mint(address to, uint256 amount) external {
-        require(hasRole(MINTER_ROLE, msg.sender), "Only minter can mint");
-        _mint(to, amount);
-    }
-
-    function alwaysReverts() external returns (bool) {
-        require(false, "I'm always reverting with an error");
-        return false;
+    function mint(address to, uint256 _amount) public {
+        _mint(to, _amount * 10 ** uint(decimals()));
     }
 }
