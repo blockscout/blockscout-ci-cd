@@ -13,4 +13,9 @@ contract TestToken is ERC20, Ownable {
     function mint(address to, uint256 _amount) public {
         _mint(to, _amount * 10 ** uint(decimals()));
     }
+	 
+	 function alwaysReverts() external returns (bool) {
+        require(false, "I'm always reverting with an error");
+        return false;
+    }
 }
