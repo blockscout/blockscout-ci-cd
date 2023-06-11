@@ -54,7 +54,7 @@ export class TransactionPage extends CommonPage {
         await this.check_table_element(`Timestamp`, 0, `ago.*UTC.*Confirmed`)
         await this.check_selector(`text=/Sponsored/`)
         await this.check_table_element(`From`, 0, `0x`)
-        await this.check_table_element(`To`, 9, `Contract.*0x.*created`)
+        await this.actions.verifyElementIsDisplayed(`div:right-of(:text("To")) >> span`, `/Contract.*0x.*created/`)
         await this.check_table_element(`Value`, 0, `SPOA`)
         await this.check_table_element(`Transaction fee`, 0, `\\d+.*SPOA`)
         await this.check_table_element(`Gas price`, 0, `\\d+.*SPOA.*\\d+.*Gwei`)
