@@ -29,8 +29,16 @@ export class BlocksPage extends CommonPage {
         await this.actions.clickElement(this.DETAILS_TAB)
     }
 
+    async openDescriptionDetails(): Promise<void> {
+        await this.actions.clickElement(this.DETAILS_TAB_FOOTER)
+    }
+
     async openTraansactionsTab(): Promise<void> {
         await this.actions.clickElement(this.TRANSACTIONS_TAB)
+    }
+
+    async getBlockHash(): Promise<string[]> {
+        return this.actions.getTextFromWebElements(`div:right-of(:text("Hash")) >> nth=1`)
     }
 
     async check_block_description_new(): Promise<void> {
@@ -47,7 +55,7 @@ export class BlocksPage extends CommonPage {
     }
 
     async check_details(): Promise<void> {
-        await this.actions.clickElement(this.DETAILS_TAB_FOOTER)
+        await this.openDescriptionDetails()
         await this.check_table_element(`Difficulty`, 0, `\\d+`)
         await this.check_table_element(`Total difficulty`, 0, `\\d+`)
         await this.check_table_element(`Hash`, 0, `0x`)
