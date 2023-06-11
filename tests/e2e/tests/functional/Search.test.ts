@@ -25,5 +25,5 @@ test.skip(`@AccountImage @Search Check block search`, async ({ newHomePage }) =>
     } = process.env
     await newHomePage.open()
     await newHomePage.search(TestTokenName)
-    await newHomePage.checkSearchItemText(1, TestTokenAddress)
+    await newHomePage.findInSearchItems(TestTokenAddress)
 })

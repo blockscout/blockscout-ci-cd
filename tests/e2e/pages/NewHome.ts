@@ -5,7 +5,9 @@ import { CommonPage } from "./Common"
 export class NewHomePage extends CommonPage {
     SEARCH_BAR = `input >> nth=0`
 
-    SEARCH_ITEM = `section[role="dialog"] >> div >> nth=`
+    SEARCH_ITEM = `section[role="dialog"] >> nth=1 >> div >> nth=`
+
+    SEARCH_ITEMS = `section[role="dialog"] >> nth=1`
 
     HEADER_STATS = `main >> div >> nth=8 >> div >> div`
 
@@ -31,6 +33,10 @@ export class NewHomePage extends CommonPage {
 
     async checkSearchItemText(pos: number, text: string): Promise<void> {
         await this.actions.verifyElementContainsText(`${this.SEARCH_ITEM}${pos}`, text)
+    }
+
+    async findInSearchItems(text: string): Promise<void> {
+        await this.actions.verifyElementContainsText(`${this.SEARCH_ITEMS}`, text)
     }
 
     async open(options = { waitUntil: `load` }): Promise<void> {

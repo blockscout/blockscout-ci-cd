@@ -54,7 +54,7 @@ export class TransactionPage extends CommonPage {
         await this.check_table_element(`Timestamp`, 0, `ago.*UTC.*Confirmed`)
         await this.check_selector(`text=/Sponsored/`)
         await this.check_table_element(`From`, 0, `0x`)
-        await this.check_table_element(`To`, 15, `Contract.*0x.*created`)
+        await this.check_table_element(`To`, 9, `Contract.*0x.*created`)
         await this.check_table_element(`Value`, 0, `SPOA`)
         await this.check_table_element(`Transaction fee`, 0, `\\d+.*SPOA`)
         await this.check_table_element(`Gas price`, 0, `\\d+.*SPOA.*\\d+.*Gwei`)
@@ -87,9 +87,8 @@ export class TransactionPage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}14 >> text=0x`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}22 >> text=0x`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}28 >> text=0x`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}34 >> text=0x`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}36 >> text=Data`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}37 >> text=0x`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}30 >> text=Data`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}31 >> text=0x`)
     }
 
     async check_raw_trace(minerAddr: string, createdAddr: string): Promise<void> {
