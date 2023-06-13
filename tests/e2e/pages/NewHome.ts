@@ -11,8 +11,6 @@ export class NewHomePage extends CommonPage {
 
     SEARCH_ITEMS_ICONS = `section[role="dialog"] >> nth=1 >> svg`
 
-    HEADER_STATS = `main >> div >> nth=8 >> div >> div`
-
     BLOCKS_WIDGET = `main >> div >> nth=24`
 
     BLOCKS_WIDGET_LAST_BLOCK = `main >> div >> nth=39`
@@ -48,6 +46,16 @@ export class NewHomePage extends CommonPage {
 
     async open(options = { waitUntil: `load` }): Promise<void> {
         await this.actions.navigateToURL(`/`, options)
+    }
+
+    async checkIndexing(): Promise<void> {
+        // why any event from waitUntil is not working?
+        // waitUntil?: "load"|"domcontentloaded"|"networkidle"|"commit";
+        await this.delay(2000)
+        const indexingInProgress = await this.actions.page.$(`text=/We're indexing this/`)
+        if (indexingInProgress) {
+            this.HEADER_STATS = `main >> div >> nth=10 >> div >> div`
+        }
     }
 
     async check_heaader(): Promise<void> {

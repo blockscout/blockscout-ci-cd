@@ -19,6 +19,8 @@ export class CommonPage {
 
     apiActions: APIActions
 
+    HEADER_STATS = `main >> div >> nth=8 >> div >> div`
+
     SIGN_IN = `main >> a >> nth=0`
 
     SIGNED_IN = `main >> button >> nth=0`
