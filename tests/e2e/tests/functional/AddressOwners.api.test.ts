@@ -55,17 +55,20 @@ test.skip(`@AddressOwners Deploy ownable ERC20 token, verify addrress`, async ()
     await token.mint(contracts.wallet.address, 100)
 })
 
-test.skip(`@AddressOwners Deploy ownable ERC20 token, manual signature verification`, async () => {
+test(`@AddressOwners Deploy ownable ERC20 token, manual signature verification`, async () => {
     const contracts = new Contracts(process.env.NETWORK_URL)
 
-    const token = await deployContract(
-        contracts,
-        `TestToken`,
-        `VerifiedByManualSig`,
-        shortID(),
-    )
-    await token.mint(contracts.wallet.address, 100)
+    // const token = await deployContract(
+    //     contracts,
+    //     `TestToken`,
+    //     `VerifiedByManualSig`,
+    //     shortID(),
+    // )
+    // await token.mint(contracts.wallet.address, 100)
 
-    const signature = await contracts.wallet.signMessage(`[eth-goerli.blockscout.com] [2023-06-10 23:09:26] I, hereby verify that I am the owner/creator of the address [0xc0d74a6e896fb8e258d2542c2629f3e06dec824c]`)
+    const signature = await contracts.wallet.signMessage(`[eth-goerli.blockscout.com] [2023-06-19 16:00:58] I, hereby verify that I am the owner/creator of the address [0x5bd57755f563c79a7580bc1fe56a06e94f77cdeb]`)
+    console.log(`signature: ${signature}`)
+    console.log(`signature: ${signature}`)
+    console.log(`signature: ${signature}`)
     console.log(`signature: ${signature}`)
 })

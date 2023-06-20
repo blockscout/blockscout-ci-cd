@@ -11,5 +11,6 @@ test(`@Smoke Eth main page components`, async ({ context, ethHomePage }) => {
 
 test(`@AccountImage @Main Check network options are present`, async ({ newHomePage }) => {
     await newHomePage.open()
+    await newHomePage.delay(1000)
     await newHomePage.check_network_menu()
 })

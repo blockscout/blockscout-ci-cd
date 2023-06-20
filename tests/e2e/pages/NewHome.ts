@@ -28,7 +28,6 @@ export class NewHomePage extends CommonPage {
     }
 
     async search(text: string): Promise<void> {
-        await this.actions.clickElement(this.SEARCH_BAR)
         await this.actions.enterElementText(this.SEARCH_BAR, text)
     }
 
@@ -37,7 +36,7 @@ export class NewHomePage extends CommonPage {
     }
 
     async findInSearchItems(text: string): Promise<void> {
-        await this.actions.verifyElementContainsText(`${this.SEARCH_ITEMS}`, text)
+        await this.actions.verifyElementIsDisplayed(`${this.SEARCH_ITEMS} >> text=/${text}/`)
     }
 
     async checkSearchItemsIcons(): Promise<void> {

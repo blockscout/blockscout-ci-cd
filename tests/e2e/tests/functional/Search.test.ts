@@ -27,6 +27,7 @@ test(`@AccountImage @Search Check block number search`, async ({ newHomePage, bl
     await blocksPage.openDescriptionDetails()
     const bh = await blocksPage.getBlockHash()
     await newHomePage.open()
+    await newHomePage.delay(2000)
     await newHomePage.search(TestTokenDeployTXBlockNumber)
     await newHomePage.findInSearchItems(`Found 1 matching result${TestTokenDeployTXBlockNumber}${bh[0]}`)
     await newHomePage.checkSearchItemsIcons()
@@ -38,6 +39,7 @@ test(`@AccountImage @Search Check ERC-20 token search`, async ({ newHomePage }) 
         TestTokenName,
     } = process.env
     await newHomePage.open()
+    await newHomePage.delay(2000)
     await newHomePage.search(TestTokenName)
     await newHomePage.findInSearchItems(TestTokenAddress)
     await newHomePage.checkSearchItemsIcons()
@@ -49,6 +51,7 @@ test(`@AccountImage @Search Check ERC-721 token search`, async ({ newHomePage })
         TestNFTName,
     } = process.env
     await newHomePage.open()
+    await newHomePage.delay(2000)
     await newHomePage.search(TestNFTName)
     await newHomePage.findInSearchItems(TestNFTAddress)
     await newHomePage.checkSearchItemsIcons()
@@ -59,6 +62,7 @@ test(`@AccountImage @Search Check transaction search`, async ({ newHomePage }) =
         TestTokenDeployTXHash,
     } = process.env
     await newHomePage.open()
+    await newHomePage.delay(2000)
     await newHomePage.search(TestTokenDeployTXHash)
     await newHomePage.findInSearchItems(TestTokenDeployTXHash)
     await newHomePage.checkSearchItemsIcons()
@@ -70,6 +74,7 @@ test(`@AccountImage @Search Check token search by partial name`, async ({ newHom
         TestTokenAddress,
     } = process.env
     await newHomePage.open()
+    await newHomePage.delay(2000)
     await newHomePage.search(TestTokenName.slice(0, 3))
     await newHomePage.findInSearchItems(TestTokenAddress)
     await newHomePage.checkSearchItemsIcons()
@@ -81,6 +86,7 @@ test(`@AccountImage @Search Check token search by symbol`, async ({ newHomePage 
         TestTokenAddress,
     } = process.env
     await newHomePage.open()
+    await newHomePage.delay(2000)
     await newHomePage.search(TestTokenSymbol)
     await newHomePage.findInSearchItems(TestTokenAddress)
     await newHomePage.checkSearchItemsIcons()

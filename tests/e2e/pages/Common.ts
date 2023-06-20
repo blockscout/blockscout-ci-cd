@@ -96,8 +96,8 @@ export class CommonPage {
     }
 
     async check_network_menu(): Promise<void> {
-        await this.actions.clickElement(this.NETWORK_MENU)
-        await this.actions.clickElement(this.NETWORK_GROUP_MAINNETS)
+        await this.actions.clickElementJS(this.NETWORK_MENU)
+        await this.actions.clickElementJS(this.NETWORK_GROUP_MAINNETS)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}0 >> text=Ethereum`)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}1 >> text=Optimism`)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}2 >> text=RSK`)
@@ -107,7 +107,7 @@ export class CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}6 >> text=Astar (EVM)`)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}7 >> text=Shiden (EVM)`)
 
-        await this.actions.clickElement(this.NETWORK_GROUP_TESTNETS)
+        await this.actions.clickElementJS(this.NETWORK_GROUP_TESTNETS)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}0 >> text=Goerli`)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}1 >> text=Base Göerli`)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}2 >> text=Optimism Goerli`)
@@ -117,7 +117,7 @@ export class CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}6 >> text=Neon Devnet`)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}7 >> text=Gnosis Chiado`)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}8 >> text=Shibuya (EVM)`)
-        await this.actions.clickElement(this.NETWORK_GROUP_OTHER)
+        await this.actions.clickElementJS(this.NETWORK_GROUP_OTHER)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}0 >> text=Optimism Opcraft`)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}1 >> text=/ARTIS/`)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}2 >> text=/LUKSO/`)
@@ -230,7 +230,7 @@ export class CommonPage {
         await this.check_tx_list_row(2, 9, `\\d+`)
 
         await this.check_tx_list_row(3, 1, `0x.*ago`)
-        await this.check_tx_list_row(3, 2, `Contract call.*Success`)
+        await this.check_tx_list_row(3, 2, `Token transfer.*Success`)
         await this.check_tx_list_row(3, 3, `0x`)
         await this.check_tx_list_row(3, 4, `\\d+`)
         await this.check_tx_list_row(3, 5, `0x`)
