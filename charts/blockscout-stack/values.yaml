@@ -1693,3 +1693,50 @@ contractsInfo:
   environment: {}
     # ENV:
     #   _default: 'test'
+
+# enable token-info-extractor deploy
+tokenInfoExtractor:
+  enabled: false
+  image:
+    _default: ghcr.io/blockscout/token-info-extractor:main
+  schedule:
+    _default: "0 20 * * *"
+  # if we want to mount some files in container
+  files:
+    enabled: true
+    list:
+      networks.json: |
+        {
+          "networks": {
+            "goerli": {
+              "chain_id": 5
+            },
+            "ethereum": {
+              "chain_id": 1
+            }
+          }
+        }
+    mountPath: /app/config
+
+  resources:
+    limits:
+      memory:
+        _default: "256Mi"
+      cpu:
+        _default: "250m"
+    requests:
+      memory:
+        _default: "96Mi"
+      cpu:
+        _default: "100m"
+
+  # node label
+  nodeSelector:
+    enabled: false
+    labels:
+      _default:
+        app: blockscout
+
+  environment: {}
+    # ENV:
+    #   _default: 'test'
