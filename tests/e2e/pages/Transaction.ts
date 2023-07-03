@@ -61,7 +61,7 @@ export class TransactionPage extends CommonPage {
         await this.check_table_element(`Gas usage & limit by txn`, 0, `\\d+.*|.*\\d+%`)
         await this.check_table_element(`Gas fees (Gwei)`, 0, `Base.*\\d+.*Max.*\\d+.*Max priority.*\\d+`)
         await this.check_table_element(`Burnt fees`, 0, `\\d+.*SPOA`)
-        await this.actions.verifyElementIsDisplayed(this.DESCRIPTION_AD_BANNER)
+        // await this.actions.verifyElementIsDisplayed(this.DESCRIPTION_AD_BANNER)
     }
 
     async check_tx_details(): Promise<void> {

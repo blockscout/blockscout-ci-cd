@@ -21,6 +21,4 @@ test(`@AccountImage @Transactions Check contract creation tx props`, async ({ tr
     await transactionPage.check_tx_description()
     await transactionPage.check_tx_details()
     await transactionPage.check_transaction_logs()
-    // tracing is disabled on Geth
-    // await transactionPage.check_raw_trace(MinerAddress, TestTokenAddress)
 })
