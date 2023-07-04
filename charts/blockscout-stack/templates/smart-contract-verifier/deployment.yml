@@ -17,8 +17,10 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-sc-verifier
+      {{- if eq .Values.scVerifier.image.pullPolicy "Always" }}
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
+      {{- end }}
     spec:
       # serviceAccountName: vault-auth
       containers:
@@ -33,7 +35,7 @@ spec:
               memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
               cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
           {{- end }}
-          imagePullPolicy: Always
+          imagePullPolicy: {{ .Values.scVerifier.image.pullPolicy }}
           ports:
           {{- range $key, $value := .Values.scVerifier.ports.http }}
             - containerPort: {{ toYaml $value.number | indent 2 }}

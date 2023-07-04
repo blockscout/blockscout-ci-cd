@@ -14,8 +14,10 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-eth-bytecode-db
+      {{- if eq .Values.ethBytecodeDb.image.pullPolicy "Always" }}
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
+      {{- end }}
     spec:
       containers:
         - name: {{ .Release.Name }}-eth-bytecode-db
@@ -29,7 +31,7 @@ spec:
               memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
               cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
           {{- end }}
-          imagePullPolicy: Always
+          imagePullPolicy: {{ .Values.ethBytecodeDb.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.ethBytecodeDb.docker.targetPort }}
             - containerPort: {{ .Values.ethBytecodeDb.docker.metricsPort }}

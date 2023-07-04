@@ -14,8 +14,10 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-admin-rs
+      {{- if eq .Values.adminRs.image.pullPolicy "Always" }}
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
+      {{- end }}
     spec:
       imagePullSecrets:
         - name: regcred
@@ -31,7 +33,7 @@ spec:
               memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
               cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
           {{- end }}
-          imagePullPolicy: Always
+          imagePullPolicy: {{ .Values.adminRs.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.adminRs.docker.targetPort }}
             # - containerPort: {{ .Values.adminRs.docker.metricsPort }}

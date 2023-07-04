@@ -14,8 +14,10 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-sig-provider
+      {{- if eq .Values.sigProvider.image.pullPolicy "Always" }}
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
+      {{- end }}
     spec:
       containers:
         - name: {{ .Release.Name }}-sig-provider
@@ -29,7 +31,7 @@ spec:
               memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
               cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
           {{- end }}
-          imagePullPolicy: Always
+          imagePullPolicy: {{ .Values.sigProvider.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.sigProvider.docker.targetPort }}
             - containerPort: {{ .Values.sigProvider.docker.metricsPort }}

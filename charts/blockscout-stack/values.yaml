@@ -811,6 +811,7 @@ scVerifier:
   enabled: false
   image:
     _default: ghcr.io/blockscout/smart-contract-verifier:latest
+    pullPolicy: IfNotPresent
 
   replicas:
     app: 1
@@ -952,6 +953,7 @@ stats:
   enabled: false
   image:
     _default: ghcr.io/blockscout/stats:main
+    pullPolicy: IfNotPresent
 
   replicas:
     app: 1
@@ -1046,6 +1048,7 @@ visualizer:
   enabled: false
   image:
     _default: ghcr.io/blockscout/visualizer:main
+    pullPolicy: IfNotPresent
 
   replicas:
     app: 1
@@ -1308,6 +1311,7 @@ sigProvider:
   enabled: false
   image:
     _default: ghcr.io/blockscout/sig-provider:main
+    pullPolicy: IfNotPresent
 
   replicas:
     app: 1
@@ -1385,6 +1389,7 @@ ethBytecodeDb:
   enabled: false
   image:
     _default: ghcr.io/blockscout/eth-bytecode-db:main
+    pullPolicy: IfNotPresent
 
   replicas:
     app: 1
@@ -1473,6 +1478,7 @@ adminRs:
   enabled: false
   image:
     _default: ghcr.io/blockscout/visualizer:main
+    pullPolicy: IfNotPresent
 
   replicas:
     app: 1
@@ -1551,6 +1557,7 @@ adminTs:
   enabled: false
   image:
     _default: ghcr.io/blockscout/visualizer:main
+    pullPolicy: IfNotPresent
 
   replicas:
     app: 1
@@ -1621,6 +1628,7 @@ contractsInfo:
   enabled: false
   image:
     _default: ghcr.io/blockscout/visualizer:main
+    pullPolicy: IfNotPresent
 
   replicas:
     app: 1
