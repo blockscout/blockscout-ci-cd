@@ -1132,6 +1132,7 @@ frontend:
 
   image:
     _default: ghcr.io/blockscout/frontend:main
+    pullPolicy: IfNotPresent
 
   replicas:
     app: 1
