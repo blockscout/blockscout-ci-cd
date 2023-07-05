@@ -43,7 +43,19 @@ const deployContract = async (contracts: Contracts, artifactName: string, contra
 
 // manual on live/testnet networks
 
-test.skip(`@AddressOwners Deploy ownable ERC20 token, verify addrress`, async () => {
+test(`@AddressOwners Deploy Vyper ERC20`, async () => {
+    const contracts = new Contracts(process.env.NETWORK_URL)
+
+    const token = await deployContract(
+        contracts,
+        `TestTokenVyper`,
+        `TestTokenVyper`,
+        shortID(),
+    )
+    await token.mint(contracts.wallet.address, 100)
+})
+
+test(`@AddressOwners Deploy ownable ERC20 token, verify addrress`, async () => {
     const contracts = new Contracts(process.env.NETWORK_URL)
 
     const token = await deployContract(

@@ -6,6 +6,7 @@ import "@nomiclabs/hardhat-waffle"
 
 import "hardhat-gas-reporter"
 import "@nomiclabs/hardhat-etherscan"
+import "@nomiclabs/hardhat-vyper"
 
 const chainIds = {
     hardhat: 31337,
@@ -20,6 +21,9 @@ const config: HardhatUserConfig = {
         hardhat: {
             chainId: chainIds.hardhat,
         },
+    },
+    vyper: {
+        compilers: [{ version: `0.2.1` }, { version: `0.3.7` }],
     },
     solidity: {
         version: `0.8.17`,
