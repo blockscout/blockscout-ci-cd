@@ -13,8 +13,10 @@ spec:
       app: {{ .Release.Name }}-frontend
   template:
     metadata:
+      {{- if eq .Values.frontend.image.pullPolicy "Always" }}
       annotations:
         releaseTime: {{ dateInZone "2006-01-02 15:04:05Z" (now) "UTC"| quote }}
+      {{- end }}
       labels:
         app: {{ .Release.Name }}-frontend
     spec:
@@ -33,7 +35,7 @@ spec:
               memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
               cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
           {{- end }}
-          imagePullPolicy: Always
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.frontend.docker.targetPort }}
           env:
