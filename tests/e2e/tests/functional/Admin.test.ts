@@ -3,11 +3,11 @@ import test from '@lib/BaseTest'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@AccountImage @AAdmin Delete/Create TokenInfo`, async ({ adminPage }) => {
+// test(`@Admin Delete/Create TokenInfo`, async ({ adminPage }) => {
 
-})
+// })
 
-test(`@AccountImage @Admin Delete/Create SuperSubmission`, async ({ adminPage }) => {
+test(`@Admin Delete/Create SuperSubmission`, async ({ adminPage }) => {
     await adminPage.open()
     await adminPage.login(process.env.ACCOUNT_USERNAME, process.env.ACCOUNT_PASSWORD)
     await adminPage.selectSuperUserTab()
@@ -23,7 +23,7 @@ test(`@AccountImage @Admin Delete/Create SuperSubmission`, async ({ adminPage })
         ProjectName: `test_project`,
         ProjectWebSite: `https://ya.ru`,
         IconURL: iconURL,
-        ProjectDescription: `description`,
+        ProjectEmail: process.env.ACCOUNT_USERNAME,
         ProjectSector: `DeFi`,
         Comment: `comment`,
         Docs: `docs`,

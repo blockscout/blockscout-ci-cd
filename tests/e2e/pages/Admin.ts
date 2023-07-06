@@ -11,7 +11,7 @@ interface Submission {
     ProjectName: string
     ProjectWebSite: string
     IconURL: string
-    ProjectDescription: string
+    ProjectEmail: string
     ProjectSector: string
     Comment: string
     Docs: string
@@ -90,8 +90,8 @@ export class AdminPage extends CommonPage {
         await this.actions.enterElementText(`input >> nth=6`, sub.RequesterEmail)
         await this.actions.enterElementText(`input >> nth=7`, sub.ProjectName)
         await this.actions.enterElementText(`input >> nth=8`, sub.ProjectWebSite)
-        await this.actions.enterElementText(`input >> nth=9`, sub.IconURL)
-        await this.actions.enterElementText(`input >> nth=10`, sub.ProjectDescription)
+        await this.actions.enterElementText(`input >> nth=9`, sub.ProjectEmail)
+        await this.actions.enterElementText(`input >> nth=10`, sub.IconURL)
         await this.actions.enterElementText(`input >> nth=11`, sub.ProjectSector)
 
         await this.actions.enterElementText(`input >> nth=12`, sub.Comment)
@@ -114,7 +114,7 @@ export class AdminPage extends CommonPage {
         await this.actions.enterElementText(`input >> nth=25`, sub.CMCTickerURL)
         await this.actions.enterElementText(`input >> nth=26`, sub.CGTickerURL)
         await this.actions.enterElementText(`input >> nth=27`, sub.LlamaTickerURL)
-        await this.actions.clickElement(`button >> nth=0`)
+        await this.actions.clickElement(`text=Save`)
     }
 
     async login(login: string, password: string) {

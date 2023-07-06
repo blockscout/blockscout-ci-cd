@@ -20,9 +20,7 @@ env:
   PORT_NETWORK_WS: 8546
   WALLET: ${{ secrets.WALLET }}
   PWDEBUG: 0
-  LOAD_AUTH_CTX: 0
-  LOAD_CONTRACTS_DATA: 0
-  ACCOUNT: 1
+  PROD: 1
 jobs:
   test:
     name: Admin console tests
