@@ -12,6 +12,8 @@
     "test:authorized": "npx playwright test --project=Chrome --grep=@Authorized",
     "test:notifications": "npx playwright test --project=Chrome --grep=@Notifications",
     "test:smoke:account": "npx playwright test --project=Chrome --grep=@AccountImage",
+    "test:admin": "npx playwright test --project=Chrome --grep=@Admin",
+
     "test:smoke:verification": "npx playwright test --project=Chrome --grep=@Verification",
 
     "test:transactions": "npx playwright test --project=Chrome --grep=@Transactions",

@@ -11,6 +11,8 @@ import { HomeRollup } from '@pages/HomeRollup'
 import { RollupDepositsPage } from '@pages/RollupDeposits'
 import { RollupWithdrawalsPage } from '@pages/RollupWithdrawals'
 import MailSlurp from 'mailslurp-client'
+import { AdminPage } from '@pages/Admin'
+
 import { ETHHome } from '@pages/HomeETH'
 import { HomeMainDev } from '@pages/HomeMainDev'
 import { VerificationPage } from '@pages/Verification'
@@ -26,6 +28,7 @@ import Contracts from './Contracts'
 import testConfig from '../testConfig'
 
 const test = baseTest.extend<{
+    adminPage: AdminPage,
     commonPage: CommonPage,
     newHomePage: NewHomePage,
     newHomeMainDev: HomeMainDev,
@@ -49,6 +52,9 @@ const test = baseTest.extend<{
     verificationPage: VerificationPage,
     etherscanGoerliPage: EtherscanGoerliPage,
 }>({
+    adminPage: async ({ page }, use) => {
+        await use(new AdminPage(page))
+    },
     commonPage: async ({ page }, use) => {
         await use(new CommonPage(page))
     },
