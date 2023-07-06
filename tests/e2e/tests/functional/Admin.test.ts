@@ -3,7 +3,11 @@ import test from '@lib/BaseTest'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@AccountImage @Admin Login to admin`, async ({ adminPage }) => {
+test(`@AccountImage @AAdmin Delete/Create TokenInfo`, async ({ adminPage }) => {
+
+})
+
+test(`@AccountImage @Admin Delete/Create SuperSubmission`, async ({ adminPage }) => {
     await adminPage.open()
     await adminPage.login(process.env.ACCOUNT_USERNAME, process.env.ACCOUNT_PASSWORD)
     await adminPage.selectSuperUserTab()
