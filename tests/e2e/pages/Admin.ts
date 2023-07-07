@@ -46,8 +46,16 @@ export class AdminPage extends CommonPage {
         await this.actions.navigateToURL(`https://admin.services.blockscout.com/admin/login/`)
     }
 
+    async openSubmissions(): Promise<void> {
+        await this.actions.navigateToURL(`https://admin.services.blockscout.com/admin/resources/allSubmissions`)
+    }
+
     async selectTokenServicesTab(): Promise<void> {
         await this.actions.clickElement(`text=Token services`)
+    }
+
+    async selectTODOSubmissions(): Promise<void> {
+        await this.actions.clickElement(`text=Todo Submissions`)
     }
 
     async selectSuperUserTab(): Promise<void> {
@@ -77,6 +85,10 @@ export class AdminPage extends CommonPage {
 
     async selectFirstSubmission(): Promise<void> {
         await this.actions.clickElement(`tr >> nth=1 >> td >> nth=4`)
+    }
+
+    async approve(): Promise<void> {
+        await this.actions.clickElement(`text=Approve`)
     }
 
     async createNewAdminSubmission(sub: Submission): Promise<void> {
@@ -109,11 +121,11 @@ export class AdminPage extends CommonPage {
 
         await this.actions.enterElementText(`input >> nth=22`, sub.Medium)
         await this.actions.enterElementText(`input >> nth=23`, sub.Reddit)
-        await this.actions.enterElementText(`input >> nth=24`, sub.Support)
+        await this.actions.enterElementText(`input >> nth=25`, sub.Support)
 
-        await this.actions.enterElementText(`input >> nth=25`, sub.CMCTickerURL)
-        await this.actions.enterElementText(`input >> nth=26`, sub.CGTickerURL)
-        await this.actions.enterElementText(`input >> nth=27`, sub.LlamaTickerURL)
+        await this.actions.enterElementText(`input >> nth=26`, sub.CMCTickerURL)
+        await this.actions.enterElementText(`input >> nth=27`, sub.CGTickerURL)
+        await this.actions.enterElementText(`input >> nth=28`, sub.LlamaTickerURL)
         await this.actions.clickElement(`text=Save`)
     }
 

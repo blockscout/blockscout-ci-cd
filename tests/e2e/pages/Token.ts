@@ -25,6 +25,10 @@ export class TokenPage extends CommonPage {
         await this.actions.navigateToURL(`token/${addr}`)
     }
 
+    async selectProjectInfo(): Promise<void> {
+        await this.actions.clickElement(`text=Project info`)
+    }
+
     async check_token(): Promise<void> {
         await this.check_selector(`text=/0x/`, `no token address is displayed`)
         await this.check_table_element(`EPIC (EPC) token`, 1, `ERC-20`)

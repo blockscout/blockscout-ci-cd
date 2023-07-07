@@ -95,7 +95,7 @@ export class CommonPage {
         this.apiActions = new APIActions()
     }
 
-    async check_network_menu(): Promise<void> {
+    async check_netwrk_menu(): Promise<void> {
         await this.actions.clickElementJS(this.NETWORK_MENU)
         await this.actions.clickElementJS(this.NETWORK_GROUP_MAINNETS)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}0 >> text=Ethereum`)

@@ -25,6 +25,10 @@ export class HomeGoerli extends CommonPage implements Comparable {
         this.actions = new WebActions(this.page)
     }
 
+    async openAddress(addr: string): Promise<void> {
+        await this.actions.navigateToURL(`${this.BASE_URL}/token/${addr}`)
+    }
+
     async get_txs_data(data: RequestTransactionsData): Promise<ComparableData> {
         const d = { txs: [] } as ComparableData
         for (const i in data.txs) {
