@@ -1,3 +1,4 @@
+# @version ^0.3.7
 # @dev Implementation of ERC-20 token standard.
 # @author Takayuki Jimba (@yudetamago)
 # https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md
@@ -35,11 +36,11 @@ minter: address
 
 
 @external
-def __init__(_name: String[32], _symbol: String[32], _decimals: uint8, _supply: uint256):
-    init_supply: uint256 = _supply * 10 ** convert(_decimals, uint256)
+def __init__(_name: String[32], _symbol: String[32]):
     self.name = _name
     self.symbol = _symbol
-    self.decimals = _decimals
+    self.decimals = 18
+    init_supply: uint256 = 1000 * 10 ** convert(self.decimals, uint256)
     self.balanceOf[msg.sender] = init_supply
     self.totalSupply = init_supply
     self.minter = msg.sender

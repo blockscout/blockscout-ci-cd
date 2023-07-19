@@ -50,8 +50,8 @@ export default class Contracts {
         return contract
     }
 
-    async deploySymbolContract(contractName: string, symbol: string, contractFileName: string): Promise<Contract> {
-        const artifact = await this.readArtifact(contractFileName)
+    async deploySymbolContract(contractName: string, symbol: string, contractFileName: string, suffix: string): Promise<Contract> {
+        const artifact = await this.readArtifact(contractFileName, suffix)
 
         const factory = new ContractFactory(artifact.abi, artifact.bytecode, this.wallet)
         const d = await factory.deploy(contractName, symbol)
@@ -60,13 +60,13 @@ export default class Contracts {
         return contract
     }
 
-    async loadContract(contractFileName: string, address: string): Promise<Contract> {
-        const artifact = await this.readArtifact(contractFileName)
+    async loadContract(contractFileName: string, address: string, suffix = `sol`): Promise<Contract> {
+        const artifact = await this.readArtifact(contractFileName, suffix)
         return new ethers.Contract(address, artifact.abi, this.provider).connect(this.wallet)
     }
 
-    async readArtifact(contractFileName: string): Promise<any> {
-        const artifactPath = `${ARTIFACTS_PATH}/${contractFileName}.sol/${contractFileName}.json`
+    async readArtifact(contractFileName: string, suffix = `sol`): Promise<any> {
+        const artifactPath = `${ARTIFACTS_PATH}/${contractFileName}.${suffix}/${contractFileName}.json`
         console.log(`reading artifact: ${artifactPath}`)
         const content = await readFile(artifactPath)
         return JSON.parse(content.toString())

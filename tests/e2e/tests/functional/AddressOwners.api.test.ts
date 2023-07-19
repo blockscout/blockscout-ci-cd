@@ -34,9 +34,9 @@ const waitReceiptWithBlock = async (provider: JsonRpcProvider, hash: string): Pr
     throw Error(`tx ${hash} is not mined in any block`)
 }
 
-const deployContract = async (contracts: Contracts, artifactName: string, contractName: string, contractSymbol: string): Promise<TestToken | TestNFT> => {
+const deployContract = async (contracts: Contracts, artifactName: string, contractName: string, contractSymbol: string, suffix = `sol`): Promise<TestToken | TestNFT> => {
     console.log(`deploying contract`)
-    const token = await contracts.deploySymbolContract(contractName, contractSymbol, artifactName) as TestToken
+    const token = await contracts.deploySymbolContract(contractName, contractSymbol, artifactName, suffix) as TestToken
     await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
     return token
 }
@@ -51,6 +51,7 @@ test(`@AddressOwners Deploy Vyper ERC20`, async () => {
         `TestTokenVyper`,
         `TestTokenVyper`,
         shortID(),
+        `.vy`,
     )
     await token.mint(contracts.wallet.address, 100)
 })
@@ -61,10 +62,20 @@ test(`@AddressOwners Deploy ownable ERC20 token, verify addrress`, async () => {
     const token = await deployContract(
         contracts,
         `TestToken`,
-        `VerifiedByCreatorContract`,
+        `Yellow`,
         shortID(),
     )
-    await token.mint(contracts.wallet.address, 100)
+    console.log(`minting to: ${contracts.wallet.address}`)
+    const receipt = await (await token.mint(contracts.wallet.address, 200)).wait()
+    console.log(`receipt: ${JSON.stringify(receipt)}`)
+    const receipt2 = await (await token.approve(contracts.wallet.address, 200)).wait()
+    console.log(`receipt: ${JSON.stringify(receipt)}`)
+    const receipt3 = await (await token.transferFrom(contracts.wallet.address, contracts.wallet.address, 100)).wait()
+    console.log(`receipt: ${JSON.stringify(receipt)}`)
+    // await token.mint(token.address, 100).wait()
+    // await token.approve(contracts.wallet.address, 100)
+    // const tx = await token.transferFrom(token.address, contracts.wallet.address, 100)
+    // console.log(`tx: ${tx.hash}`)
 })
 
 test(`@AddressOwners Deploy ownable ERC20 token, manual signature verification`, async () => {
