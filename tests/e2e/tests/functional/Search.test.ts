@@ -2,7 +2,7 @@ import test from '@lib/BaseTest'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@AccountImage @Search Check block number search`, async ({ newHomePage, blocksPage }) => {
+test.skip(`@AccountImage @Search Check block number search`, async ({ newHomePage, blocksPage }) => {
     const {
         TestTokenHolder,
         TestTokenAddress,

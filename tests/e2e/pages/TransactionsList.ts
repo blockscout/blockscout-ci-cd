@@ -59,7 +59,7 @@ export class TransactionsListPage extends CommonPage {
 
         await this.table_element_displayed(3, 1, `/0x.*ago/`)
         await this.table_element_displayed(3, 2, `/Contract call.*Failed/`)
-        await this.table_element_displayed(3, 3, `/0x/`)
+        await this.table_element_displayed(3, 3, `/alwaysReverts/`)
         await this.table_element_displayed(3, 4, `/\\d+/`)
         await this.table_element_displayed(3, 5, `0x`)
         await this.table_element_displayed(3, 7, erc20SymbolV)

@@ -221,7 +221,7 @@ export class CommonPage {
     async check_tx_in_list(): Promise<void> {
         await this.check_tx_list_row(2, 1, `0x.*ago`)
         await this.check_tx_list_row(2, 2, `Contract call.*Failed`)
-        await this.check_tx_list_row(2, 3, `0x`)
+        await this.check_tx_list_row(2, 3, `alwaysReverts`)
         await this.check_tx_list_row(2, 4, `\\d+`)
         await this.check_tx_list_row(2, 5, `0x`)
         await this.check_tx_list_row(2, 6, `IN`)
@@ -231,7 +231,7 @@ export class CommonPage {
 
         await this.check_tx_list_row(3, 1, `0x.*ago`)
         await this.check_tx_list_row(3, 2, `Token transfer.*Success`)
-        await this.check_tx_list_row(3, 3, `0x`)
+        await this.check_tx_list_row(3, 3, `mint`)
         await this.check_tx_list_row(3, 4, `\\d+`)
         await this.check_tx_list_row(3, 5, `0x`)
         await this.check_tx_list_row(3, 6, `IN`)

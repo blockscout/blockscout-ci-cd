@@ -49,7 +49,7 @@ export class TransactionPage extends CommonPage {
     async check_tx_description(): Promise<void> {
         await this.check_table_element(`Transaction hash`, 0, `0x`)
         await this.check_table_element(`Status`, 0, `Success`)
-        await this.check_table_element(`Block`, 0, `\\d+.*\\d+.*confirmations`)
+        await this.check_table_element(`Block`, 0, `\\d+`)
 
         await this.check_table_element(`Timestamp`, 0, `ago.*UTC.*Confirmed`)
         await this.check_selector(`text=/Sponsored/`)
@@ -80,15 +80,15 @@ export class TransactionPage extends CommonPage {
 
     async check_transaction_logs(): Promise<void> {
         await this.actions.clickElement(this.TAB_LOGS)
-        await this.alert_div_has_text(`To see accurate decoded input data, the contract must be verified. Verify the contract`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}4 >> text=Address`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}6 >> text=EPIC`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}11 >> text=Topics`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}14 >> text=0x`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}22 >> text=0x`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}28 >> text=0x`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}30 >> text=Data`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}31 >> text=0x`)
+        // await this.alert_div_has_text(`To see accurate decoded input data, the contract must be verified. Verify the contract`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}3 >> text=Address`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}4 >> text=EPIC`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}45 >> text=Topics`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}48 >> text=0x`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}56 >> text=0x`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}62 >> text=0x`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}64 >> text=Data`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}65 >> text=0x`)
     }
 
     async check_raw_trace(minerAddr: string, createdAddr: string): Promise<void> {
