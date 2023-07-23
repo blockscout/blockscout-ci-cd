@@ -17,11 +17,10 @@ test(`@Admin Delete/Create TokenInfo`, async ({ newHomeGoerli, tokenPage, adminP
 
     await adminPage.createNewTokenInfo({
         IsUserSubmitted: true,
-        ChainID: `5`,
+        ChainID: `Goerli`,
         TokenAddress: tokenAddr,
         BlockscoutUserEmail: process.env.ACCOUNT_USERNAME,
         RequesterName: `test_submission_user`,
-        RequesterEmail: process.env.ACCOUNT_USERNAME,
         ProjectName: `test_project`,
         ProjectWebSite: `https://ya.ru`,
         ProjectDescription: `desc`,
@@ -52,7 +51,7 @@ test(`@Admin Delete/Create TokenInfo`, async ({ newHomeGoerli, tokenPage, adminP
     await tokenPage.actions.verifyElementIsDisplayed(`text=${uniqueSupportURL}`)
 })
 
-test(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, adminPage }) => {
+test.only(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, adminPage }) => {
     await adminPage.open()
     await adminPage.login(process.env.ACCOUNT_USERNAME, process.env.ACCOUNT_PASSWORD)
     await adminPage.selectSuperUserTab()
@@ -62,7 +61,7 @@ test(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, 
     const uniqueSupportURL = faker.random.alphaNumeric(8)
     const tokenAddr = `0xcf2195871809ea72ad11ff8549e8483a0be672a9`
     await adminPage.createNewAdminSubmission({
-        ChainID: `5`,
+        ChainID: `Goerli`,
         TokenAddress: tokenAddr,
         BlockscoutUserEmail: process.env.ACCOUNT_USERNAME,
         RequesterName: `test_submission_user`,
@@ -70,6 +69,7 @@ test(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, 
         ProjectName: `test_project`,
         ProjectWebSite: `https://ya.ru`,
         IconURL: iconURL,
+        ProjectDescription: `desc`,
         ProjectEmail: process.env.ACCOUNT_USERNAME,
         ProjectSector: `DeFi`,
         Comment: `comment`,

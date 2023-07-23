@@ -8,7 +8,6 @@ interface Submission {
     ChainID: string
     BlockscoutUserEmail: string
     RequesterName: string
-    RequesterEmail: string
     ProjectName: string
     ProjectWebSite: string
     IconURL: string
@@ -43,6 +42,7 @@ interface SuperSubmission {
     ProjectWebSite: string
     IconURL: string
     ProjectEmail: string
+    ProjectDescription: string
     ProjectSector: string
     Comment: string
     Docs: string
@@ -103,6 +103,7 @@ export class AdminPage extends CommonPage {
 
     async clearTokenInfo(token: string): Promise<void> {
         await this.filterByTokenAddress(token)
+        await this.delay(1000)
         const noRecords = await this.actions.page.$(`text=No Records`)
         if (noRecords) {
             return
@@ -149,66 +150,65 @@ export class AdminPage extends CommonPage {
 
     async createNewTokenInfo(sub: Submission): Promise<void> {
         await this.actions.clickElement(`text=Create new`)
+        await this.actions.enterElementText(`input >> nth=0`, sub.TokenAddress)
         await this.actions.clickElement(`input >> nth=1`)
-        await this.actions.clickElement(`[aria-current="date"]`)
-        await this.actions.enterElementText(`input >> nth=2`, sub.TokenAddress)
-        await this.actions.enterElementText(`input >> nth=3`, sub.ChainID)
-        await this.actions.enterElementText(`input >> nth=4`, sub.ProjectName)
-        await this.actions.enterElementText(`input >> nth=5`, sub.ProjectWebSite)
-        await this.actions.enterElementText(`input >> nth=6`, sub.RequesterEmail)
-        await this.actions.enterElementText(`input >> nth=7`, sub.IconURL)
-        await this.actions.enterElementText(`input >> nth=8`, sub.ProjectSector)
-        await this.actions.enterElementText(`input >> nth=9`, sub.ProjectDescription)
-        await this.actions.enterElementText(`input >> nth=10`, sub.Docs)
-        await this.actions.enterElementText(`input >> nth=11`, sub.Github)
-        await this.actions.enterElementText(`input >> nth=12`, sub.Telegram)
-        await this.actions.enterElementText(`input >> nth=13`, sub.Linkedin)
-        await this.actions.enterElementText(`input >> nth=14`, sub.Discord)
-        await this.actions.enterElementText(`input >> nth=15`, sub.Slack)
-        await this.actions.enterElementText(`input >> nth=16`, sub.Twitter)
-        await this.actions.enterElementText(`input >> nth=17`, sub.OpenSea)
-        await this.actions.enterElementText(`input >> nth=18`, sub.Facebook)
-        await this.actions.enterElementText(`input >> nth=19`, sub.Medium)
-        await this.actions.enterElementText(`input >> nth=20`, sub.Reddit)
-        await this.actions.enterElementText(`input >> nth=21`, sub.Support)
-
-        await this.actions.enterElementText(`input >> nth=22`, sub.CMCTickerURL)
-        await this.actions.enterElementText(`input >> nth=23`, sub.CGTickerURL)
-        await this.actions.enterElementText(`input >> nth=24`, sub.LlamaTickerURL)
-        await this.actions.clickElement(`section[data-testid="property-edit-is_user_submitted"] >> span`)
+        await this.actions.clickElement(`text=${sub.ChainID}`)
+        await this.actions.enterElementText(`input >> nth=2`, sub.ProjectName)
+        await this.actions.enterElementText(`input >> nth=3`, sub.ProjectWebSite)
+        await this.actions.enterElementText(`input >> nth=4`, sub.ProjectEmail)
+        await this.actions.enterElementText(`input >> nth=5`, sub.IconURL)
+        await this.actions.clickElement(`input >> nth=6`)
+        await this.actions.clickElement(`text=${sub.ProjectSector}`)
+        await this.actions.enterElementText(`input >> nth=7`, sub.ProjectDescription)
+        await this.actions.enterElementText(`input >> nth=8`, sub.Docs)
+        await this.actions.enterElementText(`input >> nth=9`, sub.Github)
+        await this.actions.enterElementText(`input >> nth=10`, sub.Telegram)
+        await this.actions.enterElementText(`input >> nth=11`, sub.Linkedin)
+        await this.actions.enterElementText(`input >> nth=12`, sub.Discord)
+        await this.actions.enterElementText(`input >> nth=13`, sub.Slack)
+        await this.actions.enterElementText(`input >> nth=14`, sub.Twitter)
+        await this.actions.enterElementText(`input >> nth=15`, sub.OpenSea)
+        await this.actions.enterElementText(`input >> nth=16`, sub.Facebook)
+        await this.actions.enterElementText(`input >> nth=17`, sub.Medium)
+        await this.actions.enterElementText(`input >> nth=18`, sub.Reddit)
+        await this.actions.enterElementText(`input >> nth=19`, sub.Support)
+        await this.actions.enterElementText(`input >> nth=20`, sub.CMCTickerURL)
+        await this.actions.enterElementText(`input >> nth=21`, sub.CGTickerURL)
+        await this.actions.enterElementText(`input >> nth=22`, sub.LlamaTickerURL)
         await this.actions.clickElement(`text=Save`)
     }
 
     async createNewAdminSubmission(sub: SuperSubmission): Promise<void> {
         await this.actions.clickElement(`text=Create new`)
-        await this.actions.clickElement(`input >> nth=1`)
-        await this.actions.clickElement(`[aria-current="date"]`)
-        await this.actions.enterElementText(`input >> nth=2`, sub.ChainID)
-        await this.actions.enterElementText(`input >> nth=3`, sub.TokenAddress)
-        await this.actions.enterElementText(`input >> nth=4`, sub.BlockscoutUserEmail)
-        await this.actions.enterElementText(`input >> nth=5`, sub.RequesterName)
-        await this.actions.enterElementText(`input >> nth=6`, sub.RequesterEmail)
-        await this.actions.enterElementText(`input >> nth=7`, sub.ProjectName)
-        await this.actions.enterElementText(`input >> nth=8`, sub.ProjectWebSite)
-        await this.actions.enterElementText(`input >> nth=9`, sub.ProjectEmail)
-        await this.actions.enterElementText(`input >> nth=10`, sub.IconURL)
-        await this.actions.enterElementText(`input >> nth=11`, sub.ProjectSector)
-        await this.actions.enterElementText(`input >> nth=12`, sub.Comment)
-        await this.actions.enterElementText(`input >> nth=13`, sub.Docs)
-        await this.actions.enterElementText(`input >> nth=14`, sub.Github)
-        await this.actions.enterElementText(`input >> nth=15`, sub.Telegram)
-        await this.actions.enterElementText(`input >> nth=16`, sub.Linkedin)
-        await this.actions.enterElementText(`input >> nth=17`, sub.Discord)
-        await this.actions.enterElementText(`input >> nth=18`, sub.Slack)
-        await this.actions.enterElementText(`input >> nth=19`, sub.Twitter)
-        await this.actions.enterElementText(`input >> nth=20`, sub.OpenSea)
-        await this.actions.enterElementText(`input >> nth=21`, sub.Facebook)
-        await this.actions.enterElementText(`input >> nth=22`, sub.Medium)
-        await this.actions.enterElementText(`input >> nth=23`, sub.Reddit)
-        await this.actions.enterElementText(`input >> nth=25`, sub.Support)
-        await this.actions.enterElementText(`input >> nth=26`, sub.CMCTickerURL)
-        await this.actions.enterElementText(`input >> nth=27`, sub.CGTickerURL)
-        await this.actions.enterElementText(`input >> nth=28`, sub.LlamaTickerURL)
+        await this.actions.clickElement(`input >> nth=0`)
+        await this.actions.clickElement(`text=${sub.ChainID}`)
+        await this.actions.enterElementText(`input >> nth=1`, sub.TokenAddress)
+        await this.actions.enterElementText(`input >> nth=2`, sub.BlockscoutUserEmail)
+        await this.actions.enterElementText(`input >> nth=3`, sub.RequesterName)
+        await this.actions.enterElementText(`input >> nth=4`, sub.RequesterEmail)
+        await this.actions.enterElementText(`input >> nth=5`, sub.ProjectName)
+        await this.actions.enterElementText(`input >> nth=6`, sub.ProjectWebSite)
+        await this.actions.enterElementText(`input >> nth=7`, sub.ProjectEmail)
+        await this.actions.enterElementText(`input >> nth=8`, sub.IconURL)
+        await this.actions.enterElementText(`input >> nth=9`, sub.ProjectDescription)
+        await this.actions.enterElementText(`input >> nth=10`, sub.ProjectSector)
+
+        await this.actions.enterElementText(`input >> nth=11`, sub.Comment)
+        await this.actions.enterElementText(`input >> nth=12`, sub.Docs)
+        await this.actions.enterElementText(`input >> nth=13`, sub.Github)
+        await this.actions.enterElementText(`input >> nth=14`, sub.Telegram)
+        await this.actions.enterElementText(`input >> nth=15`, sub.Linkedin)
+        await this.actions.enterElementText(`input >> nth=16`, sub.Discord)
+        await this.actions.enterElementText(`input >> nth=17`, sub.Slack)
+        await this.actions.enterElementText(`input >> nth=18`, sub.Twitter)
+        await this.actions.enterElementText(`input >> nth=19`, sub.OpenSea)
+        await this.actions.enterElementText(`input >> nth=20`, sub.Facebook)
+        await this.actions.enterElementText(`input >> nth=21`, sub.Medium)
+        await this.actions.enterElementText(`input >> nth=22`, sub.Reddit)
+        await this.actions.enterElementText(`input >> nth=23`, sub.Support)
+        await this.actions.enterElementText(`input >> nth=24`, sub.CMCTickerURL)
+        await this.actions.enterElementText(`input >> nth=25`, sub.CGTickerURL)
+        await this.actions.enterElementText(`input >> nth=26`, sub.LlamaTickerURL)
         await this.actions.clickElement(`text=Save`)
     }
 
