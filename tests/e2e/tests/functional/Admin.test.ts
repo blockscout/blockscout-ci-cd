@@ -51,7 +51,7 @@ test(`@Admin Delete/Create TokenInfo`, async ({ newHomeGoerli, tokenPage, adminP
     await tokenPage.actions.verifyElementIsDisplayed(`text=${uniqueSupportURL}`)
 })
 
-test.only(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, adminPage }) => {
+test(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, adminPage }) => {
     await adminPage.open()
     await adminPage.login(process.env.ACCOUNT_USERNAME, process.env.ACCOUNT_PASSWORD)
     await adminPage.selectSuperUserTab()
