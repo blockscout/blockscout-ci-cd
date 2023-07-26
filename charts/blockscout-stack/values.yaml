@@ -20,7 +20,7 @@ blockscout:
     image:
       _default: blockscout/blockscout:latest
     command:
-      - /bin/bash
+      - /bin/sh
     args:
       - -c
       - bin/blockscout eval "Elixir.Explorer.ReleaseTasks.create_and_migrate()"
@@ -34,7 +34,7 @@ blockscout:
     type: ClusterIP
 
   command:
-    - /bin/bash
+    - /bin/sh
   args:
     - -c
     - bin/blockscout start
