@@ -35,7 +35,7 @@ export class CommonPage {
 
     AUTH0_INPUT_PASSWORD = `input[name="password"]`
 
-    AUTH0_SUBMIT = `button[type="submit"] >> nth=1`
+    AUTH0_SUBMIT = `button[type="submit"] >> text=Continue`
 
     LOGGED_IN_AS = `text=Signed in as`
 
@@ -102,10 +102,11 @@ export class CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}1 >> text=Optimism`)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}2 >> text=RSK`)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}3 >> text=LightLink Phoenix`)
-        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}4 >> text=Ethereum classic`)
-        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}5 >> text=Gnosis Chain`)
-        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}6 >> text=Astar (EVM)`)
-        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}7 >> text=Shiden (EVM)`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}4 >> text=Neon`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}5 >> text=Ethereum classic`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}6 >> text=Gnosis Chain`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}7 >> text=Astar (EVM)`)
+        await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}8 >> text=Shiden (EVM)`)
 
         await this.actions.clickElementJS(this.NETWORK_GROUP_TESTNETS)
         await this.actions.verifyElementIsDisplayed(`${this.NETWORK_LIST_ITEM}0 >> text=Goerli`)

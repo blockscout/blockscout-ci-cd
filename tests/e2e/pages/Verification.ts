@@ -78,7 +78,7 @@ export class VerificationPage extends CommonPage {
     }
 
     async open(addr: string): Promise<void> {
-        await this.actions.navigateToURL(`address/${addr}/verify-via-flattened-code/new`)
+        await this.actions.navigateToURL(`address/${addr}/contract-verification`)
     }
 
     list_box(num: number, pos: number): string {

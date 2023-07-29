@@ -30,8 +30,9 @@ async function delay(time: number): Promise<void> {
 // safe tx.wait(), because original throws
 export const waitReceiptWithBlock = async (provider: JsonRpcProvider, hash: string): Promise<TransactionResponse> => {
     for (let i = 0; i < RECEIPT_RETRIES; i++) {
+        await delay(100)
         const r = await provider.getTransaction(hash)
-        if (r.blockNumber) {
+        if (r && r.blockNumber) {
             return r
         }
     }
@@ -86,7 +87,7 @@ const setupContracts = async (): Promise<void> => {
     const tx2V = await tokenV.alwaysReverts({ gasLimit: 250000 })
     const receipt2V = await waitReceiptWithBlock(contracts.provider, tx2.hash)
 
-    console.log(`deploying NFT contract`)
+    console.log(`deploying NFT contract (verified)`)
     const contractNameNFTV = `TestNFTV`
     const tokenNameNFTV = `NFTV`
     const tokenSymbolNFTV = `NFTV`
