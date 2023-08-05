@@ -36,6 +36,7 @@ export class NewHomePage extends CommonPage {
         for (let i = 0; i < parentNum; i += 1) {
             parentLoc = parentLoc.locator(`..`)
         }
+        // eslint-disable-next-line no-underscore-dangle
         await this.actions.verifyElementIsDisplayed(`${parentLoc._selector} >> ${selector}`)
     }
 
