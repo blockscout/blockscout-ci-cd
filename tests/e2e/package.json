@@ -7,6 +7,7 @@
     "install-deps": "npx playwright install msedge",
     "test": "npx playwright test",
     "report": "npx playwright show-report html-report",
+    "test:prod:smoke:all": "npx playwright test --project=Chrome --grep=@SmokeEth",
     "test:prod:smoke:mainnet": "npx playwright test --project=Chrome --grep=@SmokeEthMainnet",
     "test:prod:smoke:goerli": "npx playwright test --project=Chrome --grep=@SmokeEthGoerli",
     "test:prod:smoke:gnosis": "npx playwright test --project=Chrome --grep=@SmokeEthGnosis",

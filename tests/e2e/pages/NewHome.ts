@@ -70,16 +70,20 @@ export class NewHomePage extends CommonPage {
         }
     }
 
-    async check_heaader(): Promise<void> {
+    async checkHeader(): Promise<void> {
         await this.displayed_in_parent(`text=/Total blocks/`, `text=/\\d+.*/`, 2)
         await this.displayed_in_parent(`text=/Average block time/`, `text=/\\d+.*/`, 2)
         await this.displayed_in_parent(`text=/Total transactions/`, `text=/\\d+.*/`, 2)
         await this.displayed_in_parent(`text=/Wallet addresses/`, `text=/\\d+.*/`, 2)
     }
 
-    async check_blocks_widget(): Promise<void> {
+    async checkBlocksWidget(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(this.BLOCKS_WIDGET)
         await this.actions.verifyElementIsDisplayed(this.BLOCKS_WIDGET_LAST_BLOCK)
+    }
+
+    async checkDailyTransactions(): Promise<void> {
+        await this.displayed_in_parent(`text=/Daily transactions/`, `text=/\\d+.*/`, 2)
     }
 
     async check_last_block(): Promise<void> {
