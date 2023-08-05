@@ -47,6 +47,10 @@ export class NewHomePage extends CommonPage {
         await this.actions.navigateToURL(`/`, options)
     }
 
+    async open_custom(url: string, options = { waitUntil: `load` }): Promise<void> {
+        await this.actions.navigateToURL(url, options)
+    }
+
     async checkIndexing(): Promise<void> {
         // why any event from waitUntil is not working?
         // waitUntil?: "load"|"domcontentloaded"|"networkidle"|"commit";
