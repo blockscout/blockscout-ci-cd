@@ -31,6 +31,14 @@ export class NewHomePage extends CommonPage {
         await this.actions.enterElementText(this.SEARCH_BAR, text)
     }
 
+    async displayed_in_parent(locator: string, selector: string, parentNum: number): Promise<void> {
+        let parentLoc = this.page.locator(locator)
+        for (let i = 0; i < parentNum; i += 1) {
+            parentLoc = parentLoc.locator(`..`)
+        }
+        await this.actions.verifyElementIsDisplayed(`${parentLoc._selector} >> ${selector}`)
+    }
+
     async checkSearchItemText(pos: number, text: string): Promise<void> {
         await this.actions.verifyElementContainsText(`${this.SEARCH_ITEM}${pos}`, text)
     }
@@ -62,11 +70,10 @@ export class NewHomePage extends CommonPage {
     }
 
     async check_heaader(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.HEADER_STATS} >> nth=1 >> text=/\\d+/`, `total blocks are wrong`)
-        await this.actions.verifyElementIsDisplayed(`${this.HEADER_STATS} >> nth=5 >> text=/\\d+.*s/`, `block time is wrong`)
-        await this.actions.verifyElementIsDisplayed(`${this.HEADER_STATS} >> nth=7 >> text=/\\d+/`, `total txns is wrong`)
-        await this.actions.verifyElementIsDisplayed(`${this.HEADER_STATS} >> nth=11 >> text=/\\d+/`, `total wallets is wrong`)
-        await this.actions.verifyElementIsDisplayed(`${this.HEADER_STATS} >> nth=15 >> text=/.*Gwei.*/`, `no gas tracker data`)
+        await this.displayed_in_parent(`text=/Total blocks/`, `text=/\\d+.*/`, 2)
+        await this.displayed_in_parent(`text=/Average block time/`, `text=/\\d+.*/`, 2)
+        await this.displayed_in_parent(`text=/Total transactions/`, `text=/\\d+.*/`, 2)
+        await this.displayed_in_parent(`text=/Wallet addresses/`, `text=/\\d+.*/`, 2)
     }
 
     async check_blocks_widget(): Promise<void> {
