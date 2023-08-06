@@ -1,6 +1,7 @@
 import test from '@lib/BaseTest'
 
 test.describe.configure({ mode: `parallel` })
+
 /*
     See Smoke.test.ts for explanations
 */

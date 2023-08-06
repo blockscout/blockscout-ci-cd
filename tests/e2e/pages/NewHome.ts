@@ -81,6 +81,16 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=5 >> text=/\\d+/`, `no txn count in native accounts`)
     }
 
+    async checkVerifiedContractsStats(): Promise<void> {
+        await this.displayed_in_parent(`text=/Total contracts/`, `text=/\\d+/`, 2, `no total contracts`)
+        await this.displayed_in_parent(`text=/Verified contracts/`, `text=/\\d+/`, 2, `no verified contracts`)
+        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=0 >> text=/0x/`, `no contract name/address`)
+        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=1 >> text=/\\d+/`, `no contract balance`)
+        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=2 >> text=/\\d+/`, `no contract txs`)
+        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=3 >> text=/\\Solidity|Vyper.*commit.*/`, `no compiler/version`)
+        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=5 >> text=/.*ago.*/`, `no verification date`)
+    }
+
     async checkHeader(): Promise<void> {
         await this.displayed_in_parent(`text=/Total blocks/`, `text=/\\d+.*/`, 2, `no total blocks`)
         await this.displayed_in_parent(`text=/Average block time/`, `text=/\\d+.*/`, 2, `no avg block time`)
