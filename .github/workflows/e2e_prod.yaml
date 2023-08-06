@@ -8,6 +8,7 @@ env:
 jobs:
   test_smoke_prod:
     strategy:
+      fail-fast: false
       matrix:
         instance: [mainnet, goerli, gnosis, gnosis_chiado, optimism, optimism_goerli, astar, shiden, shibuya, rootstock, neon, neon_devnet, base, base_goerli, athens_2, athens_3, pegasus, phoenix, shimmer, immutable, shibarium, fuse]
     permissions:
