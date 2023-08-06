@@ -19,6 +19,8 @@ export class NewHomePage extends CommonPage {
 
     MONTHS_REGEX = `/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec/`
 
+    NATIVE_ACCOUNTS_ROW = `table >> tr >> nth=1 >> td`
+
     readonly page: Page
 
     actions: WebActions
@@ -70,6 +72,13 @@ export class NewHomePage extends CommonPage {
         if (indexingInProgress) {
             this.HEADER_STATS = `main >> div >> nth=10 >> div >> div`
         }
+    }
+
+    async checkNativeAccounts(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=0 >> text=/\\d+/`, `no idx in native accounts`)
+        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=3 >> text=/\\d+/`, `no balance in native accounts`)
+        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=4 >> text=/\\d+/`, `no percentage in native accounts`)
+        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=5 >> text=/\\d+/`, `no txn count in native accounts`)
     }
 
     async checkHeader(): Promise<void> {
