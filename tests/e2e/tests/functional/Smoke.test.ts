@@ -1,7 +1,6 @@
 import test from '@lib/BaseTest'
 
 test.describe.configure({ mode: `parallel` })
-
 /*
     these tests are for common smoke functionality across all priority envs
     they do not interact with contract deployments, checking static data
