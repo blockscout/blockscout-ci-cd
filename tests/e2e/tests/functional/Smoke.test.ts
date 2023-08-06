@@ -47,7 +47,7 @@ test(`@SmokeEthGoerli Eth Goerli main page components`, async ({ newHomePage }) 
     await newHomePage.checkBlocksWidget()
 })
 
-test(`@SmokeEthGnosis Gnosis main page components`, async ({ newHomePage }) => {
+test(`@SmokeEthGnosisMainnet Gnosis main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`http://gnosis.blockscout.com/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()

@@ -18,7 +18,7 @@ test(`@SmokeEthGoerli Eth Goerli stats counters check`, async ({ newHomePage }) 
     await newHomePage.checkStatsGraphsDisplayed()
 })
 
-test(`@SmokeEthGnosis Gnosis stats counters check`, async ({ newHomePage }) => {
+test(`@SmokeEthGnosisMainnet Gnosis stats counters check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`http://gnosis.blockscout.com/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()
