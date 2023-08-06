@@ -6,10 +6,13 @@ on:
 env:
   ENV: prod
 jobs:
-  test:
+  test_smoke_prod:
     strategy:
       matrix:
         instance: [mainnet, goerli, gnosis, gnosis_chiado, optimism, optimism_goerli, astar, shiden, shibuya, rootstock, neon, neon_devnet, base, base_goerli, athens_2, athens_3, pegasus, phoenix, shimmer, immutable, shibarium, fuse]
+    permissions:
+      id-token: write
+      contents: read
     name: Smoke tests
     runs-on: ubuntu-latest
     steps:
