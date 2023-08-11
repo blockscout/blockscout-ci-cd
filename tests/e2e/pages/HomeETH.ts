@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 /* eslint-disable no-await-in-loop */
 import { WebActions } from "@lib/WebActions"
 import type { BrowserContext, Page } from 'playwright'
@@ -31,6 +32,10 @@ export class ETHHome extends NewHomePage implements Comparable {
     HEADER_GAS_TRACKER = `:below(:text("Gas tracker")) >> nth=0`
 
     ADDR_TOTAL_BALANCE = `text=/.* ETH/`
+
+    TOKENS_TOTAL_BALANCE_BUTTON = `[aria-label="Token select"]`
+
+    TOKENS_TOTAL_BALANCE_AREA = `section >> div >> nth=3 >> div >> span >> text=/\\d+\\s\\w+/`
 
     constructor(page: Page) {
         super(page)
@@ -101,15 +106,36 @@ export class ETHHome extends NewHomePage implements Comparable {
     }
 
     async balance_data(addrs: string[]): Promise<TokenBalanceAssertionData> {
-        const data: TokenBalanceAssertionData = { balances: [] }
+        const data: TokenBalanceAssertionData = { nativeBalances: [], tokenBalances: new Map<string, number>() }
         for (const addr of addrs) {
             await this.actions.navigateToURL(`${this.BASE_URL}/address/${addr}`)
             const balance = await this.actions.getTextFromWebElements(this.ADDR_TOTAL_BALANCE)
             const b = Number(balance[0].replace(`ETH`, ` `).replace(`,`, ``).replace(`,`, ``).trim()).toPrecision(9)
             console.log(b)
             console.log(`checking addr: ${addrs[0]}`)
-            console.log(`Total address balance on Etherscan: ${b}`)
-            data.balances.push({ address: addr, balance: Number(b) })
+            console.log(`Total native balance on Etherscan: ${b}`)
+            data.nativeBalances.push({ address: addr, balance: Number(b) })
+        }
+        return data
+    }
+
+    async tokens_data(addrs: string[]): Promise<TokenBalanceAssertionData> {
+        const data: TokenBalanceAssertionData = { nativeBalances: [], tokenBalances: new Map<string, number>() }
+        for (const addr of addrs) {
+            await this.actions.navigateToURL(`${this.BASE_URL}/address/${addr}`)
+            await this.actions.clickElement(this.TOKENS_TOTAL_BALANCE_BUTTON)
+            const texts = await this.actions.getTextFromWebElements(this.TOKENS_TOTAL_BALANCE_AREA)
+            for (const t of texts) {
+                if (t.includes(`ERC-20 TOKEN*`)) {
+                    continue
+                }
+                // console.log(`element text: ${t}`)
+                const [amount, tokenName] = t.split(` `)
+                data.tokenBalances[`${addr}/${tokenName}`] = Number(amount.replace(`,`, ``).replace(`,`, ``).replace(`,`, ``).replace(`,`, ``)).toPrecision(9)
+            }
+            for (const e of Object.entries(data.tokenBalances)) {
+                // console.log(`token balance: ${e[0]}, ${e[1]}`)
+            }
         }
         return data
     }

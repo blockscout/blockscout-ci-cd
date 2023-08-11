@@ -79,7 +79,8 @@ export interface TokenBalance {
     balance: number
 }
 export interface TokenBalanceAssertionData {
-    balances: TokenBalance[]
+    nativeBalances: TokenBalance[]
+    tokenBalances: Map<string, number>
 }
 
 /* comparison */
@@ -133,16 +134,21 @@ export const compareAndPrintTxs = (etherscanData: ComparableData, blockscoutData
 }
 
 export const compareAndPrintBalances = (etherscanData: TokenBalanceAssertionData, blockscoutData: TokenBalanceAssertionData) => {
-    console.log(`Etherscan data: ${JSON.stringify(etherscanData, null, 2)}`)
-    console.log(`Blockscout data: ${JSON.stringify(blockscoutData, null, 2)}`)
-
-    for (const balanceIdx in etherscanData.balances) {
-        const v1 = etherscanData.balances[balanceIdx]
-        const v2 = blockscoutData.balances[balanceIdx]
+    for (const balanceIdx in etherscanData.nativeBalances) {
+        const v1 = etherscanData.nativeBalances[balanceIdx]
+        const v2 = blockscoutData.nativeBalances[balanceIdx]
         if (v1.balance !== v2.balance) {
-            console.log(chalk.red(`Address: ${v1.address}, Etherscan: ${v1.balance}, Blockscout: ${v2.balance}, Delta: ${v1.balance - v2.balance}`))
+            console.log(chalk.red(`(Native) Address: ${v1.address}, Etherscan: ${v1.balance}, Blockscout: ${v2.balance}, Delta: ${v1.balance - v2.balance}`))
         } else {
-            console.log(chalk.green(`Address: ${v1.address}, Etherscan: ${v1.balance}, Blockscout: ${v2.balance}, Delta: ${v1.balance - v2.balance}`))
+            console.log(chalk.green(`(Native) Address: ${v1.address}, Etherscan: ${v1.balance}, Blockscout: ${v2.balance}, Delta: ${v1.balance - v2.balance}`))
         }
     }
+
+    Object.entries(etherscanData.tokenBalances).forEach((etherscanEntry) => {
+        if (etherscanEntry[1] !== blockscoutData.tokenBalances[etherscanEntry[0]]) {
+            console.log(chalk.red(`Address: ${etherscanEntry[0]}, Etherscan: ${etherscanEntry[1]}, Blockscout: ${blockscoutData.tokenBalances[etherscanEntry[0]]}, Delta: ${etherscanEntry[1] - blockscoutData.tokenBalances[etherscanEntry[0]]}`))
+        } else {
+            console.log(chalk.green(`Address: ${etherscanEntry[0]}, Etherscan: ${etherscanEntry[1]}, Blockscout: ${blockscoutData.tokenBalances[etherscanEntry[0]]}, Delta: ${etherscanEntry[1] - blockscoutData.tokenBalances[etherscanEntry[0]]}`))
+        }
+    })
 }

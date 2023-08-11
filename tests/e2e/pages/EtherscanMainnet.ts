@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable guard-for-in */
 import { WebActions } from "@lib/WebActions"
@@ -11,6 +12,7 @@ import {
     Transaction,
     TokenBalanceAssertionData,
 } from "@lib/Format"
+import chalk from "chalk"
 import { CommonPage } from "./Common"
 
 export class EtherscanMainnetPage extends CommonPage implements Comparable {
@@ -21,6 +23,10 @@ export class EtherscanMainnetPage extends CommonPage implements Comparable {
     BASE_URL = `https://etherscan.io`
 
     ADDR_TOTAL_BALANCE = `section >> nth=4 >> text=ETH BALANCE >> .. >> div`
+
+    TOKENS_TOTAL_BALANCE_BUTTON = `section >> text=TOKEN HOLDINGS >> .. >> div >> nth=1`
+
+    TOKENS_TOTAL_BALANCE_AREA = `section >> text=TOKEN HOLDINGS >> .. >> div >> nth=2 >> li >> a >> span >> text=/.*\\d+\\s\\w+/`
 
     constructor(page: Page) {
         super(page)
@@ -136,15 +142,37 @@ export class EtherscanMainnetPage extends CommonPage implements Comparable {
     }
 
     async balance_data(addrs: string[]): Promise<TokenBalanceAssertionData> {
-        const data: TokenBalanceAssertionData = { balances: [] }
+        const data: TokenBalanceAssertionData = { nativeBalances: [], tokenBalances: new Map<string, number>() }
         for (const addr of addrs) {
             await this.actions.navigateToURL(`${this.BASE_URL}/address/${addr}`)
             const balance = await this.actions.getTextFromWebElements(this.ADDR_TOTAL_BALANCE)
             const b = Number(balance[0].replace(`ETH`, ` `).replace(`,`, ``).replace(`,`, ``).trim()).toPrecision(9)
             console.log(b)
             console.log(`checking addr: ${addrs[0]}`)
-            console.log(`Total address balance on Etherscan: ${b}`)
-            data.balances.push({ address: addr, balance: Number(b) })
+            console.log(`Total native balance on Etherscan: ${b}`)
+            data.nativeBalances.push({ address: addr, balance: Number(b) })
+        }
+        return data
+    }
+
+    async tokens_data(addrs: string[]): Promise<TokenBalanceAssertionData> {
+        const data: TokenBalanceAssertionData = { nativeBalances: [], tokenBalances: new Map<string, number>() }
+        for (const addr of addrs) {
+            await this.actions.navigateToURL(`${this.BASE_URL}/address/${addr}`)
+            await this.actions.clickElement(this.TOKENS_TOTAL_BALANCE_BUTTON)
+            const texts = await this.actions.getTextFromWebElements(this.TOKENS_TOTAL_BALANCE_AREA)
+            console.log(chalk.blue(`checking addr: ${addr}`))
+            for (const t of texts) {
+                if (t.includes(`ERC-20 TOKEN*`)) {
+                    continue
+                }
+                // console.log(`element text: ${t}`)
+                const [amount, tokenName] = t.split(` `)
+                data.tokenBalances[`${addr}/${tokenName}`] = Number(amount.replace(`,`, ``).replace(`,`, ``).replace(`,`, ``).replace(`,`, ``)).toPrecision(9)
+            }
+            for (const e of Object.entries(data.tokenBalances)) {
+                // console.log(`token balance: ${e[0]}, ${e[1]}`)
+            }
         }
         return data
     }
