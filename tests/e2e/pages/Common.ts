@@ -95,6 +95,19 @@ export class CommonPage {
         this.apiActions = new APIActions()
     }
 
+    replaceAll(str: string, find: string, replace: string) {
+        return str.replace(new RegExp(find, `g`), replace)
+    }
+
+    async displayed_in_parent(locator: string, selector: string, parentNum: number, error: string = ``): Promise<void> {
+        let parentLoc = this.page.locator(locator)
+        for (let i = 0; i < parentNum; i += 1) {
+            parentLoc = parentLoc.locator(`..`)
+        }
+        // eslint-disable-next-line no-underscore-dangle
+        await this.actions.verifyElementIsDisplayed(`${parentLoc._selector} >> ${selector}`, error)
+    }
+
     async check_network_menu(): Promise<void> {
         await this.actions.clickElementJS(this.NETWORK_MENU)
         await this.actions.clickElementJS(this.NETWORK_GROUP_MAINNETS)

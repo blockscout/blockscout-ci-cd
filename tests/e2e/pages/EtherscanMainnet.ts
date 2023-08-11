@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
+/* eslint-disable guard-for-in */
 import { WebActions } from "@lib/WebActions"
-import type { BrowserContext, Page } from 'playwright'
+import type { Page } from 'playwright'
 import {
     Block,
     Comparable,
@@ -10,27 +11,16 @@ import {
     Transaction,
     TokenBalanceAssertionData,
 } from "@lib/Format"
-import { HomePage } from "./Home"
-import { NewHomePage } from "./NewHome"
+import { CommonPage } from "./Common"
 
-export class ETHHome extends NewHomePage implements Comparable {
+export class EtherscanMainnetPage extends CommonPage implements Comparable {
     readonly page: Page
-
-    BASE_URL = `https://eth.blockscout.com`
 
     actions: WebActions
 
-    HEADER_TOTAL_BLOCKS = `:below(:text("Total blocks")) >> nth=0`
+    BASE_URL = `https://etherscan.io`
 
-    HEADER_AVG_BLOCK_TIME = `:below(:text("Average block time")) >> nth=3`
-
-    HEADER_TOTAL_TXNS = `:below(:text("Total transactions")) >> nth=0`
-
-    HEADER_WALLETS = `:below(:text("Wallet addresses")) >> nth=0`
-
-    HEADER_GAS_TRACKER = `:below(:text("Gas tracker")) >> nth=0`
-
-    ADDR_TOTAL_BALANCE = `text=/.* ETH/`
+    ADDR_TOTAL_BALANCE = `section >> nth=4 >> text=ETH BALANCE >> .. >> div`
 
     constructor(page: Page) {
         super(page)
@@ -38,12 +28,25 @@ export class ETHHome extends NewHomePage implements Comparable {
         this.actions = new WebActions(this.page)
     }
 
-    async open(): Promise<void> {
-        await this.actions.navigateToURL(this.BASE_URL)
-    }
-
     async get_txs_data(data: RequestTransactionsData): Promise<ComparableData> {
         const d = { txs: [] } as ComparableData
+        for (const i in data.txs) {
+            await this.actions.navigateToURL(`${this.BASE_URL}/tx/${data.txs[i].hash}`, { waitUntil: `load` })
+            const statusText = await this.actions.getTextFromWebElements(this.mtable_div(8))
+            const blockText = await this.actions.getTextFromWebElements(this.mtable_div(11, `span`))
+            const fromText = await this.actions.getTextFromWebElements(this.mtable_div(20))
+            const toText = await this.actions.getTextFromWebElements(this.mtable_div(24))
+            const t = this.transform_transaction({
+                hash: data.txs[i].hash,
+                texts: {
+                    blockText: blockText[0],
+                    statusText: statusText[0],
+                    fromText: fromText[0],
+                    toText: toText[0],
+                },
+            } as Transaction)
+            d.txs.push(t)
+        }
         return d
     }
 
@@ -68,7 +71,39 @@ export class ETHHome extends NewHomePage implements Comparable {
     }
 
     async get_blocks_data(data: RequestBlocksData): Promise<ComparableData> {
-        const d = { txs: [] } as ComparableData
+        const d = { blocks: [] } as ComparableData
+        for (const i in data.blocks) {
+            await this.actions.navigateToURL(`${this.BASE_URL}/block/${data.blocks[i].num}`, { waitUntil: `load` })
+            const proposedText = await this.actions.getTextFromWebElements(this.mtable_div(17))
+            const transactionsText = await this.actions.getTextFromWebElements(this.mtable_div(21))
+            const feeRecipientText = await this.actions.getTextFromWebElements(this.mtable_div(28))
+            const rewardText = await this.actions.getTextFromWebElements(this.mtable_div(31))
+            const totalDifficultyText = await this.actions.getTextFromWebElements(this.mtable_div(34))
+            const sizeText = await this.actions.getTextFromWebElements(this.mtable_div(37))
+
+            const gasUsedText = await this.actions.getTextFromWebElements(this.mtable_div(40))
+            const gasLimitText = await this.actions.getTextFromWebElements(this.mtable_div(45))
+            const baseFeePerGasText = await this.actions.getTextFromWebElements(this.mtable_div(48))
+            const burntFeesText = await this.actions.getTextFromWebElements(this.mtable_div(51))
+            const extraDataText = await this.actions.getTextFromWebElements(this.mtable_div(54))
+            const b = this.transform_block({
+                num: data.blocks[i].num,
+                texts: {
+                    proposedText: proposedText[0],
+                    transactionsText: transactionsText[0],
+                    feeRecipient: feeRecipientText[0],
+                    rewardText: rewardText[0],
+                    totalDifficulty: totalDifficultyText[0],
+                    sizeText: sizeText[0],
+                    gasUsedText: gasUsedText[0],
+                    gasLimitText: gasLimitText[0],
+                    baseFeePerGasText: baseFeePerGasText[0],
+                    burntFeesText: burntFeesText[0],
+                    extraDataText: extraDataText[0],
+                },
+            } as Block)
+            d.blocks.push(b)
+        }
         return d
     }
 

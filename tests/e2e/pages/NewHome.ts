@@ -35,15 +35,6 @@ export class NewHomePage extends CommonPage {
         await this.actions.enterElementText(this.SEARCH_BAR, text)
     }
 
-    async displayed_in_parent(locator: string, selector: string, parentNum: number, error: string = ``): Promise<void> {
-        let parentLoc = this.page.locator(locator)
-        for (let i = 0; i < parentNum; i += 1) {
-            parentLoc = parentLoc.locator(`..`)
-        }
-        // eslint-disable-next-line no-underscore-dangle
-        await this.actions.verifyElementIsDisplayed(`${parentLoc._selector} >> ${selector}`, error)
-    }
-
     async checkSearchItemText(pos: number, text: string): Promise<void> {
         await this.actions.verifyElementContainsText(`${this.SEARCH_ITEM}${pos}`, text)
     }

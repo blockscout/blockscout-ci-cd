@@ -24,6 +24,7 @@ import { EtherscanGoerliPage } from '@pages/EtherscanGoerli'
 import { RollupTxnBatchesPage } from '@pages/RollupTxnBatches'
 import { RollupOutputRootsPage } from '@pages/RollupOutputRoots'
 import { HomeGoerli } from '@pages/HomeGoerli'
+import { EtherscanMainnetPage } from '@pages/EtherscanMainnet'
 import Contracts from './Contracts'
 import testConfig from '../testConfig'
 
@@ -51,6 +52,7 @@ const test = baseTest.extend<{
     addressPage: AddressPage,
     verificationPage: VerificationPage,
     etherscanGoerliPage: EtherscanGoerliPage,
+    etherscanMainnet: EtherscanMainnetPage,
 }>({
     adminPage: async ({ page }, use) => {
         await use(new AdminPage(page))
@@ -122,6 +124,9 @@ const test = baseTest.extend<{
     },
     etherscanGoerliPage: async ({ page }, use) => {
         await use(new EtherscanGoerliPage(page))
+    },
+    etherscanMainnet: async ({ page }, use) => {
+        await use(new EtherscanMainnetPage(page))
     },
 })
 

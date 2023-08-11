@@ -72,6 +72,16 @@ export interface Transaction {
     to: string
 }
 
+/* addresses */
+
+export interface TokenBalance {
+    address: string
+    balance: number
+}
+export interface TokenBalanceAssertionData {
+    balances: TokenBalance[]
+}
+
 /* comparison */
 
 export interface ComparableData {
@@ -118,6 +128,21 @@ export const compareAndPrintTxs = (etherscanData: ComparableData, blockscoutData
             } else {
                 console.log(chalk.green(`Etherscan: ${value}, Blockscout: ${blockscoutData.txs[bIdx][key]}`))
             }
+        }
+    }
+}
+
+export const compareAndPrintBalances = (etherscanData: TokenBalanceAssertionData, blockscoutData: TokenBalanceAssertionData) => {
+    console.log(`Etherscan data: ${JSON.stringify(etherscanData, null, 2)}`)
+    console.log(`Blockscout data: ${JSON.stringify(blockscoutData, null, 2)}`)
+
+    for (const balanceIdx in etherscanData.balances) {
+        const v1 = etherscanData.balances[balanceIdx]
+        const v2 = blockscoutData.balances[balanceIdx]
+        if (v1.balance !== v2.balance) {
+            console.log(chalk.red(`Address: ${v1.address}, Etherscan: ${v1.balance}, Blockscout: ${v2.balance}, Delta: ${v1.balance - v2.balance}`))
+        } else {
+            console.log(chalk.green(`Address: ${v1.address}, Etherscan: ${v1.balance}, Blockscout: ${v2.balance}, Delta: ${v1.balance - v2.balance}`))
         }
     }
 }

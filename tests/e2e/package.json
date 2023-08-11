@@ -44,7 +44,7 @@
     "test:address": "npx playwright test --project=Chrome --grep=@Address",
 
     "test:api": "npx playwright test --project=Chrome --grep @API",
-    "test:etherscan": "npx playwright test --project=Chrome_UI --grep @Etherscan",
+    "test:etherscan": "npx playwright test --project=Chrome_UI --grep @Etherscan --timeout 400000",
     "test:token:transfers": "npx playwright test --project=Chrome --grep @TransferTokens",
     "test:address:owner": "npx playwright test --project=Chrome --grep @AddressOwners",
     "test:record": "npx playwright codegen",
