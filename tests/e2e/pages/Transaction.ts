@@ -83,12 +83,12 @@ export class TransactionPage extends CommonPage {
         // await this.alert_div_has_text(`To see accurate decoded input data, the contract must be verified. Verify the contract`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}3 >> text=Address`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}4 >> text=EPIC`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}45 >> text=Topics`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}48 >> text=0x`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}56 >> text=0x`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}62 >> text=0x`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}64 >> text=Data`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}65 >> text=0x`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}35 >> text=Topics`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}39 >> text=0x`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}45 >> text=0x`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}51 >> text=0x`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}53 >> text=Data`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}54 >> text=0x`)
     }
 
     async check_raw_trace(minerAddr: string, createdAddr: string): Promise<void> {
