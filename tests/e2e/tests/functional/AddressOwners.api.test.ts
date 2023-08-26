@@ -63,7 +63,7 @@ test(`@AddressOwners Deploy Vyper ERC20`, async () => {
     await token.mint(contracts.wallet.address, 100)
 })
 
-test.only(`@AddressOwners Deploy ownable NFT token, verify addrress`, async () => {
+test(`@AddressOwners Deploy ownable NFT token, verify addrress`, async () => {
     const contracts = new Contracts(process.env.NETWORK_URL)
 
     const token = await deployNFT(
