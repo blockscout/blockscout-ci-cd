@@ -67,18 +67,24 @@ export class AdminPage extends CommonPage {
 
     actions: WebActions
 
+    baseURL: string
+
     constructor(page: Page) {
         super(page)
         this.page = page
         this.actions = new WebActions(this.page)
     }
 
+    setBaseURL(url: string) {
+        this.baseURL = url
+    }
+
     async open(): Promise<void> {
-        await this.actions.navigateToURL(`https://admin.services.blockscout.com/admin/login/`)
+        await this.actions.navigateToURL(`${this.baseURL}/admin/login/`)
     }
 
     async openSubmissions(): Promise<void> {
-        await this.actions.navigateToURL(`https://admin.services.blockscout.com/admin/resources/allSubmissions`)
+        await this.actions.navigateToURL(`${this.baseURL}/admin/resources/allSubmissions`)
     }
 
     async selectTokenServicesTab(): Promise<void> {

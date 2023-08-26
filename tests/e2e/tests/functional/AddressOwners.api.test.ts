@@ -34,9 +34,16 @@ const waitReceiptWithBlock = async (provider: JsonRpcProvider, hash: string): Pr
     throw Error(`tx ${hash} is not mined in any block`)
 }
 
-const deployContract = async (contracts: Contracts, artifactName: string, contractName: string, contractSymbol: string, suffix = `sol`): Promise<TestToken | TestNFT> => {
+const deployContract = async (contracts: Contracts, artifactName: string, contractName: string, contractSymbol: string, suffix = `sol`): Promise<TestToken> => {
     console.log(`deploying contract`)
     const token = await contracts.deploySymbolContract(contractName, contractSymbol, artifactName, suffix) as TestToken
+    await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
+    return token
+}
+
+const deployNFT = async (contracts: Contracts, artifactName: string, contractName: string, contractSymbol: string, suffix = `sol`): Promise<TestNFT> => {
+    console.log(`deploying contract`)
+    const token = await contracts.deploySymbolContract(contractName, contractSymbol, artifactName, suffix) as TestNFT
     await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
     return token
 }
@@ -56,13 +63,27 @@ test(`@AddressOwners Deploy Vyper ERC20`, async () => {
     await token.mint(contracts.wallet.address, 100)
 })
 
+test.only(`@AddressOwners Deploy ownable NFT token, verify addrress`, async () => {
+    const contracts = new Contracts(process.env.NETWORK_URL)
+
+    const token = await deployNFT(
+        contracts,
+        `TestNFT`,
+        `RedNFT`,
+        shortID(),
+    )
+    console.log(`minting to: ${contracts.wallet.address}`)
+    const receipt = await (await token.mintNFT(contracts.wallet.address, ``)).wait()
+    console.log(`receipt: ${JSON.stringify(receipt)}`)
+})
+
 test(`@AddressOwners Deploy ownable ERC20 token, verify addrress`, async () => {
     const contracts = new Contracts(process.env.NETWORK_URL)
 
     const token = await deployContract(
         contracts,
-        `TestNFT`,
-        `WhiteNFT`,
+        `TestToken`,
+        `Blue`,
         shortID(),
     )
     console.log(`minting to: ${contracts.wallet.address}`)
