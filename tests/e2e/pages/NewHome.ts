@@ -11,11 +11,11 @@ export class NewHomePage extends CommonPage {
 
     SEARCH_ITEMS_ICONS = `section[role="dialog"] >> nth=1 >> svg`
 
-    BLOCKS_WIDGET = `main >> div >> nth=24`
+    BLOCKS_WIDGET = `body >> div >> nth=58`
 
-    BLOCKS_WIDGET_LAST_BLOCK = `main >> div >> nth=39`
+    BLOCKS_WIDGET_LAST_BLOCK = `body >> div >> nth=58`
 
-    TXNS_FIELDS = `main >> div >> nth=70 >> div >> div >> div >> div >> div >> div >> div`
+    TXNS_FIELDS = `body >> div >> nth=98 >> div >> div >> div >> div >> div >> div >> div`
 
     MONTHS_REGEX = `/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec/`
 
@@ -137,31 +137,31 @@ export class NewHomePage extends CommonPage {
 
     async check_last_block(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=0 >> text=/.*sec.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=4 >> text=/Txn/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=5 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=6 >> text=/Reward/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=7 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=8 >> text=Validator`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=6 >> text=/Txn/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=8 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=9 >> text=/Reward/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=10 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=11 >> text=Validator`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> a >> nth=1 >> text=/0x/`)
     }
 
     async check_txn_widget(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=0 >> text=/Token transfer/`)
         await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=1 >> text=/Success/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=3 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=4 >> text=/ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=8 >> text=/NFTV/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=5 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=6 >> text=/ago/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=10 >> text=/NFTV/`)
 
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=9 >> text=/Contract creation/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=10 >> text=/Success/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=12 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=13 >> text=/ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=17 >> text=/NFTV/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=11 >> text=/Contract creation/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=12 >> text=/Success/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=16 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=17 >> text=/ago/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=21 >> text=/NFTV/`)
 
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=18 >> text=/Contract call/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=19 >> text=/Failed/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=21 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=22 >> text=/ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=26 >> text=/EPICV/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=22 >> text=/Contract call/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=23 >> text=/Failed/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=27 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=28 >> text=/ago/`)
+        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=32 >> text=/EPICV/`)
     }
 }

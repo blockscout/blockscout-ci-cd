@@ -25,9 +25,9 @@ export class BlockListPage extends CommonPage {
 
     TABLE_HEADING_5 = `th:has-text("Gas used")`
 
-    TABLE_HEADING_6 = `th:has-text("Reward SPOA")`
+    TABLE_HEADING_6 = `th:has-text("Reward ETH")`
 
-    TABLE_HEADING_7 = `th:has-text("Burnt fees SPOA")`
+    TABLE_HEADING_7 = `th:has-text("Burnt fees ETH")`
 
     TABLE_GRID_CELL = `[role="gridcell"] >> nth=`
 
@@ -54,8 +54,8 @@ export class BlockListPage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(this.TABLE_HEADING_3, `no table header - validator`)
         await this.actions.verifyElementIsDisplayed(this.TABLE_HEADING_4, `no table header - txn`)
         await this.actions.verifyElementIsDisplayed(this.TABLE_HEADING_5, `no table header - gas used`)
-        await this.actions.verifyElementIsDisplayed(this.TABLE_HEADING_6, `no table header - reward SPOA`)
-        await this.actions.verifyElementIsDisplayed(this.TABLE_HEADING_7, `no table header - burnt fees SPOA`)
+        await this.actions.verifyElementIsDisplayed(this.TABLE_HEADING_6, `no table header - reward ETH`)
+        await this.actions.verifyElementIsDisplayed(this.TABLE_HEADING_7, `no table header - burnt fees ETH`)
     }
 
     async check_table(): Promise<void> {

@@ -34,8 +34,8 @@ export class TransactionsListPage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_HEADER}4 >> text=Block`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_HEADER}5 >> text=From`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_HEADER}7 >> text=To`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_HEADER}8 >> text=Value SPOA`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_HEADER}9 >> text=Fee SPOA`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_HEADER}8 >> text=Value ETH`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_HEADER}9 >> text=Fee ETH`)
     }
 
     async check_table_data(nftSymbolV: string, nftSymbol: string, erc20SymbolV: string, erc20Symbol: string): Promise<void> {

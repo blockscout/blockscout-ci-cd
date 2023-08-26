@@ -21,9 +21,9 @@ export class CommonPage {
 
     HEADER_STATS = `main >> div >> nth=8 >> div >> div`
 
-    SIGN_IN = `main >> a >> nth=0`
+    SIGN_IN = `body >> div[data-label="hero plate"] >> a >> nth=0`
 
-    SIGNED_IN = `main >> button >> nth=0`
+    SIGNED_IN = `body >> div[data-label="hero plate"] >> button >> nth=0`
 
     ACCOUNT_MENU = `#navbarBlocksDropdown >> nth=1`
 

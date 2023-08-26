@@ -55,12 +55,12 @@ export class TransactionPage extends CommonPage {
         await this.check_selector(`text=/Sponsored/`)
         await this.check_table_element(`From`, 0, `0x`)
         await this.actions.verifyElementIsDisplayed(`div:right-of(:text("To")) >> span`, `/Contract.*0x.*created/`)
-        await this.check_table_element(`Value`, 0, `SPOA`)
-        await this.check_table_element(`Transaction fee`, 0, `\\d+.*SPOA`)
-        await this.check_table_element(`Gas price`, 0, `\\d+.*SPOA.*\\d+.*Gwei`)
+        await this.check_table_element(`Value`, 0, `ETH`)
+        await this.check_table_element(`Transaction fee`, 0, `\\d+.*ETH`)
+        await this.check_table_element(`Gas price`, 0, `\\d+.*ETH.*\\d+.*Gwei`)
         await this.check_table_element(`Gas usage & limit by txn`, 0, `\\d+.*|.*\\d+%`)
         await this.check_table_element(`Gas fees (Gwei)`, 0, `Base.*\\d+.*Max.*\\d+.*Max priority.*\\d+`)
-        await this.check_table_element(`Burnt fees`, 0, `\\d+.*SPOA`)
+        await this.check_table_element(`Burnt fees`, 0, `\\d+.*ETH`)
         // await this.actions.verifyElementIsDisplayed(this.DESCRIPTION_AD_BANNER)
     }
 

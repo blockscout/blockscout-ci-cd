@@ -36,7 +36,7 @@ export class AddressPage extends CommonPage {
         await this.check_selector(`text=/0x/`, `wrong account address`)
         await this.check_table_element(`Token name`, 0, `EPIC.*(EPC)`)
         await this.check_table_element(`Creator`, 0, `0x.*at.*0x.*`)
-        await this.check_selector(`text=/\\d+ SPOA/`, `no SPOA balance is displayed`)
+        await this.check_selector(`text=/\\d+ ETH/`, `no SPOA balance is displayed`)
         await this.check_table_element(`Transactions`, 0, `\\d+`)
         await this.check_table_element(`Gas used`, 0, `\\d+`)
         await this.check_table_element(`Last balance update`, 0, `\\d+`)
