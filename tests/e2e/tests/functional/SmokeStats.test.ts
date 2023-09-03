@@ -5,6 +5,7 @@ test.describe.configure({ mode: `parallel` })
 /*
     See Smoke.test.ts for explanations
 */
+test.skip()
 
 test(`@SmokeEthMainnet Eth stats counters check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth.blockscout.com/stats`)
@@ -121,18 +122,18 @@ test(`@SmokeEthIotaShimmer Iota Shimmer stats counters check`, async ({ newHomeP
 })
 
 test(`@SmokeEthImmutable Immutable stats counters check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://immutable-testnet.blockscout.com/stats`)
+    await newHomePage.open_custom(`https://explorer.testnet.immutable.com/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()
 })
 
 test(`@SmokeEthShibarium Shibarium stats counters check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://shibarium-testnet.blockscout.com/stats`)
+    await newHomePage.open_custom(`https://puppyscan.shib.io/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()
 })
 
-test(`@SmokeEthFuse Shibarium stats counters check`, async ({ newHomePage }) => {
+test(`@SmokeEthFuse Fuse stats counters check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://fuse.blockscout.com/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()

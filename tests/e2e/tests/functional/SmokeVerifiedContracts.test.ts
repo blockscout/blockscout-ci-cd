@@ -5,6 +5,8 @@ test.describe.configure({ mode: `parallel` })
     See Smoke.test.ts for explanations
 */
 
+// test.skip()
+
 test(`@SmokeEthMainnet Eth verified contracts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth.blockscout.com/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
@@ -101,16 +103,16 @@ test(`@SmokeEthIotaShimmer Iota Shimmer verified contracts page check`, async ({
 })
 
 test(`@SmokeEthImmutable Immutable verified contracts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://immutable-testnet.blockscout.com/verified-contracts`)
+    await newHomePage.open_custom(`https://explorer.testnet.immutable.com/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
 })
 
 test(`@SmokeEthShibarium Shibarium verified contracts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://shibarium-testnet.blockscout.com/verified-contracts`)
+    await newHomePage.open_custom(`https://puppyscan.shib.io/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
 })
 
-test(`@SmokeEthFuse Shibarium verified contracts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthFuse Fuse verified contracts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://fuse.blockscout.com/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
 })

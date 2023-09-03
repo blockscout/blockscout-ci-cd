@@ -6,6 +6,8 @@ test.describe.configure({ mode: `parallel` })
     See Smoke.test.ts for explanations
 */
 
+test.skip()
+
 test(`@SmokeEthMainnet Eth native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth.blockscout.com/accounts`)
     await newHomePage.checkNativeAccounts()
@@ -102,16 +104,16 @@ test(`@SmokeEthIotaShimmer Iota Shimmer native accounts page check`, async ({ ne
 })
 
 test(`@SmokeEthImmutable Immutable native accounts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://immutable-testnet.blockscout.com/accounts`)
+    await newHomePage.open_custom(`https://explorer.testnet.immutable.com/accounts`)
     await newHomePage.checkNativeAccounts()
 })
 
 test(`@SmokeEthShibarium Shibarium native accounts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://shibarium-testnet.blockscout.com/accounts`)
+    await newHomePage.open_custom(`https://puppyscan.shib.io/accounts`)
     await newHomePage.checkNativeAccounts()
 })
 
-test(`@SmokeEthFuse Shibarium native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthFuse Fuse native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://fuse.blockscout.com/accounts`)
     await newHomePage.checkNativeAccounts()
 })

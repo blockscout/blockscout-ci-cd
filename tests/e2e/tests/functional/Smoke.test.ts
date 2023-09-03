@@ -25,11 +25,12 @@ test.describe.configure({ mode: `parallel` })
      https://pegasus.lightlink.io/
      https://phoenix.lightlink.io/
      https://iota-shimmer-testnet.blockscout.com/
-     https://immutable-testnet.blockscout.com/
-     https://shibarium-testnet.blockscout.com/
+     https://explorer.testnet.immutable.com/
+     https://puppyscan.shib.io/
      https://fuse.blockscout.com/
 
  */
+// test.skip()
 
 test(`@SmokeEthMainnet Eth main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth.blockscout.com/`)
@@ -166,20 +167,20 @@ test(`@SmokeEthIotaShimmer Iota Shimmer main page components`, async ({ newHomeP
 })
 
 test(`@SmokeEthImmutable Immutable main page components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://immutable-testnet.blockscout.com/`)
+    await newHomePage.open_custom(`https://explorer.testnet.immutable.com/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()
     await newHomePage.checkBlocksWidget()
 })
 
 test(`@SmokeEthShibarium Shibarium main page components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://shibarium-testnet.blockscout.com/`)
+    await newHomePage.open_custom(`https://puppyscan.shib.io/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()
     await newHomePage.checkBlocksWidget()
 })
 
-test(`@SmokeEthFuse Shibarium main page components`, async ({ newHomePage }) => {
+test(`@SmokeEthFuse Fuse main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://fuse.blockscout.com/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()
