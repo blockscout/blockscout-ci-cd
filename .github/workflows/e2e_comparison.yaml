@@ -1,4 +1,4 @@
-name: E2E Testnet comparison tests (Goerli)
+name: E2E Testnet comparison tests (Mainnet ETH)
 on:
   push:
   schedule:

@@ -35,7 +35,7 @@ export class ETHHome extends NewHomePage implements Comparable {
 
     TOKENS_TOTAL_BALANCE_BUTTON = `[aria-label="Token select"]`
 
-    TOKENS_TOTAL_BALANCE_AREA = `section >> div >> nth=3 >> div >> span >> text=/\\d+\\s\\w+/`
+    TOKENS_TOTAL_BALANCE_AREA = `section >> div >> nth=3 >> div >> a >> div >> nth=3 >> text=/\\d+\\s\\.*/`
 
     constructor(page: Page) {
         super(page)
