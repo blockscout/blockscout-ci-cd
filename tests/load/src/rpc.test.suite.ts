@@ -258,6 +258,26 @@ export const backendV2Transactions = () => {
     })
 }
 
+export const backendV2AddressesTabCounters = () => {
+    group(`Addresses counter tab (backendV2)`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/api/v2/addresses/${randomItem(testData.addresses)}/tabs-counters`,
+            params: {
+                tags: {
+                    name: `Addresses counter tab (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`Addresses counter tab (backend) has failed`)
+        }
+    })
+}
+
 export const backendV2Addresses = () => {
     group(`Addresses (backendV2)`, () => {
         const res = shoot(session, {
