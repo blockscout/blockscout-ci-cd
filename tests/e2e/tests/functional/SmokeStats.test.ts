@@ -138,3 +138,15 @@ test(`@SmokeEthFuse Fuse stats counters check`, async ({ newHomePage }) => {
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()
 })
+
+test(`@SmokeEthFuseTestnet Fuse testnet stats counters check`, async ({ context, newHomePage }) => {
+    await newHomePage.open_custom(`https://fuse-testnet.blockscout.com/stats`)
+    await newHomePage.checkStatsCounters()
+    await newHomePage.checkStatsGraphsDisplayed()
+})
+
+test(`@SmokeEthShibariumTestnet Shibarium testnet stats counters check`, async ({ context, newHomePage }) => {
+    await newHomePage.open_custom(`https://puppyscan.shib.io/stats`)
+    await newHomePage.checkStatsCounters()
+    await newHomePage.checkStatsGraphsDisplayed()
+})

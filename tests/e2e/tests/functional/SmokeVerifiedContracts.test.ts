@@ -116,3 +116,14 @@ test(`@SmokeEthFuse Fuse verified contracts page check`, async ({ newHomePage })
     await newHomePage.open_custom(`https://fuse.blockscout.com/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
 })
+
+// no verified contracts yet
+test.skip(`@SmokeEthFuseTestnet Fuse testnet verified contracts page check`, async ({ context, newHomePage }) => {
+    await newHomePage.open_custom(`https://fuse-testnet.blockscout.com/verified-contracts`)
+    await newHomePage.checkVerifiedContractsStats()
+})
+
+test(`@SmokeEthShibariumTestnet Shibarium testnet verified contracts page check`, async ({ context, newHomePage }) => {
+    await newHomePage.open_custom(`https://puppyscan.shib.io/verified-contracts`)
+    await newHomePage.checkVerifiedContractsStats()
+})

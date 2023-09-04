@@ -174,7 +174,7 @@ test(`@SmokeEthImmutable Immutable main page components`, async ({ newHomePage }
 })
 
 test(`@SmokeEthShibarium Shibarium main page components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://puppyscan.shib.io/`)
+    await newHomePage.open_custom(`https://www.shibariumscan.io/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()
     await newHomePage.checkBlocksWidget()
@@ -182,6 +182,20 @@ test(`@SmokeEthShibarium Shibarium main page components`, async ({ newHomePage }
 
 test(`@SmokeEthFuse Fuse main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://fuse.blockscout.com/`)
+    await newHomePage.checkIndexing()
+    await newHomePage.checkHeader()
+    await newHomePage.checkBlocksWidget()
+})
+
+test(`@SmokeEthFuseTestnet Fuse testnet main page components`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://fuse-testnet.blockscout.com/`)
+    await newHomePage.checkIndexing()
+    await newHomePage.checkHeader()
+    await newHomePage.checkBlocksWidget()
+})
+
+test(`@SmokeEthShibariumTestnet Shibarium testnet main page components`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://puppyscan.shib.io/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()
     await newHomePage.checkBlocksWidget()

@@ -117,3 +117,13 @@ test(`@SmokeEthFuse Fuse native accounts page check`, async ({ newHomePage }) =>
     await newHomePage.open_custom(`https://fuse.blockscout.com/accounts`)
     await newHomePage.checkNativeAccounts()
 })
+
+test(`@SmokeEthFuseTestnet Fuse testnet native accounts page check`, async ({ context, newHomePage }) => {
+    await newHomePage.open_custom(`https://fuse-testnet.blockscout.com/accounts`)
+    await newHomePage.checkNativeAccounts()
+})
+
+test(`@SmokeEthShibariumTestnet Shibarium testnet native accounts page check`, async ({ context, newHomePage }) => {
+    await newHomePage.open_custom(`https://puppyscan.shib.io/accounts`)
+    await newHomePage.checkNativeAccounts()
+})

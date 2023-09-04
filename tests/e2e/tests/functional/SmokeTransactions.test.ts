@@ -115,3 +115,13 @@ test(`@SmokeEthFuse Fuse transactions page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://fuse.blockscout.com/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
+
+test(`@SmokeEthFuseTestnet Fuse testnet transactions page check`, async ({ context, newHomePage }) => {
+    await newHomePage.open_custom(`https://fuse-testnet.blockscout.com/txs`)
+    await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
+})
+
+test(`@SmokeEthShibariumTestnet Shibarium testnet transactions page check`, async ({ context, newHomePage }) => {
+    await newHomePage.open_custom(`https://puppyscan.shib.io/txs`)
+    await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
+})

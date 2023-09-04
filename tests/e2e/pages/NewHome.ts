@@ -1,6 +1,7 @@
 import { WebActions } from "@lib/WebActions"
-import type { Page } from 'playwright'
+import type { BrowserContext, Page } from 'playwright'
 import { CommonPage } from "./Common"
+import { expect } from "@playwright/test"
 
 export class NewHomePage extends CommonPage {
     SEARCH_BAR = `input >> nth=0`
@@ -20,6 +21,14 @@ export class NewHomePage extends CommonPage {
     MONTHS_REGEX = `/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec/`
 
     NATIVE_ACCOUNTS_ROW = `table >> tr >> nth=1 >> td`
+
+    BLOCKS_HEADER = `table >> tr >> nth=0 >> th`
+
+    BLOCKS_FIRST_ROW = `table >> tr >> nth=1 >> td`
+
+    RECENT_BLOCK_URL = `table >> tr >> nth=2 >> td >> a >> nth=0`
+
+    BLOCK_PAGE_IS_VALID = `h1 >> text=/Block\\s\\#\\d+/`
 
     readonly page: Page
 
@@ -63,6 +72,54 @@ export class NewHomePage extends CommonPage {
         if (indexingInProgress) {
             this.HEADER_STATS = `main >> div >> nth=10 >> div >> div`
         }
+    }
+
+    async checkL2Blocks(context: BrowserContext): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=0 >> text=/Block/`, `no Blocks header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=1 >> text=/Size.*bytes/`, `no Size in bytes header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=2 >> text=/Validator|Miner/`, `no Validator|Miner header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=3 >> text=/Txn/`, `no Txn header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=4 >> text=/Gas used/`, `no Gas used header is present`)
+
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=0 >> text=/\\d+.*ago/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=1 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=2 >> text=/0x|\\w/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=3 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=4 >> text=/\\d+/`)
+
+        await this.actions.clickElement(this.RECENT_BLOCK_URL)
+        await this.actions.verifyElementIsDisplayed(this.BLOCK_PAGE_IS_VALID)
+    }
+
+    async checkBlocks(context: BrowserContext): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=0 >> text=/Block/`, `no Blocks header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=1 >> text=/Size.*bytes/`, `no Size in bytes header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=2 >> text=/Validator|Miner/`, `no Validator|Miner header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=3 >> text=/Txn/`, `no Txn header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=4 >> text=/Gas used/`, `no Gas used header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=5 >> text=/Reward.*/`, `no Reward header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=6 >> text=/Burnt fees.*/`, `no Burnt fees header is present`)
+
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=0 >> text=/\\d+.*ago/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=1 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=2 >> text=/0x|\\w/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=3 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=4 >> text=/\\d+.*\\d+\\%.*\\d+\\%/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=5 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=6 >> text=/\\d+.*\\d+\\%/`)
+
+        await this.actions.clickElement(this.RECENT_BLOCK_URL)
+        await this.actions.verifyElementIsDisplayed(this.BLOCK_PAGE_IS_VALID)
+
+        // const [newWindow] = await Promise.all([
+        //     context.waitForEvent(`page`),
+        //     await this.actions.clickElement(this.RECENT_BLOCK_URL),
+        // ])
+        // await newWindow.waitForLoadState(`load`)
+        // await newWindow.waitForSelector(this.BLOCK_PAGE_IS_VALID, { state: `visible`, timeout: 10000 })
+        //     .catch(() => { throw new Error(`failed to validate block page`) })
+        // // expect(newWindow.url()).toContain(urlText)
+        // // await newWindow.close()
     }
 
     async checkNativeAccounts(): Promise<void> {
