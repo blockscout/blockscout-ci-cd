@@ -1,7 +1,6 @@
 import { WebActions } from "@lib/WebActions"
 import type { BrowserContext, Page } from 'playwright'
 import { CommonPage } from "./Common"
-import { expect } from "@playwright/test"
 
 export class NewHomePage extends CommonPage {
     SEARCH_BAR = `input >> nth=0`
