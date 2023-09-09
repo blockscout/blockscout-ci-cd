@@ -98,7 +98,7 @@ test(`@SmokeEthLightlinkPhoenix Phoenix verified contracts page check`, async ({
 })
 
 test(`@SmokeEthIotaShimmer Iota Shimmer verified contracts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://iota-shimmer-testnet.blockscout.com/verified-contracts`)
+    await newHomePage.open_custom(`https://explorer.evm.testnet.shimmer.network/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
 })
 
@@ -125,5 +125,10 @@ test.skip(`@SmokeEthFuseTestnet Fuse testnet verified contracts page check`, asy
 
 test(`@SmokeEthShibariumTestnet Shibarium testnet verified contracts page check`, async ({ context, newHomePage }) => {
     await newHomePage.open_custom(`https://puppyscan.shib.io/verified-contracts`)
+    await newHomePage.checkVerifiedContractsStats()
+})
+
+test.skip(`@SmokeEthOptimismSepoliaV Optimism sepolia verified contracts page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://optimism-sepolia.blockscout.com//verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
 })

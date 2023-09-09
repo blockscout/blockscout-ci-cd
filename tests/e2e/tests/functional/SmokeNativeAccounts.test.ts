@@ -99,7 +99,7 @@ test(`@SmokeEthLightlinkPhoenix Phoenix native accounts page check`, async ({ ne
 })
 
 test(`@SmokeEthIotaShimmer Iota Shimmer native accounts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://iota-shimmer-testnet.blockscout.com/accounts`)
+    await newHomePage.open_custom(`https://explorer.evm.testnet.shimmer.network/accounts`)
     await newHomePage.checkNativeAccounts()
 })
 

@@ -24,7 +24,7 @@ test.describe.configure({ mode: `parallel` })
      https://zetachain-athens-3.blockscout.com/
      https://pegasus.lightlink.io/
      https://phoenix.lightlink.io/
-     https://iota-shimmer-testnet.blockscout.com/
+     https://explorer.evm.testnet.shimmer.network
      https://explorer.testnet.immutable.com/
      https://puppyscan.shib.io/
      https://fuse.blockscout.com/
@@ -160,7 +160,7 @@ test(`@SmokeEthLightlinkPhoenix Phoenix main page components`, async ({ newHomeP
 })
 
 test(`@SmokeEthIotaShimmer Iota Shimmer main page components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://iota-shimmer-testnet.blockscout.com/`)
+    await newHomePage.open_custom(`https://explorer.evm.testnet.shimmer.network`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()
     await newHomePage.checkBlocksWidget()
@@ -196,6 +196,13 @@ test(`@SmokeEthFuseTestnet Fuse testnet main page components`, async ({ newHomeP
 
 test(`@SmokeEthShibariumTestnet Shibarium testnet main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://puppyscan.shib.io/`)
+    await newHomePage.checkIndexing()
+    await newHomePage.checkHeader()
+    await newHomePage.checkBlocksWidget()
+})
+
+test(`@SmokeEthOptimismSepolia Optimism sepolia testnet main page components`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://optimism-sepolia.blockscout.com/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()
     await newHomePage.checkBlocksWidget()

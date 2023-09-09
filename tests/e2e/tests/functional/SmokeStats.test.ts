@@ -116,7 +116,7 @@ test(`@SmokeEthLightlinkPhoenix Phoenix stats counters check`, async ({ newHomeP
 })
 
 test(`@SmokeEthIotaShimmer Iota Shimmer stats counters check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://iota-shimmer-testnet.blockscout.com/stats`)
+    await newHomePage.open_custom(`https://explorer.evm.testnet.shimmer.network/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()
 })

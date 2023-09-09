@@ -97,7 +97,7 @@ test(`@SmokeEthLightlinkPhoenix Phoenix transactions page check`, async ({ newHo
 })
 
 test(`@SmokeEthIotaShimmer Iota Shimmer transactions page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://iota-shimmer-testnet.blockscout.com/txs`)
+    await newHomePage.open_custom(`https://explorer.evm.testnet.shimmer.network/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
 
@@ -116,12 +116,17 @@ test(`@SmokeEthFuse Fuse transactions page check`, async ({ newHomePage }) => {
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
 
-test(`@SmokeEthFuseTestnet Fuse testnet transactions page check`, async ({ context, newHomePage }) => {
+test(`@SmokeEthFuseTestnet Fuse testnet transactions page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://fuse-testnet.blockscout.com/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
 
-test(`@SmokeEthShibariumTestnet Shibarium testnet transactions page check`, async ({ context, newHomePage }) => {
+test(`@SmokeEthShibariumTestnet Shibarium testnet transactions page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://puppyscan.shib.io/txs`)
+    await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
+})
+
+test(`@SmokeEthOptimismSepoliaTx Optimism sepolia transactions page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://optimism-sepolia.blockscout.com/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })

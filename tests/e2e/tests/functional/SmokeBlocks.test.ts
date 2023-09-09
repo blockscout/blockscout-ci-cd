@@ -69,7 +69,7 @@ test(`@SmokeEthLightlinkPhoenix Phoenix blocks`, async ({ context, newHomePage }
 })
 
 test(`@SmokeEthIotaShimmer Iota Shimmer blocks`, async ({ context, newHomePage }) => {
-    await newHomePage.open_custom(`https://iota-shimmer-testnet.blockscout.com/blocks`)
+    await newHomePage.open_custom(`https://explorer.evm.testnet.shimmer.network/blocks`)
     await newHomePage.checkBlocks(context)
 })
 
@@ -122,5 +122,10 @@ test(`@SmokeEthBaseGoerli Base goerli blocks`, async ({ context, newHomePage }) 
 
 test(`@SmokeEthBaseMainnet Base blocks`, async ({ context, newHomePage }) => {
     await newHomePage.open_custom(`https://base.blockscout.com/blocks`)
+    await newHomePage.checkL2Blocks(context)
+})
+
+test(`@SmokeEthOptimismSepolia Optimism sepolia blocks`, async ({ context, newHomePage }) => {
+    await newHomePage.open_custom(`https://optimism-sepolia.blockscout.com/blocks`)
     await newHomePage.checkL2Blocks(context)
 })
