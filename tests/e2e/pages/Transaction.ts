@@ -82,7 +82,7 @@ export class TransactionPage extends CommonPage {
         await this.actions.clickElement(this.TAB_LOGS)
         // await this.alert_div_has_text(`To see accurate decoded input data, the contract must be verified. Verify the contract`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}3 >> text=Address`)
-        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}4 >> text=EPIC`)
+        await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}4 >> text=TestToken`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}35 >> text=Topics`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}39 >> text=0x`)
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_TABPANEL_DIV}45 >> text=0x`)

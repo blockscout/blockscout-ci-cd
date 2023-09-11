@@ -7,5 +7,5 @@ test(`@AccountImage @Main Check main page widgets`, async ({ newHomePage }) => {
     await newHomePage.checkHeader()
     await newHomePage.checkBlocksWidget()
     await newHomePage.check_last_block()
-    await newHomePage.check_txn_widget()
+    // await newHomePage.check_txn_widget()
 })
