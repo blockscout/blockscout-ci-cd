@@ -242,7 +242,7 @@ export class CommonPage {
         await this.check_tx_list_row(2, 4, `\\d+`)
         await this.check_tx_list_row(2, 5, `0x`)
         await this.check_tx_list_row(2, 6, `IN`)
-        await this.check_tx_list_row(2, 7, `TestToken`)
+        await this.check_tx_list_row(2, 7, `EPIC`)
         await this.check_tx_list_row(2, 8, `0`)
         await this.check_tx_list_row(2, 9, `\\d+`)
 
@@ -252,7 +252,7 @@ export class CommonPage {
         await this.check_tx_list_row(3, 4, `\\d+`)
         await this.check_tx_list_row(3, 5, `0x`)
         await this.check_tx_list_row(3, 6, `IN`)
-        await this.check_tx_list_row(3, 7, `TestToken`)
+        await this.check_tx_list_row(3, 7, `EPIC`)
         await this.check_tx_list_row(3, 8, `0`)
         await this.check_tx_list_row(3, 9, `\\d+`)
 
@@ -261,7 +261,7 @@ export class CommonPage {
         await this.check_tx_list_row(4, 3, ``)
         await this.check_tx_list_row(4, 4, `\\d+`)
         await this.check_tx_list_row(4, 5, `0x`)
-        await this.check_tx_list_row(4, 7, `TestToken`)
+        await this.check_tx_list_row(4, 7, `EPIC`)
         await this.check_tx_list_row(4, 8, `0`)
         await this.check_tx_list_row(4, 9, `\\d+`)
     }
