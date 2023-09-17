@@ -150,3 +150,15 @@ test(`@SmokeEthShibariumTestnet Shibarium testnet stats counters check`, async (
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()
 })
+
+test(`@SmokeEthIotaShimmerMainnet @NativeAccounts Iota Shimmernative counters check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://iota-shimmer.blockscout.com/stats`)
+    await newHomePage.checkStatsCounters()
+    await newHomePage.checkStatsGraphsDisplayed()
+})
+
+test(`@SmokeEthETCMordor @NativeAccounts Mordor counters check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(` https://etc-mordor.blockscout.com/stats`)
+    await newHomePage.checkStatsCounters()
+    await newHomePage.checkStatsGraphsDisplayed()
+})

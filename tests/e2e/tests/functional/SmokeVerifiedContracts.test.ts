@@ -128,7 +128,19 @@ test(`@SmokeEthShibariumTestnet Shibarium testnet verified contracts page check`
     await newHomePage.checkVerifiedContractsStats()
 })
 
+// no contracts
 test.skip(`@SmokeEthOptimismSepoliaV Optimism sepolia verified contracts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://optimism-sepolia.blockscout.com//verified-contracts`)
+    await newHomePage.open_custom(`https://optimism-sepolia.blockscout.com/verified-contracts`)
+    await newHomePage.checkVerifiedContractsStats()
+})
+
+// no contracts
+test.skip(`@SmokeEthIotaShimmerMainnet Iota Shimmer mainnet verified contracts page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://iota-shimmer.blockscout.com/verified-contracts`)
+    await newHomePage.checkVerifiedContractsStats()
+})
+
+test(`@SmokeEthETCMordor Mordor verified contracts page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(` https://etc-mordor.blockscout.com/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
 })

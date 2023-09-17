@@ -129,3 +129,13 @@ test(`@SmokeEthOptimismSepolia Optimism sepolia blocks`, async ({ context, newHo
     await newHomePage.open_custom(`https://optimism-sepolia.blockscout.com/blocks`)
     await newHomePage.checkL2Blocks(context)
 })
+
+test(`@SmokeEthIotaShimmerMainnet Iota Shimmer mainnet blocks`, async ({ context, newHomePage }) => {
+    await newHomePage.open_custom(`https://iota-shimmer.blockscout.com/blocks`)
+    await newHomePage.checkBlocks(context)
+})
+
+test(`@SmokeEthETCMordor Mordor blocks`, async ({ context, newHomePage }) => {
+    await newHomePage.open_custom(` https://etc-mordor.blockscout.com/blocks`)
+    await newHomePage.checkBlocks(context)
+})

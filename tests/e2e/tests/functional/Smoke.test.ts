@@ -207,3 +207,17 @@ test(`@SmokeEthOptimismSepolia Optimism sepolia testnet main page components`, a
     await newHomePage.checkHeader()
     await newHomePage.checkBlocksWidget()
 })
+
+test(`@SmokeEthIotaShimmerMainnet Iota Shimmer mainnet main page components`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://iota-shimmer.blockscout.com/`)
+    await newHomePage.checkIndexing()
+    await newHomePage.checkHeader()
+    await newHomePage.checkBlocksWidget()
+})
+
+test(`@SmokeEthETCMordor Mordor main page components`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(` https://etc-mordor.blockscout.com/`)
+    await newHomePage.checkIndexing()
+    await newHomePage.checkHeader()
+    await newHomePage.checkBlocksWidget()
+})

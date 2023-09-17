@@ -130,3 +130,13 @@ test(`@SmokeEthOptimismSepoliaTx Optimism sepolia transactions page check`, asyn
     await newHomePage.open_custom(`https://optimism-sepolia.blockscout.com/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
+
+test(`@SmokeEthIotaShimmerMainnet Iota Shimmer mainnet transactions page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://iota-shimmer.blockscout.com/txs`)
+    await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
+})
+
+test(`@SmokeEthETCMordor Mordor transactions page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(` https://etc-mordor.blockscout.com/txs`)
+    await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
+})

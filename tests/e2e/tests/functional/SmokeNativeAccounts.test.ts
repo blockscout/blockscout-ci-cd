@@ -6,124 +6,134 @@ test.describe.configure({ mode: `parallel` })
     See Smoke.test.ts for explanations
 */
 
-test.skip()
+// test.skip()
 
-test(`@SmokeEthMainnet Eth native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthMainnet @NativeAccounts Eth native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthGoerli Eth Goerli native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthGoerli @NativeAccounts Eth Goerli native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth-goerli.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthGnosisMainnet Gnosis native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthGnosisMainnet @NativeAccounts Gnosis native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`http://gnosis.blockscout.com/accounts`)
     await newHomePage.checkNativeAccounts()
 })
 
-test(`@SmokeEthGnosisChiado Gnosis Chiado native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthGnosisChiado @NativeAccounts Gnosis Chiado native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://gnosis-chiado.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthOptimismMainnet Optimism native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthOptimismMainnet @NativeAccounts Optimism native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://optimism.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthOptimismGoerli Optimism Goerli native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthOptimismGoerli @NativeAccounts Optimism Goerli native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://optimism-goerli.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test.skip(`@SmokeEthAstar Astar native accounts page check`, async ({ newHomePage }) => {
+test.skip(`@SmokeEthAstar @NativeAccounts Astar native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://blockscout.com/astar/accounts`)
     await newHomePage.checkNativeAccounts()
 })
 
-test.skip(`@SmokeEthShiden Shiden native accounts page check`, async ({ newHomePage }) => {
+test.skip(`@SmokeEthShiden @NativeAccounts Shiden native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://blockscout.com/shiden/accounts`)
     await newHomePage.checkNativeAccounts()
 })
 
-test.skip(`@SmokeEthShibuya Shubuya native accounts page check`, async ({ newHomePage }) => {
+test.skip(`@SmokeEthShibuya @NativeAccounts Shubuya native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://blockscout.com/shibuya/accounts`)
     await newHomePage.checkNativeAccounts()
 })
 
-test(`@SmokeEthRootstock Rootstock native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthRootstock @NativeAccounts Rootstock native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://rootstock.blockscout.com/accounts`)
     await newHomePage.checkNativeAccounts()
 })
 
-test(`@SmokeEthNeonMainnet Neon native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthNeonMainnet @NativeAccounts Neon native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://neon.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthNeonDevnet Neon devnet native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthNeonDevnet @NativeAccounts Neon devnet native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://neon-devnet.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthBaseGoerli Base goerli native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthBaseGoerli @NativeAccounts Base goerli native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://base-goerli.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthBaseMainnet Base native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthBaseMainnet @NativeAccounts Base native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://base.blockscout.com/accounts`)
     await newHomePage.checkNativeAccounts()
 })
 
-test(`@SmokeEthZetaAthens2 Zetachain Athens 2 native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthZetaAthens2 @NativeAccounts Zetachain Athens 2 native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://zetachain-athens-2.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthZetaAthens3 Zetachain Athens 3 native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthZetaAthens3 @NativeAccounts Zetachain Athens 3 native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://zetachain-athens-3.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthLightlinkPegasus Pegasus native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthLightlinkPegasus @NativeAccounts Pegasus native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://pegasus.lightlink.io/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthLightlinkPhoenix Phoenix native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthLightlinkPhoenix @NativeAccounts Phoenix native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://phoenix.lightlink.io/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthIotaShimmer Iota Shimmer native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthIotaShimmer @NativeAccounts Iota Shimmer native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://explorer.evm.testnet.shimmer.network/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthImmutable Immutable native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthImmutable @NativeAccounts Immutable native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://explorer.testnet.immutable.com/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthShibarium Shibarium native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthShibarium @NativeAccounts Shibarium native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://puppyscan.shib.io/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthFuse Fuse native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthFuse @NativeAccounts Fuse native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://fuse.blockscout.com/accounts`)
     await newHomePage.checkNativeAccounts()
 })
 
-test(`@SmokeEthFuseTestnet Fuse testnet native accounts page check`, async ({ context, newHomePage }) => {
+test(`@SmokeEthFuseTestnet @NativeAccounts Fuse testnet native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://fuse-testnet.blockscout.com/accounts`)
+    await newHomePage.checkNativeAccountsNoPerc()
+})
+
+test(`@SmokeEthShibariumTestnet @NativeAccounts Shibarium testnet native accounts page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://puppyscan.shib.io/accounts`)
+    await newHomePage.checkNativeAccountsNoPerc()
+})
+
+test(`@SmokeEthIotaShimmerMainnet @NativeAccounts Iota Shimmernative accounts page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://iota-shimmer.blockscout.com/accounts`)
     await newHomePage.checkNativeAccounts()
 })
 
-test(`@SmokeEthShibariumTestnet Shibarium testnet native accounts page check`, async ({ context, newHomePage }) => {
-    await newHomePage.open_custom(`https://puppyscan.shib.io/accounts`)
-    await newHomePage.checkNativeAccounts()
+test(`@SmokeEthETCMordor @NativeAccounts Mordor native accounts page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(` https://etc-mordor.blockscout.com/accounts`)
+    await newHomePage.checkNativeAccountsNoPerc()
 })

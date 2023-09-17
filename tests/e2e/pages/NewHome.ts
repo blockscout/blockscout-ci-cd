@@ -23,7 +23,7 @@ export class NewHomePage extends CommonPage {
 
     BLOCKS_HEADER = `table >> tr >> nth=0 >> th`
 
-    BLOCKS_FIRST_ROW = `table >> tr >> nth=1 >> td`
+    BLOCKS_FIRST_ROW = `table >> tr >> nth=2 >> td`
 
     RECENT_BLOCK_URL = `table >> tr >> nth=2 >> td >> a >> nth=0`
 
@@ -126,6 +126,12 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=3 >> text=/\\d+/`, `no balance in native accounts`)
         await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=4 >> text=/\\d+/`, `no percentage in native accounts`)
         await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=5 >> text=/\\d+/`, `no txn count in native accounts`)
+    }
+
+    async checkNativeAccountsNoPerc(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=0 >> text=/\\d+/`, `no idx in native accounts`)
+        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=3 >> text=/\\d+/`, `no balance in native accounts`)
+        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=4 >> text=/\\d+/`, `no txn count in native accounts`)
     }
 
     async checkVerifiedContractsStats(): Promise<void> {
