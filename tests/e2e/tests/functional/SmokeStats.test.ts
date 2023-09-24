@@ -152,7 +152,7 @@ test(`@SmokeEthShibariumTestnet Shibarium testnet stats counters check`, async (
 })
 
 test(`@SmokeEthIotaShimmerMainnet @NativeAccounts Iota Shimmernative counters check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://iota-shimmer.blockscout.com/stats`)
+    await newHomePage.open_custom(`https://explorer.evm.shimmer.network/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()
 })

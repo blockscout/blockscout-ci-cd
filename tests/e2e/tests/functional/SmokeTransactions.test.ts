@@ -132,7 +132,7 @@ test(`@SmokeEthOptimismSepoliaTx Optimism sepolia transactions page check`, asyn
 })
 
 test(`@SmokeEthIotaShimmerMainnet Iota Shimmer mainnet transactions page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://iota-shimmer.blockscout.com/txs`)
+    await newHomePage.open_custom(`https://explorer.evm.shimmer.network/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
 

@@ -136,7 +136,7 @@ test.skip(`@SmokeEthOptimismSepoliaV Optimism sepolia verified contracts page ch
 
 // no contracts
 test.skip(`@SmokeEthIotaShimmerMainnet Iota Shimmer mainnet verified contracts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://iota-shimmer.blockscout.com/verified-contracts`)
+    await newHomePage.open_custom(`https://explorer.evm.shimmer.network/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
 })
 
