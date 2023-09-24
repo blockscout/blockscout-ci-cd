@@ -4,7 +4,6 @@ test.describe.configure({ mode: `parallel` })
 /*
     See Smoke.test.ts for explanations
 */
-// test.skip()
 
 test(`@SmokeEthMainnet Eth transactions page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth.blockscout.com/txs`)
@@ -138,5 +137,10 @@ test(`@SmokeEthIotaShimmerMainnet Iota Shimmer mainnet transactions page check`,
 
 test(`@SmokeEthETCMordor Mordor transactions page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(` https://etc-mordor.blockscout.com/txs`)
+    await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
+})
+
+test(`@SmokeEthETCMainnet ETC transactions page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://etc.blockscout.com/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })

@@ -5,8 +5,6 @@ test.describe.configure({ mode: `parallel` })
     See Smoke.test.ts for explanations
 */
 
-// test.skip()
-
 test(`@SmokeEthMainnet Eth verified contracts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth.blockscout.com/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
@@ -141,6 +139,11 @@ test.skip(`@SmokeEthIotaShimmerMainnet Iota Shimmer mainnet verified contracts p
 })
 
 test(`@SmokeEthETCMordor Mordor verified contracts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(` https://etc-mordor.blockscout.com/verified-contracts`)
+    await newHomePage.open_custom(`https://etc-mordor.blockscout.com/verified-contracts`)
+    await newHomePage.checkVerifiedContractsStats()
+})
+
+test(`@SmokeEthETCMainnet ETC verified contracts page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://etc.blockscout.com/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
 })

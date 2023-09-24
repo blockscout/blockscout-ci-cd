@@ -6,8 +6,6 @@ test.describe.configure({ mode: `parallel` })
     See Smoke.test.ts for explanations
 */
 
-// test.skip()
-
 test(`@SmokeEthMainnet @NativeAccounts Eth native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth.blockscout.com/accounts`)
     await newHomePage.checkNativeAccountsNoPerc()
@@ -134,6 +132,11 @@ test(`@SmokeEthIotaShimmerMainnet @NativeAccounts Iota Shimmernative accounts pa
 })
 
 test(`@SmokeEthETCMordor @NativeAccounts Mordor native accounts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(` https://etc-mordor.blockscout.com/accounts`)
+    await newHomePage.open_custom(`https://etc-mordor.blockscout.com/accounts`)
+    await newHomePage.checkNativeAccountsNoPerc()
+})
+
+test(`@SmokeEthETCMainnet @NativeAccounts ETC native accounts page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://etc.blockscout.com//accounts`)
     await newHomePage.checkNativeAccountsNoPerc()
 })

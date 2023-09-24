@@ -1,7 +1,6 @@
 import test from '@lib/BaseTest'
 
 test.describe.configure({ mode: `parallel` })
-// test.skip()
 
 test(`@SmokeEthMainnet Eth blocks`, async ({ context, newHomePage }) => {
     await newHomePage.open_custom(`https://eth.blockscout.com/blocks`)
@@ -136,6 +135,11 @@ test(`@SmokeEthIotaShimmerMainnet Iota Shimmer mainnet blocks`, async ({ context
 })
 
 test(`@SmokeEthETCMordor Mordor blocks`, async ({ context, newHomePage }) => {
-    await newHomePage.open_custom(` https://etc-mordor.blockscout.com/blocks`)
+    await newHomePage.open_custom(`https://etc-mordor.blockscout.com/blocks`)
+    await newHomePage.checkBlocks(context)
+})
+
+test(`@SmokeEthETCMainnet ETC blocks`, async ({ context, newHomePage }) => {
+    await newHomePage.open_custom(`https://etc.blockscout.com/blocks`)
     await newHomePage.checkBlocks(context)
 })

@@ -35,6 +35,7 @@
     "test:prod:smoke:fuse": "npx playwright test --project=Chrome --grep=@SmokeEthFuse --retries=0 --timeout=60000",
     "test:prod:smoke:fuse_testnet": "npx playwright test --project=Chrome --grep=@SmokeEthFuseTestnet --retries=0 --timeout=60000",
     "test:prod:smoke:etc_mordor": "npx playwright test --project=Chrome --grep=@SmokeEthETCMordor --retries=0 --timeout=60000",
+    "test:prod:smoke:etc": "npx playwright test --project=Chrome --grep=@SmokeEthETCMainnet --retries=0 --timeout=60000",
     "test:prod:smoke:native_accounts": "npx playwright test --project=Chrome --grep=@NativeAccounts --retries=0 --timeout=20000",
     "test:rollup": "npx playwright test --project=Chrome --grep=@Rollup",
     "test:authorized": "npx playwright test --project=Chrome --grep=@Authorized",

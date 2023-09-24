@@ -151,14 +151,20 @@ test(`@SmokeEthShibariumTestnet Shibarium testnet stats counters check`, async (
     await newHomePage.checkStatsGraphsDisplayed()
 })
 
-test(`@SmokeEthIotaShimmerMainnet @NativeAccounts Iota Shimmernative counters check`, async ({ newHomePage }) => {
+test(`@SmokeEthIotaShimmerMainnet Iota Shimmernative counters check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://explorer.evm.shimmer.network/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()
 })
 
-test(`@SmokeEthETCMordor @NativeAccounts Mordor counters check`, async ({ newHomePage }) => {
+test(`@SmokeEthETCMordor Mordor counters check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(` https://etc-mordor.blockscout.com/stats`)
+    await newHomePage.checkStatsCounters()
+    await newHomePage.checkStatsGraphsDisplayed()
+})
+
+test(`@SmokeEthETCMainnet ETC counters check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://etc.blockscout.com/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()
 })

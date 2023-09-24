@@ -5,32 +5,7 @@ test.describe.configure({ mode: `parallel` })
     these tests are for common smoke functionality across all priority envs
     they do not interact with contract deployments, checking static data
     test logic is common, however we separate the tests for visibility
-
-     https://eth.blockscout.com/
-     https://eth-goerli.blockscout.com/
-     http://gnosis.blockscout.com/
-     https://gnosis-chiado.blockscout.com/
-     https://optimism.blockscout.com/
-     https://optimism-goerli.blockscout.com/
-     https://blockscout.com/astar
-     https://blockscout.com/shiden
-     https://blockscout.com/shibuya
-     https://rootstock.blockscout.com
-     https://neon-devnet.blockscout.com/
-     https://neon.blockscout.com/
-     https://base-goerli.blockscout.com/
-     https://base.blockscout.com
-     https://zetachain-athens-2.blockscout.com/
-     https://zetachain-athens-3.blockscout.com/
-     https://pegasus.lightlink.io/
-     https://phoenix.lightlink.io/
-     https://explorer.evm.testnet.shimmer.network
-     https://explorer.testnet.immutable.com/
-     https://puppyscan.shib.io/
-     https://fuse.blockscout.com/
-
- */
-// test.skip()
+*/
 
 test(`@SmokeEthMainnet Eth main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth.blockscout.com/`)
@@ -216,7 +191,14 @@ test(`@SmokeEthIotaShimmerMainnet Iota Shimmer mainnet main page components`, as
 })
 
 test(`@SmokeEthETCMordor Mordor main page components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(` https://etc-mordor.blockscout.com/`)
+    await newHomePage.open_custom(`https://etc-mordor.blockscout.com/`)
+    await newHomePage.checkIndexing()
+    await newHomePage.checkHeader()
+    await newHomePage.checkBlocksWidget()
+})
+
+test(`@SmokeEthETCMainnet ETC main page components`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://etc.blockscout.com/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()
     await newHomePage.checkBlocksWidget()
