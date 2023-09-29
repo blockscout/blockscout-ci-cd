@@ -8,12 +8,18 @@ test.describe.configure({ mode: `parallel` })
 const CMD = `npx lighthouse %s --preset desktop --output html --output-path ./%s-%s-report.html --disable-full-page-screenshot --screenEmulation.disabled`
 const domain = /https:\/\/(.+?)\./
 
-test(`@LHSmokeEthMainnet Eth performance report`, async ({ newHomePage }) => {
-    const url = `https://eth.blockscout.com`
+const runLighthouse = (url: string) => {
     const envPrefix = domain.exec(url)[1]
     execSync(format(CMD, url, envPrefix, `main`))
     execSync(format(CMD, `${url}/blocks`, envPrefix, `blocks`))
     execSync(format(CMD, `${url}/txs`, envPrefix, `txs`))
+    execSync(format(CMD, `${url}/tokens`, envPrefix, `tokens`))
+    execSync(format(CMD, `${url}/accounts`, envPrefix, `accounts`))
+    execSync(format(CMD, `${url}/stats`, envPrefix, `stats`))
+}
+
+test(`@LHSmokeEthMainnet Eth performance report`, async ({ newHomePage }) => {
+    runLighthouse(`https://eth.blockscout.com`)
 })
 
 // test(`@LHSmokeEthGoerli @LH Eth Goerli performance report`, async ({ newHomePage }) => {
@@ -102,11 +108,7 @@ test(`@LHSmokeEthMainnet Eth performance report`, async ({ newHomePage }) => {
 // })
 
 test(`@LHSmokeEthBaseMainnet Base performance report`, async ({ newHomePage }) => {
-    const url = `https://base.blockscout.com`
-    const envPrefix = domain.exec(url)[1]
-    execSync(format(CMD, url, envPrefix, `main`))
-    execSync(format(CMD, `${url}/blocks`, envPrefix, `blocks`))
-    execSync(format(CMD, `${url}/txs`, envPrefix, `txs`))
+    runLighthouse(`https://base.blockscout.com`)
 })
 
 // test(`@SmokeEthZetaAthens2 Zetachain Athens 2 main page components`, async ({ newHomePage }) => {
