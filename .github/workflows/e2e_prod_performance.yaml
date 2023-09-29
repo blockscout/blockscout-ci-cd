@@ -59,7 +59,7 @@ jobs:
       - name: Run headed playwright
         uses: coactions/setup-xvfb@v1
         with:
-          run: npm run test:prod:lighthouse:${{ matrix.instance }}
+          run: npm run test:prod:lh:${{ matrix.instance }}
           working-directory: ./tests/e2e
       - uses: actions/upload-artifact@v3
         if: always()
