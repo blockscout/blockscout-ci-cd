@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        instance: [mainnet, goerli]
+        instance: [mainnet, base]
     permissions:
       id-token: write
       contents: read

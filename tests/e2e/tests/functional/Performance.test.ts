@@ -16,13 +16,13 @@ test(`@LHSmokeEthMainnet Eth performance report`, async ({ newHomePage }) => {
     execSync(format(CMD, `${url}/txs`, envPrefix, `txs`))
 })
 
-test(`@LHSmokeEthGoerli @LH Eth Goerli performance report`, async ({ newHomePage }) => {
-    const url = `https://eth-goerli.blockscout.com`
-    const envPrefix = domain.exec(url)[1]
-    execSync(format(CMD, url, envPrefix, `main`))
-    execSync(format(CMD, `${url}/blocks`, envPrefix, `blocks`))
-    execSync(format(CMD, `${url}/txs`, envPrefix, `txs`))
-})
+// test(`@LHSmokeEthGoerli @LH Eth Goerli performance report`, async ({ newHomePage }) => {
+//     const url = `https://eth-goerli.blockscout.com`
+//     const envPrefix = domain.exec(url)[1]
+//     execSync(format(CMD, url, envPrefix, `main`))
+//     execSync(format(CMD, `${url}/blocks`, envPrefix, `blocks`))
+//     execSync(format(CMD, `${url}/txs`, envPrefix, `txs`))
+// })
 
 // test(`@SmokeEthGnosisMainnet Gnosis main page components`, async ({ newHomePage }) => {
 //     await newHomePage.open_custom(`http://gnosis.blockscout.com/`)
@@ -101,12 +101,13 @@ test(`@LHSmokeEthGoerli @LH Eth Goerli performance report`, async ({ newHomePage
 //     await newHomePage.checkBlocksWidget()
 // })
 
-// test(`@SmokeEthBaseMainnet Base main page components`, async ({ newHomePage }) => {
-//     await newHomePage.open_custom(`https://base.blockscout.com`)
-//     await newHomePage.checkIndexing()
-//     await newHomePage.checkHeader()
-//     await newHomePage.checkBlocksWidget()
-// })
+test(`@LHSmokeEthBaseMainnet Base performance report`, async ({ newHomePage }) => {
+    const url = `https://base.blockscout.com`
+    const envPrefix = domain.exec(url)[1]
+    execSync(format(CMD, url, envPrefix, `main`))
+    execSync(format(CMD, `${url}/blocks`, envPrefix, `blocks`))
+    execSync(format(CMD, `${url}/txs`, envPrefix, `txs`))
+})
 
 // test(`@SmokeEthZetaAthens2 Zetachain Athens 2 main page components`, async ({ newHomePage }) => {
 //     await newHomePage.open_custom(`https://zetachain-athens-2.blockscout.com/`)
