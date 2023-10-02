@@ -13,7 +13,7 @@ export class NewHomePage extends CommonPage {
 
     BLOCKS_WIDGET = `body >> div >> nth=58`
 
-    BLOCKS_WIDGET_LAST_BLOCK = `body >> div >> nth=58`
+    BLOCKS_WIDGET_LAST_BLOCK = `body >> div >> nth=59`
 
     TXNS_FIELDS = `body >> div >> nth=98 >> div >> div >> div >> div >> div >> div >> div`
 
@@ -199,11 +199,11 @@ export class NewHomePage extends CommonPage {
 
     async check_last_block(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=0 >> text=/.*s.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=11 >> text=/Txn/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=12 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=13 >> text=/Reward/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=14 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=15 >> text=Validator`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=8 >> text=/Txn/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=9 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=10 >> text=/Reward/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=11 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> nth=12 >> text=Validator`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> div >> a >> nth=1 >> text=/0x/`)
     }
 
