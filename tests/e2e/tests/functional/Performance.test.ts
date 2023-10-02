@@ -111,12 +111,6 @@ test(`@LHSmokeEthBaseMainnet Base performance report`, async ({ newHomePage }) =
     runLighthouse(`https://base.blockscout.com`)
 })
 
-// test(`@SmokeEthZetaAthens2 Zetachain Athens 2 main page components`, async ({ newHomePage }) => {
-//     await newHomePage.open_custom(`https://zetachain-athens-2.blockscout.com/`)
-//     await newHomePage.checkIndexing()
-//     await newHomePage.checkHeader()
-//     await newHomePage.checkBlocksWidget()
-// })
 
 // test(`@SmokeEthZetaAthens3 Zetachain Athens 3 main page components`, async ({ newHomePage }) => {
 //     await newHomePage.open_custom(`https://zetachain-athens-3.blockscout.com/`)

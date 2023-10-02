@@ -91,12 +91,6 @@ test(`@SmokeEthBaseMainnet Base stats counters check`, async ({ newHomePage }) =
     await newHomePage.checkStatsGraphsDisplayed()
 })
 
-test(`@SmokeEthZetaAthens2 Zetachain Athens 2 stats counters check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://zetachain-athens-2.blockscout.com/stats`)
-    await newHomePage.checkStatsCounters()
-    await newHomePage.checkStatsGraphsDisplayed()
-})
-
 test(`@SmokeEthZetaAthens3 Zetachain Athens 3 stats counters check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://zetachain-athens-3.blockscout.com/stats`)
     await newHomePage.checkStatsCounters()

@@ -25,7 +25,6 @@
     "test:prod:smoke:base_goerli": "npx playwright test --project=Chrome --grep=@SmokeEthBaseGoerli --retries=0 --timeout=60000",
     "test:prod:smoke:base": "npx playwright test --project=Chrome --grep=@SmokeEthBaseMainnet --retries=0 --timeout=60000",
     "test:prod:lh:base": "npx playwright test --project=Chrome --grep=@LHSmokeEthBaseMainnet --retries=0 --timeout=280000",
-    "test:prod:smoke:athens_2": "npx playwright test --project=Chrome --grep=@SmokeEthZetaAthens2 --retries=0 --timeout=60000",
     "test:prod:smoke:athens_3": "npx playwright test --project=Chrome --grep=@SmokeEthZetaAthens3 --retries=0 --timeout=60000",
     "test:prod:smoke:pegasus": "npx playwright test --project=Chrome --grep=@SmokeEthLightlinkPegasus --retries=0 --timeout=60000",
     "test:prod:smoke:phoenix": "npx playwright test --project=Chrome --grep=@SmokeEthLightlinkPhoenix --retries=0 --timeout=60000",

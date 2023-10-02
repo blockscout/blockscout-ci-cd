@@ -47,11 +47,6 @@ test(`@SmokeEthNeonDevnet Neon devnet blocks`, async ({ context, newHomePage }) 
     await newHomePage.checkBlocks(context)
 })
 
-test(`@SmokeEthZetaAthens2 Zetachain Athens 2 blocks`, async ({ context, newHomePage }) => {
-    await newHomePage.open_custom(`https://zetachain-athens-2.blockscout.com/blocks`)
-    await newHomePage.checkBlocks(context)
-})
-
 test(`@SmokeEthZetaAthens3 Zetachain Athens 3 blocks`, async ({ context, newHomePage }) => {
     await newHomePage.open_custom(`https://zetachain-athens-3.blockscout.com/blocks`)
     await newHomePage.checkBlocks(context)

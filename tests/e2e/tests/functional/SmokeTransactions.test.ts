@@ -75,11 +75,6 @@ test(`@SmokeEthBaseMainnet Base transactions page check`, async ({ newHomePage }
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
 
-test(`@SmokeEthZetaAthens2 Zetachain Athens 2 transactions page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://zetachain-athens-2.blockscout.com/txs`)
-    await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
-})
-
 test(`@SmokeEthZetaAthens3 Zetachain Athens 3 transactions page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://zetachain-athens-3.blockscout.com/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)

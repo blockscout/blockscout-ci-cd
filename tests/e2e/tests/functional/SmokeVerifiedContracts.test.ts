@@ -75,11 +75,6 @@ test(`@SmokeEthBaseMainnet Base verified contracts page check`, async ({ newHome
     await newHomePage.checkVerifiedContractsStats()
 })
 
-test(`@SmokeEthZetaAthens2 Zetachain Athens 2 verified contracts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://zetachain-athens-2.blockscout.com/verified-contracts`)
-    await newHomePage.checkVerifiedContractsStats()
-})
-
 test(`@SmokeEthZetaAthens3 Zetachain Athens 3 verified contracts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://zetachain-athens-3.blockscout.com/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()

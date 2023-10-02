@@ -76,10 +76,6 @@ test(`@SmokeEthBaseMainnet @NativeAccounts Base native accounts page check`, asy
     await newHomePage.checkNativeAccounts()
 })
 
-test(`@SmokeEthZetaAthens2 @NativeAccounts Zetachain Athens 2 native accounts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://zetachain-athens-2.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccountsNoPerc()
-})
 
 test(`@SmokeEthZetaAthens3 @NativeAccounts Zetachain Athens 3 native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://zetachain-athens-3.blockscout.com/accounts`)
