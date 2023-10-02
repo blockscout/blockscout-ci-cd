@@ -111,7 +111,6 @@ test(`@LHSmokeEthBaseMainnet Base performance report`, async ({ newHomePage }) =
     runLighthouse(`https://base.blockscout.com`)
 })
 
-
 // test(`@SmokeEthZetaAthens3 Zetachain Athens 3 main page components`, async ({ newHomePage }) => {
 //     await newHomePage.open_custom(`https://zetachain-athens-3.blockscout.com/`)
 //     await newHomePage.checkIndexing()
