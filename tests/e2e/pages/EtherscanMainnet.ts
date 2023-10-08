@@ -166,12 +166,8 @@ export class EtherscanMainnetPage extends CommonPage implements Comparable {
                 if (t.includes(`ERC-20 TOKEN*`)) {
                     continue
                 }
-                // console.log(`element text: ${t}`)
                 const [amount, tokenName] = t.split(` `)
                 data.tokenBalances[`${addr}/${tokenName}`] = Number(amount.replace(`,`, ``).replace(`,`, ``).replace(`,`, ``).replace(`,`, ``)).toPrecision(9)
-            }
-            for (const e of Object.entries(data.tokenBalances)) {
-                // console.log(`token balance: ${e[0]}, ${e[1]}`)
             }
         }
         return data
