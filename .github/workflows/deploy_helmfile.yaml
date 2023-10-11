@@ -82,9 +82,14 @@ jobs:
         id: deployment-name
         shell: bash
         run: |
+          mkdir -p ~/.kube
+          echo $KUBECONFIG_BASE64 | base64 --decode > ~/.kube/config
+          chmod 600 ~/.kube/config
           cd ${{ inputs.helmfileDir }}
           helmfile -e ${{ inputs.globalEnv }} -l app=${{ inputs.appName }} write-values --output-file-template "{{ .State.BaseName }}/{{ .Release.Name}}.yaml"
           echo "DEPLOYMENT_URL=https://$(cat helmfile/bs-stack.yaml|yq '.frontend.ingress.host._default')" >> "$GITHUB_ENV"
+          kubectl create namespace ${{ inputs.appName }} --dry-run=client -o yaml | kubectl apply -f -
+          kubectl annotate namespace ${{ inputs.appName }} field.cattle.io/projectId=${{ secrets.RANCHER_PROJECT_ID }} --overwrite
 
       - uses: chrnorm/deployment-action@v2
         name: Create GitHub deployment
