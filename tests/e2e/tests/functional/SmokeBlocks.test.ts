@@ -83,7 +83,7 @@ test(`@SmokeEthFuse Fuse blocks`, async ({ context, newHomePage }) => {
 })
 
 test(`@SmokeEthFuseTestnet Fuse testnet blocks`, async ({ context, newHomePage }) => {
-    await newHomePage.open_custom(`https://fuse-testnet.blockscout.com/blocks`)
+    await newHomePage.open_custom(`https://explorer.fusespark.io/blocks`)
     await newHomePage.checkBlocks(context)
 })
 

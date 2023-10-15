@@ -134,7 +134,7 @@ test(`@SmokeEthFuse Fuse stats counters check`, async ({ newHomePage }) => {
 })
 
 test(`@SmokeEthFuseTestnet Fuse testnet stats counters check`, async ({ context, newHomePage }) => {
-    await newHomePage.open_custom(`https://fuse-testnet.blockscout.com/stats`)
+    await newHomePage.open_custom(`https://explorer.fusespark.io/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()
 })

@@ -111,7 +111,7 @@ test(`@SmokeEthFuse Fuse transactions page check`, async ({ newHomePage }) => {
 })
 
 test(`@SmokeEthFuseTestnet Fuse testnet transactions page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://fuse-testnet.blockscout.com/txs`)
+    await newHomePage.open_custom(`https://explorer.fusespark.io/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
 

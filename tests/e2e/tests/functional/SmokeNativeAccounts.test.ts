@@ -112,7 +112,7 @@ test(`@SmokeEthFuse @NativeAccounts Fuse native accounts page check`, async ({ n
 })
 
 test(`@SmokeEthFuseTestnet @NativeAccounts Fuse testnet native accounts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://fuse-testnet.blockscout.com/accounts`)
+    await newHomePage.open_custom(`https://explorer.fusespark.io/accounts`)
     await newHomePage.checkNativeAccountsNoPerc()
 })
 

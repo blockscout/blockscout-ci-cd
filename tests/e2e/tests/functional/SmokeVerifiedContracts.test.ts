@@ -112,7 +112,7 @@ test(`@SmokeEthFuse Fuse verified contracts page check`, async ({ newHomePage })
 
 // no verified contracts yet
 test.skip(`@SmokeEthFuseTestnet Fuse testnet verified contracts page check`, async ({ context, newHomePage }) => {
-    await newHomePage.open_custom(`https://fuse-testnet.blockscout.com/verified-contracts`)
+    await newHomePage.open_custom(`https://explorer.fusespark.io/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
 })
 

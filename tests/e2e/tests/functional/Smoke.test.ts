@@ -156,7 +156,7 @@ test(`@SmokeEthFuse Fuse main page components`, async ({ newHomePage }) => {
 })
 
 test(`@SmokeEthFuseTestnet Fuse testnet main page components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://fuse-testnet.blockscout.com/`)
+    await newHomePage.open_custom(`https://explorer.fusespark.io/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()
     await newHomePage.checkBlocksWidget()
