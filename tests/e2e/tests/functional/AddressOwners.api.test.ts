@@ -77,7 +77,7 @@ test(`@AddressOwners Deploy ownable NFT token, verify addrress`, async () => {
     console.log(`receipt: ${JSON.stringify(receipt)}`)
 })
 
-test.only(`@AddressOwners Deploy ownable ERC20 token, verify addrress`, async () => {
+test(`@AddressOwners Deploy ownable ERC20 token, verify addrress`, async () => {
     const contracts = new Contracts(process.env.NETWORK_URL)
 
     const token = await deployContract(
