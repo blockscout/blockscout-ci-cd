@@ -36,14 +36,14 @@ const waitReceiptWithBlock = async (provider: JsonRpcProvider, hash: string): Pr
 
 const deployContract = async (contracts: Contracts, artifactName: string, contractName: string, contractSymbol: string, suffix = `sol`): Promise<TestToken> => {
     console.log(`deploying contract`)
-    const token = await contracts.deploySymbolContract(contractName, contractSymbol, artifactName, suffix) as TestToken
+    const token = await contracts.deploySymbolContract(contractName, contractSymbol, `1`, artifactName, suffix) as TestToken
     await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
     return token
 }
 
 const deployNFT = async (contracts: Contracts, artifactName: string, contractName: string, contractSymbol: string, suffix = `sol`): Promise<TestNFT> => {
     console.log(`deploying contract`)
-    const token = await contracts.deploySymbolContract(contractName, contractSymbol, artifactName, suffix) as TestNFT
+    const token = await contracts.deploySymbolContract(contractName, contractSymbol, `1`, artifactName, suffix) as TestNFT
     await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
     return token
 }
@@ -77,7 +77,7 @@ test(`@AddressOwners Deploy ownable NFT token, verify addrress`, async () => {
     console.log(`receipt: ${JSON.stringify(receipt)}`)
 })
 
-test(`@AddressOwners Deploy ownable ERC20 token, verify addrress`, async () => {
+test.only(`@AddressOwners Deploy ownable ERC20 token, verify addrress`, async () => {
     const contracts = new Contracts(process.env.NETWORK_URL)
 
     const token = await deployContract(

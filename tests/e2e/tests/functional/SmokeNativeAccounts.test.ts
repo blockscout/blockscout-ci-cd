@@ -107,7 +107,7 @@ test(`@SmokeEthShibarium @NativeAccounts Shibarium native accounts page check`, 
 })
 
 test(`@SmokeEthFuse @NativeAccounts Fuse native accounts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://fuse.blockscout.com/accounts`)
+    await newHomePage.open_custom(`https://explorer.fuse.io/accounts`)
     await newHomePage.checkNativeAccounts()
 })
 

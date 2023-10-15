@@ -106,7 +106,7 @@ test(`@SmokeEthShibarium Shibarium verified contracts page check`, async ({ newH
 })
 
 test(`@SmokeEthFuse Fuse verified contracts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://fuse.blockscout.com/verified-contracts`)
+    await newHomePage.open_custom(`https://explorer.fuse.io/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
 })
 

@@ -78,7 +78,7 @@ test(`@SmokeEthShibarium Shibarium blocks`, async ({ context, newHomePage }) => 
 })
 
 test(`@SmokeEthFuse Fuse blocks`, async ({ context, newHomePage }) => {
-    await newHomePage.open_custom(`https://fuse.blockscout.com/blocks`)
+    await newHomePage.open_custom(`https://explorer.fuse.io/blocks`)
     await newHomePage.checkBlocks(context)
 })
 

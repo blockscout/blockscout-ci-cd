@@ -50,11 +50,11 @@ export default class Contracts {
         return contract
     }
 
-    async deploySymbolContract(contractName: string, symbol: string, contractFileName: string, suffix: string): Promise<Contract> {
+    async deploySymbolContract(contractName: string, symbol: string, randomVar: string, contractFileName: string, suffix: string): Promise<Contract> {
         const artifact = await this.readArtifact(contractFileName, suffix)
 
         const factory = new ContractFactory(artifact.abi, artifact.bytecode, this.wallet)
-        const d = await factory.deploy(contractName, symbol)
+        const d = await factory.deploy(contractName, symbol, randomVar)
         const contract = await d.deployed()
         console.log(`deployed contract:\nName: ${contractName}\nArtifact: ${contractFileName}\nAddress: ${contract.address}\nSymbol: ${symbol}`)
         return contract

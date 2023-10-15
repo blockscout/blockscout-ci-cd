@@ -106,7 +106,7 @@ test(`@SmokeEthShibarium Shibarium transactions page check`, async ({ newHomePag
 })
 
 test(`@SmokeEthFuse Fuse transactions page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://fuse.blockscout.com/txs`)
+    await newHomePage.open_custom(`https://explorer.fuse.io//txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
 

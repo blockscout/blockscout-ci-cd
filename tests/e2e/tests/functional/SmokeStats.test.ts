@@ -128,7 +128,7 @@ test(`@SmokeEthShibarium Shibarium stats counters check`, async ({ newHomePage }
 })
 
 test(`@SmokeEthFuse Fuse stats counters check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://fuse.blockscout.com/stats`)
+    await newHomePage.open_custom(`https://explorer.fuse.io/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()
 })

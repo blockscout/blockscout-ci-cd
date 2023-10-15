@@ -149,7 +149,7 @@ test(`@SmokeEthShibarium Shibarium main page components`, async ({ newHomePage }
 })
 
 test(`@SmokeEthFuse Fuse main page components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://fuse.blockscout.com/`)
+    await newHomePage.open_custom(`https://explorer.fuse.io/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()
     await newHomePage.checkBlocksWidget()
