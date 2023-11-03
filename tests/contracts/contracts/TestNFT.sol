@@ -10,7 +10,7 @@ contract TestNFT is ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    constructor(string memory name, string memory symbol)
+    constructor(string memory name, string memory symbol, int256 randomVar)
         ERC721(name, symbol)
     {
         

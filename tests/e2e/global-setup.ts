@@ -47,7 +47,7 @@ const setupContracts = async (): Promise<void> => {
     const contractName = `TestToken`
     const tokenName = `EPIC`
     const tokenSymbol = `EPC`
-    const token = await contracts.deploySymbolContract(tokenName, tokenSymbol, contractName) as TestToken
+    const token = await contracts.deploySymbolContract(tokenName, tokenSymbol, `1`, contractName, `sol`) as TestToken
     const receipt0 = await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
 
     console.log(`minting tokens`)
@@ -62,7 +62,7 @@ const setupContracts = async (): Promise<void> => {
     const contractNameNFT = `TestNFT`
     const tokenNameNFT = `NFT`
     const tokenSymbolNFT = `NFT`
-    const nft = await contracts.deploySymbolContract(tokenNameNFT, tokenSymbolNFT, contractNameNFT) as TestNFT
+    const nft = await contracts.deploySymbolContract(tokenNameNFT, tokenSymbolNFT, `1`, contractNameNFT, `sol`) as TestNFT
     const receiptNFT = await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
 
     console.log(`minting NFT`)
@@ -76,7 +76,7 @@ const setupContracts = async (): Promise<void> => {
     console.log(`deploying ERC20 contract (verified)`)
     const tokenNameV = `EPICV`
     const tokenSymbolV = `EPICV`
-    const tokenV = await contracts.deploySymbolContract(tokenNameV, tokenSymbolV, `TestToken`) as TestToken
+    const tokenV = await contracts.deploySymbolContract(tokenNameV, tokenSymbolV, `1`, `TestToken`, `sol`) as TestToken
     const receipt0V = await waitReceiptWithBlock(contracts.provider, token.deployTransaction.hash)
 
     console.log(`minting tokens`)
@@ -91,7 +91,7 @@ const setupContracts = async (): Promise<void> => {
     const contractNameNFTV = `TestNFTV`
     const tokenNameNFTV = `NFTV`
     const tokenSymbolNFTV = `NFTV`
-    const nftV = await contracts.deploySymbolContract(tokenNameNFTV, tokenSymbolNFTV, `TestNFT`) as TestNFT
+    const nftV = await contracts.deploySymbolContract(tokenNameNFTV, tokenSymbolNFTV, `1`, `TestNFT`, `sol`) as TestNFT
     const receiptNFTV = await waitReceiptWithBlock(contracts.provider, tokenV.deployTransaction.hash)
 
     console.log(`minting NFT`)

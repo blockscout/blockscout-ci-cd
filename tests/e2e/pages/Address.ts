@@ -32,7 +32,7 @@ export class AddressPage extends CommonPage {
     }
 
     async check_address_description(): Promise<void> {
-        await this.check_table_element(`Contract details`, 0, `ContractToken`)
+        await this.check_table_element(`Contract details`, 0, `Token`)
         await this.check_selector(`text=/0x/`, `wrong account address`)
         await this.check_table_element(`Token name`, 0, `EPIC.*(EPC)`)
         await this.check_table_element(`Creator`, 0, `0x.*at.*0x.*`)
