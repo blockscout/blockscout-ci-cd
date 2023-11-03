@@ -26,7 +26,7 @@ export class TokenPage extends CommonPage {
     }
 
     async selectProjectInfo(): Promise<void> {
-        await this.actions.clickElement(`text=Project info`)
+        await this.actions.clickElement(`[aria-label="Show project info"]`)
     }
 
     async check_token(): Promise<void> {
