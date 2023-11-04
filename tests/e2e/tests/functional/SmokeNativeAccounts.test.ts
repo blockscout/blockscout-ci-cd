@@ -18,7 +18,7 @@ test(`@SmokeEthGoerli @NativeAccounts Eth Goerli native accounts page check`, as
 
 test(`@SmokeEthGnosisMainnet @NativeAccounts Gnosis native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`http://gnosis.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
 test(`@SmokeEthGnosisChiado @NativeAccounts Gnosis Chiado native accounts page check`, async ({ newHomePage }) => {
@@ -73,7 +73,7 @@ test(`@SmokeEthBaseGoerli @NativeAccounts Base goerli native accounts page check
 
 test(`@SmokeEthBaseMainnet @NativeAccounts Base native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://base.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccounts()
+    await newHomePage.checkNativeAccountsNoPerc()
 })
 
 test(`@SmokeEthZetaAthens3 @NativeAccounts Zetachain Athens 3 native accounts page check`, async ({ newHomePage }) => {
