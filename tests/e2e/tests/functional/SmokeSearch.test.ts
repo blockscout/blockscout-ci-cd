@@ -185,7 +185,7 @@ test(`@SmokeEthOptimismSepolia Optimism sepolia testnet Search USDT`, async ({ n
     await newHomePage.checkSearchItemsIcons()
 })
 
-test(`@SmokeEthIotaShimmerMainnet Iota Shimmer mainnet Search USDT`, async ({ newHomePage }) => {
+test(`@SmokeEthIotaMainnetShimmer Iota Shimmer mainnet Search USDT`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://explorer.evm.shimmer.network/`)
     await newHomePage.search(COMMON_TOKEN_NAME)
     await newHomePage.findInSearchItems(COMMON_TOKEN_FULL_NAME)

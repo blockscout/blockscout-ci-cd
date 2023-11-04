@@ -197,7 +197,7 @@ test(`@SmokeEthOptimismSepolia Optimism sepolia testnet main page components`, a
     await newHomePage.checkBlocksWidget()
 })
 
-test(`@SmokeEthIotaShimmerMainnet Iota Shimmer mainnet main page components`, async ({ newHomePage }) => {
+test(`@SmokeEthIotaMainnetShimmer Iota Shimmer mainnet main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://explorer.evm.shimmer.network/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()

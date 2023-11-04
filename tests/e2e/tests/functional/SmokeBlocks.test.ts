@@ -124,7 +124,7 @@ test(`@SmokeEthOptimismSepolia Optimism sepolia blocks`, async ({ context, newHo
     await newHomePage.checkL2Blocks(context)
 })
 
-test(`@SmokeEthIotaShimmerMainnet Iota Shimmer mainnet blocks`, async ({ context, newHomePage }) => {
+test(`@SmokeEthIotaMainnetShimmer Iota Shimmer mainnet blocks`, async ({ context, newHomePage }) => {
     await newHomePage.open_custom(`https://explorer.evm.shimmer.network/blocks`)
     await newHomePage.checkBlocks(context)
 })

@@ -121,7 +121,7 @@ test(`@SmokeEthShibariumTestnet @NativeAccounts Shibarium testnet native account
     await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthIotaShimmerMainnet @NativeAccounts Iota Shimmernative accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthIotaMainnetShimmer @NativeAccounts Iota Shimmernative accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://explorer.evm.shimmer.network/accounts`)
     await newHomePage.checkNativeAccounts()
 })

@@ -145,7 +145,7 @@ test(`@SmokeEthShibariumTestnet Shibarium testnet stats counters check`, async (
     await newHomePage.checkStatsGraphsDisplayed()
 })
 
-test(`@SmokeEthIotaShimmerMainnet Iota Shimmernative counters check`, async ({ newHomePage }) => {
+test(`@SmokeEthIotaMainnetShimmer Iota Shimmernative counters check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://explorer.evm.shimmer.network/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()

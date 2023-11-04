@@ -125,7 +125,7 @@ test(`@SmokeEthOptimismSepoliaTx Optimism sepolia transactions page check`, asyn
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
 
-test(`@SmokeEthIotaShimmerMainnet Iota Shimmer mainnet transactions page check`, async ({ newHomePage }) => {
+test(`@SmokeEthIotaMainnetShimmer Iota Shimmer mainnet transactions page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://explorer.evm.shimmer.network/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
