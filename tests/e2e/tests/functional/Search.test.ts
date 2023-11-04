@@ -3,26 +3,7 @@ import test from '@lib/BaseTest'
 test.describe.configure({ mode: `parallel` })
 
 test.skip(`@AccountImage @Search Check block number search`, async ({ newHomePage, blocksPage }) => {
-    const {
-        TestTokenHolder,
-        TestTokenAddress,
-        TestTokenName,
-        TestTokenSymbol,
-        TestTokenDeployTXHash,
-        TestTokenDeployTXBlockNumber,
-        TestTokenTXMintHash,
-        TestTokenTXMintBlockNumber,
-        TestTokenTXRevertHash,
-        TestTokenTXRevertBlockNumber,
-
-        TestNFTAddress,
-        TestNFTName,
-        TestNFTSymbol,
-        TestNFTDeployTXHash,
-        TestNFTDeployTXBlockNumber,
-        TestNFTTXMintHash,
-        TestNFTTXMintBlockNumber,
-    } = process.env
+    const { TestTokenDeployTXBlockNumber } = process.env
     await blocksPage.open(TestTokenDeployTXBlockNumber)
     await blocksPage.openDescriptionDetails()
     const bh = await blocksPage.getBlockHash()
