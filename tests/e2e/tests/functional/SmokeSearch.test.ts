@@ -6,7 +6,6 @@ test.describe.configure({ mode: `parallel` })
     they do not interact with contract deployments, checking static data
     test logic is common, however we separate the tests for visibility
 */
-// rootstock, neon
 
 const COMMON_TOKEN_NAME = `USDT`
 const COMMON_TOKEN_FULL_NAME = `Tether USD \\(USDT\\)`
@@ -99,6 +98,13 @@ test(`@SmokeEthBaseGoerli Base goerli Search USDT`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://base-goerli.blockscout.com/`)
     await newHomePage.search(COMMON_TOKEN_NAME)
     await newHomePage.findInSearchItems(COMMON_TOKEN_FULL_NAME)
+    await newHomePage.checkSearchItemsIcons()
+})
+
+test(`@SmokeEthBaseSepolia Base Sepolia Search USDT`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://base-sepolia.blockscout.com/`)
+    await newHomePage.search(`MyToken`)
+    await newHomePage.findInSearchItems(`MyToken \\(MTKN\\)`)
     await newHomePage.checkSearchItemsIcons()
 })
 
