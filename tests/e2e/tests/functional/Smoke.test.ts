@@ -99,6 +99,27 @@ test(`@SmokeEthBaseGoerli Base goerli main page components`, async ({ newHomePag
     await newHomePage.checkBlocksWidget()
 })
 
+test(`@SmokeEthBaseSepolia Base Sepolia main page components`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://base-sepolia.blockscout.com/`)
+    await newHomePage.checkIndexing()
+    await newHomePage.checkHeader()
+    await newHomePage.checkBlocksWidget()
+})
+
+test(`@SmokezkSync zkSync Era main page components`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://zksync-era-mainnet.blockscout.com/`)
+    await newHomePage.checkIndexing()
+    await newHomePage.checkHeader()
+    await newHomePage.checkBlocksWidget()
+})
+
+test(`@SmokeStability zkSync Era main page components`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://stability-betanet.blockscout.com/`)
+    await newHomePage.checkIndexing()
+    await newHomePage.checkHeader()
+    await newHomePage.checkBlocksWidget()
+})
+
 test(`@SmokeEthBaseMainnet Base main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://base.blockscout.com`)
     await newHomePage.checkIndexing()
