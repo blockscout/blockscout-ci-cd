@@ -87,7 +87,7 @@ jobs:
           chmod 600 ~/.kube/config
           cd ${{ inputs.helmfileDir }}
           helmfile -e ${{ inputs.globalEnv }} -l app=${{ inputs.appName }} write-values --output-file-template "{{ .State.BaseName }}/{{ .Release.Name}}.yaml"
-          echo "DEPLOYMENT_URL=https://$(cat helmfile/bs-stack.yaml|yq '.frontend.ingress.host._default')" >> "$GITHUB_ENV"
+          echo "DEPLOYMENT_URL=https://$(cat helmfile/bs-stack.yaml|yq '.frontend.ingress.hostname')" >> "$GITHUB_ENV"
           kubectl create namespace ${{ inputs.appName }} --dry-run=client -o yaml | kubectl apply -f -
           kubectl annotate namespace ${{ inputs.appName }} field.cattle.io/projectId=${{ secrets.RANCHER_PROJECT_ID }} --overwrite
 
