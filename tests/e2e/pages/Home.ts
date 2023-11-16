@@ -96,6 +96,8 @@ export class HomePage {
 
     TRANSACTIONS = `[data-test='chain_transaction']`
 
+    ADDRESSES_VERIFIED_TABLE = `div[role="tabpanel"] >> div`
+
     // Verified contracts
 
     readonly page: Page
@@ -117,33 +119,25 @@ export class HomePage {
         await this.actions.clickElement(this.BLOCKCHAIN_TAB_VERIFIED_CONTRACTS)
     }
 
-    async check_verified_contracts_list(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`h2 >> text=Contracts`, `no contracts header`)
-        await this.actions.verifyElementIsDisplayed(`h2 >> text=Verified contracts`, `no verified contracts header`)
-        await this.actions.verifyElementIsDisplayed(`[class="d-flex flex-column"] >> nth=0 >> text=/\\d+/`, `no verified contracts header`)
-        await this.actions.verifyElementIsDisplayed(`[class="d-flex flex-column"] >> nth=1 >> text=/\\d+/`, `no verified contracts header`)
-        await this.actions.verifyElementIsDisplayed(`[class="d-flex flex-column"] >> nth=2 >> text=/\\d+/`, `no verified contracts header`)
-        await this.actions.verifyElementIsDisplayed(`[class="d-flex flex-column"] >> nth=3 >> text=/\\d+/`, `no verified contracts header`)
-        await this.actions.verifyElementIsDisplayed(`th >> nth=0 >> text=Address`, `no verified contracts header`)
-        await this.actions.verifyElementIsDisplayed(`th >> nth=1 >> text=Balance`, `no verified contracts header`)
-        await this.actions.verifyElementIsDisplayed(`th >> nth=2 >> text=Txns`, `no verified contracts header`)
-        await this.actions.verifyElementIsDisplayed(`th >> nth=3 >> text=Compiler`, `no verified contracts header`)
-        await this.actions.verifyElementIsDisplayed(`th >> nth=4 >> text=Version`, `no verified contracts header`)
-        await this.actions.verifyElementIsDisplayed(`th >> nth=5 >> text=Optimization`, `no verified contracts header`)
-        await this.actions.verifyElementIsDisplayed(`th >> nth=6 >> text=Constructor args`, `no verified contracts header`)
-        await this.actions.verifyElementIsDisplayed(`th >> nth=7 >> text=Verified`, `no verified contracts header`)
-        await this.actions.verifyElementIsDisplayed(`th >> nth=8 >> text=Market cap`, `no verified contracts header`)
-
-        await this.actions.verifyElementIsDisplayed(`td >> nth=0 >> a >> text=/TestToken/`, `no test contracts address`)
-        await this.actions.verifyElementIsDisplayed(`td >> nth=0 >> a >> text=0x`, `no test contracts address`)
-        // await this.actions.verifyElementIsDisplayed(`td >> nth=1 >> text=//`, `no test contracts address`)
-        await this.actions.verifyElementIsDisplayed(`td >> nth=2 >> text=/\\d+|N/A/`, `no test contracts transactions`)
-        await this.actions.verifyElementIsDisplayed(`td >> nth=3 >> text=Solidity`, `no test contracts compiler type`)
-        await this.actions.verifyElementIsDisplayed(`td >> nth=4 >> text=/v\\d+/`, `no test contracts compiler version`)
-        await this.actions.verifyElementIsDisplayed(`td >> nth=5 >> i`, `no optimizations icon`)
-        await this.actions.verifyElementIsDisplayed(`td >> nth=6 >> i`, `no constructor args icon`)
-        await this.actions.verifyElementIsDisplayed(`td >> nth=7 >> text=ago`, `no verified date`)
-        await this.actions.verifyElementIsDisplayed(`td >> nth=8 >> text=N/A`, `no market cap`)
+    async check_verified_address_page(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`text=Contract Source Code Verified (Partial Match)`, `no contract verification match message is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=10 >> text=/Contract name/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=11 >> text=/TestToken/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=13 >> text=/Compiler version/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=14 >> text=/v0\\.8\\.17\\+commit\\.8df45f5f/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=16 >> text=/EVM version/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=17 >> text=/default/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=19 >> text=/Optimization enabled/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=20 >> text=/true/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=22 >> text=/Optimization runs/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=23 >> text=/200/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=25 >> text=/Verified at/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=26 >> text=/UTC/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=28 >> text=/Constructor Arguments/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=30 >> text=/_name/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=30 >> text=/_symbol/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=30 >> text=/randomVar/`, `no contract name field is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.ADDRESSES_VERIFIED_TABLE} >> nth=30 >> text=/EPICV/`, `no contract name field is present`)
     }
 
     async delay(amount: number): Promise<void> {

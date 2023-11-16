@@ -88,12 +88,9 @@ export class VerificationPage extends CommonPage {
     async fillFlattenForm(form: VerificationFlattenForm): Promise<void> {
         await this.actions.clickElement(`${this.SECTION}8`)
         await this.actions.clickElement(this.list_box(2, 1))
-        await this.actions.enterElementText(`${this.SECTION}12 >> input`, form.contractName)
         await this.actions.clickElement(`${this.SECTION}21`)
-        await this.actions.clickElement(this.list_box(3, 4))
-        await this.actions.clickElement(`${this.SECTION}28`)
-        await this.actions.clickElement(this.list_box(4, 1))
-        await this.actions.enterElementText(`${this.SECTION}43 >> textarea`, form.code)
+        await this.actions.clickElement(this.list_box(3, 7))
+        await this.actions.enterElementText(`${this.SECTION}41 >> textarea`, form.code)
         await this.actions.clickElement(this.SUMBIT)
     }
 

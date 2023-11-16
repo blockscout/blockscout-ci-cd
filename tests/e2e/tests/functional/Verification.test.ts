@@ -4,18 +4,14 @@ import { VerificationFlattenForm } from '@pages/Verification'
 
 test.describe.configure({ mode: `parallel` })
 
-test.skip(`@Verification Can list verified contracts`, async (
+test(`@Verification Can list verified contracts`, async (
     {
         homePage, verificationPage, transactionPage, transactionsListPage,
     },
 ) => {
     const {
         TestTokenAddressV,
-        TestTokenNameV,
         TestTokenFlatContractCode,
-        TestTokenTXMintHashV,
-        MinerAddress,
-        ZeroAddress,
     } = process.env
     await verificationPage.open(TestTokenAddressV)
     const form = {
@@ -25,29 +21,7 @@ test.skip(`@Verification Can list verified contracts`, async (
         code: TestTokenFlatContractCode,
     } as VerificationFlattenForm
     await verificationPage.fillFlattenForm(form)
-    // await verificationPage.checkCodePage({
-    //     contractNameText: `Contract name`,
-    //     contractName: `TestToken`,
-    //     compilerVersionText: `Compiler version`,
-    //     compilerVersion: `v0.8.17+commit.8df45f5f`,
-    //     EVMVersionText: `EVM Version`,
-    //     EVMVersion: `default`,
-    //     optomizationEnabledText: `Optimization enabled`,
-    //     optomizationEnabled: `true`,
-    //     optimizationRunsText: `Optimization runs`,
-    //     optimizationRuns: `200`,
-    //     verifiedAtText: `Verified at`,
-    //     verifiedAt: `Z`,
-    //     constructorArgsText: `Constructor Arguments`,
-    //     codeConstructorArgs: `000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000005455049435600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000054550494356000000000000000000000000000000000000000000000000000000`,
-    //     codeTokenName: `EPICV`,
-    //     codeTokenSymbol: `EPICV`,
-    //     contractSourceCodeText: `Contract source code`,
-    //     contractABIText: `Contract ABI`,
-    //     deployedByteCodeText: `Deployed ByteCode`,
-    // })
-    // await homePage.open_verificated_contracts()
-    // await homePage.check_verified_contracts_list()
+    await homePage.check_verified_address_page()
 })
 
 test.skip(`@Verification Can verify NFT contract with flatten`, async ({ verificationPage, transactionPage, transactionsListPage }) => {

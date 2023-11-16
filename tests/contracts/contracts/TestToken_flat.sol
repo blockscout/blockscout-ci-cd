@@ -601,7 +601,7 @@ contract TestToken is ERC20, Ownable {
     constructor(
         string memory _name,
         string memory _symbol,
-        string memory randomVar
+        int256 randomVar
     ) ERC20(_name, _symbol) {
         _mint(msg.sender, 100 * 10 ** uint(decimals()));
     }

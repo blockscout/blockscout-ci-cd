@@ -14,3 +14,4 @@ tokens.compare
 tests/zbroken
 tests/e2e/getGenesisData.js
 tests/custom_abi.json
+api_v2_metrics_dashboard.json
