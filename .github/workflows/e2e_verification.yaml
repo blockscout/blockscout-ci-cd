@@ -1,6 +1,7 @@
 name: E2E tests verification
 
 on:
+  push:
   workflow_dispatch:
   workflow_call:
 
