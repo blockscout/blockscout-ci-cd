@@ -23,7 +23,7 @@ export class CommonPage {
 
     SIGN_IN = `body >> div[data-label="hero plate"] >> a >> nth=0`
 
-    SIGNED_IN = `body >> div[data-label="hero plate"] >> button >> nth=0`
+    SIGNED_IN = `body >> div[data-label="hero plate"] >> div >> nth=1`
 
     ACCOUNT_MENU = `#navbarBlocksDropdown >> nth=1`
 
