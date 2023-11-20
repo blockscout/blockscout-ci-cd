@@ -13,7 +13,7 @@ test.skip(`@AccountImage @Authorized @SignUp Sign up`, async ({ commonPage }) =>
     await commonPage.isSignedIn()
 })
 
-test.only(`@AccountImage @Authorized Check profile info`, async ({ authorized }) => {
+test(`@AccountImage @Authorized Check profile info`, async ({ authorized }) => {
     await authorized.openAccount()
     await authorized.checkProfile()
 })
