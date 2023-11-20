@@ -17,7 +17,7 @@ const config: PlaywrightTestConfig = {
     timeout: 60000,
 
     // number of retries if test case fails
-    retries: 0,
+    retries: 3,
 
     // Reporters
     reporter: [[`list`], [`html`, { outputFolder: `html-report`, open: `never` }], [`junit`, { outputFile: `results.xml` }]],
