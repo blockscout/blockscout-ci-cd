@@ -63,7 +63,7 @@ jobs:
         if: always()
         with:
           name: report
-          path: tests/e2e/html-report/index.html
+          path: tests/e2e/test-results
 defaults:
   run:
     shell: bash
