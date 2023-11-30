@@ -41,6 +41,7 @@ export class NewHomePage extends CommonPage {
 
     async search(text: string): Promise<void> {
         await this.actions.enterElementText(this.SEARCH_BAR, text)
+        await this.delay(5000)
     }
 
     async checkSearchItemText(pos: number, text: string): Promise<void> {

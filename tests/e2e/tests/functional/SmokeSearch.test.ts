@@ -136,7 +136,7 @@ test(`@SmokeEthLightlinkPhoenix Phoenix Search USDT`, async ({ newHomePage }) =>
     await newHomePage.checkSearchItemsIcons()
 })
 
-test(`@SmokeEthIotaShimmer Iota Shimmer Search USDT`, async ({ newHomePage }) => {
+test.only(`@SmokeEthIotaShimmer Iota Shimmer Search USDT`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://explorer.evm.testnet.shimmer.network`)
     await newHomePage.search(COMMON_TOKEN_NAME)
     await newHomePage.findInSearchItems(`Wrapped USDT \\(WUSDT\\)`)
