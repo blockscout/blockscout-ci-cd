@@ -131,10 +131,10 @@ test(`@SmokeEthIotaMainnetShimmer Iota Shimmer mainnet blocks`, async ({ context
 
 test(`@SmokeEthETCMordor Mordor blocks`, async ({ context, newHomePage }) => {
     await newHomePage.open_custom(`https://etc-mordor.blockscout.com/blocks`)
-    await newHomePage.checkBlocks(context)
+    await newHomePage.checkBlocksNoFees(context)
 })
 
 test(`@SmokeEthETCMainnet ETC blocks`, async ({ context, newHomePage }) => {
     await newHomePage.open_custom(`https://etc.blockscout.com/blocks`)
-    await newHomePage.checkBlocks(context)
+    await newHomePage.checkBlocksNoFees(context)
 })

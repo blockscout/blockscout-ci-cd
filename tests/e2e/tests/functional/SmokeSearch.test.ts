@@ -27,7 +27,7 @@ test(`@SmokeEthGoerli Eth Goerli Search USDT`, async ({ newHomePage }) => {
 test(`@SmokeEthGnosisMainnet Gnosis Search USDT`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`http://gnosis.blockscout.com/`)
     await newHomePage.search(COMMON_TOKEN_NAME)
-    await newHomePage.findInSearchItems(COMMON_TOKEN_FULL_NAME)
+    await newHomePage.findInSearchItems(`Tether USD on xDai \\(USDT\\)`)
     await newHomePage.checkSearchItemsIcons()
 })
 
@@ -146,7 +146,7 @@ test(`@SmokeEthIotaShimmer Iota Shimmer Search USDT`, async ({ newHomePage }) =>
 test(`@SmokeEthImmutable Immutable Search USDT`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://explorer.testnet.immutable.com/`)
     await newHomePage.search(COMMON_TOKEN_NAME)
-    await newHomePage.actions.verifyElementIsDisplayed(`section[role="dialog"] >> nth=0 >> text=/Tether USD/`)
+    await newHomePage.actions.verifyElementIsDisplayed(`section[role="dialog"] >> nth=0 >> text=/Tether \\(USDT\\)/`)
     await newHomePage.actions.verifyElementIsDisplayed(`section[role="dialog"] >> nth=0 >> svg`)
 })
 
