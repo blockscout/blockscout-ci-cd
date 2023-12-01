@@ -183,10 +183,6 @@ export class AuthorizedArea extends CommonPage {
         await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}account/verified-addresses`)
     }
 
-    async openVerifiedDetails(name: string): Promise<void> {
-        
-    }
-
     async addAddressDetails(ti: TokenInfoSpec): Promise<void> {
         await this.actions.clickElement(`button[aria-label="edit"]`)
         await this.actions.enterElementText(`input[name="requester_name"]`, ti.requesterName)
