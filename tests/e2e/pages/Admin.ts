@@ -99,6 +99,11 @@ export class AdminPage extends CommonPage {
         await this.actions.clickElement(`text=Todo Submissions`)
     }
 
+    async approveTestUserSubmission(userEmail: string):Promise<void> {
+        await this.actions.clickElement(`text=/${userEmail}/ >> nth=1`)
+        await this.actions.clickElement(`text=/Approve/`)
+    }
+
     async selectSuperUserTab(): Promise<void> {
         await this.actions.clickElement(`text=Super User`)
     }

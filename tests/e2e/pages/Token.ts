@@ -29,6 +29,10 @@ export class TokenPage extends CommonPage {
         await this.actions.clickElement(`[aria-label="Show project info"]`)
     }
 
+    async verifyProjectInfo(uniqueSupportURL: string): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`text=/${uniqueSupportURL}/`)
+    }
+
     async check_token(): Promise<void> {
         await this.check_selector(`text=/0x/`, `no token address is displayed`)
         await this.check_table_element(`EPIC (EPC)`, 1, `ERC-20`)

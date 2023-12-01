@@ -44,6 +44,18 @@ export interface PublicTagSpec {
     description: string
 }
 
+export interface TokenInfoSpec {
+    requesterName: string
+    requesterEmail: string
+    projectName: string
+    projectEmail: string
+    projectWebsite: string
+    docs: string
+    support: string
+    iconURL: string
+    projectDescription: string
+}
+
 export class AuthorizedArea extends CommonPage {
     readonly page: Page
 
@@ -165,6 +177,30 @@ export class AuthorizedArea extends CommonPage {
         await this.actions.navigateToURL(process.env.BLOCKSCOUT_URL, options)
         await this.actions.clickElement(this.SIGNED_IN)
         await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}auth/profile`, options)
+    }
+
+    async openVerifiedAddresses(): Promise<void> {
+        await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}account/verified-addresses`)
+    }
+
+    async openVerifiedDetails(name: string): Promise<void> {
+        
+    }
+
+    async addAddressDetails(ti: TokenInfoSpec): Promise<void> {
+        await this.actions.clickElement(`button[aria-label="edit"]`)
+        await this.actions.enterElementText(`input[name="requester_name"]`, ti.requesterName)
+        await this.actions.enterElementText(`input[name="requester_email"]`, ti.requesterEmail)
+        await this.actions.enterElementText(`input[name="project_name"]`, ti.projectName)
+        await this.actions.clickElement(`main >> div >> nth=11`)
+        await this.actions.clickElement(`text=/Bridge/`)
+        await this.actions.enterElementText(`input[name="project_email"]`, ti.projectEmail)
+        await this.actions.enterElementText(`input[name="project_website"]`, ti.projectWebsite)
+        await this.actions.enterElementText(`input[name="docs"]`, ti.docs)
+        await this.actions.enterElementText(`input[name="support"]`, ti.support)
+        await this.actions.enterElementText(`input[name="icon_url"]`, ti.iconURL)
+        await this.actions.enterElementText(`textarea[name="project_description"]`, ti.projectDescription)
+        await this.actions.clickElement(`text=/Send request/`)
     }
 
     async selectPrivateTagsTab(): Promise<void> {

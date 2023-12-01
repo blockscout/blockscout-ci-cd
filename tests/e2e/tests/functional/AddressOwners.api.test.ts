@@ -83,7 +83,7 @@ test(`@AddressOwners Deploy ownable ERC20 token, verify addrress`, async () => {
     const token = await deployContract(
         contracts,
         `TestToken`,
-        `Blue`,
+        `TestOwnerVerifiedERC20`,
         shortID(),
     )
     console.log(`minting to: ${contracts.wallet.address}`)
