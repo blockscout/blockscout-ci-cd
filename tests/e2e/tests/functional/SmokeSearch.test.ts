@@ -124,7 +124,7 @@ test(`@SmokeEthIotaShimmer Iota Shimmer Search USDT`, async ({ newHomePage }) =>
     await newHomePage.findInSearchItems(`Wrapped USDT \\(WUSDT\\)`)
 })
 
-test.only(`@SmokeEthImmutable Immutable Search USDT`, async ({ newHomePage }) => {
+test(`@SmokeEthImmutable Immutable Search USDT`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://explorer.testnet.immutable.com/`)
     await newHomePage.search(COMMON_TOKEN_NAME)
     await newHomePage.findInSearchItems(`Tether \\(USDT\\)`)
