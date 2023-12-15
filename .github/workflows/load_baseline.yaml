@@ -40,6 +40,8 @@ jobs:
           BASE_URL: https://eth-goerli.blockscout.com/api
           TIMEOUT: 20000
           SCENARIO: stressBackendV1
+          START_BLOCK: 10218301
+          END_BLOCK: 10218302
           API_KEY: ${{ secrets.API_KEY }}
           K6_OUT: ${{ secrets.K6_OUT }}
         run: |
@@ -51,6 +53,8 @@ jobs:
           BASE_URL: https://eth-goerli.blockscout.com/api
           TIMEOUT: 20000
           SCENARIO: stressBackendV2
+          START_BLOCK: 10218301
+          END_BLOCK: 10218302
           API_KEY: ${{ secrets.API_KEY }}
           K6_OUT: ${{ secrets.K6_OUT }}
         run: |

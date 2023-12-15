@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import { Httpx } from 'https://jslib.k6.io/httpx/0.0.3/index.js'
 import {
-    RampingArrivalRateScenario, ConstantArrivalRateScenario, Scenario, PerVUIterationsScenario,
+    RampingArrivalRateScenario, ConstantArrivalRateScenario, Scenario,
 } from 'k6/options'
 
 export const defaultSession = () => {
@@ -61,8 +61,8 @@ export const options = {
 // goerli
 export const defaultTestData = {
     APIKey: __ENV.API_KEY,
-    startBlock: 10201004,
-    endBlock: 10201005,
+    startBlock: __ENV.START_BLOCK,
+    endBlock: __ENV.END_BLOCK,
     v1Offset: 100,
     blocks: [
         8386018,
