@@ -4,3 +4,5 @@ yarn-error.log
 dist
 bin
 .env.*
+instances.json
+dts.json

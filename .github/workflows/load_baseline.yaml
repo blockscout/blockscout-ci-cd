@@ -1,64 +1,10 @@
 name: Load baseline
 on:
-  # push:
-env:
-  K8S_LOCAL_PORT: ${{ secrets.LOCAL_PORT }}
-  K8S_HOST: ${{ secrets.K8S_HOST }}
-  BASTION_HOST: ${{ secrets.BASTION_HOST }}
-  K8S_PORT: ${{ secrets.K8S_PORT }}
-  USERNAME: ${{ secrets.USERNAME }}
-  BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-  RESOURCE_MODE: account
-  PUBLIC: false
-
-  PORT: 4003
-  PORT_PG: 7432
-  PORT_NETWORK_HTTP: 8545
-  PORT_NETWORK_WS: 9000
-
-  ACCOUNT_USERNAME: ${{ secrets.ACCOUNT_USERNAME }}
-  ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
-
-  IMAGE: blockscout/blockscout-xdai-testnet:latest
-  VARIANT: parity
-  HTTP_URL: ${{ secrets.PARITY_1_HTTP_URL }}
-  WS_URL: ${{ secrets.PARITY_1_WS_URL }}
-  ETHEREUM_JSONRPC_TRACE_URL: ${{ secrets.PARITY_1_HTTP_URL }}
-  COIN: DAI
-
-  DISABLE_REALTIME_INDEXER: true
-  FIRST_BLOCK: 15110000
-  LAST_BLOCK: 15111000
-  AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
-  AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
-  AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
-  AUTH0_CALLBACK_URL: ${{ secrets.AUTH0_CALLBACK_URL }}
-  AUTH0_LOGOUT_RETURN_URL: ${{ secrets.AUTH0_LOGOUT_RETURN_URL }}
-  AUTH0_LOGOUT_URL: ${{ secrets.AUTH0_LOGOUT_URL }}
-  SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
-  SENDGRID_SENDER: ${{ secrets.SENDGRID_SENDER }}
-  SENDGRID_TEMPLATE: ${{ secrets.SENDGRID_TEMPLATE }}
-  PUBLIC_TAGS_AIRTABLE_URL: ${{ secrets.PUBLIC_TAGS_AIRTABLE_URL }}
-  PUBLIC_TAGS_AIRTABLE_API_KEY: ${{ secrets.PUBLIC_TAGS_AIRTABLE_API_KEY }}
-  NETWORK_PATH: "/"
-  SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
-
-  ENV: test
-  NETWORK_URL: http://localhost:8545
-  WALLET: ${{ secrets.WALLET }}
-
-  MICROSERVICE_SC_VERIFIER_ENABLED: true
-  MICROSERVICE_SC_VERIFIER_URL: http://0.0.0.0:8043
-
-  SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ACCESS_KEY: ${{ secrets.SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ACCESS_KEY }}
-  SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__SECRET_KEY: ${{ secrets.SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__SECRET_KEY }}
-
+  push:
+    
 jobs:
-  test_load_baseline:
-    name: Check load baseline
+  v1v2-baseline:
+    name: Check out load test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout github repo (+ download lfs dependencies)
@@ -88,66 +34,26 @@ jobs:
       - name: Lint
         working-directory: ./tests/load
         run: npm run lint
-      - name: Set Kubernetes Context
-        uses: azure/k8s-set-context@v1
-        with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
-      - name: Generate namespace name
-        id: generate
-        uses: filipstefansson/uuid-action@v1
-        with:
-          name: ${{ github.sha }}-3
-      - name: Deploy to k8s
-        shell: bash
-        working-directory: blockscout
+      - name: Run v1 test
         env:
-          NAMESPACE_NAME: e2e-geth-${{ steps.generate.outputs.uuid }}
-        run: |
-          mkdir ~/.ssh
-          ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
-          eval `ssh-agent -s`
-          ssh-add - <<< "$BASTION_SSH_KEY"
-          sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
-          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
-          npm ci
-          npm run start
-      - name: Run warm-up
-        env:
-          K6_TEST_ID: warm_up_baseline_rpc
-          BASE_URL: http://localhost:4003
+          K6_TEST_ID: ci-v5.3.3-goerli-api-v1-denorm-transactions
+          BASE_URL: https://eth-goerli.blockscout.com/api
           TIMEOUT: 20000
-          SCENARIO: warmUp
-          # K6_OUT: json
-          # K6_LOG_OUTPUT_STRING: stdout
-          # LOKI_GUN_DEBUG: "meta"
+          SCENARIO: stressBackendV1
+          API_KEY: ${{ secrets.API_KEY }}
+          K6_OUT: ${{ secrets.K6_OUT }}
         run: |
           npm run test:ci
-      - name: Run baseline load test
-        # even if warm-up failed some thresholds we still would like to see the baseline
-        if: always()
+      - name: Run v2 test
         env:
-          # label in TimescaleDB to differentiate test runs
-          K6_TEST_ID: baseline_rpc
-          BASE_URL: http://localhost:4003
+          K6_TEST_ID: ci-v5.3.3-goerli-api-v2-denorm-transactions
+          BASE_URL: https://eth-goerli.blockscout.com/api
           TIMEOUT: 20000
-          SCENARIO: baseline
-          # K6_OUT: json
-          # label in Loki to store debug logs stream
-          # K6_LOG_OUTPUT_STRING: stdout
-          # LOKI_GUN_DEBUG: "meta"
+          SCENARIO: stressBackendV2
+          API_KEY: ${{ secrets.API_KEY }}
+          K6_OUT: ${{ secrets.K6_OUT }}
         run: |
           npm run test:ci
-      - name: Remove namespace
-        if: always()
-        working-directory: blockscout
-        env:
-          NAMESPACE_NAME: e2e-geth-${{ steps.generate.outputs.uuid }}
-        run: |
-          eval `ssh-agent -s`
-          ssh-add - <<< "$BASTION_SSH_KEY"
-          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
-          npm run stop
 defaults:
   run:
     shell: bash

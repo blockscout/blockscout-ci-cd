@@ -26,15 +26,11 @@ export const defaultStressStages = {
     ],
 }
 
-// export const singleRequestSettings = {
-//     executor: `constant-arrival-rate`,
-// }
-
 export const defaultAPITestSettings = {
-    iterations: 1,
     executor: `constant-arrival-rate`,
-    duration: `5m`,
+    duration: `1m`,
     rate: 5,
+    preAllocatedVUs: 50,
 }
 
 export const defaultProfileStages = {
@@ -63,6 +59,9 @@ export const options = {
 // goerli
 export const defaultTestData = {
     APIKey: __ENV.API_KEY,
+    startBlock: 10201004,
+    endBlock: 10201005,
+    v1Offset: 100,
     blocks: [
         8386018,
         8386017,
@@ -114,6 +113,63 @@ export const defaultTestData = {
         8385971,
         8385970,
         8385969,
+    ],
+    nfts: [
+        {
+            addr: `0x38a140c905dF5A5df117b65CE792D75d78b6Ff98`,
+            instances: [
+                `188882`,
+                `188865`,
+                `188848`,
+                `188831`,
+                `188814`,
+                `188797`,
+                `188780`,
+                `188763`,
+                `188747`,
+                `188730`,
+                `188713`,
+                `188696`,
+                `188679`,
+                `188662`,
+                `188645`,
+                `188628`,
+                `188611`,
+                `188595`,
+                `188578`,
+                `188561`,
+                `188544`,
+                `188527`,
+                `188510`,
+                `188493`,
+                `188476`,
+                `188459`,
+                `188443`,
+                `188426`,
+                `188409`,
+                `188392`,
+                `188375`,
+                `188358`,
+                `188341`,
+                `188324`,
+                `188307`,
+                `188291`,
+                `188274`,
+                `188257`,
+                `188240`,
+                `188223`,
+                `188206`,
+                `188189`,
+                `188172`,
+                `188155`,
+                `188139`,
+                `188122`,
+                `188105`,
+                `188088`,
+                `188071`,
+                `188054`,
+            ],
+        },
     ],
     tokens: [
         `0x38a140c905dF5A5df117b65CE792D75d78b6Ff98`,
@@ -299,8 +355,86 @@ export const defaultTestData = {
 
 export const selectScenario = (scenarioName: string): { [name: string]: Scenario } => {
     switch (scenarioName) {
+    case `stressBackendV1`:
+        return {
+            txInternal: {
+                ...defaultAPITestSettings,
+                exec: `backendV1TXInternal`,
+            },
+            addressTXs: {
+                ...defaultAPITestSettings,
+                rate: 1,
+                exec: `backendV1AddressTXs`,
+                startTime: `60s`,
+            },
+            addressTokenTransfers: {
+                ...defaultAPITestSettings,
+                exec: `backendV1AddressTokenTransfers`,
+                startTime: `120s`,
+            },
+        }
     case `stressBackendV2`:
         return {
+            txInternal: {
+                ...defaultAPITestSettings,
+                exec: `backendV2TXInternal`,
+            },
+            tokenTransfers: {
+                ...defaultAPITestSettings,
+                exec: `backendV2TokenTransfers`,
+                startTime: `60s`,
+            },
+            tokenInstances: {
+                ...defaultAPITestSettings,
+                exec: `backendV2TokenInstances`,
+                startTime: `120s`,
+            },
+            addressesTokenTransfers: {
+                ...defaultAPITestSettings,
+                exec: `backendV2AddressesTokenTransfers`,
+                startTime: `180s`,
+            },
+            transactions: {
+                ...defaultAPITestSettings,
+                exec: `backendV2Transactions`,
+                startTime: `240s`,
+            },
+            recentTransactions: {
+                ...defaultAPITestSettings,
+                exec: `backendV2RecentTransactions`,
+                startTime: `300s`,
+            },
+            search: {
+                ...defaultAPITestSettings,
+                exec: `backendV2Search`,
+                startTime: `360s`,
+            },
+            searchRedirect: {
+                ...defaultAPITestSettings,
+                exec: `backendV2SearchRedirect`,
+                startTime: `420s`,
+            },
+            addressesTransactions: {
+                ...defaultAPITestSettings,
+                exec: `backendV2AddressesTransactions`,
+                startTime: `480s`,
+            },
+            addressesTokensERC20: {
+                ...defaultAPITestSettings,
+                exec: `backendV2AddressesTokensERC20`,
+                startTime: `540s`,
+            },
+            addressesTokensERC721: {
+                ...defaultAPITestSettings,
+                exec: `backendV2AddressesTokensERC721`,
+                startTime: `600s`,
+            },
+            addressesTokensERC1155: {
+                ...defaultAPITestSettings,
+                exec: `backendV2AddressesTokensERC1155`,
+                startTime: `660s`,
+            },
+
             // jsonrpcurl: {
             //     iterations: 300,
             //     vus: 1,
@@ -314,96 +448,52 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
             //     exec: `backendV2BackendVersion`,
             //     // startTime: `30s`,
             // } as PerVUIterationsScenario,
-            addressesCounters: {
-                iterations: 10000,
-                vus: 1,
-                executor: `per-vu-iterations`,
-                exec: `backendV2AddressesTabCounters`,
-                // startTime: `60s`,
-            } as PerVUIterationsScenario,
+            // addressesCounters: {
+            //     ...defaultAPITestSettings,
+            //     exec: `backendV2AddressesTabCounters`,
+            // },
             // addresses: {
-            //     iterations: 300,
-            //     vus: 1,
-            //     executor: `per-vu-iterations`,
+            //     ...defaultAPITestSettings,
             //     exec: `backendV2Addresses`,
-            //     // startTime: `60s`,
-            // } as PerVUIterationsScenario,
-            // transactions: {
-            //     iterations: 300,
-            //     vus: 1,
-            //     executor: `per-vu-iterations`,
-            //     exec: `backendV2Transactions`,
-            //     // startTime: `90s`,
-            // } as PerVUIterationsScenario,
+            // },
             // txTokenTransfers: {
-            //     iterations: 300,
-            //     vus: 1,
-            //     executor: `per-vu-iterations`,
+            //     ...defaultAPITestSettings,
             //     exec: `backendV2TXTokenTransfers`,
-            //     // startTime: `120s`,
-            // } as PerVUIterationsScenario,
-            // txInternal: {
-            //     iterations: 300,
-            //     vus: 1,
-            //     executor: `per-vu-iterations`,
-            //     exec: `backendV2TXInternal`,
-            //     // startTime: `150s`,
-            // } as PerVUIterationsScenario,
+            // },
             // txLogs: {
-            //     iterations: 300,
-            //     vus: 1,
-            //     executor: `per-vu-iterations`,
+            //     ...defaultAPITestSettings,
             //     exec: `backendV2TXLogs`,
-            //     // startTime: `180s`,
-            // } as PerVUIterationsScenario,
+            // },
             // txRawTrace: {
-            //     iterations: 300,
-            //     vus: 1,
-            //     executor: `per-vu-iterations`,
+            //     ...defaultAPITestSettings,
             //     exec: `backendV2TXRawTrace`,
-            //     // startTime: `210s`,
-            // } as PerVUIterationsScenario,
+            // },
             // txStateChanges: {
-            //     iterations: 300,
-            //     vus: 1,
-            //     executor: `per-vu-iterations`,
+            //     ...defaultAPITestSettings,
             //     exec: `backendV2TXStateChanges`,
-            //     // startTime: `240s`,
-            // } as PerVUIterationsScenario,
+            // },
             // tokens: {
-            //     iterations: 300,
-            //     vus: 1,
-            //     executor: `per-vu-iterations`,
+            //     ...defaultAPITestSettings,
             //     exec: `backendV2Tokens`,
-            //     // startTime: `270s`,
-            // } as PerVUIterationsScenario,
-            // tokenInstances: {
-            //     iterations: 300,
-            //     vus: 1,
-            //     executor: `per-vu-iterations`,
-            //     exec: `backendV2TokenInstances`,
-            //     // startTime: `300s`,
-            // } as PerVUIterationsScenario,
+            // },
+            // blocks: {
+            //     ...defaultAPITestSettings,
+            //     exec: `backendV2Blocks`,
+            // },
+
             // smartContracts: {
             //     iterations: 300,
             //     vus: 1,
             //     executor: `per-vu-iterations`,
             //     exec: `backendV2SmartContracts`,
-            //     // startTime: `330s`,
+            //     startTime: `330s`,
             // } as PerVUIterationsScenario,
             // smartContractsVerConfig: {
             //     iterations: 300,
             //     vus: 1,
             //     executor: `per-vu-iterations`,
             //     exec: `backendV2SmartContractsVerificationConfig`,
-            //     // startTime: `360s`,
-            // } as PerVUIterationsScenario,
-            // blocks: {
-            //     iterations: 300,
-            //     vus: 1,
-            //     executor: `per-vu-iterations`,
-            //     exec: `backendV2Blocks`,
-            //     // startTime: `390s`,
+            //     startTime: `360s`,
             // } as PerVUIterationsScenario,
         }
     case `stressBackend`:
@@ -567,6 +657,8 @@ export const selectTestData = (scenarioName: string) => {
     switch (scenarioName) {
     case `stressFrontend`:
         return defaultTestData
+    case `stressBackendV1`:
+        return defaultTestData
     case `stressBackendV2`:
         return defaultTestData
     case `stressBackend`:
@@ -583,6 +675,8 @@ export const selectTestData = (scenarioName: string) => {
 export const selectThresholds = (scenarioName: string) => {
     switch (scenarioName) {
     case `stressFrontend`:
+        return defaultThresholds
+    case `stressBackendV1`:
         return defaultThresholds
     case `stressBackendV2`:
         return defaultThresholds

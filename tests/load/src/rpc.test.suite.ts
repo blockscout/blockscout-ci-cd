@@ -32,11 +32,291 @@ export function teardown(data: any) {
     console.warn(`'test finished with data: ${JSON.stringify(data)}'`)
 }
 
+// per API calls for backend V1
+
+export const backendV1TXInternal = () => {
+    group(`?module=account&action=txlistinternal&txhash={}&startblock={}&endblock={}&page={}&offset={}&sort=asc&apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `?module=account&action=txlistinternal&txhash=${randomItem(testData.txs)}&startblock=${testData.startBlock}&endblock=${testData.endBlock}&page=${randomItem(testData.pagination.pages)}&offset=${testData.v1Offset}&sort=asc&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `Internal TXs (backendV1)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`Internal TXs (backendV1) has failed`)
+        }
+    })
+}
+
+export const backendV1AddressTXs = () => {
+    group(`?module=account&action=txlist&address={}&startblock={}&endblock={}&page={}&offset={}&sort=asc&apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `?module=account&action=txlist&address=${randomItem(testData.addresses)}&startblock=${testData.startBlock}&endblock=${testData.endBlock}&page=${randomItem(testData.pagination.pages)}&offset=${testData.v1Offset}&sort=asc&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `Address TXs (backendV1)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`Address TXs (backendV1) has failed`)
+        }
+    })
+}
+
+export const backendV1AddressTokenTransfers = () => {
+    group(`?module=account&action=tokentx&address={}&startblock={}&endblock={}&offset={}&page={}&sort=asc&apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `?module=account&action=tokentx&address=${randomItem(testData.addresses)}&startblock=${testData.startBlock}&endblock=${testData.endBlock}&offset=${testData.v1Offset}&page=${randomItem(testData.pagination.pages)}&sort=asc&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `AddressTokenTransfers (backendV1)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`AddressTokenTransfers (backendV1) has failed`)
+        }
+    })
+}
+
 // per API calls for backend V2
 
-/*
-/v2/smart-contracts/${address_hash}/...
-*/
+export const backendV2TXInternal = () => {
+    group(`/v2/transactions/{}/internal-transactions?apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/transactions/${randomItem(testData.txs)}/internal-transactions?apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `TXInternal (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`TXInternal (backendV2) has failed`)
+        }
+    })
+}
+
+export const backendV2TokenTransfers = () => {
+    group(`/v2/tokens/{}/transfers?apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/tokens/${randomItem(testData.tokens)}/transfers?apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `TokenTransfers (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`TokenTransfers (backendV2) has failed`)
+        }
+    })
+}
+
+export const backendV2TokenInstances = () => {
+    group(`/v2/tokens/{}/instances/{}?apikey={}`, () => {
+        const ri = randomItem(testData.nfts)
+        const rii = randomItem(ri.instances)
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/tokens/${ri.addr}/instances/${rii}?apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `TokenInstances (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`TokenInstances (backendV2) has failed`)
+        }
+    })
+}
+
+export const backendV2Transactions = () => {
+    group(`/v2/transactions?filter=validated&apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/transactions?filter=validated&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `Transactions (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`Transactions (backendV2) has failed`)
+        }
+    })
+}
+
+export const backendV2RecentTransactions = () => {
+    group(`/v2/transactions?block_number={}&index={}&items_count=50&filter=validated&apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/transactions?block_number=${testData.startBlock}&index=${randomItem(testData.pagination.pages)}&items_count=50&filter=validated&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `RecentTransactions (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`RecentTransactions (backendV2) has failed`)
+        }
+    })
+}
+
+export const backendV2Search = () => {
+    group(`/v2/search/quick?q={}&apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/search/quick?q=${randomItem(testData.txs)}&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `Search (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`Search (backendV2) has failed`)
+        }
+    })
+}
+
+export const backendV2SearchRedirect = () => {
+    group(`/v2/search/check-redirect?q={}&apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/search/check-redirect?q=${randomItem(testData.txs)}&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `SearchRedirect (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`SearchRedirect (backendV2) has failed`)
+        }
+    })
+}
+
+export const backendV2AddressesTransactions = () => {
+    group(`/v2/addresses/{}/transactions?apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/addresses/${randomItem(testData.addresses)}/transactions?apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `Addresses Transactions (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`Addresses Transactions (backendV2) has failed`)
+        }
+    })
+}
+
+export const backendV2AddressesTokensERC20 = () => {
+    group(`/v2/addresses/{}/tokens?type=ERC-20&apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/addresses/${randomItem(testData.addresses)}/tokens?type=ERC-20&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `Addresses Tokens ERC20 (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`Addresses Tokens ERC20 (backendV2) has failed`)
+        }
+    })
+}
+
+export const backendV2AddressesTokensERC721 = () => {
+    group(`/v2/addresses/{}/tokens?type=ERC-721&apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/addresses/${randomItem(testData.addresses)}/tokens?type=ERC-721&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `Addresses Tokens ERC721 (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`Addresses Tokens ERC721 (backendV2) has failed`)
+        }
+    })
+}
+
+export const backendV2AddressesTokensERC1155 = () => {
+    group(`/v2/addresses/{}/tokens?type=ERC-1155&apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/addresses/${randomItem(testData.addresses)}/tokens?type=ERC-1155&apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `Addresses Tokens ERC1155 (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`Addresses Tokens ERC1155 (backendV2) has failed`)
+        }
+    })
+}
 
 export const backendV2Blocks = () => {
     group(`Blocks (backendV2)`, () => {
@@ -53,7 +333,7 @@ export const backendV2Blocks = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`Blocks (backend) has failed`)
+            fail(`Blocks (backendV2) has failed`)
         }
     })
 }
@@ -73,7 +353,7 @@ export const backendV2SmartContractsVerificationConfig = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`SmartContractsVerificationConfig (backend) has failed`)
+            fail(`SmartContractsVerificationConfig (backendV2) has failed`)
         }
     })
 }
@@ -93,19 +373,19 @@ export const backendV2SmartContracts = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`SmartContracts (backend) has failed`)
+            fail(`SmartContracts (backendV2) has failed`)
         }
     })
 }
 
-export const backendV2TokenInstances = () => {
-    group(`TokenInstances (backendV2)`, () => {
+export const backendV2AddressesTokenTransfers = () => {
+    group(`/v2/addresses/{}/token-transfers?apikey={}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/v2/tokens/${randomItem(testData.tokens)}/instances/76440`,
+            url: `/v2/addresses/${randomItem(testData.tokens)}/token-transfers?apikey=${testData.APIKey}`,
             params: {
                 tags: {
-                    name: `TokenInstances (backendV2)`,
+                    name: `AddressesTokenTransfers (backendV2)`,
                 },
             },
         })
@@ -113,7 +393,7 @@ export const backendV2TokenInstances = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`TokenInstances (backend) has failed`)
+            fail(`AddressesTokenTransfers (backendV2) has failed`)
         }
     })
 }
@@ -133,7 +413,7 @@ export const backendV2Tokens = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`Tokens (backend) has failed`)
+            fail(`Tokens (backendV2) has failed`)
         }
     })
 }
@@ -153,7 +433,7 @@ export const backendV2TXStateChanges = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`TXStateChanges (backend) has failed`)
+            fail(`TXStateChanges (backendV2) has failed`)
         }
     })
 }
@@ -173,7 +453,7 @@ export const backendV2TXRawTrace = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`TXRawTrace (backend) has failed`)
+            fail(`TXRawTrace (backendV2) has failed`)
         }
     })
 }
@@ -193,27 +473,7 @@ export const backendV2TXLogs = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`TXLogs (backend) has failed`)
-        }
-    })
-}
-
-export const backendV2TXInternal = () => {
-    group(`TXInternal (backendV2)`, () => {
-        const res = shoot(session, {
-            method: `GET`,
-            url: `/v2/transactions/${randomItem(testData.txs)}/internal-transactions`,
-            params: {
-                tags: {
-                    name: `TXInternal (backendV2)`,
-                },
-            },
-        })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`TXInternal (backend) has failed`)
+            fail(`TXLogs (backendV2) has failed`)
         }
     })
 }
@@ -233,27 +493,7 @@ export const backendV2TXTokenTransfers = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`TXTokenTransfers (backend) has failed`)
-        }
-    })
-}
-
-export const backendV2Transactions = () => {
-    group(`Transactions (backendV2)`, () => {
-        const res = shoot(session, {
-            method: `GET`,
-            url: `/v2/transactions/${randomItem(testData.txs)}`,
-            params: {
-                tags: {
-                    name: `Transactions (backendV2)`,
-                },
-            },
-        })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Transactions (backend) has failed`)
+            fail(`TXTokenTransfers (backendV2) has failed`)
         }
     })
 }
@@ -273,7 +513,7 @@ export const backendV2AddressesTabCounters = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`Addresses counter tab (backend) has failed`)
+            fail(`Addresses counter tab (backendV2) has failed`)
         }
     })
 }
@@ -293,7 +533,7 @@ export const backendV2Addresses = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`Addresses (backend) has failed`)
+            fail(`Addresses (backendV2) has failed`)
         }
     })
 }
@@ -313,7 +553,7 @@ export const backendV2BackendVersion = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`BackendVersion (backend) has failed`)
+            fail(`BackendVersion (backendV2) has failed`)
         }
     })
 }
@@ -333,7 +573,7 @@ export const backendV2JSONRPCURL = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`JSONRPCURL (backend) has failed`)
+            fail(`JSONRPCURL (backendV2) has failed`)
         }
     })
 }
