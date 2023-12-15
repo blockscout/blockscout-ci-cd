@@ -42,6 +42,7 @@ jobs:
         run: |
           npm run test:ci
       - name: Run v2 test
+        if: always()
         env:
           K6_TEST_ID: ci-v5.3.3-goerli-api-v2-denorm-transactions
           BASE_URL: https://eth-goerli.blockscout.com/api

@@ -74,7 +74,7 @@ test(`@SmokeEthImmutable Immutable blocks`, async ({ context, newHomePage }) => 
 
 test(`@SmokeEthShibarium Shibarium blocks`, async ({ context, newHomePage }) => {
     await newHomePage.open_custom(`https://puppyscan.shib.io/blocks`)
-    await newHomePage.checkBlocks(context)
+    await newHomePage.checkBlocksNoHeader(context)
 })
 
 test(`@SmokeEthFuse Fuse blocks`, async ({ context, newHomePage }) => {
@@ -89,7 +89,7 @@ test(`@SmokeEthFuseTestnet Fuse testnet blocks`, async ({ context, newHomePage }
 
 test(`@SmokeEthShibariumTestnet Shibarium testnet blocks`, async ({ context, newHomePage }) => {
     await newHomePage.open_custom(`https://puppyscan.shib.io/blocks`)
-    await newHomePage.checkBlocks(context)
+    await newHomePage.checkBlocksNoHeader(context)
 })
 
 /* L2 */
