@@ -359,6 +359,10 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
     switch (scenarioName) {
     case `stressBackendV1`:
         return {
+            backendVersion: {
+                ...defaultAPITestSettings,
+                exec: `backendVersion`,
+            },
             txInternal: {
                 ...defaultAPITestSettings,
                 exec: `backendV1TXInternal`,

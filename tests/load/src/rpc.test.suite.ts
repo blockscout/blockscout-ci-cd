@@ -32,6 +32,27 @@ export function teardown(data: any) {
     console.warn(`'test finished with data: ${JSON.stringify(data)}'`)
 }
 
+// utility calls
+export const backendVersion = () => {
+    group(`/v2/config/backend-version`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/config/backend-version`,
+            params: {
+                tags: {
+                    name: `Backend version (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`Backend version (backendV2) has failed`)
+        }
+    })
+}
+
 // per API calls for backend V1
 
 export const backendV1TXInternal = () => {
