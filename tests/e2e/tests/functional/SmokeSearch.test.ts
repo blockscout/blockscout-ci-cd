@@ -10,7 +10,7 @@ test.describe.configure({ mode: `parallel` })
 const COMMON_TOKEN_NAME = `USDT`
 const COMMON_TOKEN_FULL_NAME = `Tether USD \\(USDT\\)`
 
-test.only(`@SmokeEthMainnet Search USDT`, async ({ newHomePage }) => {
+test(`@SmokeEthMainnet Search USDT`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth.blockscout.com/`)
     await newHomePage.search(COMMON_TOKEN_NAME)
     await newHomePage.findInSearchItems(COMMON_TOKEN_FULL_NAME)
