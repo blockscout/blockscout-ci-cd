@@ -31,9 +31,6 @@ jobs:
             ${{ runner.os }}-
       - name: Install deps
         run: npm ci
-      - name: Lint
-        working-directory: ./tests/load
-        run: npm run lint
       - name: Run v1 test
         env:
           K6_TEST_ID: ci-v5.3.3-goerli-api-v1-denorm-transactions

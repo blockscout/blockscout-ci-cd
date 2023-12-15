@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
 import { Httpx } from 'https://jslib.k6.io/httpx/0.0.3/index.js'
-import { RampingArrivalRateScenario, ConstantArrivalRateScenario, Scenario, PerVUIterationsScenario } from 'k6/options'
+import {
+    RampingArrivalRateScenario, ConstantArrivalRateScenario, Scenario, PerVUIterationsScenario,
+} from 'k6/options'
 
 export const defaultSession = () => {
     const session = new Httpx({

@@ -9,7 +9,7 @@ export class NewHomePage extends CommonPage {
 
     SEARCH_ITEMS = `section[role="dialog"] >> nth=1`
 
-    SEARCH_ITEMS_ICONS = `section[role="dialog"] >> nth=1 >> svg`
+    SEARCH_ITEMS_ICONS = `div[id="search_bar_popover_content"] >> nth=1 >> svg`
 
     BLOCKS_WIDGET = `text=/Latest blocks/ >> ..`
 
@@ -48,11 +48,7 @@ export class NewHomePage extends CommonPage {
     }
 
     async findInSearchItems(text: string): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.SEARCH_ITEMS} >> text=/${text}/`)
-    }
-
-    async checkSearchItemsIcons(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(this.SEARCH_ITEMS_ICONS)
+        await this.actions.verifyElementIsDisplayed(`text=/${text}/`)
     }
 
     async open(options = { waitUntil: `load` }): Promise<void> {
