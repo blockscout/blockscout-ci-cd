@@ -1,6 +1,6 @@
 name: Load baseline
 on:
-  push:
+  workflow_dispatch:
     
 jobs:
   v1v2-baseline:
