@@ -71,7 +71,7 @@ jobs:
           SCENARIO: stressBackendV1
           START_BLOCK: ${{ inputs.start_block }}
           END_BLOCK: ${{ inputs.end_block }}
-          TEST_DATA_FILE: ${{ inputs.test_data_file }}
+          TEST_DATA_FILE: ${{ inputs.data_file_path }}
           API_KEY: ${{ secrets.API_KEY }}
           K6_OUT: ${{ secrets.K6_OUT }}
         run: |
@@ -85,7 +85,7 @@ jobs:
           SCENARIO: stressBackendV2
           START_BLOCK: ${{ inputs.start_block }}
           END_BLOCK: ${{ inputs.end_block }}
-          TEST_DATA_FILE: ${{ inputs.test_data_file }}
+          TEST_DATA_FILE: ${{ inputs.data_file_path }}
           API_KEY: ${{ secrets.API_KEY }}
           K6_OUT: ${{ secrets.K6_OUT }}
         run: |
