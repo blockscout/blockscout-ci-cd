@@ -42,6 +42,7 @@ jobs:
           SCENARIO: stressBackendV1
           START_BLOCK: 10218301
           END_BLOCK: 10218302
+          TEST_DATA_FILE: "../test_data/goerli.json"
           API_KEY: ${{ secrets.API_KEY }}
           K6_OUT: ${{ secrets.K6_OUT }}
         run: |
@@ -55,6 +56,7 @@ jobs:
           SCENARIO: stressBackendV2
           START_BLOCK: 10218301
           END_BLOCK: 10218302
+          TEST_DATA_FILE: "../test_data/goerli.json"
           API_KEY: ${{ secrets.API_KEY }}
           K6_OUT: ${{ secrets.K6_OUT }}
         run: |

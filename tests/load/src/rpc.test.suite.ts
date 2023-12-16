@@ -1,17 +1,17 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-undef */
 import { fail, check, group } from 'k6'
 import { Options } from 'k6/options'
 
 import { randomItem } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js'
+import { SharedArray } from 'k6/data'
 import {
-    defaultSession, selectScenario, selectTestData, selectThresholds,
+    defaultSession, selectScenario, selectThresholds,
 } from './common'
 
 import { shoot } from './gun'
 
 const session = defaultSession()
-
-const testData = selectTestData(__ENV.SCENARIO)
 
 export const options: Options = {
     noCookiesReset: true,
@@ -21,6 +21,27 @@ export const options: Options = {
     discardResponseBodies: false,
     scenarios: selectScenario(__ENV.SCENARIO),
 }
+
+const loadTestData = (td: any) => {
+    const tdd = td[0]
+    const testData = {
+        ...tdd,
+        APIKey: __ENV.API_KEY,
+        startBlock: __ENV.START_BLOCK,
+        endBlock: __ENV.END_BLOCK,
+        v1Offset: 100,
+        pagination: {
+            pages: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            offsets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        },
+    }
+    console.log(`test data loaded ${JSON.stringify(testData)}`)
+    return testData
+}
+
+const dataSharedArrray = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE)))
+
+const testData = loadTestData(dataSharedArrray)
 
 // RPC API per request entrypoints, must be defined in the test file so k6 can import properly
 
@@ -555,26 +576,6 @@ export const backendV2Addresses = () => {
         })
         if (res.status !== 200) {
             fail(`Addresses (backendV2) has failed`)
-        }
-    })
-}
-
-export const backendV2BackendVersion = () => {
-    group(`BackendVersion (backendV2)`, () => {
-        const res = shoot(session, {
-            method: `GET`,
-            url: `/v2/config/backend-version`,
-            params: {
-                tags: {
-                    name: `BackendVersion (backendV2)`,
-                },
-            },
-        })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`BackendVersion (backendV2) has failed`)
         }
     })
 }
