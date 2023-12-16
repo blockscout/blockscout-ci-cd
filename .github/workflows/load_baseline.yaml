@@ -5,6 +5,9 @@ concurrency:
 on:
   workflow_dispatch:
     inputs:
+      test_name:
+        description: 'Test name'
+        default: ci-api-v1-baseline
       url:
         description: 'Environment Root URL'
         required: true
@@ -65,10 +68,10 @@ jobs:
         run: npm ci
       - name: Run v1 test
         env:
-          K6_TEST_ID: ci-api-v1-baseline
+          SCENARIO: stressBackendV1
+          K6_TEST_ID: ${{ inputs.test_name }}-v1
           BASE_URL: ${{ inputs.url }}
           TIMEOUT: ${{ inputs.request_timeout }}
-          SCENARIO: stressBackendV1
           START_BLOCK: ${{ inputs.start_block }}
           END_BLOCK: ${{ inputs.end_block }}
           TEST_DATA_FILE: ${{ inputs.data_file_path }}
@@ -79,10 +82,10 @@ jobs:
       - name: Run v2 test
         if: always()
         env:
-          K6_TEST_ID: ci-api-v2-baseline
+          SCENARIO: stressBackendV2
+          K6_TEST_ID: ${{ inputs.test_name }}-v2
           BASE_URL: ${{ inputs.url }}
           TIMEOUT: ${{ inputs.request_timeout }}
-          SCENARIO: stressBackendV2
           START_BLOCK: ${{ inputs.start_block }}
           END_BLOCK: ${{ inputs.end_block }}
           TEST_DATA_FILE: ${{ inputs.data_file_path }}
