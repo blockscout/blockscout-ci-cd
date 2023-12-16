@@ -75,7 +75,7 @@ jobs:
           START_BLOCK: ${{ inputs.start_block }}
           END_BLOCK: ${{ inputs.end_block }}
           TEST_DATA_FILE: ${{ inputs.data_file_path }}
-          API_KEY: ${{ secrets.API_KEY }}
+          API_KEY: ${{ secrets.API_KEY_SEPOLIA }}
           K6_OUT: ${{ secrets.K6_OUT }}
         run: |
           npm run test:ci
@@ -89,7 +89,7 @@ jobs:
           START_BLOCK: ${{ inputs.start_block }}
           END_BLOCK: ${{ inputs.end_block }}
           TEST_DATA_FILE: ${{ inputs.data_file_path }}
-          API_KEY: ${{ secrets.API_KEY }}
+          API_KEY: ${{ secrets.API_KEY_SEPOLIA }}
           K6_OUT: ${{ secrets.K6_OUT }}
         run: |
           npm run test:ci
