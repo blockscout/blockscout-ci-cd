@@ -14,7 +14,6 @@ on:
         default: 'https://eth-sepolia.blockscout.com/api'
         type: choice
         options:
-          - https://eth-goerli.blockscout.com/api
           - https://eth-sepolia.blockscout.com/api
       start_block:
         description: 'Start block for static requests (default is Sepolia)'
@@ -30,7 +29,6 @@ on:
         default: '../test_data/sepolia.json'
         type: choice
         options:
-          - '../test_data/goerli.json'
           - '../test_data/sepolia.json'
       request_timeout:
         description: 'Global request timeout'
