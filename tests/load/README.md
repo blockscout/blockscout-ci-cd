@@ -41,3 +41,8 @@ If you want to learn more, check out [Bundling node modules in k6](https://k6.io
 
 ### Useful libs for k6
 - [js-libs](https://k6.io/docs/javascript-api/jslib/)
+
+### Test data generation script
+```
+URL=https://eth-sepolia.blockscout.com FILENAME=sepolia npx node generate_data.mjs
+```

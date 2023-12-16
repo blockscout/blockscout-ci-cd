@@ -4,6 +4,35 @@ concurrency:
   cancel-in-progress: true
 on:
   workflow_dispatch:
+    inputs:
+      url:
+        description: 'Environment Root URL'
+        required: true
+        default: 'https://eth-sepolia.blockscout.com/api'
+        type: choice
+        options:
+          - https://eth-goerli.blockscout.com/api
+          - https://eth-sepolia.blockscout.com/api
+      start_block:
+        description: 'Start block for static requests (default is Sepolia)'
+        required: true
+        default: 4900358
+      end_block:
+        description: 'End block for static requests (default is Sepolia)'
+        required: true
+        default: 4900359
+      data_file_path:
+        description: 'Path to test data file'
+        required: true
+        default: '../test_data/sepolia.json'
+        type: choice
+        options:
+          - '../test_data/goerli.json'
+          - '../test_data/sepolia.json'
+      request_timeout:
+        description: 'Global request timeout'
+        required: true
+        default: 20000
     
 jobs:
   v1v2-baseline:
@@ -36,13 +65,13 @@ jobs:
         run: npm ci
       - name: Run v1 test
         env:
-          K6_TEST_ID: ci-v5.3.3-goerli-api-v1-denorm-transactions
-          BASE_URL: https://eth-goerli.blockscout.com/api
-          TIMEOUT: 20000
+          K6_TEST_ID: ci-api-v1-baseline
+          BASE_URL: ${{ inputs.url }}
+          TIMEOUT: ${{ inputs.request_timeout }}
           SCENARIO: stressBackendV1
-          START_BLOCK: 10218301
-          END_BLOCK: 10218302
-          TEST_DATA_FILE: "../test_data/goerli.json"
+          START_BLOCK: ${{ inputs.start_block }}
+          END_BLOCK: ${{ inputs.end_block }}
+          TEST_DATA_FILE: ${{ inputs.test_data_file }}
           API_KEY: ${{ secrets.API_KEY }}
           K6_OUT: ${{ secrets.K6_OUT }}
         run: |
@@ -50,13 +79,13 @@ jobs:
       - name: Run v2 test
         if: always()
         env:
-          K6_TEST_ID: ci-v5.3.3-goerli-api-v2-denorm-transactions
-          BASE_URL: https://eth-goerli.blockscout.com/api
-          TIMEOUT: 20000
+          K6_TEST_ID: ci-api-v2-baseline
+          BASE_URL: ${{ inputs.url }}
+          TIMEOUT: ${{ inputs.request_timeout }}
           SCENARIO: stressBackendV2
-          START_BLOCK: 10218301
-          END_BLOCK: 10218302
-          TEST_DATA_FILE: "../test_data/goerli.json"
+          START_BLOCK: ${{ inputs.start_block }}
+          END_BLOCK: ${{ inputs.end_block }}
+          TEST_DATA_FILE: ${{ inputs.test_data_file }}
           API_KEY: ${{ secrets.API_KEY }}
           K6_OUT: ${{ secrets.K6_OUT }}
         run: |
