@@ -7,13 +7,14 @@ on:
     inputs:
       test_name:
         description: 'Test name'
-        default: ci-api-v1-baseline
+        default: ci-api-baseline
       url:
         description: 'Environment Root URL'
         required: true
         default: 'https://eth-sepolia.blockscout.com/api'
         type: choice
         options:
+          - https://eth-goerli.blockscout.com/api
           - https://eth-sepolia.blockscout.com/api
       start_block:
         description: 'Start block for static requests (default is Sepolia)'
@@ -29,6 +30,7 @@ on:
         default: '../test_data/sepolia.json'
         type: choice
         options:
+          - '../test_data/goerli.json'
           - '../test_data/sepolia.json'
       request_timeout:
         description: 'Global request timeout'
@@ -73,7 +75,8 @@ jobs:
           START_BLOCK: ${{ inputs.start_block }}
           END_BLOCK: ${{ inputs.end_block }}
           TEST_DATA_FILE: ${{ inputs.data_file_path }}
-          API_KEY: ${{ secrets.API_KEY_SEPOLIA }}
+          API_KEY_SEPOLIA: ${{ secrets.API_KEY_SEPOLIA }}
+          API_KEY_GOERLI: ${{ secrets.API_KEY_GOERLI }}
           K6_OUT: ${{ secrets.K6_OUT }}
         run: |
           npm run test:ci
@@ -87,7 +90,8 @@ jobs:
           START_BLOCK: ${{ inputs.start_block }}
           END_BLOCK: ${{ inputs.end_block }}
           TEST_DATA_FILE: ${{ inputs.data_file_path }}
-          API_KEY: ${{ secrets.API_KEY_SEPOLIA }}
+          API_KEY_SEPOLIA: ${{ secrets.API_KEY_SEPOLIA }}
+          API_KEY_GOERLI: ${{ secrets.API_KEY_GOERLI }}
           K6_OUT: ${{ secrets.K6_OUT }}
         run: |
           npm run test:ci
