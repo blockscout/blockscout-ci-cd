@@ -25,7 +25,7 @@ export const options: Options = {
 const loadTestData = (td: any) => {
     const tdd = td[0]
     let apiKey = ``
-    if (__ENV.BASE_URL.contains(`sepolia`)) {
+    if (__ENV.BASE_URL.includes(`sepolia`)) {
         apiKey = __ENV.API_KEY_SEPOLIA
     } else {
         apiKey = __ENV.API_KEY_GOERLI
