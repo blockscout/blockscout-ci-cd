@@ -30,7 +30,7 @@ export const defaultStressStages = {
 
 export const defaultAPITestSettings = {
     executor: `constant-arrival-rate`,
-    duration: `1m`,
+    duration: `3m`,
     rate: 5,
     preAllocatedVUs: 50,
 }
