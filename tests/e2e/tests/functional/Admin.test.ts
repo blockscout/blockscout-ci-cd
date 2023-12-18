@@ -46,8 +46,8 @@ test(`@Admin Delete/Create TokenInfo`, async ({ newHomeGoerli, tokenPage, adminP
         LlamaTickerURL: iconURL,
     })
 
-    await adminPage.delay(2000)
     await newHomeGoerli.openAddress(tokenAddr)
+    await newHomeGoerli.delay(3000)
     await tokenPage.selectProjectInfo()
     await tokenPage.actions.verifyElementIsDisplayed(`text=${uniqueSupportURL}`)
 })
@@ -99,8 +99,8 @@ test(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, 
     await adminPage.selectFirstSubmission()
     await adminPage.approve()
 
-    await adminPage.delay(2000)
     await newHomeGoerli.openAddress(tokenAddr)
+    await adminPage.delay(3000)
     await tokenPage.selectProjectInfo()
     await tokenPage.actions.verifyElementIsDisplayed(`text=${uniqueSupportURL}`)
 })
