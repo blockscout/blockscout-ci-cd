@@ -98,6 +98,8 @@ jobs:
           TEST_DATA_FILE: ${{ inputs.data_file_path }}
           API_KEY_SEPOLIA: ${{ secrets.API_KEY_SEPOLIA }}
           API_KEY_GOERLI: ${{ secrets.API_KEY_GOERLI }}
+          API_KEY_GNOSIS: ${{ secrets.API_KEY_GNOSIS }}
+          API_KEY_ETH: ${{ secrets.API_KEY_ETH }}
           K6_OUT: ${{ secrets.K6_OUT }}
         run: |
           npm run test:ci
