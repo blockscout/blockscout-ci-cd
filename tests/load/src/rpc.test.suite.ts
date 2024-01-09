@@ -27,8 +27,12 @@ const loadTestData = (td: any) => {
     let apiKey = ``
     if (__ENV.BASE_URL.includes(`sepolia`)) {
         apiKey = __ENV.API_KEY_SEPOLIA
-    } else {
+    } else if (__ENV.BASE_URL.includes(`goerli`)) {
         apiKey = __ENV.API_KEY_GOERLI
+    } else if (__ENV.BASE_URL.includes(`gnosis`)) {
+        apiKey = __ENV.API_KEY_GNOSIS
+    } else {
+        apiKey = __ENV.API_KEY_ETH
     }
     const testData = {
         ...tdd,

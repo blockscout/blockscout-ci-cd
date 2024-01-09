@@ -96,20 +96,3 @@ generateData({
     tokensERC1155Amount: 20,
     tokenInstancesAmount: 20,
 })
-
-/*
-[{
-    v1Offset: 100,
-    blocks: [],
-    nfts: [
-        {
-            addr: ``,
-            instances: [],
-        },
-    ],
-    tokens: [],
-    addresses: [],
-    contracts: [],
-    txs: [],
-}]
-*/
