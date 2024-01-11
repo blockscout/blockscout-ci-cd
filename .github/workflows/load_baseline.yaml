@@ -14,6 +14,7 @@ on:
         default: 'https://eth-sepolia.blockscout.com/api'
         type: choice
         options:
+          - https://eth.k8s-prod-1.blockscout.com/api
           - https://eth-goerli.blockscout.com/api
           - https://eth-sepolia.blockscout.com/api
           - https://gnosis.blockscout.com/api
@@ -32,6 +33,7 @@ on:
         default: '../test_data/sepolia.json'
         type: choice
         options:
+          - '../test_data/eth-prod-1.json'
           - '../test_data/goerli.json'
           - '../test_data/sepolia.json'
           - '../test_data/gnosis.json'
