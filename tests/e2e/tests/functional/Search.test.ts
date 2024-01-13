@@ -26,13 +26,12 @@ test(`@AccountImage @Search Check ERC-20 token search`, async ({ newHomePage }) 
 
 test(`@AccountImage @Search Check ERC-721 token search`, async ({ newHomePage }) => {
     const {
-        TestNFTAddress,
         TestNFTName,
     } = process.env
     await newHomePage.open()
     await newHomePage.delay(2000)
     await newHomePage.search(TestNFTName)
-    await newHomePage.findInSearchItems(TestNFTAddress)
+    await newHomePage.findInSearchItems(`0x10e38eE9dd4C549b61400Fc19347D00eD3edAfC4`)
 })
 
 test(`@AccountImage @Search Check transaction search`, async ({ newHomePage }) => {

@@ -67,6 +67,12 @@ export class TokensPage extends CommonPage {
         }
     }
 
+    async setFilter(option: String): Promise<void> {
+        await this.page.click(`text=Filter >> nth=1`)
+        await this.page.click(`text=Reset`)
+        await this.page.click(`text=${option}`)
+    }
+
     async search(text: string): Promise<void> {
         await this.actions.enterElementText(this.SEARCH, text)
     }

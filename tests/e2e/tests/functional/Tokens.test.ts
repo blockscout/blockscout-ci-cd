@@ -1,5 +1,6 @@
 /* eslint-disable dot-notation */
 import test from '@lib/BaseTest'
+import { TokenPage } from '@pages/Token'
 import { NativeCurrencyProps, TokenRowProps } from '@pages/Tokens'
 
 test.describe.configure({ mode: `parallel` })
@@ -8,6 +9,7 @@ test(`@AccountImage @Token Search token by the name`, async ({ tokensPage }) => 
     const { TestTokenSymbol, TestNFTSymbol } = process.env
     await tokensPage.mock_ads()
     await tokensPage.open()
+    await tokensPage.setFilter(`ERC-20`)
     await tokensPage.search(TestTokenSymbol)
     await tokensPage.check_token_row(1, {
         summary: [`1`, `EPIC (EPC)`, `0x`, `ERC-20`],
@@ -15,6 +17,7 @@ test(`@AccountImage @Token Search token by the name`, async ({ tokensPage }) => 
         marketCap: ``,
         holders: `1`,
     } as TokenRowProps)
+    await tokensPage.setFilter(`ERC-721`)
     await tokensPage.search(TestNFTSymbol)
     await tokensPage.check_token_row(1, {
         summary: [`1`, `NFT`, `0x`, `ERC-721`],
@@ -28,6 +31,7 @@ test(`@AccountImage @Token Search a token by symbol`, async ({ tokensPage }) => 
     const { TestTokenName, TestNFTName } = process.env
     await tokensPage.mock_ads()
     await tokensPage.open()
+    await tokensPage.setFilter(`ERC-20`)
     await tokensPage.search(TestTokenName)
     await tokensPage.check_token_row(1, {
         summary: [`1`, `EPIC (EPC)`, `0x`, `ERC-20`],
@@ -35,6 +39,7 @@ test(`@AccountImage @Token Search a token by symbol`, async ({ tokensPage }) => 
         marketCap: ``,
         holders: `1`,
     } as TokenRowProps)
+    await tokensPage.setFilter(`ERC-721`)
     await tokensPage.search(TestNFTName)
     await tokensPage.check_token_row(1, {
         summary: [`1`, `NFT`, `0x`, `ERC-721`],
