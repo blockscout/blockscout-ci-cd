@@ -60,6 +60,33 @@ export const options = {
 
 export const selectScenario = (scenarioName: string): { [name: string]: Scenario } => {
     switch (scenarioName) {
+    case `stressBensV1`:
+        return {
+            batchResolveBens: {
+                ...defaultAPITestSettings,
+                exec: `batchResolveBens`,
+            } as Scenario,
+            addressesLookup: {
+                ...defaultAPITestSettings,
+                exec: `addressesLookupBens`,
+                startTime: `60s`,
+            } as Scenario,
+            domains: {
+                ...defaultAPITestSettings,
+                exec: `domainsBens`,
+                startTime: `120s`,
+            } as Scenario,
+            domainEvents: {
+                ...defaultAPITestSettings,
+                exec: `domainEventsBens`,
+                startTime: `180s`,
+            } as Scenario,
+            domainsLookupBens: {
+                ...defaultAPITestSettings,
+                exec: `domainsLookupBens`,
+                startTime: `240s`,
+            } as Scenario,
+        }
     case `stressBackendV1`:
         return {
             backendVersion: {
@@ -353,27 +380,10 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
     }
 }
 
-// export const selectTestData = (scenarioName: string) => {
-//     switch (scenarioName) {
-//     case `stressFrontend`:
-//         return defaultTestData
-//     case `stressBackendV1`:
-//         return defaultTestData
-//     case `stressBackendV2`:
-//         return defaultTestData
-//     case `stressBackend`:
-//         return defaultTestData
-//     case `baseline`:
-//         return defaultTestData
-//     case `profile`:
-//         return defaultTestData
-//     default:
-//         throw Error(`no such scenario: ${scenarioName}`)
-//     }
-// }
-
 export const selectThresholds = (scenarioName: string) => {
     switch (scenarioName) {
+    case `stressBensV1`:
+        return defaultThresholds
     case `stressFrontend`:
         return defaultThresholds
     case `stressBackendV1`:

@@ -45,7 +45,7 @@ on:
     
 jobs:
   v1v2-baseline:
-    name: Check out load test
+    name: Run Blockscout load test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout github repo (+ download lfs dependencies)
