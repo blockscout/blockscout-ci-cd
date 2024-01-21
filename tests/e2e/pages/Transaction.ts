@@ -49,7 +49,7 @@ export class TransactionPage extends CommonPage {
     async check_tx_description(): Promise<void> {
         await this.check_table_element(`Transaction hash`, 0, `0x`)
         await this.check_table_element(`Status`, 0, `Success`)
-        await this.check_table_element(`Block`, 0, `\\d+`)
+        await this.check_table_element(`Block`, 6, `\\d+`)
 
         await this.check_table_element(`Timestamp`, 0, `ago.*UTC.*Confirmed`)
         await this.check_selector(`text=/Sponsored/`)
@@ -66,7 +66,7 @@ export class TransactionPage extends CommonPage {
 
     async check_tx_details(): Promise<void> {
         await this.actions.clickElement(this.DETAILS_TAB_FOOTER)
-        await this.check_table_element(`Other`, 0, `Txn type: \\d+.*Nonce: \\d+.*Position: \\d+`)
+        await this.check_table_element(`Other`, 2, `Txn type: \\d+.*Nonce: \\d+.*Position: \\d+`)
         await this.check_table_element(`Raw input`, 0, `0x`)
     }
 

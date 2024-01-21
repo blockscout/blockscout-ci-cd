@@ -23,7 +23,7 @@ export class CommonPage {
 
     SIGN_IN = `body >> div[data-label="hero plate"] >> a >> nth=0`
 
-    SIGNED_IN = `body >> div[data-label="hero plate"] >> div >> nth=1`
+    SIGNED_IN = `body >> div[data-label="hero plate"] >> div >> nth=2`
 
     ACCOUNT_MENU = `#navbarBlocksDropdown >> nth=1`
 
@@ -35,7 +35,7 @@ export class CommonPage {
 
     AUTH0_INPUT_PASSWORD = `input[name="password"]`
 
-    AUTH0_SUBMIT = `button[type="submit"] >> nth=1`
+    AUTH0_SUBMIT = `button[type="submit"] >> nth=0`
 
     LOGGED_IN_AS = `text=Signed in as`
 
@@ -242,29 +242,27 @@ export class CommonPage {
         await this.check_tx_list_row(2, 3, `alwaysReverts`)
         await this.check_tx_list_row(2, 4, `\\d+`)
         await this.check_tx_list_row(2, 5, `0x`)
-        await this.check_tx_list_row(2, 6, `IN`)
-        await this.check_tx_list_row(2, 7, `EPIC`)
-        await this.check_tx_list_row(2, 8, `0`)
-        await this.check_tx_list_row(2, 9, `\\d+`)
+        await this.check_tx_list_row(2, 5, `EPIC`)
+        await this.check_tx_list_row(2, 6, `\\d+`)
+        await this.check_tx_list_row(2, 7, `\\d+`)
 
         await this.check_tx_list_row(3, 1, `0x.*ago`)
         await this.check_tx_list_row(3, 2, `Token transfer.*Success`)
         await this.check_tx_list_row(3, 3, `mint`)
         await this.check_tx_list_row(3, 4, `\\d+`)
         await this.check_tx_list_row(3, 5, `0x`)
-        await this.check_tx_list_row(3, 6, `IN`)
-        await this.check_tx_list_row(3, 7, `EPIC`)
-        await this.check_tx_list_row(3, 8, `0`)
-        await this.check_tx_list_row(3, 9, `\\d+`)
+        await this.check_tx_list_row(3, 5, `EPIC`)
+        await this.check_tx_list_row(3, 6, `\\d+`)
+        await this.check_tx_list_row(3, 7, `\\d+`)
 
         await this.check_tx_list_row(4, 1, `0x.*ago`)
         await this.check_tx_list_row(4, 2, `Contract creation.*Success`)
         await this.check_tx_list_row(4, 3, ``)
         await this.check_tx_list_row(4, 4, `\\d+`)
         await this.check_tx_list_row(4, 5, `0x`)
-        await this.check_tx_list_row(4, 7, `EPIC`)
-        await this.check_tx_list_row(4, 8, `0`)
-        await this.check_tx_list_row(4, 9, `\\d+`)
+        await this.check_tx_list_row(4, 5, `EPIC`)
+        await this.check_tx_list_row(4, 6, `\\d+`)
+        await this.check_tx_list_row(4, 7, `\\d+`)
     }
 
     async check_tx_logs(): Promise<void> {
