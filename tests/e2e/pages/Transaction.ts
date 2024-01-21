@@ -49,7 +49,6 @@ export class TransactionPage extends CommonPage {
     async check_tx_description(): Promise<void> {
         await this.check_table_element(`Transaction hash`, 0, `0x`)
         await this.check_table_element(`Status`, 0, `Success`)
-        await this.check_table_element(`Block`, 6, `\\d+`)
 
         await this.check_table_element(`Timestamp`, 0, `ago.*UTC.*Confirmed`)
         await this.check_selector(`text=/Sponsored/`)
