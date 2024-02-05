@@ -14,6 +14,7 @@ on:
         default: 'https://eth-sepolia.blockscout.com/api'
         type: choice
         options:
+          - https://eth-goerli-alloydb.k8s.blockscout.com/api
           - https://eth.k8s-prod-1.blockscout.com/api
           - https://eth-goerli.blockscout.com/api
           - https://eth-sepolia.blockscout.com/api
@@ -33,6 +34,7 @@ on:
         default: '../test_data/sepolia.json'
         type: choice
         options:
+          - '../test_data/alloy-goerli.json'
           - '../test_data/eth-prod-1.json'
           - '../test_data/goerli.json'
           - '../test_data/sepolia.json'
@@ -83,6 +85,7 @@ jobs:
           TEST_DATA_FILE: ${{ inputs.data_file_path }}
           API_KEY_SEPOLIA: ${{ secrets.API_KEY_SEPOLIA }}
           API_KEY_GOERLI: ${{ secrets.API_KEY_GOERLI }}
+          API_KEY_GOERLI_ALLOY: ${{ secrets.API_KEY_GOERLI_ALLOY }}
           API_KEY_GNOSIS: ${{ secrets.API_KEY_GNOSIS }}
           API_KEY_ETH: ${{ secrets.API_KEY_ETH }}
           K6_OUT: ${{ secrets.K6_OUT }}
@@ -100,6 +103,7 @@ jobs:
           TEST_DATA_FILE: ${{ inputs.data_file_path }}
           API_KEY_SEPOLIA: ${{ secrets.API_KEY_SEPOLIA }}
           API_KEY_GOERLI: ${{ secrets.API_KEY_GOERLI }}
+          API_KEY_GOERLI_ALLOY: ${{ secrets.API_KEY_GOERLI_ALLOY }}
           API_KEY_GNOSIS: ${{ secrets.API_KEY_GNOSIS }}
           API_KEY_ETH: ${{ secrets.API_KEY_ETH }}
           K6_OUT: ${{ secrets.K6_OUT }}

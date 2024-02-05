@@ -29,6 +29,8 @@ const loadTestData = (td: any) => {
         apiKey = __ENV.API_KEY_SEPOLIA
     } else if (__ENV.BASE_URL.includes(`goerli`)) {
         apiKey = __ENV.API_KEY_GOERLI
+    } else if (__ENV.BASE_URL.includes(`alloy`)) {
+        apiKey = __ENV.API_KEY_GOERLI_ALLOY
     } else if (__ENV.BASE_URL.includes(`gnosis`)) {
         apiKey = __ENV.API_KEY_GNOSIS
     } else {
