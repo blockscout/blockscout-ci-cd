@@ -28,7 +28,7 @@ export class MarketplacePage extends CommonPage {
 
     APP_STARGAZER = `[role="group"] >> [title="Mark as favorite"] >> nth=`
 
-    FILTER = `text=All apps`
+    FILTER = `text=All >> nth=1`
 
     FILTER_ITEM = `[role="menuitem"] >> nth=`
 
