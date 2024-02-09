@@ -42,6 +42,7 @@
     "test:prod:smoke:etc_mordor": "npx playwright test --project=Chrome --grep=@SmokeEthETCMordor --retries=0 --timeout=60000",
     "test:prod:smoke:etc": "npx playwright test --project=Chrome --grep=@SmokeEthETCMainnet --retries=0 --timeout=60000",
     "test:prod:smoke:native_accounts": "npx playwright test --project=Chrome --grep=@NativeAccounts --retries=0 --timeout=60000",
+    "test:prod:smoke:userops": "npx playwright test --project=Chrome --grep=@UserOps --retries=0 --timeout=30000",
     "test:rollup": "npx playwright test --project=Chrome --grep=@Rollup",
     "test:authorized": "npx playwright test --project=Chrome --grep=@Authorized",
     "test:notifications": "npx playwright test --project=Chrome --grep=@Notifications",

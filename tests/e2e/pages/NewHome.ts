@@ -39,6 +39,26 @@ export class NewHomePage extends CommonPage {
         this.actions = new WebActions(this.page)
     }
 
+    async checkUserOpsHeader(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`main >> th >> nth=0 >> text=/User op hash/`)
+        await this.actions.verifyElementIsDisplayed(`main >> th >> nth=1 >> text=/Age/`)
+        await this.actions.verifyElementIsDisplayed(`main >> th >> nth=2 >> text=/Status/`)
+        await this.actions.verifyElementIsDisplayed(`main >> th >> nth=3 >> text=/Sender/`)
+        await this.actions.verifyElementIsDisplayed(`main >> th >> nth=4 >> text=/Tx hash/`)
+        await this.actions.verifyElementIsDisplayed(`main >> th >> nth=5 >> text=/Block/`)
+        await this.actions.verifyElementIsDisplayed(`main >> th >> nth=6 >> text=/Fee ETH/`)
+    }
+
+    async checkUserOpsRow(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=0 >> text=/0x.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=1 >> text=/.*ago/`)
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=2 >> text=/Success|Failure/`)
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=3 >> text=/0x.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=4 >> text=/0x.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=5 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=6 >> text=/\\d+/`)
+    }
+
     async search(text: string): Promise<void> {
         await this.actions.enterElementText(this.SEARCH_BAR, text)
     }
