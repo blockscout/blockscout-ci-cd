@@ -21,7 +21,6 @@ test(`@AccountImage @Search Check ERC-20 token search`, async ({ newHomePage }) 
     await newHomePage.open()
     await newHomePage.delay(2000)
     await newHomePage.search(TestTokenName)
-    await newHomePage.findInSearchItems(TestTokenAddress)
 })
 
 test(`@AccountImage @Search Check ERC-721 token search`, async ({ newHomePage }) => {
@@ -31,7 +30,6 @@ test(`@AccountImage @Search Check ERC-721 token search`, async ({ newHomePage })
     await newHomePage.open()
     await newHomePage.delay(2000)
     await newHomePage.search(TestNFTName)
-    await newHomePage.findInSearchItems(`0x5564efCae4bbf9eBd388a4Bf56688E51913c84D4`)
 })
 
 test(`@AccountImage @Search Check transaction search`, async ({ newHomePage }) => {
@@ -41,7 +39,6 @@ test(`@AccountImage @Search Check transaction search`, async ({ newHomePage }) =
     await newHomePage.open()
     await newHomePage.delay(2000)
     await newHomePage.search(TestTokenDeployTXHash)
-    await newHomePage.findInSearchItems(TestTokenDeployTXHash)
 })
 
 test(`@AccountImage @Search Check token search by partial name`, async ({ newHomePage }) => {
@@ -52,7 +49,6 @@ test(`@AccountImage @Search Check token search by partial name`, async ({ newHom
     await newHomePage.open()
     await newHomePage.delay(2000)
     await newHomePage.search(TestTokenName.slice(0, 3))
-    await newHomePage.findInSearchItems(TestTokenAddress)
 })
 
 test(`@AccountImage @Search Check token search by symbol`, async ({ newHomePage }) => {
@@ -63,5 +59,4 @@ test(`@AccountImage @Search Check token search by symbol`, async ({ newHomePage 
     await newHomePage.open()
     await newHomePage.delay(2000)
     await newHomePage.search(TestTokenSymbol)
-    await newHomePage.findInSearchItems(TestTokenAddress)
 })

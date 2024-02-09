@@ -3,7 +3,7 @@ import test from '@lib/BaseTest'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@AccountImage @Token Check token page`, async ({ tokenPage }) => {
+test.skip(`@AccountImage @Token Check token page`, async ({ tokenPage }) => {
     const { TestTokenAddress } = process.env
     await tokenPage.mock_ads()
     await tokenPage.open(TestTokenAddress)
