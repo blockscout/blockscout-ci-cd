@@ -39,6 +39,20 @@ export class NewHomePage extends CommonPage {
         this.actions = new WebActions(this.page)
     }
 
+    async checkENSHeader(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`main >> th >> nth=0 >> text=/Domain/`)
+        await this.actions.verifyElementIsDisplayed(`main >> th >> nth=1 >> text=/Address/`)
+        await this.actions.verifyElementIsDisplayed(`main >> th >> nth=2 >> text=/Registered on/`)
+        await this.actions.verifyElementIsDisplayed(`main >> th >> nth=3 >> text=/Expiration date/`)
+    }
+
+    async checkENSRow(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=0 >> text=/\\w+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=1 >> text=/0x.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=2 >> text=/.*ago/`)
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=3 >> text=/Expires in.*/`)
+    }
+
     async checkUserOpsHeader(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`main >> th >> nth=0 >> text=/User op hash/`)
         await this.actions.verifyElementIsDisplayed(`main >> th >> nth=1 >> text=/Age/`)
