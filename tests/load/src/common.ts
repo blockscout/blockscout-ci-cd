@@ -35,6 +35,14 @@ export const defaultAPITestSettings = {
     preAllocatedVUs: 50,
 }
 
+export const defaultAPISoakSettings = {
+    executor: `constant-arrival-rate`,
+    duration: `1h`,
+    rate: 3,
+    preAllocatedVUs: 10,
+}
+
+
 export const defaultProfileStages = {
     stages: [
         { target: 3, duration: `30s` },
@@ -110,66 +118,144 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
                 startTime: `180s`,
             } as Scenario,
         }
+    case `soakBackendV2`:
+        return {
+            gasPriceOracle: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2GasPriceOracle`
+            } as Scenario,
+            addressesLogs: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2AddressesLogs`,
+            } as Scenario,
+            addressesInternalTx: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2AddressesInternalTx`,
+            } as Scenario,
+            txInternal: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2TXInternal`,
+            } as Scenario,
+            tokenTransfers: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2TokenTransfers`,
+            } as Scenario,
+            tokenInstances: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2TokenInstances`,
+            } as Scenario,
+            addressesTokenTransfers: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2AddressesTokenTransfers`,
+            } as Scenario,
+            transactions: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2Transactions`,
+            } as Scenario,
+            recentTransactions: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2RecentTransactions`,
+            } as Scenario,
+            search: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2Search`,
+            } as Scenario,
+            searchRedirect: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2SearchRedirect`,
+            } as Scenario,
+            addressesTransactions: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2AddressesTransactions`,
+            } as Scenario,
+            addressesTokensERC20: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2AddressesTokensERC20`,
+            } as Scenario,
+            addressesTokensERC721: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2AddressesTokensERC721`,
+            } as Scenario,
+            addressesTokensERC1155: {
+                ...defaultAPISoakSettings,
+                exec: `backendV2AddressesTokensERC1155`,
+            } as Scenario,
+        }
     case `stressBackendV2`:
         return {
+            gasPriceOracle: {
+                ...defaultAPITestSettings,
+                exec: `backendV2GasPriceOracle`
+            } as Scenario,
+            addressesLogs: {
+                ...defaultAPITestSettings,
+                exec: `backendV2AddressesLogs`,
+                startTime: `60s`,
+            } as Scenario,
+            addressesInternalTx: {
+                ...defaultAPITestSettings,
+                exec: `backendV2AddressesInternalTx`,
+                startTime: `120s`,
+            } as Scenario,
             txInternal: {
                 ...defaultAPITestSettings,
                 exec: `backendV2TXInternal`,
+                startTime: `180s`,
             } as Scenario,
             tokenTransfers: {
                 ...defaultAPITestSettings,
                 exec: `backendV2TokenTransfers`,
-                startTime: `60s`,
+                startTime: `240s`,
             } as Scenario,
             tokenInstances: {
                 ...defaultAPITestSettings,
                 exec: `backendV2TokenInstances`,
-                startTime: `120s`,
+                startTime: `300s`,
             } as Scenario,
             addressesTokenTransfers: {
                 ...defaultAPITestSettings,
                 exec: `backendV2AddressesTokenTransfers`,
-                startTime: `180s`,
+                startTime: `360s`,
             } as Scenario,
             transactions: {
                 ...defaultAPITestSettings,
                 exec: `backendV2Transactions`,
-                startTime: `240s`,
+                startTime: `420s`,
             } as Scenario,
             recentTransactions: {
                 ...defaultAPITestSettings,
                 exec: `backendV2RecentTransactions`,
-                startTime: `300s`,
+                startTime: `480s`,
             } as Scenario,
             search: {
                 ...defaultAPITestSettings,
                 exec: `backendV2Search`,
-                startTime: `360s`,
+                startTime: `540s`,
             } as Scenario,
             searchRedirect: {
                 ...defaultAPITestSettings,
                 exec: `backendV2SearchRedirect`,
-                startTime: `420s`,
+                startTime: `600s`,
             } as Scenario,
             addressesTransactions: {
                 ...defaultAPITestSettings,
                 exec: `backendV2AddressesTransactions`,
-                startTime: `480s`,
+                startTime: `660s`,
             } as Scenario,
             addressesTokensERC20: {
                 ...defaultAPITestSettings,
                 exec: `backendV2AddressesTokensERC20`,
-                startTime: `540s`,
+                startTime: `720s`,
             } as Scenario,
             addressesTokensERC721: {
                 ...defaultAPITestSettings,
                 exec: `backendV2AddressesTokensERC721`,
-                startTime: `600s`,
+                startTime: `780s`,
             } as Scenario,
             addressesTokensERC1155: {
                 ...defaultAPITestSettings,
                 exec: `backendV2AddressesTokensERC1155`,
-                startTime: `660s`,
+                startTime: `840s`,
             } as Scenario,
 
             // jsonrpcurl: {
@@ -387,6 +473,8 @@ export const selectThresholds = (scenarioName: string) => {
     case `stressFrontend`:
         return defaultThresholds
     case `stressBackendV1`:
+        return defaultThresholds
+    case `soakBackendV2`:
         return defaultThresholds
     case `stressBackendV2`:
         return defaultThresholds

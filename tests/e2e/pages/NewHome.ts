@@ -66,7 +66,7 @@ export class NewHomePage extends CommonPage {
     async checkUserOpsRow(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=0 >> text=/0x.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=1 >> text=/.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=2 >> text=/Success|Failure/`)
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=2 >> text=/Success|Failed/`)
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=3 >> text=/0x.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=4 >> text=/0x.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=5 >> text=/\\d+/`)

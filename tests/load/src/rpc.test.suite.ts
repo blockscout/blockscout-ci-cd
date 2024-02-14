@@ -43,8 +43,8 @@ const loadTestData = (td: any) => {
         endBlock: __ENV.END_BLOCK,
         v1Offset: 100,
         pagination: {
-            pages: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            offsets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            pages: [0],
+            offsets: [0],
         },
     }
     // console.log(`test data loaded ${JSON.stringify(testData)}`)
@@ -267,6 +267,67 @@ export const backendV1AddressTokenTransfers = () => {
 }
 
 // per API calls for backend V2
+
+export const backendV2GasPriceOracle = () => {
+    group(`/v1/gas-price-oracle`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v1/gas-price-oracle`,
+            params: {
+                tags: {
+                    name: `GasPriceOracle (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`GasPriceOracle (backendV2) has failed`)
+        }
+    })
+}
+
+export const backendV2AddressesLogs = () => {
+    group(`/v2/addresses/{}/logs?apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/addresses/${randomItem(testData.addresses)}/logs?apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `AddressesLogs (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            console.log(`url: ${res.url}, status: ${res.status}`)
+            fail(`AddressesLogs (backendV2) has failed`)
+        }
+    })
+}
+
+export const backendV2AddressesInternalTx = () => {
+    group(`/v2/addresses/{}/internal-transactions?apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/addresses/${randomItem(testData.addresses)}/internal-transactions?apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `AddressesInternalTx (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`AddressesInternalTx (backendV2) has failed`)
+        }
+    })
+}
 
 export const backendV2TXInternal = () => {
     group(`/v2/transactions/{}/internal-transactions?apikey={}`, () => {
