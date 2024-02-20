@@ -27,11 +27,10 @@ export class RollupTxnBatchesPage extends HomeRollup {
         expect(this.page.url()).toContain(this.l2URL())
         await this.open()
 
-        await this.clickTableRowCol(4, 2)
+        await this.clickTableRowCol(4, 2, `a`)
         expect(this.page.url()).toContain(this.l2URL())
         await this.open()
 
-        const tx1 = await this.openLinkNewPage(ctx, () => this.clickTableRowCol(4, 3, `a >> nth=0`))
-        expect(tx1.url()).toContain(this.l1URL())
+        await this.clickTableRowCol(4, 3, `text=/.*ago/`)
     }
 }
