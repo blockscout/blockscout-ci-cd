@@ -65,6 +65,28 @@ export function teardown(data: any) {
     console.warn(`'test finished with data: ${JSON.stringify(data)}'`)
 }
 
+// TX Actions
+
+export const backendTXActions = () => {
+    group(`Transaction actions`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/v2/transactions/${randomItem(testData.txs)}/summary`,
+            params: {
+                tags: {
+                    name: `TXActions`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`TXActions (backend) has failed`)
+        }
+    })
+}
+
 // BENS
 
 export const batchResolveBens = () => {
