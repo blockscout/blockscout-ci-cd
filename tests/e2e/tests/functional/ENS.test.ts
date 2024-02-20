@@ -10,6 +10,7 @@ test(`@SmokeEthMainnet @ENS Eth main page components`, async ({ newHomePage }) =
 
 test(`@SmokeEthGoerli @ENS Eth Goerli main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth-goerli.blockscout.com/name-domains?only_active=true`)
+    await newHomePage.sortENSRows()
     await newHomePage.checkENSHeader()
     await newHomePage.checkENSRow()
 })

@@ -46,11 +46,16 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`main >> th >> nth=3 >> text=/Expiration date/`)
     }
 
+    async sortENSRows(): Promise<void> {
+        await this.actions.clickElement(`text=/Registered on/ >> nth=2`)
+        await this.actions.clickElement(`text=/Registered on/ >> nth=2`)
+    }
+
     async checkENSRow(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=0 >> text=/\\w+/`)
-        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=1 >> text=/0x.*/`)
-        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=2 >> text=/.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=3 >> text=/Expires in.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> tr >> nth=2 >> td >> nth=0 >> text=/\\w+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> tr >> nth=2 >> td >> nth=1 >> text=/0x.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> tr >> nth=2 >> td >> nth=2 >> text=/.*ago/`)
+        await this.actions.verifyElementIsDisplayed(`main >> tr >> nth=2 >> td >> nth=3 >> text=/Expires in.*/`)
     }
 
     async checkUserOpsHeader(): Promise<void> {
