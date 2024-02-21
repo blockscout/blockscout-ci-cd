@@ -38,7 +38,7 @@ export const defaultAPITestSettings = {
 export const defaultAPISoakSettings = {
     executor: `constant-arrival-rate`,
     duration: `1h`,
-    rate: 1,
+    rate: 3,
     preAllocatedVUs: 10,
 }
 

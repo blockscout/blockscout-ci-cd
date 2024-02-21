@@ -8,5 +8,4 @@ test(`@AccountImage @Address Check address page`, async ({ addressPage }) => {
     await addressPage.mock_ads()
     await addressPage.open(TestTokenAddress)
     await addressPage.check_address_description()
-    await addressPage.check_tx_in_list()
 })

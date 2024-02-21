@@ -28,7 +28,7 @@ export class MarketplacePage extends CommonPage {
 
     APP_STARGAZER = `[role="group"] >> [title="Mark as favorite"] >> nth=`
 
-    FILTER = `text=All >> nth=1`
+    FAVORITES_BTN = `button >> nth=4`
 
     FILTER_ITEM = `[role="menuitem"] >> nth=`
 
@@ -58,9 +58,6 @@ export class MarketplacePage extends CommonPage {
 
     apps = {
         Aave: 0,
-        Hop: 1,
-        'Revoke.cash': 2,
-        'Token approval tracker': 3,
     }
 
     constructor(page: Page) {
@@ -85,8 +82,7 @@ export class MarketplacePage extends CommonPage {
     }
 
     async filterFavorites(name: string): Promise<void> {
-        await this.actions.clickElement(this.FILTER)
-        await this.actions.clickElement(`${this.FILTER_ITEM}${this.apps[name]}`)
+        await this.actions.clickElement(this.FAVORITES_BTN)
     }
 
     async checkGroupsVisible(name: string, n: number): Promise<void> {

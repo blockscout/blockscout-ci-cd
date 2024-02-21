@@ -32,13 +32,19 @@ export class AddressPage extends CommonPage {
     }
 
     async check_address_description(): Promise<void> {
-        await this.check_table_element(`Contract details`, 0, `Token`)
-        await this.check_selector(`text=/0x/`, `wrong account address`)
-        await this.check_table_element(`Token name`, 0, `EPIC.*(EPC)`)
-        await this.check_table_element(`Creator`, 0, `0x.*at.*0x.*`)
-        await this.check_selector(`text=/\\d+ ETH/`, `no SPOA balance is displayed`)
-        await this.check_table_element(`Transactions`, 3, `\\d+`)
-        await this.check_table_element(`Gas used`, 0, `\\d+`)
-        await this.check_table_element(`Last balance update`, 0, `\\d+`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=5 >> text=/Token/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=7 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=3 >> text=/Token name/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=5 >> text=/EPIC.*\\(EPC\\)/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=10 >> text=/Creator/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=14 >> text=/0x.*at txn 0x.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=21 >> text=/Balance/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=25 >> text=/\\d+.*ETH.*\\(\\$.*\\)/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=26 >> text=/Transactions/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=30 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=31 >> text=/Gas used/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=35 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=36 >> text=/Last balance update/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=40 >> text=/\\d+/`)
     }
 }

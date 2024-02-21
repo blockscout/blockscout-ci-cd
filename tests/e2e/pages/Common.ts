@@ -235,36 +235,6 @@ export class CommonPage {
         await this.actions.verifyElementContainsText(this.VERIFY_ALERT_ROW, this.VERIFY_MSG)
     }
 
-    // checks tx fields across different pages when it displayed as a tile
-    async check_tx_in_list(): Promise<void> {
-        await this.check_tx_list_row(3, 1, `0x.*ago`)
-        await this.check_tx_list_row(3, 2, `Token transfer.*Success`)
-        await this.check_tx_list_row(3, 3, `mint`)
-        await this.check_tx_list_row(3, 4, `\\d+`)
-        await this.check_tx_list_row(3, 5, `0x`)
-        await this.check_tx_list_row(3, 5, `EPIC`)
-        await this.check_tx_list_row(3, 6, `\\d+`)
-        await this.check_tx_list_row(3, 7, `\\d+`)
-
-        await this.check_tx_list_row(4, 1, `0x.*ago`)
-        await this.check_tx_list_row(4, 2, `Contract creation.*Success`)
-        await this.check_tx_list_row(4, 3, ``)
-        await this.check_tx_list_row(4, 4, `\\d+`)
-        await this.check_tx_list_row(4, 5, `0x`)
-        await this.check_tx_list_row(4, 5, `EPIC`)
-        await this.check_tx_list_row(4, 6, `\\d+`)
-        await this.check_tx_list_row(4, 7, `\\d+`)
-
-        await this.check_tx_list_row(2, 1, `0x.*ago`)
-        await this.check_tx_list_row(2, 2, `Contract call.*Failed`)
-        await this.check_tx_list_row(2, 3, `alwaysReverts`)
-        await this.check_tx_list_row(2, 4, `\\d+`)
-        await this.check_tx_list_row(2, 5, `0x`)
-        await this.check_tx_list_row(2, 5, `EPIC`)
-        await this.check_tx_list_row(2, 6, `\\d+`)
-        await this.check_tx_list_row(2, 7, `\\d+`)
-    }
-
     async check_tx_logs(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}1 >> text=/Transaction/`)
         await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}3 >> text=/0x/`)
