@@ -125,7 +125,7 @@ export class AdminPage extends CommonPage {
 
     async clearMySubmissions(email: string): Promise<void> {
         await this.filterByEmail(email)
-        const noRecords = await this.actions.page.$(`text=No Records`)
+        const noRecords = await this.actions.page.$$(`text=/No Records/`)
         if (noRecords) {
             return
         }
