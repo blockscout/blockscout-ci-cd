@@ -129,3 +129,7 @@ jobs:
           environment-url: ${{env.DEPLOYMENT_URL}}
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
           state: 'failure'
+      
+      - name: Add annotation to workflow
+        if: ${{ success() && inputs.globalEnv == 'review' }}
+        run: echo "::notice title='Deployment URL'::${{env.DEPLOYMENT_URL}}"
