@@ -190,7 +190,7 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
                     exec: `backendV2AddressesTokensERC1155`,
                 } as Scenario,
             }
-        case `stressBackendV2`:
+        case `stressBackendV2V1`:
             return {
                 gasPriceOracle: {
                     ...defaultAPITestSettings,
@@ -265,6 +265,22 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
                     ...defaultAPITestSettings,
                     exec: `backendV2AddressesTokensERC1155`,
                     startTime: `840s`,
+                } as Scenario,
+                txInternalV1: {
+                    ...defaultAPITestSettings,
+                    exec: `backendV1TXInternal`,
+                    startTime: `900s`,
+                } as Scenario,
+                addressTXsV1: {
+                    ...defaultAPITestSettings,
+                    rate: 1,
+                    exec: `backendV1AddressTXs`,
+                    startTime: `960s`,
+                } as Scenario,
+                addressTokenTransfersV1: {
+                    ...defaultAPITestSettings,
+                    exec: `backendV1AddressTokenTransfers`,
+                    startTime: `1020s`,
                 } as Scenario,
 
                 // jsonrpcurl: {
@@ -487,7 +503,7 @@ export const selectThresholds = (scenarioName: string) => {
             return defaultThresholds
         case `soakBackendV2`:
             return defaultThresholds
-        case `stressBackendV2`:
+        case `stressBackendV2V1`:
             return defaultThresholds
         case `stressBackend`:
             return defaultThresholds

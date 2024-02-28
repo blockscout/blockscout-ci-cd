@@ -94,7 +94,7 @@ jobs:
       - name: Run v2 test
         if: always()
         env:
-          SCENARIO: stressBackendV2
+          SCENARIO: stressBackendV2V1
           K6_TEST_ID: ${{ inputs.test_name }}-v2
           BASE_URL: ${{ inputs.url }}
           TIMEOUT: ${{ inputs.request_timeout }}
