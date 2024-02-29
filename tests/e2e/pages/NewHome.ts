@@ -162,6 +162,21 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(this.BLOCK_PAGE_IS_VALID)
     }
 
+    async checkBlocksNoHeaderNoReward(context: BrowserContext): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=0 >> text=/Block/`, `no Blocks header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=1 >> text=/Size.*bytes/`, `no Size in bytes header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=2 >> text=/Txn/`, `no Txn header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=3 >> text=/Gas used/`, `no Gas used header is present`)
+
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=0 >> text=/\\d+.*ago/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=1 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=2 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=3 >> text=/\\d+.*/`)
+
+        await this.actions.clickElement(this.RECENT_BLOCK_URL)
+        await this.actions.verifyElementIsDisplayed(this.BLOCK_PAGE_IS_VALID)
+    }
+
     async checkBlocks(context: BrowserContext): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=0 >> text=/Block/`, `no Blocks header is present`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=1 >> text=/Size.*bytes/`, `no Size in bytes header is present`)
