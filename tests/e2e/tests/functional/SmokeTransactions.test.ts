@@ -100,8 +100,8 @@ test(`@SmokeEthImmutable Immutable transactions page check`, async ({ newHomePag
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
 
-test(`@SmokeEthShibarium Shibarium transactions page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://puppyscan.shib.io/txs`)
+test(`@SmokeEthShibariumMainnet Shibarium transactions page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://www.shibariumscan.io/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
 

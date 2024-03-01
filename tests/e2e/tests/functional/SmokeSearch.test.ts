@@ -130,7 +130,7 @@ test(`@SmokeEthImmutable Immutable Search USDT`, async ({ newHomePage }) => {
     await newHomePage.findInSearchItems(`Tether \\(USDT\\)`)
 })
 
-test(`@SmokeEthShibarium Shibarium Search USDT`, async ({ newHomePage }) => {
+test(`@SmokeEthShibariumMainnet Shibarium Search USDT`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://www.shibariumscan.io/`)
     await newHomePage.search(COMMON_TOKEN_NAME)
     await newHomePage.findInSearchItems(COMMON_TOKEN_FULL_NAME)

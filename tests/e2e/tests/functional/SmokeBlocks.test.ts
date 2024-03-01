@@ -72,9 +72,9 @@ test(`@SmokeEthImmutable Immutable blocks`, async ({ context, newHomePage }) => 
     await newHomePage.checkBlocks(context)
 })
 
-test(`@SmokeEthShibarium Shibarium blocks`, async ({ context, newHomePage }) => {
-    await newHomePage.open_custom(`https://puppyscan.shib.io/blocks`)
-    await newHomePage.checkBlocksNoHeaderNoReward(context)
+test(`@SmokeEthShibariumMainnet Shibarium blocks`, async ({ context, newHomePage }) => {
+    await newHomePage.open_custom(`https://www.shibariumscan.io//blocks`)
+    await newHomePage.checkBlocksnoMiner(context)
 })
 
 test(`@SmokeEthFuse Fuse blocks`, async ({ context, newHomePage }) => {

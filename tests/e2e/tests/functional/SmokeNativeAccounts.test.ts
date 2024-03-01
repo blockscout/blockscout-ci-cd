@@ -101,8 +101,8 @@ test(`@SmokeEthImmutable @NativeAccounts Immutable native accounts page check`, 
     await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthShibarium @NativeAccounts Shibarium native accounts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://puppyscan.shib.io/accounts`)
+test(`@SmokeEthShibariumMainnet @NativeAccounts Shibarium native accounts page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://www.shibariumscan.io/accounts`)
     await newHomePage.checkNativeAccountsNoPerc()
 })
 

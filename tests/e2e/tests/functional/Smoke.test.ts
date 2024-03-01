@@ -169,7 +169,7 @@ test(`@SmokeEthImmutable Immutable main page components`, async ({ newHomePage }
     await newHomePage.checkBlocksWidget()
 })
 
-test(`@SmokeEthShibarium Shibarium main page components`, async ({ newHomePage }) => {
+test(`@SmokeEthShibariumMainnet Shibarium main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://www.shibariumscan.io/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()

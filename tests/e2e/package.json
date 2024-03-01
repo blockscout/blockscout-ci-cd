@@ -35,7 +35,7 @@
     "test:prod:smoke:shimmer": "npx playwright test --project=Chrome --grep=@SmokeEthIotaShimmer --retries=3 --timeout=60000",
     "test:prod:smoke:shimmer_mainnet": "npx playwright test --project=Chrome --grep=@SmokeEthIotaMainnetShimmer --retries=3 --timeout=60000",
     "test:prod:smoke:immutable": "npx playwright test --project=Chrome --grep=@SmokeEthImmutable --retries=3 --timeout=60000",
-    "test:prod:smoke:shibarium": "npx playwright test --project=Chrome --grep=@SmokeEthShibarium --retries=3 --timeout=60000",
+    "test:prod:smoke:shibarium_mainnet": "npx playwright test --project=Chrome --grep=@SmokeEthShibariumMainnet --retries=3 --timeout=60000",
     "test:prod:smoke:shibarium_testnet": "npx playwright test --project=Chrome --grep=@SmokeEthShibariumTestnet --retries=3 --timeout=60000",
     "test:prod:smoke:fuse": "npx playwright test --project=Chrome --grep=@SmokeEthFuse --retries=3 --timeout=60000",
     "test:prod:smoke:fuse_testnet": "npx playwright test --project=Chrome --grep=@SmokeEthFuseTestnet --retries=3 --timeout=60000",

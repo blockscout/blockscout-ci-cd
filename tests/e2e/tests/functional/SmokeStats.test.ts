@@ -121,8 +121,8 @@ test(`@SmokeEthImmutable Immutable stats counters check`, async ({ newHomePage }
     await newHomePage.checkStatsGraphsDisplayed()
 })
 
-test(`@SmokeEthShibarium Shibarium stats counters check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://puppyscan.shib.io/stats`)
+test(`@SmokeEthShibariumMainnet Shibarium stats counters check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://www.shibariumscan.io/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()
 })

@@ -100,8 +100,8 @@ test(`@SmokeEthImmutable Immutable verified contracts page check`, async ({ newH
     await newHomePage.checkVerifiedContractsStats()
 })
 
-test(`@SmokeEthShibarium Shibarium verified contracts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://puppyscan.shib.io/verified-contracts`)
+test(`@SmokeEthShibariumMainnet Shibarium verified contracts page check`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`https://www.shibariumscan.io/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
 })
 

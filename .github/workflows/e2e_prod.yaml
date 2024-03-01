@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        instance: [mainnet, goerli, sepolia, gnosis, gnosis_chiado, optimism, optimism_goerli, astar, shiden, shibuya, rootstock, neon, neon_devnet, base, base_goerli, base_sepolia, athens_3, pegasus, phoenix, shimmer, shimmer_mainnet, immutable, shibarium, shibarium_testnet, fuse, fuse_testnet, etc_mordor, etc, zk_sync, stability]
+        instance: [mainnet, goerli, sepolia, gnosis, gnosis_chiado, optimism, optimism_goerli, astar, shiden, shibuya, rootstock, neon, neon_devnet, base, base_goerli, base_sepolia, athens_3, pegasus, phoenix, shimmer, shimmer_mainnet, immutable, shibarium_mainnet, shibarium_testnet, fuse, fuse_testnet, etc_mordor, etc, zk_sync, stability]
     permissions:
       id-token: write
       contents: read
