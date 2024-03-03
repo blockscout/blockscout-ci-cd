@@ -14,15 +14,15 @@ export class HomeRollup extends HomePage {
     }
 
     async open(): Promise<void> {
-        await this.actions.navigateToURL(`https://base-goerli.blockscout.com/`)
+        await this.actions.navigateToURL(`https://base-sepolia.blockscout.com/`)
     }
 
     l1URL(): string {
-        return `https://eth-goerli.blockscout.com`
+        return `https://eth-sepolia.blockscout.com`
     }
 
     l2URL(): string {
-        return `https://base-goerli.blockscout.com/`
+        return `https://base-sepolia.blockscout.com/`
     }
 
     navbar(num: Number): string {
