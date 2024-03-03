@@ -109,7 +109,7 @@ test(`@SmokeEthRootstock Rootstock blocks`, async ({ context, newHomePage }) => 
     await newHomePage.checkL2Blocks(context)
 })
 
-test(`@SmokeEthBaseGoerli Base goerli blocks`, async ({ context, newHomePage }) => {
+test(`@SmokeEthBaseSepolia Base sepolia blocks`, async ({ context, newHomePage }) => {
     await newHomePage.open_custom(`https://base-sepolia.blockscout.com/blocks`)
     await newHomePage.checkL2Blocks(context)
 })

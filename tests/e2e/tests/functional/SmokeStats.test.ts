@@ -79,7 +79,7 @@ test(`@SmokeEthNeonDevnet Neon devnet stats counters check`, async ({ newHomePag
     await newHomePage.checkStatsGraphsDisplayed()
 })
 
-test(`@SmokeEthBaseGoerli Base goerli stats counters check`, async ({ newHomePage }) => {
+test(`@SmokeEthBaseSepolia Base sepolia stats counters check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://base-sepolia.blockscout.com/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()

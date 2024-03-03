@@ -66,7 +66,7 @@ test(`@SmokeEthNeonDevnet @NativeAccounts Neon devnet native accounts page check
     await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthBaseGoerli @NativeAccounts Base goerli native accounts page check`, async ({ newHomePage }) => {
+test(`@SmokeEthBaseSepolia @NativeAccounts Base sepolia native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://base-sepolia.blockscout.com/accounts`)
     await newHomePage.checkNativeAccountsNoPerc()
 })

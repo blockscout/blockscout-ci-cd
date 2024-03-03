@@ -63,12 +63,6 @@ test.skip(`@SmokeEthNeonDevnet @ENS Neon devnet ENS components`, async ({ newHom
     await newHomePage.checkENSRow()
 })
 
-test(`@SmokeEthBaseGoerli @ENS Base goerli ENS components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://base-sepolia.blockscout.com/name-domains?only_active=true`)
-    await newHomePage.checkENSHeader()
-    await newHomePage.checkENSRow()
-})
-
 test.skip(`@SmokeEthBaseSepolia @ENS Base Sepolia ENS components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://base-sepolia.blockscout.com/name-domains?only_active=true`)
     await newHomePage.checkENSHeader()

@@ -23,7 +23,6 @@
     "test:prod:smoke:rootstock": "npx playwright test --project=Chrome --grep=@SmokeEthRootstock --retries=3 --timeout=60000",
     "test:prod:smoke:neon": "npx playwright test --project=Chrome --grep=@SmokeEthNeonMainnet --retries=3 --timeout=60000",
     "test:prod:smoke:neon_devnet": "npx playwright test --project=Chrome --grep=@SmokeEthNeonDevnet --retries=3 --timeout=60000",
-    "test:prod:smoke:base_goerli": "npx playwright test --project=Chrome --grep=@SmokeEthBaseGoerli --retries=3 --timeout=60000",
     "test:prod:smoke:base_sepolia": "npx playwright test --project=Chrome --grep=@SmokeEthBaseSepolia --retries=3 --timeout=60000",
     "test:prod:smoke:zk_sync": "npx playwright test --project=Chrome --grep=@SmokezkSync --retries=3 --timeout=60000",
     "test:prod:smoke:stability": "npx playwright test --project=Chrome --grep=@SmokeStability --retries=3 --timeout=60000",

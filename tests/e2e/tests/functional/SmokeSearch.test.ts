@@ -82,16 +82,10 @@ test(`@SmokeEthNeonDevnet Neon devnet Search USDT`, async ({ newHomePage }) => {
     await newHomePage.findInSearchItems(COMMON_TOKEN_FULL_NAME)
 })
 
-test(`@SmokeEthBaseGoerli Base goerli Search USDT`, async ({ newHomePage }) => {
+test(`@SmokeEthBaseSepolia Base sepolia Search USDT`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://base-sepolia.blockscout.com/`)
     await newHomePage.search(COMMON_TOKEN_NAME)
     await newHomePage.findInSearchItems(COMMON_TOKEN_FULL_NAME)
-})
-
-test(`@SmokeEthBaseSepolia Base Sepolia Search USDT`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://base-sepolia.blockscout.com/`)
-    await newHomePage.search(`MyToken`)
-    await newHomePage.findInSearchItems(`MyToken \\(MTKN\\)`)
 })
 
 test(`@SmokeEthBaseMainnet Base Search USDT`, async ({ newHomePage }) => {

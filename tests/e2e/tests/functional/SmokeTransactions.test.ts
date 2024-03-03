@@ -65,7 +65,7 @@ test(`@SmokeEthNeonDevnet Neon devnet transactions page check`, async ({ newHome
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
 
-test(`@SmokeEthBaseGoerli Base goerli transactions page check`, async ({ newHomePage }) => {
+test(`@SmokeEthBaseSepolia Base sepolia transactions page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://base-sepolia.blockscout.com/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
