@@ -64,7 +64,7 @@ test.skip(`@SmokeEthNeonDevnet @ENS Neon devnet ENS components`, async ({ newHom
 })
 
 test(`@SmokeEthBaseGoerli @ENS Base goerli ENS components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://base-goerli.blockscout.com/name-domains?only_active=true`)
+    await newHomePage.open_custom(`https://base-sepolia.blockscout.com/name-domains?only_active=true`)
     await newHomePage.checkENSHeader()
     await newHomePage.checkENSRow()
 })

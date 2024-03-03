@@ -83,7 +83,7 @@ test(`@SmokeEthNeonDevnet Neon devnet Search USDT`, async ({ newHomePage }) => {
 })
 
 test(`@SmokeEthBaseGoerli Base goerli Search USDT`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://base-goerli.blockscout.com/`)
+    await newHomePage.open_custom(`https://base-sepolia.blockscout.com/`)
     await newHomePage.search(COMMON_TOKEN_NAME)
     await newHomePage.findInSearchItems(COMMON_TOKEN_FULL_NAME)
 })

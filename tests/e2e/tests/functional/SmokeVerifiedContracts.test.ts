@@ -66,7 +66,7 @@ test(`@SmokeEthNeonDevnet Neon devnet verified contracts page check`, async ({ n
 })
 
 test(`@SmokeEthBaseGoerli Base goerli verified contracts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://base-goerli.blockscout.com/verified-contracts`)
+    await newHomePage.open_custom(`https://base-sepolia.blockscout.com/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
 })
 

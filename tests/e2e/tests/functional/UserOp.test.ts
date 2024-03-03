@@ -61,7 +61,7 @@ test.skip(`@SmokeEthNeonDevnet @UserOps Neon devnet UserOps components`, async (
 })
 
 test.skip(`@SmokeEthBaseGoerli @UserOps Base goerli UserOps components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://base-goerli.blockscout.com/ops`)
+    await newHomePage.open_custom(`https://base-sepolia.blockscout.com/ops`)
     await newHomePage.checkUserOpsHeader()
     await newHomePage.checkUserOpsRow()
 })

@@ -100,7 +100,7 @@ test(`@SmokeEthNeonDevnet Neon devnet main page components`, async ({ newHomePag
 })
 
 test(`@SmokeEthBaseGoerli Base goerli main page components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://base-goerli.blockscout.com/`)
+    await newHomePage.open_custom(`https://base-sepolia.blockscout.com/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()
     await newHomePage.checkBlocksWidget()
