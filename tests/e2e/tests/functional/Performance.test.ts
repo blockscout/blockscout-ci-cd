@@ -1,7 +1,7 @@
 import test from '@lib/BaseTest'
 import { format } from 'util'
 
-const { execSync } = require("child_process")
+const { execSync } = require(`child_process`)
 
 test.describe.configure({ mode: `parallel` })
 
