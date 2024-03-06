@@ -150,9 +150,20 @@ export class AdminPage extends CommonPage {
         await this.actions.clickElement(`tr >> nth=1 >> td >> nth=4`)
     }
 
+    async selectLastSubmissionSorted(): Promise<void> {
+        await this.actions.clickElement(`text=/Id/ >> nth=0`)
+        await this.actions.clickElement(`text=/Id/ >> nth=0`)
+        await this.selectFirstSubmission()
+    }
+
     async deleteTokenInfo(): Promise<void> {
         this.page.on(`dialog`, (dialog) => dialog.accept())
         await this.actions.clickElement(`text=Delete`)
+        await this.actions.clickElement(`button >> nth=2`)
+    }
+
+    async closeFilterPanel(): Promise<void> {
+        await this.actions.clickElement(`form >> button >> svg`)
     }
 
     async approve(): Promise<void> {
