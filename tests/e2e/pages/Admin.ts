@@ -153,7 +153,7 @@ export class AdminPage extends CommonPage {
     async selectLastSubmissionSorted(): Promise<void> {
         await this.actions.clickElement(`text=/Id/ >> nth=0`)
         await this.actions.clickElement(`text=/Id/ >> nth=0`)
-        await this.delay(1000)
+        await this.delay(3000)
         await this.selectFirstSubmission()
     }
 
