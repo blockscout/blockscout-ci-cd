@@ -2,9 +2,9 @@ import test from '@lib/BaseTest'
 
 test.describe.configure({ mode: `parallel` })
 
-test(`@Rollup Rollups main page menu`, async ({ newHomeRollup }) => {
-    await newHomeRollup.open()
-    await newHomeRollup.verifyFeaturesEnabled()
+test(`@Rollup Rollups main page menu`, async ({ newHomeRollupBaseSepolia }) => {
+    await newHomeRollupBaseSepolia.open()
+    await newHomeRollupBaseSepolia.verifyFeaturesEnabled()
 })
 
 test(`@Rollup Deposits table verification`, async ({ context, newRollupDeposits }) => {
@@ -20,6 +20,11 @@ test(`@Rollup Withdrawals table verification`, async ({ context, newRollupWithdr
 test(`@Rollup Txn batches table verification`, async ({ context, newRollupTxnBatches }) => {
     await newRollupTxnBatches.open()
     await newRollupTxnBatches.validateTable(context)
+})
+
+test(`@Rollup Txn batches table verification (ZKEVM)`, async ({ context, newRollupTxnBatchesZKEvm }) => {
+    await newRollupTxnBatchesZKEvm.open()
+    await newRollupTxnBatchesZKEvm.validateTable(context)
 })
 
 test(`@Rollup Output roots table verification`, async ({ context, newRollupOutputRoots }) => {

@@ -7,7 +7,7 @@ import { TokenPage } from '@pages/Token'
 import { AddressPage } from '@pages/Address'
 import { AuthorizedArea } from '@pages/Login'
 import { CommonPage } from '@pages/Common'
-import { HomeRollup } from '@pages/HomeRollup'
+import { HomeRollupBaseSepolia, HomeRollupZKEvm } from '@pages/HomeRollupBaseSepolia'
 import { RollupDepositsPage } from '@pages/RollupDeposits'
 import { RollupWithdrawalsPage } from '@pages/RollupWithdrawals'
 import MailSlurp from 'mailslurp-client'
@@ -27,6 +27,7 @@ import { HomeGoerli } from '@pages/HomeGoerli'
 import { EtherscanMainnetPage } from '@pages/EtherscanMainnet'
 import Contracts from './Contracts'
 import testConfig from '../testConfig'
+import { RollupTxnBatchesPageZKEvm } from '@pages/RollupTxnBatchesZKEvm'
 
 const test = baseTest.extend<{
     adminPage: AdminPage,
@@ -34,10 +35,12 @@ const test = baseTest.extend<{
     newHomePage: NewHomePage,
     newHomeMainDev: HomeMainDev,
     newHomeGoerli: HomeGoerli,
-    newHomeRollup: HomeRollup,
+    newHomeRollupBaseSepolia: HomeRollupBaseSepolia,
+    newHomeRollupZKEvm: HomeRollupZKEvm,
     newRollupDeposits: RollupDepositsPage,
     newRollupWithdrawals: RollupWithdrawalsPage,
     newRollupTxnBatches: RollupTxnBatchesPage,
+    newRollupTxnBatchesZKEvm: RollupTxnBatchesPageZKEvm,
     newRollupOutputRoots: RollupOutputRootsPage,
     marketplace: MarketplacePage,
     homePage: HomePage,
@@ -66,8 +69,11 @@ const test = baseTest.extend<{
     newHomeMainDev: async ({ page }, use) => {
         await use(new HomeMainDev(page))
     },
-    newHomeRollup: async ({ page }, use) => {
-        await use(new HomeRollup(page))
+    newHomeRollupBaseSepolia: async ({ page }, use) => {
+        await use(new HomeRollupBaseSepolia(page))
+    },
+    newHomeRollupZKEvm: async ({ page }, use) => {
+        await use(new HomeRollupZKEvm(page))
     },
     newHomeGoerli: async ({ page }, use) => {
         await use(new HomeGoerli(page))
@@ -80,6 +86,9 @@ const test = baseTest.extend<{
     },
     newRollupTxnBatches: async ({ page }, use) => {
         await use(new RollupTxnBatchesPage(page))
+    },
+    newRollupTxnBatchesZKEvm: async ({ page }, use) => {
+        await use(new RollupTxnBatchesPageZKEvm(page))
     },
     newRollupOutputRoots: async ({ page }, use) => {
         await use(new RollupOutputRootsPage(page))

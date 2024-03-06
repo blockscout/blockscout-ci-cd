@@ -2,7 +2,7 @@ import { WebActions } from "@lib/WebActions"
 import type { Page, BrowserContext } from 'playwright'
 import { HomePage } from "./Home"
 
-export class HomeRollup extends HomePage {
+export class HomeRollupBaseSepolia extends HomePage {
     readonly page: Page
 
     actions: WebActions

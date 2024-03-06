@@ -1,9 +1,9 @@
 import { WebActions } from "@lib/WebActions"
 import type { Page, BrowserContext } from 'playwright'
 import { expect } from "@playwright/test"
-import { HomeRollup } from "./HomeRollup"
+import { HomeRollupBaseSepolia } from "./HomeRollupBaseSepolia"
 
-export class RollupWithdrawalsPage extends HomeRollup {
+export class RollupWithdrawalsPage extends HomeRollupBaseSepolia {
     readonly page: Page
 
     actions: WebActions
