@@ -15,7 +15,7 @@ export class RollupTxnBatchesPageZKEvm extends HomeRollupZKEvm {
     }
 
     async open(): Promise<void> {
-        await this.actions.navigateToURL(`${this.l2URL()}/batches`)
+        await this.actions.navigateToURL(`${this.l2URL()}batches`)
     }
 
     async validateTable(ctx: BrowserContext): Promise<void> {
