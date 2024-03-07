@@ -53,7 +53,6 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
       - name: Run playwright
-        working-directory: blockscout-ci-cd/tests/e2e
         run: |
           npm run test:rollup
       - uses: actions/upload-artifact@v3
@@ -65,7 +64,7 @@ jobs:
         if: always()
         with:
           name: tests-results
-          path: blockscout-ci-cd/tests/e2e/test-results
+          path: tests/e2e/test-results
 defaults:
   run:
     shell: bash
