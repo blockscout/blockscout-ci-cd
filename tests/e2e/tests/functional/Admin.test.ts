@@ -52,9 +52,9 @@ test(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, 
     await adminPage.filterByEmail(process.env.ACCOUNT_USERNAME)
     await adminPage.selectLastSubmissionSorted()
     await adminPage.approve()
+    await adminPage.delay(10000)
 
     await newHomeGoerli.openAddress(tokenAddr)
-    await adminPage.delay(3000)
     await tokenPage.selectProjectInfo()
     await tokenPage.actions.verifyElementIsDisplayed(`text=${uniqueSupportURL}`)
 })
