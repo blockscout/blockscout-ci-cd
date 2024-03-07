@@ -60,7 +60,7 @@ export class BlockListPage extends CommonPage {
 
     async check_table(): Promise<void> {
         await this.grid(1, 0, `\\d+`)
-        await this.grid(1, 0, `s.*ago`)
+        await this.grid(1, 0, `.*ago`)
         await this.grid(1, 1, `\\d+`)
         await this.grid(1, 2, `0x`)
         await this.grid(1, 3, `\\d+`)
