@@ -60,6 +60,11 @@ jobs:
         with:
           name: report
           path: tests/e2e/html-report/index.html
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: tests-results
+          path: blockscout-ci-cd/tests/e2e/test-results
 defaults:
   run:
     shell: bash
