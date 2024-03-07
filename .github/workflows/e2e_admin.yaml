@@ -69,6 +69,7 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
       - name: Run playwright
+        working-directory: blockscout-ci-cd/tests/e2e
         run: |
           npm run test:admin
       - uses: actions/upload-artifact@v3
