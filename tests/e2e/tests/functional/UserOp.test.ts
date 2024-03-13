@@ -78,7 +78,7 @@ test.skip(`@SmokezkSync @UserOps zkSync Era UserOps components`, async ({ newHom
     await newHomePage.checkUserOpsRow()
 })
 
-test.skip(`@SmokeStability @UserOps zkSync Era UserOps components`, async ({ newHomePage }) => {
+test.skip(`@SmokeEthStability @UserOps zkSync Era UserOps components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://stability-betanet.blockscout.com/ops`)
     await newHomePage.checkUserOpsHeader()
     await newHomePage.checkUserOpsRow()

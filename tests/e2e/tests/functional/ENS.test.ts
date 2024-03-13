@@ -75,7 +75,7 @@ test.skip(`@SmokezkSync @ENS zkSync Era ENS components`, async ({ newHomePage })
     await newHomePage.checkENSRow()
 })
 
-test.skip(`@SmokeStability @ENS zkSync Era ENS components`, async ({ newHomePage }) => {
+test.skip(`@SmokeEthStability @ENS zkSync Era ENS components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://stability-betanet.blockscout.com/name-domains?only_active=true`)
     await newHomePage.checkENSHeader()
     await newHomePage.checkENSRow()

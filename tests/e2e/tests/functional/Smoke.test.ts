@@ -120,7 +120,7 @@ test(`@SmokezkSync zkSync Era main page components`, async ({ newHomePage }) => 
     await newHomePage.checkBlocksWidget()
 })
 
-test(`@SmokeStability zkSync Era main page components`, async ({ newHomePage }) => {
+test(`@SmokeEthStability zkSync Era main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://stability-betanet.blockscout.com/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()

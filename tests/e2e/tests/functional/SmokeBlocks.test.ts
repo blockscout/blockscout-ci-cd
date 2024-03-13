@@ -73,7 +73,7 @@ test(`@SmokeEthImmutable Immutable blocks`, async ({ context, newHomePage }) => 
 })
 
 test(`@SmokeEthShibariumMainnet Shibarium blocks`, async ({ context, newHomePage }) => {
-    await newHomePage.open_custom(`https://www.shibariumscan.io//blocks`)
+    await newHomePage.open_custom(`https://www.shibariumscan.io/blocks`)
     await newHomePage.checkBlocksNoHeaderNoReward(context)
 })
 

@@ -56,6 +56,8 @@ export class MarketplacePage extends CommonPage {
 
     SUBMIT_VERIFICATION_TEXT = `text=Your responses have been emailed to you`
 
+    DAPPS_PAGE_BUTTON = `text=/DApps/`
+
     apps = {
         Aave: 0,
     }
@@ -66,7 +68,11 @@ export class MarketplacePage extends CommonPage {
         this.actions = new WebActions(this.page)
     }
 
-    async open(): Promise<void> {
+    async open(url?: string): Promise<void> {
+        if (url != null) {
+           await this.actions.navigateToURL(`${url}/apps`)
+           return
+        }
         await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}/apps`)
     }
 
@@ -74,6 +80,28 @@ export class MarketplacePage extends CommonPage {
         for (const [key, _] of Object.entries(this.apps)) {
             await this.actions.verifyElementIsDisplayed(`${this.APP_TILE_HEADER}${key}`)
         }
+    }
+
+    async isOn(): Promise<boolean> {
+        return await this.actions.page.isVisible(this.DAPPS_PAGE_BUTTON)
+    }
+    
+    async openMarketplace(): Promise<void> {
+        await this.actions.clickElement(this.DAPPS_PAGE_BUTTON)
+    }
+
+    async checkAllFeaturesOn(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`text=/Submit app/`)
+        // await this.actions.verifyElementIsDisplayed(`text=/Suggest ideas/`)
+        const extendedMenuSelector = `button[id="popover-trigger-:rq:"]`
+        if (await this.actions.page.isVisible(extendedMenuSelector)) {
+            await this.actions.clickElement(extendedMenuSelector)
+            await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rq:"] >> button >> nth=0`, `no buttons in extended grroup bar`)
+        }
+        await this.actions.clickElement(`text=/More info/`)
+        await this.actions.verifyElementIsDisplayed(`text=/Launch app/`)
+        await this.actions.verifyElementIsDisplayed(`text=/Overview/`)
+        await this.actions.verifyElementIsDisplayed(`text=/https:\/\//`)
     }
 
     async addFavoriteApp(name: string): Promise<void> {
