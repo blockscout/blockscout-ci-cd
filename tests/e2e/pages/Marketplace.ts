@@ -70,8 +70,8 @@ export class MarketplacePage extends CommonPage {
 
     async open(url?: string): Promise<void> {
         if (url != null) {
-           await this.actions.navigateToURL(`${url}/apps`)
-           return
+            await this.actions.navigateToURL(`${url}/apps`)
+            return
         }
         await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}/apps`)
     }
@@ -83,9 +83,9 @@ export class MarketplacePage extends CommonPage {
     }
 
     async isOn(): Promise<boolean> {
-        return await this.actions.page.isVisible(this.DAPPS_PAGE_BUTTON)
+        return this.actions.page.isVisible(this.DAPPS_PAGE_BUTTON)
     }
-    
+
     async openMarketplace(): Promise<void> {
         await this.actions.clickElement(this.DAPPS_PAGE_BUTTON)
     }
@@ -101,7 +101,7 @@ export class MarketplacePage extends CommonPage {
         await this.actions.clickElement(`text=/More info/`)
         await this.actions.verifyElementIsDisplayed(`text=/Launch app/`)
         await this.actions.verifyElementIsDisplayed(`text=/Overview/`)
-        await this.actions.verifyElementIsDisplayed(`text=/https:\/\//`)
+        await this.actions.verifyElementIsDisplayed(`text=/https:///`)
     }
 
     async addFavoriteApp(name: string): Promise<void> {

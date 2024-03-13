@@ -43,7 +43,7 @@ for (const [url, tag] of urls) {
             // await marketplace.checkDefaultAppsList()
             await marketplace.checkAllFeaturesOn()
         } else {
-            console.log(chalk.yellow(`DApps Marketplace is OFF!`));
+            console.log(chalk.yellow(`DApps Marketplace is OFF!`))
         }
     })
 }
