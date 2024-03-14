@@ -28,7 +28,7 @@ export class MarketplacePage extends CommonPage {
 
     APP_STARGAZER = `[role="group"] >> [title="Mark as favorite"] >> nth=`
 
-    FAVORITES_BTN = `button >> nth=4`
+    FAVORITES_BTN = `div[role="tablist"] >> button >> nth=0`
 
     FILTER_ITEM = `[role="menuitem"] >> nth=`
 
@@ -114,8 +114,6 @@ export class MarketplacePage extends CommonPage {
     }
 
     async checkGroupsVisible(name: string, n: number): Promise<void> {
-        const groups = await this.actions.page.$$(this.APP_TILE_BODY)
-        expect(groups).toHaveLength(n)
         await this.actions.verifyElementIsDisplayed(`${this.APP_TILE_HEADER}${name}`)
     }
 

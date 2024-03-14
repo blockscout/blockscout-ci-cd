@@ -1,5 +1,6 @@
 import { WebActions } from "@lib/WebActions"
 import type { BrowserContext, Page } from 'playwright'
+import chalk from "chalk"
 import { CommonPage } from "./Common"
 
 export class NewHomePage extends CommonPage {
@@ -28,6 +29,10 @@ export class NewHomePage extends CommonPage {
     RECENT_BLOCK_URL = `table >> tr >> nth=2 >> td >> a >> nth=0`
 
     BLOCK_PAGE_IS_VALID = `h1 >> text=/Block\\s\\#\\d+/`
+
+    GAS_TRACKER_ON = `div >> div >> nth=4 >> span >> nth=0 >> text=/ETH/`
+
+    GAS_TRACKER_POPUP = `div >> div >> nth=6 >> span >> nth=1 >> text=/$.*/`
 
     readonly page: Page
 
@@ -97,6 +102,27 @@ export class NewHomePage extends CommonPage {
     async open_custom(url: string, options = { waitUntil: `load` }): Promise<void> {
         await this.actions.navigateToURL(url, options)
         await this.delay(5000)
+    }
+
+    async isGasTrackerOn(): Promise<boolean> {
+        return this.actions.page.isVisible(this.GAS_TRACKER_ON)
+    }
+
+    async checkGasTrackerPopup(): Promise<void> {
+        await this.actions.clickElement(this.GAS_TRACKER_POPUP)
+        await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=3 >> text=/Last update/`)
+        await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=4 >> text=/\\w\\s\\d\\d,\\s\\d\\d:\\d\\d:\\d\\d/`)
+        await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=6 >> span >> nth=0 >> text=/Fast/`)
+        await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=6 >> span >> nth=1 >> text=/\\d.*/`)
+        await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=6 >> span >> nth=2 >> text=/$.*/`)
+        await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=6 >> span >> nth=3 >> text=/.*Gwei/`)
+    }
+
+    async checkGasTrackerBar(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`div >> div >> nth=4 >> span >> nth=1 >> text=/$.*/`)
+        await this.actions.verifyElementIsDisplayed(`div >> div >> nth=5 >> text=/.*%/`)
+        await this.actions.verifyElementIsDisplayed(`div >> div >> nth=6 >> span >> nth=0 >> text=/Gas/`)
+        await this.actions.verifyElementIsDisplayed(this.GAS_TRACKER_POPUP)
     }
 
     async checkIndexing(): Promise<void> {
