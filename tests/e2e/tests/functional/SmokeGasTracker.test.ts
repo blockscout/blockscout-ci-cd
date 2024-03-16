@@ -41,6 +41,7 @@ for (const [url, tag] of urls) {
         if (await newHomePage.isGasTrackerOn()) {
             await newHomePage.checkGasTrackerBar()
             await newHomePage.checkGasTrackerPopup()
+            await newHomePage.checkGasTrackerView()
         } else {
             console.log(chalk.yellow(`Gas Tracker is OFF!`))
         }

@@ -38,6 +38,8 @@ export class NewHomePage extends CommonPage {
 
     actions: WebActions
 
+    currentPage: string
+
     constructor(page: Page) {
         super(page)
         this.page = page
@@ -100,6 +102,7 @@ export class NewHomePage extends CommonPage {
     }
 
     async open_custom(url: string, options = { waitUntil: `load` }): Promise<void> {
+        this.currentPage = url
         await this.actions.navigateToURL(url, options)
         await this.delay(5000)
     }
@@ -110,12 +113,34 @@ export class NewHomePage extends CommonPage {
 
     async checkGasTrackerPopup(): Promise<void> {
         await this.actions.clickElement(this.GAS_TRACKER_POPUP)
-        await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=3 >> text=/Last update/`)
+        await this.delay(1000)
         await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=4 >> text=/\\w\\s\\d\\d,\\s\\d\\d:\\d\\d:\\d\\d/`)
         await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=6 >> span >> nth=0 >> text=/Fast/`)
         await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=6 >> span >> nth=1 >> text=/\\d.*/`)
         await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=6 >> span >> nth=2 >> text=/$.*/`)
         await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=6 >> span >> nth=3 >> text=/.*Gwei/`)
+    }
+
+    async checkGasTrackerView(): Promise<void> {
+        await this.actions.navigateToURL(`${this.currentPage}/gas-tracker`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=6 >> text=/Network utilization \\d+.\\d+% — .* load/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=7 >> text=/Last updated.*\\s\\d+\\s\\w+,\\s\\d\\d:\\d\\d:\\d\\d/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=31 >> text=/Average gas price/`)
+
+        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=0 >> div >> nth=0 >> text=/Fast.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=0 >> div >> nth=3 >> text=/$.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=0 >> div >> nth=4 >> text=/\\d+ Gwei per transaction / \\d+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=0 >> div >> nth=5 >> text=/Base.*\\d+.*/.*Priority.*\\d+.*/`)
+
+        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=1 >> div >> nth=0 >> text=/Normal.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=1 >> div >> nth=3 >> text=/$.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=1 >> div >> nth=4 >> text=/\\d+ Gwei per transaction / \\d+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=1 >> div >> nth=5 >> text=/Base.*\\d+.*/.*Priority.*\\d+.*/`)
+
+        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=2 >> div >> nth=0 >> text=/Slow.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=2 >> div >> nth=3 >> text=/$.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=2 >> div >> nth=4 >> text=/\\d+ Gwei per transaction / \\d+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=2 >> div >> nth=5 >> text=/Base.*\\d+.*/.*Priority.*\\d+.*/`)
     }
 
     async checkGasTrackerBar(): Promise<void> {
