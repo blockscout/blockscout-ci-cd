@@ -10,7 +10,7 @@ test.beforeEach(async ({ adminPage }) => {
     adminPage.setBaseURL(envURL)
     await adminPage.open()
     await adminPage.login(process.env.ACCOUNT_USERNAME, process.env.ACCOUNT_PASSWORD)
-});
+})
 
 test(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, adminPage }) => {
     await adminPage.selectSuperUserTab()
