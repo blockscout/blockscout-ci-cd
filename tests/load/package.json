@@ -28,7 +28,7 @@
   "scripts": {
     "build": "webpack",
     "lint": "eslint --ext .ts .",
-    "test": "npm run build && export $(cat $CONFIG | xargs) && ./bin_k6/k6-tsdb-darwin --verbose run --tag testid=${K6_TEST_ID} --log-output=${K6_LOG_OUTPUT_STRING} dist/rpc.test.suite.js",
+    "test": "npm run build && export $(cat $CONFIG | xargs) && ./k6 --verbose run --tag testid=${K6_TEST_ID} --log-output=${K6_LOG_OUTPUT_STRING} dist/rpc.test.suite.js",
     "test:ci": "npm run build && ./bin_k6/k6-tsdb-linux --verbose run --tag testid=${K6_TEST_ID} dist/rpc.test.suite.js"
   },
   "dependencies": {

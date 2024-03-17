@@ -2,16 +2,14 @@
 # Blockscout load tests
 
 ## Install
-Install `git-lfs` to fetch custom binaries
-```
-brew install git-lfs
-git lfs install
-git lfs fetch
-```
-
 Install packages
 ```
 npm install
+```
+
+Build `xk6` binary for your platform
+```
+xk6 build --with github.com/grafana/xk6-output-timescaledb
 ```
 
 ## Run
