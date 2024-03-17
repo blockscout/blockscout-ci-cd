@@ -119,7 +119,7 @@ export class AdminPage extends CommonPage {
         if (noRecords) {
             return
         }
-        await this.selectFirstSubmission()
+        await this.selectFirstListElement()
         await this.deleteTokenInfo()
     }
 
@@ -140,13 +140,45 @@ export class AdminPage extends CommonPage {
         await this.actions.clickElement(`text=Apply changes`)
     }
 
+    async filterByAddress(addr: string): Promise<void> {
+        await this.actions.clickElement(`text=Filter`)
+        await this.actions.enterElementText(`input[name="filter-address"]`, addr)
+        await this.actions.clickElement(`text=Apply changes`)
+    }
+
+    async filterByInputRef(inputName: string, filter: string): Promise<void> {
+        await this.actions.clickElement(`text=Filter`)
+        await this.actions.enterElementText(`input[name="${inputName}"]`, filter)
+        await this.actions.clickElement(`text=Apply changes`)
+    }
+
+    async filterBySlug(addr: string): Promise<void> {
+        await this.actions.clickElement(`text=Filter`)
+        await this.actions.enterElementText(`input[name="filter-address"]`, addr)
+        await this.actions.clickElement(`text=Apply changes`)
+    }
+
+    async filterByEmailProjectName(projectName: string): Promise<void> {
+        await this.actions.clickElement(`text=Filter`)
+        await this.actions.enterElementText(`input[name="filter-project_name"]`, projectName)
+        await this.actions.clickElement(`text=Apply changes`)
+    }
+
+    async filterByEmailStatus(email: string, status: string): Promise<void> {
+        await this.actions.clickElement(`text=Filter`)
+        await this.actions.enterElementText(`input[name="filter-blockscout_user_email"]`, email)
+        await this.actions.clickElement(`input[id="react-select-5-input"]`)
+        await this.actions.clickElement(`form >> text=/${status}/ >> nth=1`)
+        await this.actions.clickElement(`text=Apply changes`)
+    }
+
     async filterByTokenAddress(email: string): Promise<void> {
         await this.actions.clickElement(`text=Filter`)
         await this.actions.enterElementText(`input[name="filter-address"]`, email)
         await this.actions.clickElement(`text=Apply changes`)
     }
 
-    async selectFirstSubmission(): Promise<void> {
+    async selectFirstListElement(): Promise<void> {
         await this.actions.clickElement(`tr >> nth=1 >> td >> nth=1`)
     }
 
@@ -154,7 +186,7 @@ export class AdminPage extends CommonPage {
         await this.actions.clickElement(`text=/Id/ >> nth=0`)
         await this.actions.clickElement(`text=/Id/ >> nth=0`)
         await this.delay(3000)
-        await this.selectFirstSubmission()
+        await this.selectFirstListElement()
     }
 
     async deleteTokenInfo(): Promise<void> {
@@ -175,7 +207,7 @@ export class AdminPage extends CommonPage {
         await this.actions.clickElement(`text=Create new`)
         await this.actions.enterElementText(`input >> nth=0`, sub.TokenAddress)
         await this.actions.clickElement(`input >> nth=1`)
-        await this.actions.clickElement(`text=${sub.ChainID}`)
+        await this.actions.clickElement(`body >> section >> nth=5 >> text=${sub.ChainID} >> nth=1`)
         await this.actions.enterElementText(`input >> nth=2`, sub.ProjectName)
         await this.actions.enterElementText(`input >> nth=3`, sub.ProjectWebSite)
         await this.actions.enterElementText(`input >> nth=4`, sub.ProjectEmail)
@@ -204,7 +236,7 @@ export class AdminPage extends CommonPage {
     async createNewAdminSubmission(sub: SuperSubmission): Promise<void> {
         await this.actions.clickElement(`text=Create new`)
         await this.actions.clickElement(`input >> nth=0`)
-        await this.actions.clickElement(`text=${sub.ChainID}`)
+        await this.actions.clickElement(`body >> section >> nth=5 >> text=${sub.ChainID} >> nth=1`)
         await this.actions.enterElementText(`input >> nth=1`, sub.TokenAddress)
         await this.actions.enterElementText(`input >> nth=2`, sub.BlockscoutUserEmail)
         await this.actions.enterElementText(`input >> nth=3`, sub.RequesterName)

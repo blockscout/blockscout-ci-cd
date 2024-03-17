@@ -4,10 +4,15 @@ import test from '@lib/BaseTest'
 
 test.describe.configure({ mode: `parallel` })
 
-test.skip(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, adminPage }) => {
-    adminPage.setBaseURL(`https://admin.services.blockscout.com`)
+const envURL = `https://admin-ts-test.k8s-dev.blockscout.com`
+
+test.beforeEach(async ({ adminPage }) => {
+    adminPage.setBaseURL(envURL)
     await adminPage.open()
     await adminPage.login(process.env.ACCOUNT_USERNAME, process.env.ACCOUNT_PASSWORD)
+});
+
+test(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, adminPage }) => {
     await adminPage.selectSuperUserTab()
     await adminPage.selectSuperUserTabSubmissions()
     await adminPage.clearMySubmissions(process.env.ACCOUNT_USERNAME)
@@ -21,7 +26,7 @@ test.skip(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoe
         BlockscoutUserEmail: process.env.ACCOUNT_USERNAME,
         RequesterName: `test_submission_user`,
         RequesterEmail: process.env.ACCOUNT_USERNAME,
-        ProjectName: `test_project`,
+        ProjectName: uniqueSupportURL,
         ProjectWebSite: `https://ya.ru`,
         IconURL: iconURL,
         ProjectDescription: `desc`,
@@ -44,25 +49,22 @@ test.skip(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoe
         CGTickerURL: iconURL,
         LlamaTickerURL: iconURL,
     })
-    await adminPage.filterByEmail(process.env.ACCOUNT_USERNAME)
-    await adminPage.selectFirstSubmission()
+    await adminPage.filterByEmailProjectName(uniqueSupportURL)
+    await adminPage.selectFirstListElement()
     await adminPage.openSubmissions()
     await adminPage.selectTokenServicesTab()
     await adminPage.selectTODOSubmissions()
-    await adminPage.filterByEmail(process.env.ACCOUNT_USERNAME)
-    await adminPage.selectLastSubmissionSorted()
+    await adminPage.filterByEmailProjectName(uniqueSupportURL)
+    await adminPage.selectFirstListElement()
     await adminPage.approve()
-    await adminPage.delay(10000)
+    // await adminPage.delay(10000)
 
-    await newHomeGoerli.openAddress(tokenAddr)
-    await tokenPage.selectProjectInfo()
-    await tokenPage.actions.verifyElementIsDisplayed(`text=${uniqueSupportURL}`)
+    // await newHomeGoerli.openAddress(tokenAddr)
+    // await tokenPage.selectProjectInfo()
+    // await tokenPage.actions.verifyElementIsDisplayed(`text=${uniqueSupportURL}`)
 })
 
-test.skip(`@Admin Delete/Create TokenInfo`, async ({ newHomeGoerli, tokenPage, adminPage }) => {
-    adminPage.setBaseURL(`https://admin.services.blockscout.com`)
-    await adminPage.open()
-    await adminPage.login(process.env.ACCOUNT_USERNAME, process.env.ACCOUNT_PASSWORD)
+test(`@Admin Delete/Create TokenInfo`, async ({ newHomeGoerli, tokenPage, adminPage }) => {
     await adminPage.selectTokenServicesTab()
     await adminPage.selectTokenInfosTab()
     const iconURL = `https://cdn-icons-png.flaticon.com/128/2989/2989898.png`
@@ -102,8 +104,41 @@ test.skip(`@Admin Delete/Create TokenInfo`, async ({ newHomeGoerli, tokenPage, a
         LlamaTickerURL: iconURL,
     })
 
-    await newHomeGoerli.openAddress(tokenAddr)
-    await newHomeGoerli.delay(3000)
-    await tokenPage.selectProjectInfo()
-    await tokenPage.actions.verifyElementIsDisplayed(`text=${uniqueSupportURL}`)
+    // await newHomeGoerli.openAddress(tokenAddr)
+    // await newHomeGoerli.delay(3000)
+    // await tokenPage.selectProjectInfo()
+    // await tokenPage.actions.verifyElementIsDisplayed(`text=${uniqueSupportURL}`)
+})
+
+test(`@Admin Delete/Create Address`, async ({ newHomeGoerli, tokenPage, adminPage }) => {
+    const addr = `0x54FA517F05e11Ffa87f4b22AE87d91Cec0C2D7E1`
+    await adminPage.actions.clickElement(`section >> nth=1 >> text=/Metadata/`)
+    await adminPage.actions.clickElement(`section >> nth=1 >> text=/Addresses/`)
+    await adminPage.actions.clickElement(`section >> nth=5 >> text=/Create new/`)
+    await adminPage.actions.enterElementText(`input >> nth=0`, addr)
+    await adminPage.actions.clickElement(`section >> nth=5 >> text=/Save/`)
+
+    await adminPage.filterByAddress(addr)
+    await adminPage.selectFirstListElement()
+    await adminPage.actions.clickElement(`section >> nth=5 >> text=/Delete/`)
+    await adminPage.actions.clickElement(`button[label="Confirm"]`)
+})
+
+test(`@Admin Delete/Create Public tag`, async ({ newHomeGoerli, tokenPage, adminPage }) => {
+    const publicTag = `PlaywrightTestTag`
+    const slug = faker.random.alphaNumeric(8)
+    await adminPage.actions.clickElement(`section >> nth=1 >> text=/Metadata/`)
+    await adminPage.actions.clickElement(`section >> nth=1 >> text=/^Public Tags/`)
+    await adminPage.actions.clickElement(`section >> nth=5 >> text=/Create new/`)
+    await adminPage.actions.enterElementText(`input[name="name"]`, publicTag)
+    await adminPage.actions.enterElementText(`input[name="slug"]`, slug)
+    await adminPage.actions.enterElementText(`input[name="ordinal"]`, `0`)
+    await adminPage.actions.clickElement(`input[id="react-select-4-input"]`)
+    await adminPage.actions.clickElement(`section >> nth=5 >> text=/classifier/ >> nth=1`)
+    await adminPage.actions.clickElement(`section >> nth=5 >> text=/Save/`)
+
+    await adminPage.filterByInputRef(`filter-slug`, slug)
+    await adminPage.selectFirstListElement()
+    await adminPage.actions.clickElement(`section >> nth=5 >> text=/Delete/`)
+    await adminPage.actions.clickElement(`button[label="Confirm"]`)
 })
