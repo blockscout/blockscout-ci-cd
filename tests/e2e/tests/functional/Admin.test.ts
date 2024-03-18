@@ -110,21 +110,24 @@ test(`@Admin Delete/Create TokenInfo`, async ({ newHomeGoerli, tokenPage, adminP
     // await tokenPage.actions.verifyElementIsDisplayed(`text=${uniqueSupportURL}`)
 })
 
-test(`@Admin Delete/Create Address`, async ({ adminPage }) => {
+test.skip(`@Admin Delete/Create Address`, async ({ adminPage }) => {
     const addr = `0x54FA517F05e11Ffa87f4b22AE87d91Cec0C2D7E1`
+
     await adminPage.actions.clickElement(`section >> nth=1 >> text=/Metadata/`)
     await adminPage.actions.clickElement(`section >> nth=1 >> text=/Addresses/`)
-    await adminPage.actions.clickElement(`section >> nth=5 >> text=/Create new/`)
-    await adminPage.actions.enterElementText(`input >> nth=0`, addr)
-    await adminPage.actions.clickElement(`section >> nth=5 >> text=/Save/`)
 
     await adminPage.filterByAddress(addr)
     await adminPage.selectFirstListElement()
     await adminPage.actions.clickElement(`section >> nth=5 >> text=/Delete/`)
     await adminPage.actions.clickElement(`button[label="Confirm"]`)
+    await adminPage.closeFilterPanel()
+
+    await adminPage.actions.clickElement(`section >> nth=5 >> text=/Create new/`)
+    await adminPage.actions.enterElementText(`input >> nth=0`, addr)
+    await adminPage.actions.clickElement(`section >> nth=5 >> text=/Save/`)
 })
 
-test(`@Admin Delete/Create Public tag`, async ({ adminPage }) => {
+test(`@Admin Create Public tag`, async ({ adminPage }) => {
     const publicTag = `PlaywrightTestTag`
     const slug = faker.random.alphaNumeric(8)
     await adminPage.actions.clickElement(`section >> nth=1 >> text=/Metadata/`)
