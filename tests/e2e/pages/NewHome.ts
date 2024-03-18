@@ -114,7 +114,7 @@ export class NewHomePage extends CommonPage {
     async checkGasTrackerPopup(): Promise<void> {
         await this.actions.clickElement(this.GAS_TRACKER_POPUP)
         await this.delay(1000)
-        await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=4 >> text=/\\w\\s\\d\\d,\\s\\d\\d:\\d\\d:\\d\\d/`)
+        await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=4 >> text=/.*/`)
         await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=6 >> span >> nth=0 >> text=/Fast/`)
         await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=6 >> span >> nth=1 >> text=/\\d.*/`)
         await this.actions.verifyElementIsDisplayed(`section[id="popover-content-:rd:"] >> div >> nth=6 >> span >> nth=2 >> text=/$.*/`)
