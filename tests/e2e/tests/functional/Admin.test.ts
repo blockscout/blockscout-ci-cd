@@ -110,7 +110,7 @@ test(`@Admin Delete/Create TokenInfo`, async ({ newHomeGoerli, tokenPage, adminP
     // await tokenPage.actions.verifyElementIsDisplayed(`text=${uniqueSupportURL}`)
 })
 
-test(`@Admin Delete/Create Address`, async ({ newHomeGoerli, tokenPage, adminPage }) => {
+test(`@Admin Delete/Create Address`, async ({ adminPage }) => {
     const addr = `0x54FA517F05e11Ffa87f4b22AE87d91Cec0C2D7E1`
     await adminPage.actions.clickElement(`section >> nth=1 >> text=/Metadata/`)
     await adminPage.actions.clickElement(`section >> nth=1 >> text=/Addresses/`)
@@ -124,7 +124,7 @@ test(`@Admin Delete/Create Address`, async ({ newHomeGoerli, tokenPage, adminPag
     await adminPage.actions.clickElement(`button[label="Confirm"]`)
 })
 
-test(`@Admin Delete/Create Public tag`, async ({ newHomeGoerli, tokenPage, adminPage }) => {
+test(`@Admin Delete/Create Public tag`, async ({ adminPage }) => {
     const publicTag = `PlaywrightTestTag`
     const slug = faker.random.alphaNumeric(8)
     await adminPage.actions.clickElement(`section >> nth=1 >> text=/Metadata/`)

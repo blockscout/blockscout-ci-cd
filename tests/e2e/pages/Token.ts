@@ -11,7 +11,7 @@ export class TokenPage extends CommonPage {
 
     DESCRIPTION_DIV = `main >> div >> nth=`
 
-    HOLDERS_TAB = `button[role="tab"] >> nth=1`
+    HOLDERS_TAB = `button >> text=/Holders/`
 
     HOLDERS_ITEM = `table >> tr >> nth=1 >> td >> nth=`
 
@@ -35,7 +35,7 @@ export class TokenPage extends CommonPage {
 
     async check_token(): Promise<void> {
         await this.check_selector(`text=/0x/`, `no token address is displayed`)
-        await this.check_table_element(`EPIC (EPC)`, 1, `ERC-20`)
+        await this.check_table_element(`EPIC (EPC)`, 1, `ERC-721`)
         await this.check_table_element(`Max total supply`, 0, `\\d+`)
         await this.check_table_element(`Holders`, 0, `\\d+`)
         await this.check_table_element(`Transfers`, 0, `\\d+`)
