@@ -2,17 +2,6 @@ import test from '@lib/BaseTest'
 
 test.describe.configure({ mode: `parallel` })
 
-test.skip(`@AccountImage @Search Check block number search`, async ({ newHomePage, blocksPage }) => {
-    const { TestTokenDeployTXBlockNumber } = process.env
-    await blocksPage.open(TestTokenDeployTXBlockNumber)
-    await blocksPage.openDescriptionDetails()
-    const bh = await blocksPage.getBlockHash()
-    await newHomePage.open()
-    await newHomePage.delay(2000)
-    await newHomePage.search(TestTokenDeployTXBlockNumber)
-    await newHomePage.findInSearchItems(`Found 1 matching result${TestTokenDeployTXBlockNumber}${bh[0]}`)
-})
-
 test(`@AccountImage @Search Check ERC-20 token search`, async ({ newHomePage }) => {
     const {
         TestTokenAddress,
