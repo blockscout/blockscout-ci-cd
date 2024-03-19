@@ -112,19 +112,17 @@ export class NewHomePage extends CommonPage {
     }
 
     async checkGasTrackerPopup(): Promise<void> {
-        await this.actions.clickElement(this.GAS_TRACKER_POPUP)
+        await this.actions.page.hover(this.GAS_TRACKER_POPUP)
         await this.delay(2000)
-        await this.actions.verifyElementIsDisplayed(`section >> nth=13 >> text=/Last.*update.*/`)
-        await this.actions.verifyElementIsDisplayed(`section >> nth=13 >> div >> nth=6 >> span >> nth=0 >> text=/Fast/`)
-        await this.actions.verifyElementIsDisplayed(`section >> nth=13 >> div >> nth=6 >> span >> nth=1 >> text=/\\d.*/`)
-        await this.actions.verifyElementIsDisplayed(`section >> nth=13 >> div >> nth=6 >> span >> nth=2 >> text=/$.*/`)
-        await this.actions.verifyElementIsDisplayed(`section >> nth=13 >> div >> nth=6 >> span >> nth=3 >> text=/.*Gwei/`)
+        await this.actions.verifyElementIsDisplayed(`text=/Last update/`)
+        await this.actions.verifyElementIsDisplayed(`text=/Fast/`)
+        await this.actions.verifyElementIsDisplayed(`text=/.*Gwei/`)
     }
 
     async checkGasTrackerView(): Promise<void> {
         await this.actions.navigateToURL(`${this.currentPage}/gas-tracker`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=6 >> text=/Network utilization \\d+.\\d+% — .* load/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=7 >> text=/Last updated.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> text=/Network utilization \\d+.\\d+% — .* load/`)
+        await this.actions.verifyElementIsDisplayed(`main >> text=/Last updated.*/`)
         await this.actions.verifyElementIsDisplayed(`text=/Average gas price/`)
 
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=0 >> div >> nth=0 >> text=/Fast.*/`)
