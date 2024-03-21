@@ -308,7 +308,7 @@ export class AuthorizedArea extends CommonPage {
         await this.page.reload()
         await this.actions.clickElement(this.DELETE_ROW_ICON)
         await this.actions.clickElement(this.SAVE_BTN)
-        await this.page.waitForLoadState(`networkidle`)
+        await this.actions.delay(5000)
     }
 
     async addAddressWatch(data: WatchListSpec): Promise<void> {
