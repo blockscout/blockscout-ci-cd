@@ -395,7 +395,7 @@ export const backendV2SmartContracts = () => {
     group(`/api/v2/smart-contracts/{}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api/v2/smart-contracts/${randomItem(testData.contracts)}`,
+            url: `/api/v2/smart-contracts/${randomItem(testData.verifiedContracts)}`,
             params: {
                 tags: {
                     name: `SmartContracts (backendV2)`,
@@ -618,7 +618,7 @@ export const backendTokenBalance = () => {
     group(`/api?module=account&action=tokenbalance&contractaddress={}&address={}&apikey={}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api?module=account&action=tokenbalance&contractaddress=${randomItem(testData.contracts)}&address=${randomItem(testData.addresses)}&apikey=${testData.APIKey}`,
+            url: `/api?module=account&action=tokenbalance&contractaddress=${randomItem(testData.tokens)}&address=${randomItem(testData.addresses)}&apikey=${testData.APIKey}`,
             params: {
                 tags: {
                     name: `tokenBalance (backend)`,
@@ -638,7 +638,7 @@ export const backendGetTokenHolders = () => {
     group(`/api?module=token&action=getTokenHolders&contractaddress={}&page={}&offset={}&apikey={}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api?module=token&action=getTokenHolders&contractaddress=${randomItem(testData.contracts)}&page=${randomItem(testData.pagination.pages)}&offset=${randomItem(testData.pagination.offsets)}&apikey=${testData.APIKey}`,
+            url: `/api?module=token&action=getTokenHolders&contractaddress=${randomItem(testData.tokens)}&page=${randomItem(testData.pagination.pages)}&offset=${randomItem(testData.pagination.offsets)}&apikey=${testData.APIKey}`,
             params: {
                 tags: {
                     name: `getTokenHolders (backend)`,
@@ -658,7 +658,7 @@ export const backendGetToken = () => {
     group(`/api?module=token&action=getToken&contractaddress={}&apikey={}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api?module=token&action=getToken&contractaddress=${randomItem(testData.contracts)}&apikey=${testData.APIKey}`,
+            url: `/api?module=token&action=getToken&contractaddress=${randomItem(testData.tokens)}&apikey=${testData.APIKey}`,
             params: {
                 tags: {
                     name: `getToken (backend)`,
@@ -678,7 +678,7 @@ export const backendTokenSupply = () => {
     group(`/api?module=stats&action=tokensupply&contractaddress={}&apikey={}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api?module=stats&action=tokensupply&contractaddress=${randomItem(testData.contracts)}&apikey=${testData.APIKey}`,
+            url: `/api?module=stats&action=tokensupply&contractaddress=${randomItem(testData.tokens)}&apikey=${testData.APIKey}`,
             params: {
                 tags: {
                     name: `tokenSupply (backend)`,
