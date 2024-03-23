@@ -1,4 +1,4 @@
-name: E2E tests account
+name: E2E K8s account
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -6,6 +6,7 @@ concurrency:
 
 on:
   push:
+  workflow_dispatch:
 
 env:
   BLOCKSCOUT_URL: ${{ secrets.E2E_BLOCKSCOUT_URL }}
@@ -29,7 +30,7 @@ env:
   ACCOUNT: 1
 
 jobs:
-  e2e_tests:
+  tests:
     name: Tests
     permissions:
       id-token: write

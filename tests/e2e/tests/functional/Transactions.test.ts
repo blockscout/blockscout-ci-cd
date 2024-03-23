@@ -3,7 +3,7 @@ import test from '@lib/BaseTest'
 
 test.describe.configure({ mode: `parallel` })
 
-test.only(`@AccountImage @Transactions Check transactions list`, async ({ transactionsListPage }) => {
+test(`@AccountImage @Transactions Check transactions list`, async ({ transactionsListPage }) => {
     const {
         TestNFTSymbolV,
         TestTokenSymbolV,
