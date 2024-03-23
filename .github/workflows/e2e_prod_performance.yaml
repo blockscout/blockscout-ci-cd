@@ -1,8 +1,6 @@
 name: E2E Prod performance tests
 on:
-  push:
-  schedule:
-    - cron: '*/180 * * * *'
+  workflow_dispatch:
 env:
   ENV: prod
 jobs:
