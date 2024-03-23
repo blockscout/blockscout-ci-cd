@@ -5,8 +5,7 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  workflow_dispatch:
-  workflow_call:
+  push:
 
 env:
   BLOCKSCOUT_URL: ${{ secrets.E2E_BLOCKSCOUT_URL }}
@@ -93,7 +92,6 @@ jobs:
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
       - name: Install Playwright
         run: |
-          # echo "deb http://ftp.us.debian.org/debian buster main non-free" >> /etc/apt/sources.list.d/fonts.list
           npx playwright install --with-deps
 
       # check if instance is ready
