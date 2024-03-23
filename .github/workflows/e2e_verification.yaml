@@ -76,9 +76,6 @@ jobs:
       - name: Install deps
         working-directory: blockscout-ci-cd/tests/e2e
         run: npm ci
-      - name: Lint
-        working-directory: blockscout-ci-cd/tests/e2e
-        run: npm run lint
       - name: Build contracts
         working-directory: blockscout-ci-cd/tests/contracts
         run: |

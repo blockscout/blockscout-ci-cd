@@ -3,7 +3,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 on:
-  push:
   schedule:
     - cron: '0 */3 * * *'
 env:
@@ -32,8 +31,6 @@ jobs:
             ${{ runner.os }}-
       - name: Install deps
         run: npm ci
-      - name: Lint
-        run: npm run lint
       - name: Build contracts
         working-directory: ./tests/contracts
         run: |

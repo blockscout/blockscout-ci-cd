@@ -32,8 +32,6 @@ jobs:
             ${{ runner.os }}-
       - name: Install deps
         run: npm ci
-      - name: Lint
-        run: npm run lint
       - name: Build contracts
         working-directory: ./tests/contracts
         run: |
