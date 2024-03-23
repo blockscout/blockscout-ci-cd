@@ -12,6 +12,9 @@
         "tokens": [
             "0x34229f9Bf7162Ee2b077702D21070234E74FE53D"
         ],
+        "contracts": [
+            "0x34229f9Bf7162Ee2b077702D21070234E74FE53D"
+        ],
         "nfts": [
             {
                 "addr": "0x565f685a1DfbdC5DBF7F5788f4948ce834d6B5f5",

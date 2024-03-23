@@ -4,9 +4,9 @@ import fetch from 'node-fetch'
 
 import { providers } from 'ethers'
 
+const ethNodeUrl = process.env.RPC_TEST_URL
 const address = process.env.RPC_TEST_ADDRESS;
 const tx = process.env.RPC_TEST_TX
-const ethNodeUrl = process.env.RPC_TEST_URL
 const codeAddr = process.env.RPC_TEST_CONTRACT
 const staticBn = parseInt(process.env.RPC_TEST_BLOCK_NUMBER)
 
@@ -189,14 +189,34 @@ async function checkGetUncleByBlockHashAndIndex(bh, index) {
   }
 }
 
-await checkEthBlockNumber()
-const blockInfo = await checkEthGetBlockByNumberOrHash(staticBn)
-await checkEthGetBlockByNumberOrHash(blockInfo.hash)
-await checkEthGetBalance(address)
-await checkEthGetTransactionByHash(blockInfo.transactions[0])
-await checkGetTransactionByBlockHashOrNumberAndIndex(`eth_getTransactionByBlockHashAndIndex`, blockInfo.hash, "0x1")
-await checkGetTransactionByBlockHashOrNumberAndIndex(`eth_getTransactionByBlockNumberAndIndex`, `0x${blockInfo.number.toString(16)}`, "0x1")
-await checkEthGetTransactionReceipt(blockInfo.transactions[0])
-await checkEthGetCode(codeAddr)
-await checkEthGetLogs(codeAddr, staticBn-1, staticBn)
+async function findAllAddresses(bs, bn) {
+  const addresses = []
+  for (let i = bs; i <= bn; i++) {
+    const blockInfo = await checkEthGetBlockByNumberOrHash(i)
+    for (let tx of blockInfo.transactions) {
+      const txInfo = await checkEthGetTransactionReceipt(tx)
+      addresses.push(txInfo.to)
+      addresses.push(txInfo.from)
+      // console.log(`to: ${txInfo.to}, from: ${txInfo.from}, contractAddress: ${txInfo.contractAddress}`)
+    }
+  }
+  return addresses
+}
+
+const addrs = await findAllAddresses(1, 34)
+console.log(`addresses: ${JSON.stringify(addrs)}`)
+for (let addr of addrs) {
+  await checkEthGetLogs(addr, 1, 34)
+}
+
+// await checkEthBlockNumber()
+// const blockInfo = await checkEthGetBlockByNumberOrHash(staticBn)
+// await checkEthGetBlockByNumberOrHash(blockInfo.hash)
+// await checkEthGetTransactionByHash(blockInfo.transactions[0])
+// await checkGetTransactionByBlockHashOrNumberAndIndex(`eth_getTransactionByBlockHashAndIndex`, blockInfo.hash, "0x0")
+// await checkGetTransactionByBlockHashOrNumberAndIndex(`eth_getTransactionByBlockNumberAndIndex`, `0x${blockInfo.number.toString(16)}`, "0x0")
+// await checkEthGetTransactionReceipt(blockInfo.transactions[0])
+// await checkEthGetBalance(address)
+// await checkEthGetCode(codeAddr)
+// await checkEthGetLogs(codeAddr, staticBn-1, staticBn)
 // await checkGetUncleByBlockHashAndIndex(`0x9b8c8a7091ffabba8450b495504a0db905c7f32fa99fa386bcde8d8aa912a1df`, "0x0")
