@@ -653,7 +653,7 @@ export const backendV2JSONRPCURL = () => {
 
 // per API calls for VUs, backend
 
-export const backendGetLogs = () => {
+export const backendV1GetLogs = () => {
     group(`/api?module=logs&action=getLogs&fromBlock={}&toBlock={}&address={}&apikey={}`, () => {
         const block = randomItem(testData.blocks)
         const res = shoot(session, {
