@@ -1,6 +1,5 @@
 name: E2E Prod performance tests
 on:
-  push:
   schedule:
     - cron: '*/180 * * * *'
 env:
@@ -54,7 +53,6 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
       - name: Install Playwright
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
       - name: Run headed playwright
         uses: coactions/setup-xvfb@v1
