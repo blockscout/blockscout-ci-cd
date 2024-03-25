@@ -3,7 +3,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 on:
-  workflow_dispatch:
+  push:
+  schedule:
+    - cron: '0 */3 * * *'
 env:
   ENV: prod
 jobs:
@@ -30,6 +32,8 @@ jobs:
             ${{ runner.os }}-
       - name: Install deps
         run: npm ci
+      - name: Lint
+        run: npm run lint
       - name: Build contracts
         working-directory: ./tests/contracts
         run: |
@@ -46,6 +50,7 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
       - name: Install Playwright
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
       - name: Run headed playwright
         uses: coactions/setup-xvfb@v1

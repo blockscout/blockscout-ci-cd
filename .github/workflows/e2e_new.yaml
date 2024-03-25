@@ -1,10 +1,10 @@
-name: E2E tests verification
+name: E2E tests account
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 on:
-  push:
   workflow_dispatch:
   workflow_call:
 
@@ -117,10 +117,10 @@ jobs:
           # Retry all errors, including 404. This option might trigger curl upgrade.
           retry-all: true # Optional, defaults to "false"
 
-      - name: Run playwright verification suite
+      - name: Run playwright smoke suite
         working-directory: blockscout-ci-cd/tests/e2e
         run: |
-          npm run test:smoke:verification
+          npm run test:smoke:account
       - uses: actions/upload-artifact@v3
         if: always()
         with:
