@@ -122,6 +122,12 @@ export const GeneratePerAPIBaselineSuite = (strategy: any, apis: string[], delay
 
 export const selectScenario = (scenarioName: string): { [name: string]: Scenario } => {
     switch (scenarioName) {
+    case `frontendBrowser`:
+        return {
+            abc: {
+                executor: `shared-iterations`,
+            },
+        }
     case `baselineFrontend`:
         return GeneratePerAPIBaselineSuite(
             defaultAPITestSettings,
@@ -139,31 +145,35 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
             10,
             1,
         )
-    case `stressBackendV2V1`:
+    case `smoke`:
         return GeneratePerAPIBaselineSuite(
             defaultAPITestSettings,
             [
+                `backendV2TXDetails`,
                 `backendV2GasPriceOracle`,
-                `backendV2AddressesLogs`,
-                `backendV2AddressesInternalTx`,
                 `backendV2TXInternal`,
                 `backendV2TokenTransfers`,
                 `backendV2TokenInstances`,
-                `backendV2AddressesTokenTransfers`,
                 `backendV2Transactions`,
                 `backendV2RecentTransactions`,
                 `backendV2Search`,
                 `backendV2SearchRedirect`,
+                `backendV2AddressesTokenTransfers`,
+                `backendV2AddressesLogs`,
+                `backendV2AddressesInternalTx`,
                 `backendV2AddressesTransactions`,
                 `backendV2AddressesTokensERC20`,
                 `backendV2AddressesTokensERC721`,
                 `backendV2AddressesTokensERC1155`,
-                `backendV1TXInternal`,
                 `backendV1AddressTXs`,
                 `backendV1AddressTokenTransfers`,
-                // new
                 `backendV2AddressesTabCounters`,
                 `backendV2Addresses`,
+                `backendV2AddressesCoinBalanceHistory`,
+                `backendV2AddressesCoinBalanceHistoryByDay`,
+                `backendAccountAddressHash`,
+                `backendAddressBalance`,
+                `backendV1TXInternal`,
                 `backendV2TXTokenTransfers`,
                 `backendV2TXLogs`,
                 `backendV2TXRawTrace`,
@@ -172,8 +182,6 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
                 `backendV2Blocks`,
                 `backendV2SmartContracts`,
                 `backendV2SmartContractsVerificationConfig`,
-                `backendAccountAddressHash`,
-                `backendAddressBalance`,
                 `backendETHSupply`,
                 `backendTokenSupply`,
                 `backendGetToken`,
@@ -184,9 +192,58 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
                 // util
                 // `backendV2BackendVersion`,
                 // `backendV2JSONRPCURL`,
+                // new backendV2AddressesCoinBalanceHistory
             ],
             10,
             10,
+            1,
+        )
+    case `avg`:
+        return GeneratePerAPIBaselineSuite(
+            defaultAPITestSettings,
+            [
+                `backendV2Transactions`,
+                `backendV2RecentTransactions`,
+                `backendV2TXDetails`,
+                `backendV2Search`,
+                `backendV2SearchRedirect`,
+                `backendV2GasPriceOracle`,
+                `backendV2TXInternal`,
+                `backendV2TXTokenTransfers`,
+                `backendV2TXLogs`,
+                `backendV2TXRawTrace`,
+                `backendV2TXStateChanges`,
+                `backendV2Tokens`,
+                `backendV2TokenTransfers`,
+                `backendV2TokenInstances`,
+                `backendV2AddressesLogs`,
+                `backendV2AddressesInternalTx`,
+                `backendV2Addresses`,
+                `backendV2AddressesTokenTransfers`,
+                `backendV2AddressesTransactions`,
+                `backendV2AddressesTokensERC20`,
+                `backendV2AddressesTokensERC721`,
+                `backendV2AddressesTokensERC1155`,
+                `backendV2AddressesTabCounters`,
+                `backendV2AddressesCoinBalanceHistory`,
+                `backendV2AddressesCoinBalanceHistoryByDay`,
+                `backendAccountAddressHash`,
+                `backendAddressBalance`,
+                `backendV2Blocks`,
+                `backendV2SmartContracts`,
+                `backendV2SmartContractsVerificationConfig`,
+                `backendETHSupply`,
+                `backendTokenSupply`,
+                // not working? v1
+                // `backendGetTokenHolders`,
+                `backendTokenBalance`,
+                `backendGetLogs`,
+                // util
+                // `backendV2BackendVersion`,
+                // `backendV2JSONRPCURL`,
+            ],
+            10,
+            60,
             1,
         )
     case `txActions`:
