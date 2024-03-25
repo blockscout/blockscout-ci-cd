@@ -1,0 +1,25 @@
+{{- if .Values.geth.enabled }}
+{{- if .Values.geth.files.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: geth-cm
+data:
+  {{- range $key, $value := .Values.geth.files.list }}
+  {{ $key }}: {{ toYaml $value | indent 2 }}
+  {{- end }}
+{{- end }}
+---
+{{- if .Values.geth.client.files.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-cm
+data:
+  {{- range $key, $value := .Values.geth.client.files.list }}
+  {{ $key }}: {{ toYaml $value | indent 2 }}
+  {{- end }}
+{{- end }}
+
+{{- end }}

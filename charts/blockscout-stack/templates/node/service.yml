@@ -1,0 +1,36 @@
+{{- if .Values.node.enabled }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-node-svc
+spec:
+  type: {{ .Values.node.service.type}}
+  ports:
+    - port: {{ .Values.node.portHttp }}
+      targetPort: {{ .Values.node.portHttp }}
+      protocol: TCP
+      name: http
+    - port: {{ .Values.node.portWs }}
+      targetPort: {{ .Values.node.portWs }}
+      protocol: TCP
+      name: ws
+  selector:
+    app: {{ .Release.Name }}-node
+---
+{{- if .Values.node.dtl.enabled }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-dtl-svc
+spec:
+  type: {{ .Values.node.dtl.service.type}}
+  ports:
+    - port: {{ .Values.node.dtl.port }}
+      targetPort: {{ .Values.node.dtl.port }}
+      protocol: TCP
+      name: dtl
+  selector:
+    app: {{ .Release.Name }}-node
+---
+{{- end }}
+{{- end }}

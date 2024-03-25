@@ -1,0 +1,104 @@
+{{- if .Values.postgres.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-postgres
+spec:
+  replicas: 1
+  strategy:
+    type: {{ .Values.postgres.strategy }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-postgres
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: {{ .Values.postgres.image }}
+          resources:
+          {{- with .Values.postgres.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+          {{- end }}
+          command: {{ .Values.postgres.command }}
+          args: {{ .Values.postgres.args }}
+          imagePullPolicy: "IfNotPresent"
+          # {{- if .Values.postgres.args }}
+          # args:
+          # {{- end }}
+          ports:
+            - containerPort: {{ .Values.postgres.port }}
+          env:
+{{- include "postgres_env" . | indent 10 }}
+          {{- if or ( .Values.postgres.persistence ) ( .Values.postgres.files.enabled ) ( .Values.postgres.customShm.enabled ) }}
+          volumeMounts:
+            {{- if .Values.postgres.persistence }}
+            - mountPath: {{ .Values.postgres.mountPath }}
+              name: postgredb
+              subPath: postgres
+            {{- end }}
+            {{- if .Values.postgres.files.enabled }}
+              {{- range $key, $value := .Values.postgres.files.list }}
+            - mountPath: {{ $.Values.postgres.files.mountPath }}/{{ $key }}
+              name: postgres-cm
+              subPath: {{ $key }}
+              {{- end }}
+            {{- end }}
+            {{- if .Values.postgres.customShm.enabled }}
+            - mountPath: /dev/shm
+              name: dshm
+            {{- end }}
+          {{- end }}
+          # {{- if .Values.postgres.readinessProbe.enabled }}
+          # readinessProbe:
+          #   httpGet:
+          #     path: {{ .Values.postgres.readinessProbe.path }}
+          #     port: {{ .Values.postgres.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.postgres.readinessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
+          # {{- if .Values.postgres.livenessProbe.enabled }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: {{ .Values.postgres.livenessProbe.path }}
+          #     port: {{ .Values.postgres.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.postgres.livenessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
+      {{- if .Values.postgres.nodeSelector.enabled }}
+      nodeSelector:
+      {{- pluck $.Values.global.env .Values.postgres.nodeSelector.labels | first | default .Values.postgres.nodeSelector.labels._default | toYaml | nindent 8 }}
+      {{- end }}
+      {{- if or ( .Values.postgres.persistence ) ( .Values.postgres.files.enabled ) ( .Values.postgres.customShm.enabled ) }}
+      volumes:
+        {{- if .Values.postgres.persistence }}
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-postgres-pv-claim
+        {{- end }}
+        {{- if .Values.postgres.customShm.enabled }}
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: {{ .Values.postgres.customShm.sizeLimit }}
+        {{- end }}
+        {{- if .Values.postgres.files.enabled }}
+        - configMap:
+            name: postgres-cm
+            defaultMode: 0777
+          name: postgres-cm
+        {{- end }}
+      {{- end }}
+---
+{{- end }}

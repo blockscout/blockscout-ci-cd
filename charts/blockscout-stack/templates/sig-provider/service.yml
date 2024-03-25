@@ -1,0 +1,22 @@
+{{- if .Values.sigProvider.enabled }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: sig-provider-svc
+  labels:
+    app: {{ .Release.Name }}-sig-provider
+spec:
+  type: {{ .Values.sigProvider.service.type}}
+  ports:
+    - port: {{ .Values.sigProvider.docker.port }}
+      targetPort: {{ .Values.sigProvider.docker.targetPort }}
+      protocol: TCP
+      name: web
+    - port: {{ .Values.sigProvider.docker.metricsPort }}
+      targetPort: {{ .Values.sigProvider.docker.metricsPort }}
+      protocol: TCP
+      name: http-metrics
+  selector:
+    app: {{ .Release.Name }}-sig-provider
+{{- end }}
+---

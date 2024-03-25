@@ -1,0 +1,26 @@
+{{- if .Values.contractsInfo.enabled }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: contracts-info-svc
+  # annotations:
+  #   service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+  #   service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+  #   service.beta.kubernetes.io/aws-load-balancer-type: external
+  labels:
+    app: {{ .Release.Name }}-contracts-info
+spec:
+  type: {{ .Values.contractsInfo.service.type}}
+  ports:
+    - port: {{ .Values.contractsInfo.docker.port }}
+      targetPort: {{ .Values.contractsInfo.docker.targetPort }}
+      protocol: TCP
+      name: web
+    # - port: {{ .Values.contractsInfo.docker.metricsPort }}
+    #   targetPort: {{ .Values.contractsInfo.docker.metricsPort }}
+    #   protocol: TCP
+    #   name: http-metrics
+  selector:
+    app: {{ .Release.Name }}-contracts-info
+{{- end }}
+---

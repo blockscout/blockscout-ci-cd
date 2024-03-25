@@ -1,0 +1,92 @@
+{{- if .Values.geth.enabled }}
+{{- if .Values.geth.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-geth
+spec:
+  {{- if .Values.geth.persistence.storageClass }}
+  {{- with .Values.geth.persistence.storageClass }}
+  storageClassName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  {{- if hasKey .Values.geth.persistence.existingPV $.Values.global.env }}
+  volumeName: {{ pluck $.Values.global.env .Values.geth.persistence.existingPV | first | default .Values.geth.persistence.existingPV._default | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ pluck $.Values.global.env .Values.geth.persistence.storage | first | default .Values.geth.persistence.storage._default | quote }}
+---
+{{- end }}
+
+{{- if .Values.geth.client.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-client
+spec:
+  {{- if .Values.geth.client.persistence.storageClass }}
+  storageClassName: {{ .Values.geth.client.persistence.storageClass }}
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  {{- if hasKey .Values.geth.client.persistence.existingPV $.Values.global.env }}
+  volumeName: {{ pluck $.Values.global.env .Values.geth.client.persistence.existingPV | first | default .Values.geth.client.persistence.existingPV._default | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ pluck $.Values.global.env .Values.geth.client.persistence.storage | first | default .Values.geth.client.persistence.storage._default | quote }}
+---
+{{- end }}
+
+{{- if .Values.geth.persistence.additionalVolumes }}
+{{- range $key, $value := .Values.geth.persistence.additionalVolumes }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $key }}-additional-volume
+spec:
+  {{- if $.Values.geth.persistence.storageClass }}
+  {{- with $.Values.geth.persistence.storageClass }}
+  storageClassName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  {{- if hasKey $value.existingPV $.Values.global.env }}
+  volumeName: {{ pluck $.Values.global.env $value.existingPV | first | default $value.existingPV._default | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ pluck $.Values.global.env $value.storage | first | default $value.storage._default | quote }}
+---
+{{- end }}
+{{- end }}
+
+{{- if .Values.geth.client.persistence.additionalVolumes }}
+{{- range $key, $value := .Values.geth.client.persistence.additionalVolumes }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $key }}-client-additional-volume
+spec:
+  {{- if $.Values.geth.client.persistence.storageClass }}
+  {{- with $.Values.geth.client.persistence.storageClass }}
+  storageClassName: {{ . | toYaml | nindent 6 }}
+  {{- end }}
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  {{- if hasKey $value.existingPV $.Values.global.env }}
+  volumeName: {{ pluck $.Values.global.env $value.existingPV | first | default $value.existingPV._default | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ pluck $.Values.global.env $value.storage | first | default $value.storage._default | quote }}
+---
+{{- end }}
+{{- end }}
+
+{{- end }}

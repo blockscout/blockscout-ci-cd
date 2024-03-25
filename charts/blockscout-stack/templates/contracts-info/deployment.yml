@@ -1,0 +1,84 @@
+{{- if .Values.contractsInfo.enabled }}
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Release.Name }}-contracts-info
+spec:
+  replicas: {{ .Values.contractsInfo.replicas.app }}
+  strategy:
+    type: {{ .Values.contractsInfo.strategy }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-contracts-info
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-contracts-info
+      {{- if eq .Values.contractsInfo.image.pullPolicy "Always" }}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+      {{- end }}
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: {{ .Release.Name }}-contracts-info
+          image: {{ pluck $.Values.global.env .Values.contractsInfo.image | first | default .Values.contractsInfo.image._default | quote }}
+          resources:
+          {{- with .Values.contractsInfo.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+          {{- end }}
+          imagePullPolicy: {{ .Values.contractsInfo.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.contractsInfo.docker.targetPort }}
+            # - containerPort: {{ .Values.contractsInfo.docker.metricsPort }}
+            #   name: http-metrics
+          env:
+{{- include "contractsInfo_env" . | indent 10 }}
+          {{- if .Values.contractsInfo.files.enabled }}
+          volumeMounts:
+            {{- range $key, $value := .Values.contractsInfo.files.list }}
+            - mountPath: {{ $.Values.contractsInfo.files.mountPath }}/{{ $key }}
+              name: contracts-info-cm
+              subPath: {{ $key }}
+            {{- end }}
+          {{- end }}
+          {{- if .Values.contractsInfo.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.contractsInfo.readinessProbe.path }}
+              port: {{ .Values.contractsInfo.docker.targetPort }}
+              scheme: HTTP
+            {{- with .Values.contractsInfo.readinessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
+          {{- end }}
+          {{- if .Values.contractsInfo.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.contractsInfo.livenessProbe.path }}
+              port: {{ .Values.contractsInfo.docker.targetPort }}
+              scheme: HTTP
+            {{- with .Values.contractsInfo.livenessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
+          {{- end }}
+      {{- if .Values.contractsInfo.files.enabled }}
+      volumes:
+        - configMap:
+            name: contracts-info-cm
+            defaultMode: 0777
+          name: contracts-info-cm
+      {{- end }}
+      restartPolicy: Always
+      {{- if .Values.contractsInfo.nodeSelector.enabled }}
+      nodeSelector:
+      {{- pluck $.Values.global.env .Values.contractsInfo.nodeSelector.labels | first | default .Values.contractsInfo.nodeSelector.labels._default | toYaml | nindent 8 }}
+      {{- end }}
+---
+{{- end}}

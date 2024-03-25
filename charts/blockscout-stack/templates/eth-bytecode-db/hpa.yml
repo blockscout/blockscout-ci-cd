@@ -1,0 +1,16 @@
+{{- if .Values.ethBytecodeDb.enabled }}
+{{- if .Values.ethBytecodeDb.hpa.enabled }}
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Release.Name }}-eth-bytecode-db
+spec:
+  maxReplicas: {{ .Values.ethBytecodeDb.hpa.maxReplicas }}
+  minReplicas: {{ .Values.ethBytecodeDb.hpa.minReplicas }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Release.Name }}-eth-bytecode-db
+  targetCPUUtilizationPercentage: {{ .Values.ethBytecodeDb.hpa.cpuTarget }}
+{{- end }}
+{{- end }}

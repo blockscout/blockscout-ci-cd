@@ -1,0 +1,67 @@
+{{- if .Values.allowance.enabled }}
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Release.Name }}-allowance
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "http-metrics"
+spec:
+  replicas: {{ .Values.allowance.replicas.app }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-allowance
+  template:
+    metadata:
+      annotations:
+        releaseTime: {{ dateInZone "2006-01-02 15:04:05Z" (now) "UTC"| quote }}
+      labels:
+        app: {{ .Release.Name }}-allowance
+    spec:
+      # serviceAccountName: vault-auth
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: {{ .Release.Name }}-allowance
+          image: {{ pluck $.Values.global.env .Values.allowance.image | first | default .Values.allowance.image._default | quote }}
+          resources:
+          {{- with .Values.allowance.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+          {{- end }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.allowance.docker.targetPort }}
+          env:
+{{- include "allowance_env" . | indent 10 }}
+          {{- if .Values.allowance.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.allowance.readinessProbe.path }}
+              port: {{ .Values.allowance.docker.targetPort }}
+              scheme: HTTP
+            {{- with .Values.allowance.readinessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
+          {{- end }}
+          {{- if .Values.allowance.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.allowance.livenessProbe.path }}
+              port: {{ .Values.allowance.docker.targetPort }}
+              scheme: HTTP
+            {{- with .Values.allowance.livenessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
+          {{- end }}
+      restartPolicy: Always
+      {{- if .Values.allowance.nodeSelector.enabled }}
+      nodeSelector:
+      {{- pluck $.Values.global.env .Values.allowance.nodeSelector.labels | first | default .Values.allowance.nodeSelector.labels._default | toYaml | nindent 8 }}
+      {{- end }}
+---
+{{- end }}

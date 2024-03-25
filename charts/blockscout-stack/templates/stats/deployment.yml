@@ -1,0 +1,91 @@
+{{- if .Values.stats.enabled }}
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Release.Name }}-stats
+spec:
+  replicas: {{ .Values.stats.replicas.app }}
+  strategy:
+    type: {{ .Values.stats.strategy }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-stats
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-stats
+      {{- if eq .Values.stats.image.pullPolicy "Always" }}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+      {{- end }}
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-stats
+          image: {{ pluck $.Values.global.env .Values.stats.image | first | default .Values.stats.image._default | quote }}
+          resources:
+          {{- with .Values.stats.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+          {{- end }}
+          imagePullPolicy: {{ .Values.stats.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.stats.docker.targetPort }}
+            - containerPort: {{ .Values.stats.docker.metricsPort }}
+              name: http-metrics
+          env:
+{{- include "stats_env" . | indent 10 }}
+          # volumeMounts:
+          #   - name: {{ .Release.Name }}-logs
+          #     mountPath: /usr/local/path
+          {{- if .Values.stats.files.enabled }}
+          volumeMounts:
+            {{- range $key, $value := .Values.stats.files.list }}
+            - mountPath: {{ $.Values.stats.files.mountPath }}/{{ $key }}
+              name: stats-cm
+              subPath: {{ $key }}
+            {{- end }}
+          {{- end }}
+          {{- if .Values.stats.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.stats.readinessProbe.path }}
+              port: {{ .Values.stats.docker.targetPort }}
+              scheme: HTTP
+            {{- with .Values.stats.readinessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
+          {{- end }}
+          {{- if .Values.stats.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.stats.livenessProbe.path }}
+              port: {{ .Values.stats.docker.targetPort }}
+              scheme: HTTP
+            {{- with .Values.stats.livenessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
+          {{- end }}
+      # volumes:
+      #   - name: {{ .Release.Name }}-logs
+      #     emptyDir: { }
+      #   - name: config
+      #     configMap:
+      #       name: {{ .Release.Name }}-promtail-configmap
+      restartPolicy: Always
+      {{- if .Values.stats.files.enabled }}
+      volumes:
+        - configMap:
+            name: stats-cm
+            defaultMode: 0777
+          name: stats-cm
+      {{- end }}
+      {{- if .Values.stats.nodeSelector.enabled }}
+      nodeSelector:
+      {{- pluck $.Values.global.env .Values.stats.nodeSelector.labels | first | default .Values.stats.nodeSelector.labels._default | toYaml | nindent 8 }}
+      {{- end }}
+---
+{{- end}}

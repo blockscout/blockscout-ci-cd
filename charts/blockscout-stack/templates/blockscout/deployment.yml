@@ -1,0 +1,121 @@
+{{- if .Values.blockscout.enabled }}
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Release.Name }}-blockscout
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "http-metrics"
+spec:
+  replicas: {{ .Values.blockscout.replicas.app }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-blockscout
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-blockscout
+    spec:
+      # serviceAccountName: vault-auth
+      {{- if .Values.blockscout.init.enabled }}
+      initContainers:
+        - name: init-migrations
+          image: {{ pluck $.Values.global.env .Values.blockscout.init.image | first | default .Values.blockscout.init.image._default | quote }}
+          resources:
+          {{- with .Values.blockscout.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+          {{- end }}
+          {{- with .Values.blockscout.init.command }}
+          command:  {{ . | toYaml | nindent 12 }}
+          {{- end }}
+          {{- with .Values.blockscout.init.args }}
+          args: {{ . | toYaml | nindent 12 }}
+          {{- end }}
+          env:
+{{- include "app_env" . | indent 10 }}
+        {{- if .Values.blockscout.init.volumes.enabled }}
+          {{- range $key, $value := .Values.blockscout.init.volumes.list }}
+          volumeMounts:
+            - name: {{ $key }}
+              mountPath: {{ toYaml $value | indent 2 }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: {{ .Release.Name }}-blockscout
+          image: {{ pluck $.Values.global.env .Values.blockscout.image | first | default .Values.blockscout.image._default | quote }}
+          resources:
+          {{- with .Values.blockscout.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+          {{- end }}
+          imagePullPolicy: Always
+          {{- with .Values.blockscout.command }}
+          command:  {{ . | toYaml | nindent 12 }}
+          {{- end }}
+          {{- with .Values.blockscout.args }}
+          args: {{ . | toYaml | nindent 12 }}
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.blockscout.docker.targetPort }}
+          env:
+{{- include "app_env" . | indent 10 }}
+          # volumeMounts:
+          #   - name: smweb-logs
+          #     mountPath: /usr/local/sm-web-server/log
+          {{- if .Values.blockscout.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.blockscout.readinessProbe.path }}
+              port: {{ .Values.blockscout.docker.targetPort }}
+              scheme: HTTP
+            {{- with .Values.blockscout.readinessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
+          {{- end }}
+          {{- if .Values.blockscout.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.blockscout.livenessProbe.path }}
+              port: {{ .Values.blockscout.docker.targetPort }}
+              scheme: HTTP
+            {{- with .Values.blockscout.livenessProbe.params }}
+            {{ . | toYaml | nindent 12 }}
+            {{- end }}
+          {{- end }}
+      volumes:
+      - name: workdir
+        emptyDir: {}
+      {{- if .Values.blockscout.init.volumes.enabled }}
+        {{- range $key, $value := .Values.blockscout.init.volumes.list }}
+      - name: {{ $key }}
+        emptyDir: {}
+        {{- end }}
+      {{- end }}
+        #   volumeMounts:
+        #     - name: smweb-logs
+        #       mountPath: /smweb/
+        #     - name: config
+        #       mountPath: /etc/promtail/config.yml
+        #       subPath: config-node.yml
+      restartPolicy: Always
+      {{- with .Values.blockscout.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ . | toYaml | nindent 8 }}
+      {{- end }}
+      {{- if .Values.blockscout.nodeSelector.enabled }}
+      nodeSelector:
+      {{- pluck $.Values.global.env .Values.blockscout.nodeSelector.labels | first | default .Values.blockscout.nodeSelector.labels._default | toYaml | nindent 8 }}
+      {{- end }}
+---
+{{- end }}

@@ -1,0 +1,13 @@
+{{- if .Values.adminTs.enabled }}
+{{- if .Values.adminTs.files.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: admin-ts-cm
+data:
+  {{- range $key, $value := .Values.adminTs.files.list }}
+  {{ $key }}: {{ toYaml $value | indent 2 }}
+  {{- end }}
+{{- end }}
+{{- end }}

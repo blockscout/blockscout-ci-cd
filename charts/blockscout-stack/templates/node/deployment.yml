@@ -1,0 +1,220 @@
+{{- if .Values.node.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-node
+spec:
+  replicas: {{ .Values.node.replicas.app }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-node
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-node
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-node
+          image: {{ pluck $.Values.global.env .Values.node.image | first | default .Values.node.image._default | quote }}
+          command: {{ .Values.node.command }}
+          args: {{ .Values.node.args }}
+          # args: [ "--http", "--http.addr=0.0.0.0", "--http.vhosts=geth-mainnet-full", "--http.api=eth,net,web3,txpool", "--ws", "--ws.addr=0.0.0.0", "--datadir=/data", ]
+          resources:
+            {{- with .Values.node.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+            {{- end }}
+          env:
+            {{- include "node_env" . | indent 10 }}
+            {{- include "node_common_env" . | indent 10 }}
+          ports:
+            - containerPort: {{ .Values.node.portHttp }}
+              name: noderpchttp
+            - containerPort: {{ .Values.node.portWs }}
+              name: noderpctcp
+          {{- if .Values.node.persistence.enabled }}
+          volumeMounts:
+            - name: node
+              mountPath: "/geth"
+            {{- if .Values.node.files.enabled }}
+            {{- range $key, $value := .Values.node.files.list }}
+            - mountPath: /scripts/{{ $key }}
+              name: node-cm
+              subPath: {{ $key }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.node.persistence.additionalVolumes }}
+              {{- range $key, $value := .Values.node.persistence.additionalVolumes }}
+            - name: {{ $key }}
+              mountPath: {{ $value.mountPath }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+          # {{- if .Values.node.readinessProbe.enabled }}
+          # readinessProbe:
+          #   httpGet:
+          #     path: {{ .Values.node.readinessProbe.path }}
+          #     port: {{ .Values.node.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.node.readinessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
+          # {{- if .Values.node.livenessProbe.enabled }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: {{ .Values.node.livenessProbe.path }}
+          #     port: {{ .Values.node.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.node.livenessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
+        {{ if .Values.node.dtl.enabled }}
+        - name: {{ .Release.Name }}-dtl
+          image: {{ pluck $.Values.global.env .Values.node.dtl.image | first | default .Values.node.dtl.image._default | quote }}
+          env:
+            {{- include "node_dtl_env" . | indent 10 }}
+            {{- include "node_common_env" . | indent 10 }}
+          resources:
+            {{- with .Values.node.dtl.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+            {{- end }}
+          ports:
+            - containerPort: {{ .Values.node.dtl.port }}
+              name: dtl
+          {{- if .Values.node.dtl.persistence.enabled }}
+          volumeMounts:
+            - name: dtl
+              mountPath: "/db"
+            {{- if .Values.node.dtl.persistence.additionalVolumes }}
+              {{- range $key, $value := .Values.node.dtl.persistence.additionalVolumes }}
+            - name: {{ $key }}
+              mountPath: {{ $value.mountPath }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+          # {{- if .Values.node.dtl.readinessProbe.enabled }}
+          # readinessProbe:
+          #   httpGet:
+          #     path: {{ .Values.node.dtl.readinessProbe.path }}
+          #     port: {{ .Values.node.dtl.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.node.dtl.readinessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
+          # {{- if .Values.node.dtl.livenessProbe.enabled }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: {{ .Values.node.dtl.livenessProbe.path }}
+          #     port: {{ .Values.node.dtl.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.node.dtl.livenessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
+        {{- end }}
+        {{ if .Values.node.healthcheck.enabled }}
+        - name: {{ .Release.Name }}-healthcheck
+          image: {{ pluck $.Values.global.env .Values.node.healthcheck.image | first | default .Values.node.healthcheck.image._default | quote }}
+          env:
+            {{- include "node_healthcheck_env" . | indent 10 }}
+            {{- include "node_common_env" . | indent 10 }}
+          resources:
+            {{- with .Values.node.healthcheck.resources }}
+            limits:
+              memory: {{ pluck $.Values.global.env .limits.memory | first | default .limits.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .limits.cpu | first | default .limits.cpu._default | quote }}
+            requests:
+              memory: {{ pluck $.Values.global.env .requests.memory | first | default .requests.memory._default | quote }}
+              cpu: {{ pluck $.Values.global.env .requests.cpu | first | default .requests.cpu._default | quote }}
+            {{- end }}
+          ports:
+            - containerPort: {{ .Values.node.healthcheck.port }}
+              name: healthcheck
+          {{- if .Values.node.healthcheck.persistence.enabled }}
+          volumeMounts:
+            {{- if .Values.node.healthcheck.persistence.additionalVolumes }}
+              {{- range $key, $value := .Values.node.healthcheck.persistence.additionalVolumes }}
+            - name: {{ $key }}
+              mountPath: {{ $value.mountPath }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+          # {{- if .Values.node.healthcheck.readinessProbe.enabled }}
+          # readinessProbe:
+          #   httpGet:
+          #     path: {{ .Values.node.healthcheck.readinessProbe.path }}
+          #     port: {{ .Values.node.healthcheck.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.node.healthcheck.readinessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
+          # {{- if .Values.node.healthcheck.livenessProbe.enabled }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: {{ .Values.node.healthcheck.livenessProbe.path }}
+          #     port: {{ .Values.node.healthcheck.docker.targetPort }}
+          #     scheme: HTTP
+          #   {{- with .Values.node.healthcheck.livenessProbe.params }}
+          #   {{ . | toYaml | nindent 12 }}
+          #   {{- end }}
+          # {{- end }}
+        {{- end }}
+      {{- if .Values.node.nodeSelector.enabled }}
+      nodeSelector:
+      {{- pluck $.Values.global.env .Values.node.nodeSelector.labels | first | default .Values.node.nodeSelector.labels._default | toYaml | nindent 8 }}
+      {{- end }}
+      volumes:
+        {{- if .Values.node.files.enabled }}
+        - configMap:
+            name: {{ .Release.Name }}-node-cm
+            defaultMode: 0777
+          name: node-cm
+        {{- end }}
+        {{- if .Values.node.persistence.enabled }}
+        - name: node
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-node
+        {{- end }}
+        {{- if .Values.node.dtl.persistence.enabled }}
+        - name: dtl
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-dtl
+        {{- end }}
+        {{- if .Values.node.persistence.additionalVolumes }}
+          {{- range $key, $value := .Values.node.persistence.additionalVolumes }}
+        - name: {{ $key }}
+          persistentVolumeClaim:
+            claimName: {{ $key }}-additional-volume
+          {{- end }}
+        {{- end }}
+        {{- if .Values.node.dtl.persistence.additionalVolumes }}
+          {{- range $key, $value := .Values.node.dtl.persistence.additionalVolumes }}
+        - name: {{ $key }}
+          persistentVolumeClaim:
+            claimName: {{ $key }}-dtl-additional-volume
+          {{- end }}
+        {{- end }}
+        {{- if .Values.node.healthcheck.persistence.additionalVolumes }}
+          {{- range $key, $value := .Values.node.healthcheck.persistence.additionalVolumes }}
+        - name: {{ $key }}
+          persistentVolumeClaim:
+            claimName: {{ $key }}-healthcheck-additional-volume
+          {{- end }}
+        {{- end }}
+---
+{{- end }}

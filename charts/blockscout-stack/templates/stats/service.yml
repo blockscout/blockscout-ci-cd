@@ -1,0 +1,26 @@
+{{- if .Values.stats.enabled }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: stats-svc
+  # annotations:
+  #   service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+  #   service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+  #   service.beta.kubernetes.io/aws-load-balancer-type: external
+  labels:
+    app: {{ .Release.Name }}-stats
+spec:
+  type: {{ .Values.stats.service.type}}
+  ports:
+    - port: {{ .Values.stats.docker.port }}
+      targetPort: {{ .Values.stats.docker.targetPort }}
+      protocol: TCP
+      name: web
+    - port: {{ .Values.stats.docker.metricsPort }}
+      targetPort: {{ .Values.stats.docker.metricsPort }}
+      protocol: TCP
+      name: http-metrics
+  selector:
+    app: {{ .Release.Name }}-stats
+{{- end }}
+---

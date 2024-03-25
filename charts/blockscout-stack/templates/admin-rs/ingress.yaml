@@ -1,0 +1,47 @@
+{{- if .Values.adminRs.enabled }}
+{{- if .Values.adminRs.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: internal-and-public
+    nginx.ingress.kubernetes.io/proxy-body-size: 500m
+    nginx.ingress.kubernetes.io/client-max-body-size: "500M"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "15m"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "15m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
+    cert-manager.io/cluster-issuer: "zerossl-prod"
+    {{- range .Values.adminRs.ingress.annotations }}
+    {{ . }}
+    {{- end}}
+  name: {{ .Release.Name }}-admin-rs-ingress
+spec:
+  rules:
+    - host: {{ pluck $.Values.global.env .Values.adminRs.ingress.host | first | default .Values.adminRs.ingress.host._default | quote }}
+      http:
+        paths:
+          # - path: "/metrics"
+          #   pathType: Exact
+          #   backend:
+          #     service:
+          #       name: admin-rs-svc
+          #       port:
+          #         number: {{ .Values.adminRs.docker.metricsPort }}
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: admin-rs-svc
+                port:
+                  number: {{ .Values.adminRs.docker.port }}
+  {{- if .Values.adminRs.ingress.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ pluck $.Values.global.env .Values.adminRs.ingress.host | first | default .Values.adminRs.ingress.host._default | quote }}
+      {{- if .Values.adminRs.ingress.tls.createSecret }}
+      secretName: {{ .Release.Name }}-admin-rs-tls
+      {{- end }}
+  {{- end }}
+{{- end }}
+{{- end }}
