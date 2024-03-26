@@ -1,0 +1,15 @@
+apiVersion: v1
+entries:
+  blockscout-stack:
+  - apiVersion: v1
+    appVersion: 0.6.3
+    created: "2024-03-26T00:46:52.815427573Z"
+    description: ''' Helm chart for deploying blockscout-stack in K8S Deploy command:
+      `helm upgrade --install -n=<namespace> blockscout-stack ./ -f values-<name>.yaml`
+      '''
+    digest: 082f2dd1e0ac03a2db662dc6935b130d04d0a5437ebbe68bfc944328bdb4997e
+    name: blockscout-stack
+    urls:
+    - blockscout-stack-0.6.3.tgz
+    version: 0.6.3
+generated: "2024-03-26T00:46:52.810619724Z"
