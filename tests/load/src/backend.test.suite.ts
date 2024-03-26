@@ -88,6 +88,46 @@ export const backendV2GasPriceOracle = () => {
     })
 }
 
+export const backendV2AddressesCoinBalanceHistory = () => {
+    group(`/api/v2/addresses/{}/coin-balance-history?apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/api/v2/addresses/${randomItem(testData.addresses)}/coin-balance-history?apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `CoinBalanceHistory (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`CoinBalanceHistory (backendV2) has failed`)
+        }
+    })
+}
+
+export const backendV2AddressesCoinBalanceHistoryByDay = () => {
+    group(`/api/v2/addresses/{}/coin-balance-history-by-day?apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/api/v2/addresses/${randomItem(testData.addresses)}/coin-balance-history-by-day?apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `CoinBalanceHistoryByDay (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`CoinBalanceHistoryByDay (backendV2) has failed`)
+        }
+    })
+}
+
 export const backendV2AddressesLogs = () => {
     group(`/v2/addresses/{}/logs?apikey={}`, () => {
         const res = shoot(session, {
@@ -395,7 +435,7 @@ export const backendV2SmartContracts = () => {
     group(`/api/v2/smart-contracts/{}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api/v2/smart-contracts/${randomItem(testData.contracts)}`,
+            url: `/api/v2/smart-contracts/${randomItem(testData.verifiedContracts)}`,
             params: {
                 tags: {
                     name: `SmartContracts (backendV2)`,
@@ -511,6 +551,26 @@ export const backendV2TXLogs = () => {
     })
 }
 
+export const backendV2TXDetails = () => {
+    group(`/api/v2/transactions/{}/summary`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/api/v2/transactions/${randomItem(testData.txs)}/summary`,
+            params: {
+                tags: {
+                    name: `TXDetails`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`TXDetails (backendV2) has failed`)
+        }
+    })
+}
+
 export const backendV2TXTokenTransfers = () => {
     group(`/api/v2/transactions/{}/token-transfers`, () => {
         const res = shoot(session, {
@@ -593,7 +653,7 @@ export const backendV2JSONRPCURL = () => {
 
 // per API calls for VUs, backend
 
-export const backendGetLogs = () => {
+export const backendV1GetLogs = () => {
     group(`/api?module=logs&action=getLogs&fromBlock={}&toBlock={}&address={}&apikey={}`, () => {
         const block = randomItem(testData.blocks)
         const res = shoot(session, {
@@ -618,7 +678,7 @@ export const backendTokenBalance = () => {
     group(`/api?module=account&action=tokenbalance&contractaddress={}&address={}&apikey={}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api?module=account&action=tokenbalance&contractaddress=${randomItem(testData.contracts)}&address=${randomItem(testData.addresses)}&apikey=${testData.APIKey}`,
+            url: `/api?module=account&action=tokenbalance&contractaddress=${randomItem(testData.tokens)}&address=${randomItem(testData.addresses)}&apikey=${testData.APIKey}`,
             params: {
                 tags: {
                     name: `tokenBalance (backend)`,
@@ -638,7 +698,7 @@ export const backendGetTokenHolders = () => {
     group(`/api?module=token&action=getTokenHolders&contractaddress={}&page={}&offset={}&apikey={}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api?module=token&action=getTokenHolders&contractaddress=${randomItem(testData.contracts)}&page=${randomItem(testData.pagination.pages)}&offset=${randomItem(testData.pagination.offsets)}&apikey=${testData.APIKey}`,
+            url: `/api?module=token&action=getTokenHolders&contractaddress=${randomItem(testData.tokens)}&page=${randomItem(testData.pagination.pages)}&offset=${randomItem(testData.pagination.offsets)}&apikey=${testData.APIKey}`,
             params: {
                 tags: {
                     name: `getTokenHolders (backend)`,
@@ -654,11 +714,11 @@ export const backendGetTokenHolders = () => {
     })
 }
 
-export const backendGetToken = () => {
+export const backendV1GetToken = () => {
     group(`/api?module=token&action=getToken&contractaddress={}&apikey={}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api?module=token&action=getToken&contractaddress=${randomItem(testData.contracts)}&apikey=${testData.APIKey}`,
+            url: `/api?module=token&action=getToken&contractaddress=${randomItem(testData.tokens)}&apikey=${testData.APIKey}`,
             params: {
                 tags: {
                     name: `getToken (backend)`,
@@ -678,7 +738,7 @@ export const backendTokenSupply = () => {
     group(`/api?module=stats&action=tokensupply&contractaddress={}&apikey={}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api?module=stats&action=tokensupply&contractaddress=${randomItem(testData.contracts)}&apikey=${testData.APIKey}`,
+            url: `/api?module=stats&action=tokensupply&contractaddress=${randomItem(testData.tokens)}&apikey=${testData.APIKey}`,
             params: {
                 tags: {
                     name: `tokenSupply (backend)`,

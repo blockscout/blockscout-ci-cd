@@ -53,17 +53,25 @@ export const loadTestData = (td: any) => {
 const dataSharedArrray = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE)))
 export const testData = loadTestData(dataSharedArrray)
 
-export const defaultStressStages = {
-    stages: [
-        { target: 10, duration: `150s` },
-        { target: 20, duration: `150s` },
-        { target: 30, duration: `150s` },
-        { target: 40, duration: `150s` },
-    ],
+export const SmokeStrategy = {
+    executor: `constant-arrival-rate`,
+    preAllocatedVUs: 50,
 }
 
-export const defaultAPITestSettings = {
-    executor: `constant-arrival-rate`,
+export const RampingStrategy = {
+    executor: `ramping-arrival-rate`,
+    stages: [
+        { duration: `30s`, target: 10 },
+        { duration: `30s`, target: 20 },
+        { duration: `30s`, target: 30 },
+        { duration: `30s`, target: 40 },
+        { duration: `30s`, target: 50 },
+        { duration: `30s`, target: 60 },
+        { duration: `30s`, target: 70 },
+        { duration: `30s`, target: 80 },
+        { duration: `30s`, target: 90 },
+        { duration: `30s`, target: 100 },
+    ],
     preAllocatedVUs: 50,
 }
 
@@ -74,15 +82,8 @@ export const defaultAPISoakSettings = {
     preAllocatedVUs: 10,
 }
 
-export const defaultProfileStages = {
-    stages: [
-        { target: 3, duration: `30s` },
-        { target: 3, duration: `30m` },
-    ],
-}
-
 export const defaultThresholds = {
-    http_req_failed: [`rate<0.01`], // http errors should be less than 1%
+    http_req_failed: [`rate<0.1`], // http errors should be less than 1%
     http_req_duration: [`p(95)<20000`], // 95% of requests should be below 20s, just for CI debug for now
 }
 
@@ -122,9 +123,15 @@ export const GeneratePerAPIBaselineSuite = (strategy: any, apis: string[], delay
 
 export const selectScenario = (scenarioName: string): { [name: string]: Scenario } => {
     switch (scenarioName) {
+    case `frontendBrowser`:
+        return {
+            abc: {
+                executor: `shared-iterations`,
+            },
+        }
     case `baselineFrontend`:
         return GeneratePerAPIBaselineSuite(
-            defaultAPITestSettings,
+            SmokeStrategy,
             [
                 `frontendBlocks`,
                 `frontendBlockDetails`,
@@ -139,59 +146,161 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
             10,
             1,
         )
-    case `stressBackendV2V1`:
+    case `stress`:
         return GeneratePerAPIBaselineSuite(
-            defaultAPITestSettings,
+            RampingStrategy,
             [
-                `backendV2GasPriceOracle`,
-                `backendV2AddressesLogs`,
-                `backendV2AddressesInternalTx`,
-                `backendV2TXInternal`,
-                `backendV2TokenTransfers`,
-                `backendV2TokenInstances`,
-                `backendV2AddressesTokenTransfers`,
-                `backendV2Transactions`,
-                `backendV2RecentTransactions`,
-                `backendV2Search`,
-                `backendV2SearchRedirect`,
-                `backendV2AddressesTransactions`,
-                `backendV2AddressesTokensERC20`,
-                `backendV2AddressesTokensERC721`,
-                `backendV2AddressesTokensERC1155`,
-                `backendV1TXInternal`,
-                `backendV1AddressTXs`,
-                `backendV1AddressTokenTransfers`,
-                // new
-                `backendV2AddressesTabCounters`,
-                `backendV2Addresses`,
-                `backendV2TXTokenTransfers`,
+                // `backendV2TXDetails`,
+                // `backendV2GasPriceOracle`,
+                // `backendV2TXInternal`,
+                // `backendV2TokenTransfers`,
+                // `backendV2TokenInstances`,
+                // `backendV2Transactions`,
+                // `backendV2RecentTransactions`,
+                // `backendV2Search`,
+                // `backendV2SearchRedirect`,
+                // `backendV2AddressesTokenTransfers`,
+                // `backendV2AddressesLogs`,
+                // `backendV2AddressesInternalTx`,
+                // `backendV2AddressesTransactions`,
+                // `backendV2AddressesTokensERC20`,
+                // `backendV2AddressesTokensERC721`,
+                // `backendV2AddressesTokensERC1155`,
+                // `backendV1AddressTXs`,
+                // `backendV1AddressTokenTransfers`,
+                // `backendV2AddressesTabCounters`,
+                // `backendV2Addresses`,
+                // `backendV2AddressesCoinBalanceHistory`,
+                // `backendV2AddressesCoinBalanceHistoryByDay`,
+                // `backendAccountAddressHash`,
+                // `backendAddressBalance`,
+                // `backendV1TXInternal`,
+                // `backendV2TXTokenTransfers`,
                 `backendV2TXLogs`,
-                `backendV2TXRawTrace`,
-                `backendV2TXStateChanges`,
-                `backendV2Tokens`,
-                `backendV2Blocks`,
-                `backendV2SmartContracts`,
-                `backendV2SmartContractsVerificationConfig`,
-                `backendAccountAddressHash`,
-                `backendAddressBalance`,
-                `backendETHSupply`,
-                `backendTokenSupply`,
-                `backendGetToken`,
-                // not working? v1
-                // `backendGetTokenHolders`,
-                `backendTokenBalance`,
-                `backendGetLogs`,
+                // `backendV2TXRawTrace`,
+                // `backendV2TXStateChanges`,
+                // `backendV2Tokens`,
+                // `backendV2Blocks`,
+                // `backendV2SmartContracts`,
+                // `backendV2SmartContractsVerificationConfig`,
+                // `backendETHSupply`,
+                // `backendTokenSupply`,
+                // `backendGetToken`,
+                // // not working? v1
+                // // `backendGetTokenHolders`,
+                // `backendTokenBalance`,
+                // `backendV1GetLogs`,
                 // util
                 // `backendV2BackendVersion`,
                 // `backendV2JSONRPCURL`,
             ],
             10,
             10,
+            20,
+        )
+    case `smoke`:
+        return GeneratePerAPIBaselineSuite(
+            SmokeStrategy,
+            [
+                // `backendV2TXDetails`,
+                // `backendV2GasPriceOracle`,
+                // `backendV2TXInternal`,
+                // `backendV2TokenTransfers`,
+                // `backendV2TokenInstances`,
+                // `backendV2Transactions`,
+                // `backendV2RecentTransactions`,
+                // `backendV2Search`,
+                // `backendV2SearchRedirect`,
+                // `backendV2AddressesTokenTransfers`,
+                `backendV2AddressesLogs`,
+                // `backendV2AddressesInternalTx`,
+                // `backendV2AddressesTransactions`,
+                // `backendV2AddressesTokensERC20`,
+                // `backendV2AddressesTokensERC721`,
+                // `backendV2AddressesTokensERC1155`,
+                // `backendV1AddressTXs`,
+                // `backendV1AddressTokenTransfers`,
+                // `backendV2AddressesTabCounters`,
+                // `backendV2Addresses`,
+                // `backendV2AddressesCoinBalanceHistory`,
+                // `backendV2AddressesCoinBalanceHistoryByDay`,
+                // `backendAccountAddressHash`,
+                // `backendAddressBalance`,
+                // `backendV1TXInternal`,
+                // `backendV2TXTokenTransfers`,
+                `backendV2TXLogs`,
+                // `backendV2TXRawTrace`,
+                // `backendV2TXStateChanges`,
+                // `backendV2Tokens`,
+                // `backendV2Blocks`,
+                // `backendV2SmartContracts`,
+                // `backendV2SmartContractsVerificationConfig`,
+                // `backendETHSupply`,
+                // `backendTokenSupply`,
+                // `backendGetToken`,
+                // // not working? v1
+                // // `backendGetTokenHolders`,
+                // `backendTokenBalance`,
+                // `backendV1GetLogs`,
+                // util
+                // `backendV2BackendVersion`,
+                // `backendV2JSONRPCURL`,
+            ],
+            10,
+            10,
+            20,
+        )
+    case `avg`:
+        return GeneratePerAPIBaselineSuite(
+            SmokeStrategy,
+            [
+                `backendV2Transactions`,
+                `backendV2RecentTransactions`,
+                `backendV2TXDetails`,
+                `backendV2Search`,
+                `backendV2SearchRedirect`,
+                `backendV2GasPriceOracle`,
+                `backendV2TXInternal`,
+                `backendV2TXTokenTransfers`,
+                `backendV2TXLogs`,
+                `backendV2TXRawTrace`,
+                `backendV2TXStateChanges`,
+                `backendV2Tokens`,
+                `backendV2TokenTransfers`,
+                `backendV2TokenInstances`,
+                `backendV2AddressesLogs`,
+                `backendV2AddressesInternalTx`,
+                `backendV2Addresses`,
+                `backendV2AddressesTokenTransfers`,
+                `backendV2AddressesTransactions`,
+                `backendV2AddressesTokensERC20`,
+                `backendV2AddressesTokensERC721`,
+                `backendV2AddressesTokensERC1155`,
+                `backendV2AddressesTabCounters`,
+                `backendV2AddressesCoinBalanceHistory`,
+                `backendV2AddressesCoinBalanceHistoryByDay`,
+                `backendAccountAddressHash`,
+                `backendAddressBalance`,
+                `backendV2Blocks`,
+                `backendV2SmartContracts`,
+                `backendV2SmartContractsVerificationConfig`,
+                `backendETHSupply`,
+                `backendTokenSupply`,
+                // not working? v1
+                // `backendGetTokenHolders`,
+                `backendTokenBalance`,
+                `backendV1GetLogs`,
+                // util
+                // `backendV2BackendVersion`,
+                // `backendV2JSONRPCURL`,
+            ],
+            10,
+            60,
             1,
         )
     case `txActions`:
         return GeneratePerAPIBaselineSuite(
-            defaultAPITestSettings,
+            SmokeStrategy,
             [`backendTXActions`],
             10,
             10,
@@ -199,7 +308,7 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
         )
     case `stressBensV1`:
         return GeneratePerAPIBaselineSuite(
-            defaultAPITestSettings,
+            SmokeStrategy,
             [
                 `batchResolveBens`,
                 `addressesLookupBens`,

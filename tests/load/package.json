@@ -29,10 +29,14 @@
     "build": "webpack",
     "lint": "eslint --ext .ts .",
     "test": "npm run build && export $(cat $CONFIG | xargs) && ./k6 --verbose run --tag testid=${K6_TEST_ID} --log-output=${K6_LOG_OUTPUT_STRING} dist/all.test.suite.js",
+    "test:browser": "K6_BROWSER_ENABLED=true K6_BROWSER_HEADLESS=false k6 run src/frontend.browser.test.suite.ts",
+    "test:browser:debug": "K6_BROWSER_ENABLED=true k6 run src/frontend.browser.test.suite.ts",
     "test:ci": "npm run build && ./bin_k6/k6-tsdb-linux --verbose run --tag testid=${K6_TEST_ID} dist/all.test.suite.js"
   },
   "dependencies": {
     "@digitak/esrun": "^3.2.26",
+    "@sapling-data/loki-javascript-client": "^1.1.7",
+    "axios": "^1.6.8",
     "chalk": "^2.4.2",
     "node-fetch": "^3.3.2",
     "ts-node": "^10.9.2"

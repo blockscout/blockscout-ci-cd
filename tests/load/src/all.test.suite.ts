@@ -2,15 +2,11 @@
 /* eslint-disable no-undef */
 import { Options } from 'k6/options'
 
-import {
-    defaultSession, defaultThresholds, selectScenario,
-} from './common'
+import {defaultThresholds, selectScenario} from './common'
 
 export * from './frontend.test.suite'
 export * from './backend.test.suite'
 export * from './bens.test.suite'
-
-export const session = defaultSession()
 
 export const options: Options = {
     noCookiesReset: true,
