@@ -115,8 +115,9 @@ async function checkEthGetLogs(addr, from, to) {
     const filter = {
       address: addr,
       fromBlock: from,
-      toBlock: to,            
+      toBlock: to,
     };
+    console.log(`from: ${from}, to: ${to}`)
     const data = await provider.getLogs(filter)
     console.log(chalk.yellow(`GetLogs API result: ${JSON.stringify(data)}`))
     for (const field of [`blockNumber`, `blockHash`, `transactionIndex`, `removed`, `address`, `data`, `topics`, `transactionHash`, `logIndex`]) {
@@ -203,12 +204,22 @@ async function findAllAddresses(bs, bn) {
   return addresses
 }
 
-const addrs = await findAllAddresses(1, 34)
-console.log(`addresses: ${JSON.stringify(addrs)}`)
-for (let addr of addrs) {
-  await checkEthGetLogs(addr, 1, 34)
+
+async function scanBlocks(from, to) {
+  const addrs = await findAllAddresses(from, to)
+  console.log(`addresses: ${JSON.stringify(addrs)}`)
+  for (let addr of addrs) {
+    await checkEthGetLogs(addr, from, to)
+  }
 }
 
+// txpool_content
+
+// curl -X POST  -H "Content-Type: application/json"  \
+// --data '{"jsonrpc":"2.0", "id":2, "method": "debug_traceBlockByHash", "params": ["0x794367b0292ff04e182ee76ce1a07caffdd533490f4c652d14dc34b40aa14079"] }' \
+// "https://rpc-testnet.cyclenetwork.io"
+
+// await scanBlocks(30, 31)
 // await checkEthBlockNumber()
 // const blockInfo = await checkEthGetBlockByNumberOrHash(staticBn)
 // await checkEthGetBlockByNumberOrHash(blockInfo.hash)

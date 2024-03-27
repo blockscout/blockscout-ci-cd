@@ -10,6 +10,12 @@ npm install
 Build `xk6` binary for your platform
 ```
 xk6 build --with github.com/grafana/xk6-output-timescaledb
+
+or
+
+docker run --rm -it -u "$(id -u):$(id -g)" -v "${PWD}:/xk6" grafana/xk6 build v0.43.1 \
+  --with github.com/avitalique/xk6-file@latest \
+  --with github.com/grafana/xk6-output-timescaledb
 ```
 
 ## Run
@@ -28,7 +34,7 @@ Check the [manual](./dashboards/README.md)
 
 Feel free to use `console.debug` or `console.warn` methods, all the logs are aggregated to `Loki` , for more info visit [k6 docs](https://k6.io/docs/cloud/analyzing-results/logs/)
 
-## Writing own tests
+## Writing the tests
 
 Rules for writing tests are simple:
 - The test code is located in `src` folder

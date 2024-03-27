@@ -24,7 +24,7 @@ test(`@Rollup Txn batches table verification`, async ({ context, newRollupTxnBat
 
 test(`@Rollup Txn batches table verification (ZKEVM)`, async ({ context, newRollupTxnBatchesZKEvm }) => {
     await newRollupTxnBatchesZKEvm.open()
-    await newRollupTxnBatchesZKEvm.validateTable(context)
+    await newRollupTxnBatchesZKEvm.validateTable(context, 7)
 })
 
 test(`@Rollup Output roots table verification`, async ({ context, newRollupOutputRoots }) => {
