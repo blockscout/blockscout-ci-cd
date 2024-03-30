@@ -87,7 +87,7 @@ async function generateData(dataTmpl) {
     }]))
 }
 
-generateData({
+await generateData({
     blocksAmount: 20,
     txsAmount: 20,
     addressesAmount: 20,

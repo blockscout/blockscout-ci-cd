@@ -9,10 +9,13 @@ npm install
 
 Build `xk6` binary for your platform
 ```
-xk6 build --with github.com/grafana/xk6-output-timescaledb
+Darwin
 
-or
+docker run --rm -it -e GOOS=darwin -u "$(id -u):$(id -g)" -v "${PWD}:/xk6" grafana/xk6 build v0.43.1 \
+  --with github.com/avitalique/xk6-file@latest \
+  --with github.com/grafana/xk6-output-timescaledb
 
+Linux 
 docker run --rm -it -u "$(id -u):$(id -g)" -v "${PWD}:/xk6" grafana/xk6 build v0.43.1 \
   --with github.com/avitalique/xk6-file@latest \
   --with github.com/grafana/xk6-output-timescaledb
@@ -24,7 +27,7 @@ Production RPC suite, `scenarios` are:
 - `baseline` - measure all APIs one by one after warm up
 - `profile` - run one of a prod-like profile
 
-You can configure and run a suite, choose a `K6_TEST_ID`, `SCENARIO` and and debug stream for Loki in `.env` files
+You can configure and run a suite, choose a `K6_TEST_ID`, `SCENARIO` and debug stream for Loki in `.env` files
 ```
 CONFIG=.env.prod.baseline.local npm run test
 ```

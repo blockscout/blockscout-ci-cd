@@ -1,2 +1,3 @@
+BASE_URL="https://eth-sepolia.blockscout.com"
 K6_BROWSER_ENABLED=true
 K6_BROWSER_HEADLESS=false

@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 import { Options } from 'k6/options'
 
-import {defaultThresholds, selectScenario} from './common'
+import { defaultThresholds, selectScenario } from './common'
 
 export * from './frontend.test.suite'
 export * from './backend.test.suite'
