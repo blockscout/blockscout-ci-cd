@@ -65,6 +65,11 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`main >> tr >> nth=2 >> td >> nth=3 >> text=/Expires in.*/`)
     }
 
+    async UserOpsIsOn(): Promise<boolean> {
+        await this.actions.clickElement(`text=/Blockchain/`)
+        return this.actions.page.isVisible(`text=/User operations/`)
+    }
+
     async checkUserOpsHeader(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`main >> th >> nth=0 >> text=/User op hash/`)
         await this.actions.verifyElementIsDisplayed(`main >> th >> nth=1 >> text=/Age/`)
@@ -308,7 +313,7 @@ export class NewHomePage extends CommonPage {
         await this.displayed_in_parent(`text=/Number of verified contracts today/`, `text=/\\d+.*/`, 2, `no number of verified contracts today`)
         await this.displayed_in_parent(`text=/Total accounts/`, `text=/\\d+.*/`, 2, `no total accounts`)
         await this.displayed_in_parent(`text=/Total blocks/`, `text=/\\d+.*/`, 2, `no total blocks`)
-        await this.displayed_in_parent(`text=/Total native coin transfers/`, `text=/\\d+.*/`, 2, `no total native coin trasfers`)
+        await this.displayed_in_parent(`text=/Total ETH transfers/`, `text=/\\d+.*/`, 2, `no total native coin trasfers`)
         await this.displayed_in_parent(`text=/Total tokens/`, `text=/\\d+.*/`, 2, `no total tokens`)
         await this.displayed_in_parent(`text=/Total txns/`, `text=/\\d+.*/`, 2, `no total txns`)
         await this.displayed_in_parent(`text=/Total verified contracts/`, `text=/\\d+.*/`, 2, `no total verified contracts`)
@@ -330,7 +335,7 @@ export class NewHomePage extends CommonPage {
         await this.displayed_in_parent(`text=/Average gas price/`, `text=${this.MONTHS_REGEX}`, 3, `no avg gas price`)
         await this.displayed_in_parent(`text=/Gas used growth/`, `text=${this.MONTHS_REGEX}`, 3, `no gas used growth`)
 
-        await this.displayed_in_parent(`text=/New native coins transfers/`, `text=${this.MONTHS_REGEX}`, 3, `no new native coin transfers`)
+        await this.displayed_in_parent(`text=/New ETH transfers/`, `text=${this.MONTHS_REGEX}`, 3, `no new native coin transfers`)
 
         await this.displayed_in_parent(`text=/Average transaction fee/`, `text=${this.MONTHS_REGEX}`, 3, `no avg transaction fee`)
         await this.displayed_in_parent(`text=/New transactions/`, `text=${this.MONTHS_REGEX}`, 3, `no new transactions`)
