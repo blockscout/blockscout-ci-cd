@@ -44,11 +44,11 @@ on:
         description: 'Global request timeout'
         required: true
         default: 20000
-    
+
 jobs:
   v1v2-smoke:
     name: Run Blockscout load test
-    runs-on: ubuntu-latest
+    runs-on: github-k8s-dev-runner
     steps:
       - name: Checkout github repo (+ download lfs dependencies)
         uses: actions/checkout@v2
