@@ -49,6 +49,8 @@ jobs:
   v1v2-smoke:
     name: Run Blockscout load test
     runs-on: github-k8s-dev-runner
+    container:
+      image: ubuntu:22.04
     steps:
       - name: Checkout github repo (+ download lfs dependencies)
         uses: actions/checkout@v2
