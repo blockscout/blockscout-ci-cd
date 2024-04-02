@@ -50,11 +50,8 @@ jobs:
     name: Run Blockscout load test
     runs-on: github-k8s-dev-runner
     container:
-      image: ubuntu:22.04
+      image: node:lts
     steps:
-      - name: Pre-install script
-        run: |
-          sudo apt update && sudo apt install -y git git-lfs
       - name: Checkout github repo (+ download lfs dependencies)
         uses: actions/checkout@v2
         with:
