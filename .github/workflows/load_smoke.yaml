@@ -52,6 +52,9 @@ jobs:
     container:
       image: ubuntu:22.04
     steps:
+      - name: Pre-install script
+        run: |
+          apt update && apt install -y git git-lfs
       - name: Checkout github repo (+ download lfs dependencies)
         uses: actions/checkout@v2
         with:
