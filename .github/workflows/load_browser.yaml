@@ -24,11 +24,13 @@ on:
         description: 'Global request timeout'
         required: true
         default: 20000
-    
+
 jobs:
   browser:
     name: Run Blockscout Browser Metrics Test
-    runs-on: ubuntu-latest
+    runs-on: github-k8s-dev-runner
+    container:
+      image: node:lts
     steps:
       - name: Checkout
         uses: actions/checkout@v2
