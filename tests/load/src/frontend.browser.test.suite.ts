@@ -5,6 +5,7 @@ const url = __ENV.BASE_URL
 const pageName = __ENV.PAGE
 const iterations = __ENV.ITERATIONS
 const vus = __ENV.VUS
+const lokiURL = __ENV.LOKI_URL
 
 export const options = {
     scenarios: {
@@ -47,8 +48,8 @@ export function handleSummary(data) {
             },
         ],
     }
-    const LokiURL = `http://localhost:3100/loki/api/v1/push`
-    const res = http.post(LokiURL, JSON.stringify(payload), {
+    // const LokiURL = `http://localhost:3100/loki/api/v1/push`
+    const res = http.post(lokiURL, JSON.stringify(payload), {
         headers: { 'Content-Type': `application/json` },
     })
     console.log(res.status)
