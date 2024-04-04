@@ -51,7 +51,9 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Install deps
-        run: npm ci
+        run: |
+          apt-get update && apt-get install -y chromium
+          npm ci
       - name: Run v1/v2 Browser Test
         env:
           LOKI_URL: ${{ secrets.LOKI_URL }}
