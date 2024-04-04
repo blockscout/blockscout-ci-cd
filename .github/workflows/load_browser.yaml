@@ -62,6 +62,7 @@ jobs:
           VUS: 1
           K6_BROWSER_ENABLED: true
           K6_BROWSER_HEADLESS: true
+          K6_BROWSER_ARGS: no-sandbox
         run: |
           PAGE="/blocks" ./bin_k6/k6-tsdb-linux run src/frontend.browser.test.suite.ts
           PAGE="/txs" ./bin_k6/k6-tsdb-linux run src/frontend.browser.test.suite.ts
