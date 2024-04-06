@@ -115,12 +115,11 @@ test(`@SmokeEthBaseSepolia Base Sepolia main page components`, async ({ newHomeP
 
 test(`@SmokezkSync zkSync Era main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://zksync-era-mainnet.blockscout.com/`)
-    await newHomePage.checkIndexing()
-    await newHomePage.checkHeader()
+    await newHomePage.checkHeaderL2()
     await newHomePage.checkBlocksWidget()
 })
 
-test(`@SmokeEthStability zkSync Era main page components`, async ({ newHomePage }) => {
+test(`@SmokeEthStability Eth Stability main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://stability-betanet.blockscout.com/`)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()

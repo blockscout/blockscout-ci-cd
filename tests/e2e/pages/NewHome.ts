@@ -14,6 +14,8 @@ export class NewHomePage extends CommonPage {
 
     BLOCKS_WIDGET = `text=/Latest blocks/ >> ..`
 
+    BATCHES_WIDGET = `text=/Latest batch/ >> ..`
+
     BLOCKS_WIDGET_LAST_BLOCK = `${this.BLOCKS_WIDGET} >> div >> div >> nth=0`
 
     TXNS_FIELDS = `body >> div >> nth=98 >> div >> div >> div >> div >> div >> div >> div`
@@ -302,6 +304,12 @@ export class NewHomePage extends CommonPage {
 
     async checkHeader(): Promise<void> {
         await this.displayed_in_parent(`text=/Total blocks/`, `text=/\\d+.*/`, 2, `no total blocks`)
+        await this.displayed_in_parent(`text=/Average block time/`, `text=/\\d+.*/`, 2, `no avg block time`)
+        await this.displayed_in_parent(`text=/Total transactions/`, `text=/\\d+.*/`, 2, `no total transactions`)
+        await this.displayed_in_parent(`text=/Wallet addresses/`, `text=/\\d+.*/`, 2, `no wallet addresses`)
+    }
+    async checkHeaderL2(): Promise<void> {
+        await this.displayed_in_parent(`text=/Latest batch/`, `text=/\\d+.*/`, 2, `no total blocks`)
         await this.displayed_in_parent(`text=/Average block time/`, `text=/\\d+.*/`, 2, `no avg block time`)
         await this.displayed_in_parent(`text=/Total transactions/`, `text=/\\d+.*/`, 2, `no total transactions`)
         await this.displayed_in_parent(`text=/Wallet addresses/`, `text=/\\d+.*/`, 2, `no wallet addresses`)
