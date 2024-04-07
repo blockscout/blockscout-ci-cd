@@ -14,6 +14,8 @@ export class NewHomePage extends CommonPage {
 
     BLOCKS_WIDGET = `text=/Latest blocks/ >> ..`
 
+    BATCHES_WIDGET = `text=/Latest batch/ >> ..`
+
     BLOCKS_WIDGET_LAST_BLOCK = `${this.BLOCKS_WIDGET} >> div >> div >> nth=0`
 
     TXNS_FIELDS = `body >> div >> nth=98 >> div >> div >> div >> div >> div >> div >> div`
@@ -70,6 +72,76 @@ export class NewHomePage extends CommonPage {
         return this.actions.page.isVisible(`text=/User operations/`)
     }
 
+    async BlobIsOn(): Promise<boolean> {
+        return this.actions.page.isVisible(`text=/Blob txns/`)
+    }
+
+    async checkBlobTransactions(): Promise<void> {
+        await this.page.click(`text=/Blob txns/`)
+        const firstRow = `text=/Blob txn$/ >> ../../../.. >> nth=0`
+        await this.actions.verifyElementIsDisplayed(`${firstRow} >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${firstRow} >> text=/.*ago/`)
+        await this.actions.verifyElementIsDisplayed(`${firstRow} >> text=/Success/`)
+        await this.actions.verifyElementIsDisplayed(`${firstRow} >> div >> nth=10 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${firstRow} >> div >> nth=13 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${firstRow} >> td >> nth=5 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${firstRow} >> td >> nth=6 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${firstRow} >> td >> nth=7 >> text=/\\d+/`)
+    }
+
+    async openFirstVerifiedContract(url: string): Promise<void> {
+        await this.open_custom(`${url}/verified-contracts`)
+        await this.page.click(`main >> table >> td >> nth=0 >> a`)
+    }
+
+    async checkContractReadTabs(): Promise<void> {
+        await this.page.getByRole(`tab`, { name: `Read contract` }).click()
+        await this.page.getByText(`DisconnectedConnect wallet`).isVisible()
+        await this.page.getByText(`Contract information`).isVisible()
+        await this.page.getByText(`Expand all`).click()
+        await this.page.getByText(`Collapse all`).click()
+        await this.page.getByText(`Reset`).click()
+        await this.actions.verifyElementIsDisplayed(`div[role='tabpanel'] >> section >> nth=1 >> text=/1..*/`)
+    }
+
+    async checkContractsWriteTabs(): Promise<void> {
+        await this.page.getByRole(`tab`, { name: `Write contract` }).click()
+        await this.page.getByText(`DisconnectedConnect wallet`).isVisible()
+        await this.page.getByText(`Expand all`).click()
+        await this.page.getByText(`Collapse all`).click()
+        await this.page.getByText(`Reset`).click()
+        await this.page.getByText(`Contract information`).isVisible()
+        await this.actions.verifyElementIsDisplayed(`div[role='tabpanel'] >> section >> nth=1 >> text=/1..*/`)
+    }
+
+    async checkContractsCodeTab(): Promise<void> {
+        await this.page.getByLabel(`Code`, { exact: true }).getByText(`Contract name`).isVisible()
+        await this.page.getByText(`EVM version`).isVisible()
+        await this.page.getByText(`Optimization runs`).isVisible()
+        await this.page.getByText(`Contract file path`).isVisible()
+        await this.page.getByText(`Compiler version`).isVisible()
+        await this.page.getByText(`Optimization enabled`).isVisible()
+        await this.page.getByText(`Verified at`).isVisible()
+        await this.page.getByText(`Contract source code`, { exact: true }).isVisible()
+    }
+
+    async checkContractUMLDiagram(): Promise<void> {
+        await this.page.getByRole(`link`, { name: `View UML diagram` }).click()
+        await this.page.getByText(`/For contract0x.*/`).isVisible()
+        await this.page.getByRole(`img`, { name: `/Contract.*/` }).isVisible()
+    }
+
+    async checkParticularBlob(url: string, addr: string): Promise<void> {
+        await this.open_custom(`${url}/tx/${addr}`)
+        await this.actions.clickElement(`text=/Blobs/`)
+        await this.page.getByRole(`link`, { name: `0x01a78ecbd6c01ab745dd85878ca57b67f3bb9629351e1c53bb18f0d3ac21484d` }).click()
+        await this.page.getByRole(`link`, { name: `0x671cc5e15f140d220c36b0abaf0f76afd108c23c83cc63bb8ded37de1ffffc5b` }).isVisible()
+        await this.page.getByText(`0x01a78ecbd6c01ab745dd85878ca57b67f3bb9629351e1c53bb18f0d3ac21484d`, { exact: true }).isVisible()
+        await this.page.getByText(`Sponsored`).isVisible()
+        await this.page.getByText(`Blob details`).isVisible()
+        await this.page.locator(`div`).filter({ hasText: /^Blob details$/ }).first().click()
+    }
+
     async checkUserOpsHeader(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`main >> th >> nth=0 >> text=/User op hash/`)
         await this.actions.verifyElementIsDisplayed(`main >> th >> nth=1 >> text=/Age/`)
@@ -110,6 +182,11 @@ export class NewHomePage extends CommonPage {
         this.currentPage = url
         await this.actions.navigateToURL(url, options)
         await this.delay(5000)
+    }
+
+    async isENSEnabled(): Promise<boolean> {
+        await this.actions.page.hover(`text=/Blockchain/`)
+        return this.page.isVisible(`text=/Name services lookup/`)
     }
 
     async isGasTrackerOn(): Promise<boolean> {
@@ -302,6 +379,13 @@ export class NewHomePage extends CommonPage {
 
     async checkHeader(): Promise<void> {
         await this.displayed_in_parent(`text=/Total blocks/`, `text=/\\d+.*/`, 2, `no total blocks`)
+        await this.displayed_in_parent(`text=/Average block time/`, `text=/\\d+.*/`, 2, `no avg block time`)
+        await this.displayed_in_parent(`text=/Total transactions/`, `text=/\\d+.*/`, 2, `no total transactions`)
+        await this.displayed_in_parent(`text=/Wallet addresses/`, `text=/\\d+.*/`, 2, `no wallet addresses`)
+    }
+
+    async checkHeaderL2(): Promise<void> {
+        await this.displayed_in_parent(`text=/Latest batch/`, `text=/\\d+.*/`, 2, `no total blocks`)
         await this.displayed_in_parent(`text=/Average block time/`, `text=/\\d+.*/`, 2, `no avg block time`)
         await this.displayed_in_parent(`text=/Total transactions/`, `text=/\\d+.*/`, 2, `no total transactions`)
         await this.displayed_in_parent(`text=/Wallet addresses/`, `text=/\\d+.*/`, 2, `no wallet addresses`)

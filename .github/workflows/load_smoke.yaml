@@ -44,18 +44,18 @@ on:
         description: 'Global request timeout'
         required: true
         default: 20000
-    
+
 jobs:
   v1v2-smoke:
     name: Run Blockscout load test
-    runs-on: ubuntu-latest
+    runs-on: github-k8s-dev-runner
+    container:
+      image: node:lts
     steps:
       - name: Checkout github repo (+ download lfs dependencies)
         uses: actions/checkout@v2
         with:
-          lfs: true
-      - name: Checkout LFS objects
-        run: git lfs checkout
+          lfs: false
       - name: Setup node
         uses: actions/setup-node@v3
         with:
