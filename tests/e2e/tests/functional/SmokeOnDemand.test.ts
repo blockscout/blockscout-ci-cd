@@ -106,7 +106,18 @@ test(`@OnDemandSmoke Check blobs`, async ({ newHomePage }) => {
     }
 })
 
-test(`@OnDemandSmoke Check read/write contract tabs`, async ({ newHomePage }) => {
+test(`@OnDemandSmoke Check read contract tabs`, async ({ newHomePage }) => {
     await newHomePage.openFirstVerifiedContract(url)
     await newHomePage.checkContractReadTabs()
+})
+
+test(`@OnDemandSmoke Check write contract tabs`, async ({ newHomePage }) => {
+    await newHomePage.openFirstVerifiedContract(url)
+    await newHomePage.checkContractsWriteTabs()
+})
+
+test(`@OnDemandSmoke Check contracts code tabs`, async ({ newHomePage }) => {
+    await newHomePage.openFirstVerifiedContract(url)
+    await newHomePage.checkContractsCodeTab()
+    await newHomePage.checkContractUMLDiagram()
 })

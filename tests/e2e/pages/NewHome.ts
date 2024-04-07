@@ -104,6 +104,33 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`div[role='tabpanel'] >> section >> nth=1 >> text=/1..*/`)
     }
 
+    async checkContractsWriteTabs(): Promise<void> {
+        await this.page.getByRole(`tab`, { name: `Write contract` }).click()
+        await this.page.getByText(`DisconnectedConnect wallet`).isVisible()
+        await this.page.getByText(`Expand all`).click()
+        await this.page.getByText(`Collapse all`).click()
+        await this.page.getByText(`Reset`).click()
+        await this.page.getByText(`Contract information`).isVisible()
+        await this.actions.verifyElementIsDisplayed(`div[role='tabpanel'] >> section >> nth=1 >> text=/1..*/`)
+    }
+
+    async checkContractsCodeTab(): Promise<void> {
+        await this.page.getByLabel(`Code`, { exact: true }).getByText(`Contract name`).isVisible()
+        await this.page.getByText(`EVM version`).isVisible()
+        await this.page.getByText(`Optimization runs`).isVisible()
+        await this.page.getByText(`Contract file path`).isVisible()
+        await this.page.getByText(`Compiler version`).isVisible()
+        await this.page.getByText(`Optimization enabled`).isVisible()
+        await this.page.getByText(`Verified at`).isVisible()
+        await this.page.getByText(`Contract source code`, { exact: true }).isVisible()
+    }
+
+    async checkContractUMLDiagram(): Promise<void> {
+        await this.page.getByRole(`link`, { name: `View UML diagram` }).click()
+        await this.page.getByText(`/For contract0x.*/`).isVisible()
+        await this.page.getByRole(`img`, { name: `/Contract.*/` }).isVisible()
+    }
+
     async checkParticularBlob(url: string, addr: string): Promise<void> {
         await this.open_custom(`${url}/tx/${addr}`)
         await this.actions.clickElement(`text=/Blobs/`)
