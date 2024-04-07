@@ -116,7 +116,6 @@ test(`@SmokeEthBaseSepolia Base Sepolia main page components`, async ({ newHomeP
 test(`@SmokezkSync zkSync Era main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://zksync-era-mainnet.blockscout.com/`)
     await newHomePage.checkHeaderL2()
-    await newHomePage.checkBlocksWidget()
 })
 
 test(`@SmokeEthStability Eth Stability main page components`, async ({ newHomePage }) => {

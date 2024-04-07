@@ -105,6 +105,7 @@ test(`@OnDemandSmoke Check blobs`, async ({ newHomePage }) => {
         console.log(chalk.yellow(`Blob txns is OFF!`))
     }
 })
+
 test(`@OnDemandSmoke Check read/write contract tabs`, async ({ newHomePage }) => {
     await newHomePage.openFirstVerifiedContract(url)
     await newHomePage.checkContractReadTabs()
