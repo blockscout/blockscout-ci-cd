@@ -53,9 +53,14 @@ test(`@OnDemandSmoke Check verified contracts`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check ENS`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`${url}/name-domains?only_active=true`)
-    await newHomePage.checkENSHeader()
-    await newHomePage.checkENSRow()
+    await newHomePage.open_custom(url)
+    if (await newHomePage.isENSEnabled()) {
+        await newHomePage.open_custom(`${url}/name-domains?only_active=true`)
+        await newHomePage.checkENSHeader()
+        await newHomePage.checkENSRow()
+    } else {
+        console.log(chalk.yellow(`ENS Services are OFF!`))
+    }
 })
 
 test(`@OnDemandSmoke Check gas tracker`, async ({ newHomePage }) => {
@@ -89,4 +94,18 @@ test(`@OnDemandSmoke Check user operations`, async ({ newHomePage }) => {
     } else {
         console.log(chalk.yellow(`User Operations are OFF!`))
     }
+})
+
+test(`@OnDemandSmoke Check blobs`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`${url}/txs`)
+    if (await newHomePage.BlobIsOn()) {
+        await newHomePage.checkBlobTransactions()
+        await newHomePage.checkParticularBlob(url, `0x671cc5e15f140d220c36b0abaf0f76afd108c23c83cc63bb8ded37de1ffffc5b`)
+    } else {
+        console.log(chalk.yellow(`Blob txns is OFF!`))
+    }
+})
+test(`@OnDemandSmoke Check read/write contract tabs`, async ({ newHomePage }) => {
+    await newHomePage.openFirstVerifiedContract(url)
+    await newHomePage.checkContractReadTabs()
 })
