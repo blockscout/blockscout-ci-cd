@@ -94,11 +94,6 @@ jobs:
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-build-${{ env.cache-name }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
-      - name: Install Playwright
-        run: |
-          # echo "deb http://ftp.us.debian.org/debian buster main non-free" >> /etc/apt/sources.list.d/fonts.list
-          npx playwright install --with-deps
-
       # check if instance is ready
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v2
@@ -118,6 +113,7 @@ jobs:
       - name: Run playwright smoke suite
         working-directory: blockscout-ci-cd/tests/e2e
         run: |
+          npx playwright install
           npm run test:smoke:account
       - uses: actions/upload-artifact@v3
         if: always()
