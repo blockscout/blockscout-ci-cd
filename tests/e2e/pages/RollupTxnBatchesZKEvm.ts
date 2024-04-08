@@ -27,6 +27,8 @@ export class RollupTxnBatchesPageZKEvm extends HomeRollupZKEvm {
         await this.actions.verifyElementIsDisplayed(`table >> tr >> nth=${rowNum} >> td >> nth=2 >> text=/.*go/`)
         await this.clickTableRowCol(rowNum, 3, `a`)
         expect(this.page.url()).toContain(this.l2URL())
+        await this.delay(10000)
+        await expect(this.page.locator(`text=/Something went wrong/`), `Internal server error is present`).toBeVisible({visible: false})
         await this.open()
 
         await this.actions.verifyElementIsDisplayed(`table >> tr >> nth=${rowNum} >> td >> nth=4 >> text=/\\w+/`)
