@@ -8,6 +8,12 @@ on:
       test_name:
         description: 'Test name'
         default: ci-api-browser
+      iterations:
+        description: 'Iterations'
+        default: 10
+      browsers:
+        description: 'Browsers'
+        default: 1
       url:
         description: 'Environment Root URL'
         required: true
@@ -20,10 +26,7 @@ on:
           - https://eth-sepolia.blockscout.com
           - https://gnosis.blockscout.com
           - https://eth.blockscout.com
-      request_timeout:
-        description: 'Global request timeout'
-        required: true
-        default: 20000
+
     
 jobs:
   browser:
@@ -54,8 +57,8 @@ jobs:
         env:
           LOKI_URL: ${{ secrets.LOKI_URL }}
           BASE_URL: ${{ inputs.url }}
-          ITERATIONS: 5
-          VUS: 1
+          ITERATIONS: ${{ inputs.iterations }}
+          VUS: ${{ inputs.browsers }}
           K6_BROWSER_ENABLED: true
           K6_BROWSER_HEADLESS: true
         run: |
