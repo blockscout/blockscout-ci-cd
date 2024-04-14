@@ -17,7 +17,7 @@ test(`@AccountImage @Marketplace Check favorites filter`, async ({ marketplace }
     await marketplace.checkGroupsVisible(appName, 1)
 })
 
-test.skip(`@AccountImage @Marketplace Propose a new app`, async ({ context, marketplace }) => {
+test.skip(`@AccountImage @Marketplace Propose new app`, async ({ context, marketplace }) => {
     await marketplace.open()
     await marketplace.submitNewApp(context, {
         Name: `New app`,

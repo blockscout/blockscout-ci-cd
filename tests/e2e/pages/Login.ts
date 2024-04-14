@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable guard-for-in */
-import { APIRequestContext, request } from "@playwright/test"
+import { APIRequestContext, expect, request } from "@playwright/test"
 import { WebActions } from "@lib/WebActions"
 import { MailSlurp } from "mailslurp-client"
 import type { Page } from 'playwright'
@@ -75,9 +75,9 @@ export class AuthorizedArea extends CommonPage {
 
     WATCHLIST_TAB = `text=Watch list`
 
-    WATCHLIST_ADDRESS_INPUT = `#watchlist_address_address_hash`
+    WATCHLIST_ADDRESS_INPUT = `[role="dialog"] >> text=/Address.*0x/`
 
-    WATCHLIST_ADDRESS_NAME_INPUT = `#watchlist_address_name`
+    WATCHLIST_ADDRESS_NAME_INPUT = `[role="dialog"] >> text=/Private.*tag.*max.*characters/`
 
     WATCHLIST_ETHER_IN_CHECKBOX = `text=Incoming >> nth=0`
 
@@ -95,7 +95,7 @@ export class AuthorizedArea extends CommonPage {
 
     SAVE_BTN = `section >> button >> nth=1`
 
-    ADD_ADDRESS_BUTTON = `text=Add address`
+    ADD_ADDRESS_BUTTON = `text=/Add address/`
 
     WARN_ADDRESS_REQUIRED = `text=Address required >> span`
 
@@ -179,6 +179,12 @@ export class AuthorizedArea extends CommonPage {
         await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}auth/profile`, options)
     }
 
+    async openWatchlist(options?: Object): Promise<void> {
+        await this.actions.navigateToURL(process.env.BLOCKSCOUT_URL, options)
+        await this.actions.clickElement(this.SIGNED_IN)
+        await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}account/watchlist`, options)
+    }
+
     async openVerifiedAddresses(): Promise<void> {
         await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}account/verified-addresses`)
     }
@@ -251,6 +257,12 @@ export class AuthorizedArea extends CommonPage {
 
     async check_tag_list(row: number, col: number, text: string): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`tbody >> tr >> nth=${row} >> td >> nth=${col} >> text=/${text}/`)
+    }
+
+    async checkNotificationItem(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`table >> tr >> nth=1 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`table >> tr >> nth=1 >> text=/ETH.*balance/`)
+        await this.actions.verifyElementIsDisplayed(`table >> tr >> nth=1 >> text=/Net.*worth/`)
     }
 
     async clickListRow(row: number, col: number): Promise<void> {
@@ -345,6 +357,12 @@ export class AuthorizedArea extends CommonPage {
             await this.actions.clickElement(this.WATCHLIST_EMAIL_NOTIFICATIONS)
         }
         await this.actions.clickElement(this.SAVE_BTN)
+    }
+
+    async deleteAddressWatch(): Promise<void> {
+        await this.actions.clickElement(`table >> button[aria-label="delete"] >> nth=0`)
+        await this.actions.clickElement(`section[role="dialog"] >> nth=5 >> button >> nth=1`)
+        await expect(this.page.locator(`table`)).toBeVisible({ visible: false })
     }
 
     async checkValidationWarn(asserts: string[]): Promise<void> {

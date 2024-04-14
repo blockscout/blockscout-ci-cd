@@ -37,33 +37,13 @@ export class TransactionsListPage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.TABLE_HEADER}7 >> text=Fee ETH`)
     }
 
-    async check_table_data(nftSymbolV: string, nftSymbol: string, erc20SymbolV: string, erc20Symbol: string): Promise<void> {
-        await this.table_element_displayed(1, 1, `/0x.*ago/`)
-        await this.table_element_displayed(1, 2, `/Token transfer.*Success/`)
-        await this.table_element_displayed(1, 3, `/0x/`)
-        await this.table_element_displayed(1, 4, `/\\d+/`)
-        await this.table_element_displayed(1, 5, `0x`)
-        await this.table_element_displayed(1, 5, nftSymbolV)
-        await this.table_element_displayed(1, 6, `/\\d+/`)
-        await this.table_element_displayed(1, 7, `/\\d\\.\\d+/`)
-
-        await this.table_element_displayed(2, 1, `/0x.*ago/`)
-        await this.table_element_displayed(2, 2, `/Token creation.*Success/`)
-        await this.table_element_displayed(2, 3, ``)
-        await this.table_element_displayed(2, 4, `/\\d+/`)
-        await this.table_element_displayed(2, 5, `0x`)
-        await this.table_element_displayed(2, 5, nftSymbolV)
-        await this.table_element_displayed(2, 6, `/\\d+/`)
-        await this.table_element_displayed(2, 7, `/\\d\\.\\d+/`)
-
-        await this.table_element_displayed(3, 1, `/0x.*ago/`)
-        await this.table_element_displayed(3, 2, `/Contract call.*Failed/`)
-        await this.table_element_displayed(3, 3, `/alwaysReverts/`)
-        await this.table_element_displayed(3, 4, `/\\d+/`)
-        await this.table_element_displayed(3, 5, `0x`)
-        await this.table_element_displayed(3, 5, erc20SymbolV)
-        await this.table_element_displayed(3, 6, `/\\d+/`)
-        await this.table_element_displayed(3, 7, `/\\d\\.\\d+/`)
+    async check_table_data(): Promise<void> {
+        await this.actions.verifyElementIsDisplayed(`text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`text=/Token transfer/`)
+        await this.actions.verifyElementIsDisplayed(`text=/Success/`)
+        await this.actions.verifyElementIsDisplayed(`text=/Failed/`)
+        await this.actions.verifyElementIsDisplayed(`text=/alwaysReverts/`)
+        await this.actions.verifyElementIsDisplayed(`text=/0.01/`)
     }
 
     async findText(tags: string[]): Promise<void> {

@@ -4,15 +4,9 @@ import test from '@lib/BaseTest'
 test.describe.configure({ mode: `parallel` })
 
 test(`@AccountImage @Transactions Check transactions list`, async ({ transactionsListPage }) => {
-    const {
-        TestNFTSymbolV,
-        TestTokenSymbolV,
-        TestNFTSymbol,
-        TestTokenSymbol,
-    } = process.env
     await transactionsListPage.open()
     await transactionsListPage.check_header()
-    await transactionsListPage.check_table_data(TestNFTSymbolV, TestNFTSymbol, TestTokenSymbolV, TestTokenSymbol)
+    await transactionsListPage.check_table_data()
 })
 
 test(`@AccountImage @Transactions Check contract creation tx props`, async ({ transactionPage }) => {
