@@ -94,11 +94,6 @@ test(`@SmokeEthOptimismMainnet Optimism blocks`, async ({ context, newHomePage }
     await newHomePage.checkL2Blocks(context)
 })
 
-test.skip(`@SmokeEthOptimismGoerli Optimism Goerli blocks`, async ({ context, newHomePage }) => {
-    await newHomePage.open_custom(`https://optimism-goerli.blockscout.com/blocks`)
-    await newHomePage.checkL2Blocks(context)
-})
-
 test(`@SmokeEthRootstock Rootstock blocks`, async ({ context, newHomePage }) => {
     await newHomePage.open_custom(`https://rootstock.blockscout.com/blocks`)
     await newHomePage.checkL2Blocks(context)

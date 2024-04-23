@@ -30,12 +30,6 @@ test.skip(`@SmokeEthOptimismMainnet @UserOps Optimism UserOps components`, async
     await newHomePage.checkUserOpsRow()
 })
 
-test.skip(`@SmokeEthOptimismGoerli @UserOps Optimism Goerli UserOps components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://optimism-goerli.blockscout.com/ops`)
-    await newHomePage.checkUserOpsHeader()
-    await newHomePage.checkUserOpsRow()
-})
-
 test.skip(`@SmokeEthRootstock @UserOps Rootstock UserOps components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://rootstock.blockscout.com/ops`)
     await newHomePage.checkUserOpsHeader()

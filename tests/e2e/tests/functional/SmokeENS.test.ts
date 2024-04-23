@@ -32,12 +32,6 @@ test.skip(`@SmokeEthOptimismMainnet @ENS Optimism ENS components`, async ({ newH
     await newHomePage.checkENSRow()
 })
 
-test.skip(`@SmokeEthOptimismGoerli @ENS Optimism Goerli ENS components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://optimism-goerli.blockscout.com/name-domains?only_active=true`)
-    await newHomePage.checkENSHeader()
-    await newHomePage.checkENSRow()
-})
-
 test.skip(`@SmokeEthRootstock @ENS Rootstock ENS components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://rootstock.blockscout.com/name-domains?only_active=true`)
     await newHomePage.checkENSHeader()

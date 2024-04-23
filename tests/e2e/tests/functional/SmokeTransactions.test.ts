@@ -25,11 +25,6 @@ test(`@SmokeEthOptimismMainnet Optimism transactions page check`, async ({ newHo
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
 
-test(`@SmokeEthOptimismGoerli Optimism Goerli transactions page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://optimism-goerli.blockscout.com/txs`)
-    await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
-})
-
 test.skip(`@SmokeEthAstar Astar transactions page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://blockscout.com/astar/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)

@@ -10,7 +10,6 @@
     "test:prod:smoke:all": "npx playwright test --project=Chrome --grep=@SmokeEth --retries=3 --timeout=60000",
     "test:prod:smoke:mainnet": "npx playwright test --project=Chrome --grep=@SmokeEthMainnet --retries=3 --timeout=60000",
     "test:prod:lh:mainnet": "npx playwright test --project=Chrome --grep=@LHSmokeEthMainnet --retries=3 --timeout=280000",
-    "test:prod:smoke:goerli": "npx playwright test --project=Chrome --grep=@SmokeEthGoerli --retries=3 --timeout=60000",
     "test:prod:smoke:sepolia": "npx playwright test --project=Chrome --grep=@SmokeEthSepolia --retries=3 --timeout=60000",
     "test:prod:smoke:gnosis": "npx playwright test --project=Chrome --grep=@SmokeEthGnosisMainnet --retries=3 --timeout=60000",
     "test:prod:smoke:gnosis_chiado": "npx playwright test --project=Chrome --grep=@SmokeEthGnosisChiado --retries=3 --timeout=60000",

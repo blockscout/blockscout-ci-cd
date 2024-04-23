@@ -43,13 +43,6 @@ test(`@SmokeEthOptimismMainnet Optimism main page components`, async ({ newHomeP
     await newHomePage.checkBlocksWidget()
 })
 
-test(`@SmokeEthOptimismGoerli Optimism Goerli main page components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://optimism-goerli.blockscout.com/`)
-    await newHomePage.checkIndexing()
-    await newHomePage.checkHeader()
-    await newHomePage.checkBlocksWidget()
-})
-
 test.skip(`@SmokeEthAstar Astar main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://blockscout.com/astar`)
     await newHomePage.checkIndexing()

@@ -34,12 +34,6 @@ test(`@SmokeEthOptimismMainnet Optimism Search USDT`, async ({ newHomePage }) =>
     await newHomePage.findInSearchItems(COMMON_TOKEN_FULL_NAME)
 })
 
-test(`@SmokeEthOptimismGoerli Optimism Goerli Search USDT`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://optimism-goerli.blockscout.com/`)
-    await newHomePage.search(COMMON_TOKEN_NAME)
-    await newHomePage.findInSearchItems(COMMON_TOKEN_FULL_NAME)
-})
-
 test.skip(`@SmokeEthAstar Astar Search USDT`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://blockscout.com/astar`)
     await newHomePage.search(COMMON_TOKEN_NAME)

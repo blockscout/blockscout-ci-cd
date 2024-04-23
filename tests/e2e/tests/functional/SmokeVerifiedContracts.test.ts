@@ -25,11 +25,6 @@ test(`@SmokeEthOptimismMainnet Optimism verified contracts page check`, async ({
     await newHomePage.checkVerifiedContractsStats()
 })
 
-test(`@SmokeEthOptimismGoerli Optimism Goerli verified contracts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://optimism-goerli.blockscout.com/verified-contracts`)
-    await newHomePage.checkVerifiedContractsStats()
-})
-
 test.skip(`@SmokeEthAstar Astar verified contracts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://blockscout.com/astar/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()

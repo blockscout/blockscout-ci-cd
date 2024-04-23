@@ -21,7 +21,6 @@ const urls = [
     [`https://explorer.fusespark.io`, `@SmokeEthFuseTestnet`],
     [`https://puppyscan.shib.io`, `@SmokeEthShibariumTestnet`],
     [`https://optimism.blockscout.com`, `@SmokeEthOptimismMainnet`],
-    [`https://optimism-goerli.blockscout.com`, `@SmokeEthOptimismGoerli`],
     [`https://optimism-sepolia.blockscout.com`, `@SmokeEthOptimismSepolia`],
     [`https://rootstock.blockscout.com`, `@SmokeEthRootstock`],
     [`https://base.blockscout.com`, `@SmokeEthBaseMainnet`],

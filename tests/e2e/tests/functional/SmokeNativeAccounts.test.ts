@@ -26,11 +26,6 @@ test(`@SmokeEthOptimismMainnet @NativeAccounts Optimism native accounts page che
     await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthOptimismGoerli @NativeAccounts Optimism Goerli native accounts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://optimism-goerli.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccountsNoPerc()
-})
-
 test.skip(`@SmokeEthAstar @NativeAccounts Astar native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://blockscout.com/astar/accounts`)
     await newHomePage.checkNativeAccounts()

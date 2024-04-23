@@ -31,12 +31,6 @@ test(`@SmokeEthOptimismMainnet Optimism stats counters check`, async ({ newHomeP
     await newHomePage.checkStatsGraphsDisplayed()
 })
 
-test(`@SmokeEthOptimismGoerli Optimism Goerli stats counters check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://optimism-goerli.blockscout.com/stats`)
-    await newHomePage.checkStatsCounters()
-    await newHomePage.checkStatsGraphsDisplayed()
-})
-
 test.skip(`@SmokeEthAstar Astar stats counters check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://blockscout.com/astar/stats`)
     await newHomePage.checkStatsCounters()
