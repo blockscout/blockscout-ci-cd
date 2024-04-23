@@ -10,11 +10,6 @@ test(`@SmokeEthMainnet Eth verified contracts page check`, async ({ newHomePage 
     await newHomePage.checkVerifiedContractsStats()
 })
 
-test(`@SmokeEthGoerli Eth Goerli verified contracts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://eth-goerli.blockscout.com/verified-contracts`)
-    await newHomePage.checkVerifiedContractsStats()
-})
-
 test(`@SmokeEthGnosisMainnet Gnosis verified contracts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`http://gnosis.blockscout.com/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()

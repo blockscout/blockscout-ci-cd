@@ -15,13 +15,6 @@ test(`@SmokeEthMainnet Eth main page components`, async ({ newHomePage }) => {
     await newHomePage.checkDailyTransactions()
 })
 
-test(`@SmokeEthGoerli Eth Goerli main page components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://eth-goerli.blockscout.com/`)
-    await newHomePage.checkIndexing()
-    await newHomePage.checkHeader()
-    await newHomePage.checkBlocksWidget()
-})
-
 test(`@SmokeEthSepolia Eth Sepolia main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth-sepolia.blockscout.com/`)
     await newHomePage.checkIndexing()

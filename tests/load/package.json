@@ -28,7 +28,7 @@
   "scripts": {
     "build": "webpack",
     "lint": "eslint --ext .ts .",
-    "test": "npm run build && export $(cat $CONFIG | xargs) && ./k6 --verbose run --tag testid=${K6_TEST_ID} --log-output=${K6_LOG_OUTPUT_STRING} dist/all.test.suite.js",
+    "test": "npm run build && export $(cat $CONFIG | xargs) && ./bin_k6/k6-tsdb-darwin --verbose run --tag testid=${K6_TEST_ID} --log-output=${K6_LOG_OUTPUT_STRING} dist/all.test.suite.js",
     "test:browser": "K6_BROWSER_ENABLED=true K6_BROWSER_HEADLESS=false k6 run src/frontend.browser.test.suite.ts",
     "test:browser:debug": "K6_BROWSER_ENABLED=true k6 run src/frontend.browser.test.suite.ts",
     "test:ci": "npm run build && ./bin_k6/k6-tsdb-linux --verbose run --tag testid=${K6_TEST_ID} dist/all.test.suite.js"

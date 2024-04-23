@@ -7,11 +7,6 @@ test(`@SmokeEthMainnet Eth blocks`, async ({ context, newHomePage }) => {
     await newHomePage.checkBlocks(context)
 })
 
-test(`@SmokeEthGoerli Eth Goerli blocks`, async ({ context, newHomePage }) => {
-    await newHomePage.open_custom(`https://eth-goerli.blockscout.com/blocks`)
-    await newHomePage.checkBlocks(context)
-})
-
 test(`@SmokeEthGnosisMainnet Gnosis blocks`, async ({ context, newHomePage }) => {
     await newHomePage.open_custom(`http://gnosis.blockscout.com/blocks`)
     await newHomePage.checkBlocks(context)

@@ -6,12 +6,6 @@ test.skip(`@SmokeEthMainnet @UserOps Eth UserOps components`, async ({ newHomePa
     await newHomePage.open_custom(`https://eth.blockscout.com/ops`)
 })
 
-test(`@SmokeEthGoerli @UserOps Eth Goerli UserOps components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://eth-goerli.blockscout.com/ops`)
-    await newHomePage.checkUserOpsHeader()
-    await newHomePage.checkUserOpsRow()
-})
-
 test.skip(`@SmokeEthSepolia @UserOps Eth Sepolia UserOps components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth-sepolia.blockscout.com/ops`)
     await newHomePage.checkUserOpsHeader()

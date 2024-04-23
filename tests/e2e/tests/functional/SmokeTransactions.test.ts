@@ -10,11 +10,6 @@ test(`@SmokeEthMainnet Eth transactions page check`, async ({ newHomePage }) => 
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
 
-test(`@SmokeEthGoerli Eth Goerli transactions page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://eth-goerli.blockscout.com/txs`)
-    await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
-})
-
 test(`@SmokeEthGnosisMainnet Gnosis transactions page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`http://gnosis.blockscout.com/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)

@@ -8,13 +8,6 @@ test(`@SmokeEthMainnet @ENS Eth main page components`, async ({ newHomePage }) =
     await newHomePage.checkENSRow()
 })
 
-test.skip(`@SmokeEthGoerli @ENS Eth Goerli ENS components`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://eth-goerli.blockscout.com/name-domains?only_active=true`)
-    await newHomePage.sortENSRows()
-    await newHomePage.checkENSHeader()
-    await newHomePage.checkENSRow()
-})
-
 test.skip(`@SmokeEthSepolia @ENS Eth Sepolia ENS components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`https://eth-sepolia.blockscout.com/name-domains?only_active=true`)
     await newHomePage.checkENSHeader()

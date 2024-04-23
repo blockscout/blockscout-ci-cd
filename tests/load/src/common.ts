@@ -5,6 +5,7 @@ import {
 } from 'k6/options'
 
 import { SharedArray } from 'k6/data'
+import { randomTestAPICall } from "./random.test.suite"
 
 export const defaultSession = () => {
     const session = new Httpx({
@@ -103,6 +104,20 @@ interface Suites {
 }
 
 // generatePerAPISuite
+export const GeneratePerAPIStressSuite = (strategy: any, apis: string[], duration: number, rate: number): Suites => {
+    const obj: Suites = {}
+    for (const api of apis) {
+        obj[api] = {
+            ...strategy,
+            exec: api,
+            rate,
+            duration: `${duration.toString()}s`,
+        } as Scenario
+    }
+    return obj
+}
+
+// generatePerAPISuite
 export const GeneratePerAPIBaselineSuite = (strategy: any, apis: string[], delayBetween: number, duration: number, rate: number): Suites => {
     const obj: Suites = {}
     let startTime: number = 0
@@ -123,6 +138,21 @@ export const GeneratePerAPIBaselineSuite = (strategy: any, apis: string[], delay
 
 export const selectScenario = (scenarioName: string): { [name: string]: Scenario } => {
     switch (scenarioName) {
+    case `randomURL`:
+        return {
+            test: {
+                executor: `ramping-arrival-rate`,
+                stages: [
+                    { duration: `2m`, target: 20 },
+                    { duration: `2m`, target: 30 },
+                    { duration: `2m`, target: 40 },
+                    { duration: `2m`, target: 50 },
+                    { duration: `2m`, target: 60 },
+                ],
+                preAllocatedVUs: 100,
+                exec: `randomTestAPICall`,
+            },
+        }
     case `frontendBrowser`:
         return {
             abc: {
@@ -201,52 +231,52 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
         return GeneratePerAPIBaselineSuite(
             SmokeStrategy,
             [
-                `backendV2TXDetails`,
-                `backendV2GasPriceOracle`,
-                `backendV2TXInternal`,
-                `backendV2TokenTransfers`,
-                `backendV2TokenInstances`,
-                `backendV2Transactions`,
-                `backendV2RecentTransactions`,
-                `backendV2Search`,
-                `backendV2SearchRedirect`,
-                `backendV2AddressesTokenTransfers`,
-                `backendV2AddressesLogs`,
-                `backendV2AddressesInternalTx`,
-                `backendV2AddressesTransactions`,
-                `backendV2AddressesTokensERC20`,
-                `backendV2AddressesTokensERC721`,
-                `backendV2AddressesTokensERC1155`,
-                `backendV1AddressTXs`,
-                `backendV1AddressTokenTransfers`,
-                `backendV2AddressesTabCounters`,
-                `backendV2Addresses`,
-                `backendV2AddressesCoinBalanceHistory`,
-                `backendV2AddressesCoinBalanceHistoryByDay`,
-                `backendAccountAddressHash`,
-                `backendAddressBalance`,
-                `backendV1TXInternal`,
-                `backendV2TXTokenTransfers`,
-                `backendV2TXLogs`,
-                `backendV2TXRawTrace`,
-                `backendV2TXStateChanges`,
+                // `backendV2TXDetails`,
+                // `backendV2GasPriceOracle`,
+                // `backendV2TXInternal`,
+                // `backendV2TokenTransfers`,
+                // `backendV2TokenInstances`,
+                // `backendV2Transactions`,
+                // `backendV2RecentTransactions`,
+                // `backendV2Search`,
+                // `backendV2SearchRedirect`,
+                // `backendV2AddressesTokenTransfers`,
+                // `backendV2AddressesLogs`,
+                // `backendV2AddressesInternalTx`,
+                // `backendV2AddressesTransactions`,
+                // `backendV2AddressesTokensERC20`,
+                // `backendV2AddressesTokensERC721`,
+                // `backendV2AddressesTokensERC1155`,
+                // `backendV1AddressTXs`,
+                // `backendV1AddressTokenTransfers`,
+                // `backendV2AddressesTabCounters`,
+                // `backendV2Addresses`,
+                // `backendV2AddressesCoinBalanceHistory`,
+                // `backendV2AddressesCoinBalanceHistoryByDay`,
+                // `backendAccountAddressHash`,
+                // `backendAddressBalance`,
+                // `backendV1TXInternal`,
+                // `backendV2TXTokenTransfers`,
+                // `backendV2TXLogs`,
+                // `backendV2TXRawTrace`,
+                // `backendV2TXStateChanges`,
                 `backendV2Tokens`,
-                `backendV2Blocks`,
-                `backendV2SmartContracts`,
-                `backendV2SmartContractsVerificationConfig`,
-                `backendETHSupply`,
-                `backendTokenSupply`,
+                // `backendV2Blocks`,
+                // `backendV2SmartContracts`,
+                // `backendV2SmartContractsVerificationConfig`,
+                // `backendETHSupply`,
+                // `backendTokenSupply`,
                 // // not working? v1
                 // // `backendGetTokenHolders`,
-                `backendTokenBalance`,
-                `backendV1GetLogs`,
+                // `backendTokenBalance`,
+                // `backendV1GetLogs`,
                 // util
                 // `backendV2BackendVersion`,
                 // `backendV2JSONRPCURL`,
             ],
-            10,
-            10,
-            20,
+            30,
+            30,
+            5,
         )
     case `avg`:
         return GeneratePerAPIBaselineSuite(

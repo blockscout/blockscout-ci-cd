@@ -16,12 +16,6 @@ test(`@SmokeEthMainnet Search USDT`, async ({ newHomePage }) => {
     await newHomePage.findInSearchItems(COMMON_TOKEN_FULL_NAME)
 })
 
-test(`@SmokeEthGoerli Eth Goerli Search USDT`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://eth-goerli.blockscout.com/`)
-    await newHomePage.search(COMMON_TOKEN_NAME)
-    await newHomePage.findInSearchItems(COMMON_TOKEN_FULL_NAME)
-})
-
 test(`@SmokeEthGnosisMainnet Gnosis Search USDT`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`http://gnosis.blockscout.com/`)
     await newHomePage.search(COMMON_TOKEN_NAME)

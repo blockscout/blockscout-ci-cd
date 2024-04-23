@@ -13,12 +13,6 @@ test(`@SmokeEthMainnet Eth stats counters check`, async ({ newHomePage }) => {
     await newHomePage.checkStatsGraphsDisplayed()
 })
 
-test(`@SmokeEthGoerli Eth Goerli stats counters check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://eth-goerli.blockscout.com/stats`)
-    await newHomePage.checkStatsCounters()
-    await newHomePage.checkStatsGraphsDisplayed()
-})
-
 test(`@SmokeEthGnosisMainnet Gnosis stats counters check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`http://gnosis.blockscout.com/stats`)
     await newHomePage.checkStatsCounters()

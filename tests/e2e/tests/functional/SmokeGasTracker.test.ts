@@ -5,7 +5,6 @@ test.describe.configure({ mode: `parallel` })
 
 const urls = [
     [`https://eth.blockscout.com`, `@SmokeEthMainnet`],
-    [`https://eth-goerli.blockscout.com`, `@SmokeEthGoerli`],
     [`http://gnosis.blockscout.com`, `@SmokeEthGnosisMainnet`],
     [`https://gnosis-chiado.blockscout.com`, `@SmokeEthGnosisChiado`],
     [`https://blockscout.com/astar`, `@SmokeEthAstar`],

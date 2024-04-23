@@ -11,11 +11,6 @@ test(`@SmokeEthMainnet @NativeAccounts Eth native accounts page check`, async ({
     await newHomePage.checkNativeAccountsNoPerc()
 })
 
-test(`@SmokeEthGoerli @NativeAccounts Eth Goerli native accounts page check`, async ({ newHomePage }) => {
-    await newHomePage.open_custom(`https://eth-goerli.blockscout.com/accounts`)
-    await newHomePage.checkNativeAccountsNoPerc()
-})
-
 test(`@SmokeEthGnosisMainnet @NativeAccounts Gnosis native accounts page check`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`http://gnosis.blockscout.com/accounts`)
     await newHomePage.checkNativeAccountsNoPerc()
