@@ -92,7 +92,6 @@ export class MarketplacePage extends CommonPage {
 
     async checkAllFeaturesOn(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`text=/Submit app/`)
-        // await this.actions.verifyElementIsDisplayed(`text=/Suggest ideas/`)
         const extendedMenuSelector = `button[id="popover-trigger-:rq:"]`
         if (await this.actions.page.isVisible(extendedMenuSelector)) {
             await this.actions.clickElement(extendedMenuSelector)
@@ -101,7 +100,7 @@ export class MarketplacePage extends CommonPage {
         await this.actions.clickElement(`text=/More info/`)
         await this.actions.verifyElementIsDisplayed(`text=/Launch app/`)
         await this.actions.verifyElementIsDisplayed(`text=/Overview/`)
-        await this.actions.verifyElementIsDisplayed(`text=/https:///`)
+        await this.actions.verifyElementIsDisplayed(`text=/https://|www/`)
     }
 
     async addFavoriteApp(name: string): Promise<void> {

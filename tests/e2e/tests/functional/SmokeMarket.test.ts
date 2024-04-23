@@ -39,7 +39,6 @@ for (const [url, tag] of urls) {
         await marketplace.open(url)
         if (await marketplace.isOn()) {
             await marketplace.openMarketplace()
-            // await marketplace.checkDefaultAppsList()
             await marketplace.checkAllFeaturesOn()
         } else {
             console.log(chalk.yellow(`DApps Marketplace is OFF!`))
