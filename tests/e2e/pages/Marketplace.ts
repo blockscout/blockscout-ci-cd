@@ -22,7 +22,7 @@ export class MarketplacePage extends CommonPage {
 
     readonly actions: WebActions
 
-    APP_TILE_HEADER = `h3 >> a >> text=`
+    APP_TILE_HEADER = `main >> div[role="group"] >> text=`
 
     APP_TILE_BODY = `[role="group"]`
 

@@ -81,7 +81,7 @@ test(`@AccountImage @Authorized Check public tags creation`, async ({ authorized
     const tagName2 = faker.random.alphaNumeric(8)
     await authorized.addPublicTag({
         myProjectCheckBox: true,
-        name: `my_public_tag`,
+        name: `my_public_tag_2`,
         email: `sff2f@gmail.com`,
         companyName: `QQQ LLC`,
         companyWebSite: `https://qqq.llc.com`,

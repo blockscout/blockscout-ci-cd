@@ -34,12 +34,16 @@ export class TokenPage extends CommonPage {
     }
 
     async check_token(): Promise<void> {
-        await this.check_selector(`text=/0x/`, `no token address is displayed`)
-        await this.check_table_element(`EPIC (EPC)`, 1, `ERC-20`)
-        await this.check_table_element(`Max total supply`, 0, `\\d+`)
-        await this.check_table_element(`Holders`, 0, `\\d+`)
-        await this.check_table_element(`Transfers`, 0, `\\d+`)
-        await this.check_table_element(`Decimals`, 0, `18`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=10 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> text=/EPIC/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=1 >> text=/Max total supply/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=4 >> text=/\\d+.*EPC/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=10 >> text=/Holders/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=13 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=17 >> text=/Transfers/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=20 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=24 >> text=/Decimals/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=28 >> text=/\\d+/`)
     }
 
     async select_holders_tab(): Promise<void> {

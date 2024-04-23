@@ -105,9 +105,9 @@ export class AuthorizedArea extends CommonPage {
 
     PRIVATE_TAGS_TAB = `text=Private tags`
 
-    ADDRESS_TAGS_TAB = `//button[text()="Address"]`
+    ADDRESS_TAGS_TAB = `button >> text=/Address/`
 
-    TRANSACTION_TAGS_TAB = `//button[text()="Transaction"]`
+    TRANSACTION_TAGS_TAB = `button >> text=/Transaction/`
 
     ADDRESS_TAGS_TAB_ADD_ADDRESS = `text=Add address tag`
 
