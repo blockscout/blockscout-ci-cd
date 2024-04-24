@@ -36,6 +36,10 @@ export class NewHomePage extends CommonPage {
 
     GAS_TRACKER_POPUP = `div >> div >> nth=6 >> span >> nth=1 >> text=/$.*/`
 
+    GAS_TRACKER_HEADER_TEXT = `div[id="__next"] >> div >> div >> nth=1 >> text=`
+
+    GAS_TRACKER_HEADER_URL = `div[id="__next"] >> div >> div >> nth=1 >> a`
+
     readonly page: Page
 
     actions: WebActions
@@ -194,7 +198,7 @@ export class NewHomePage extends CommonPage {
     }
 
     async checkGasTrackerPopup(): Promise<void> {
-        await this.actions.page.hover(this.GAS_TRACKER_POPUP)
+        await this.actions.page.hover(this.GAS_TRACKER_HEADER_URL)
         await this.delay(2000)
         await this.actions.verifyElementIsDisplayed(`text=/Last update/`)
         await this.actions.verifyElementIsDisplayed(`text=/Fast/`)
@@ -224,9 +228,9 @@ export class NewHomePage extends CommonPage {
     }
 
     async checkGasTrackerBar(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`div >> div >> nth=4 >> span >> nth=1 >> text=/$.*/`)
-        await this.actions.verifyElementIsDisplayed(`div >> div >> nth=5 >> text=/.*%/`)
-        await this.actions.verifyElementIsDisplayed(`div >> div >> nth=6 >> span >> nth=0 >> text=/Gas/`)
+        await this.actions.verifyElementIsDisplayed(`${this.GAS_TRACKER_HEADER_TEXT}/$.*/`)
+        await this.actions.verifyElementIsDisplayed(`${this.GAS_TRACKER_HEADER_TEXT}/.*%/`)
+        await this.actions.verifyElementIsDisplayed(`${this.GAS_TRACKER_HEADER_TEXT}/Gas/`)
         await this.actions.verifyElementIsDisplayed(this.GAS_TRACKER_POPUP)
     }
 

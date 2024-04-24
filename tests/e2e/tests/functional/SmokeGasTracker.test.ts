@@ -20,7 +20,6 @@ const urls = [
     [`https://explorer.fuse.io`, `@SmokeEthFuse`],
     [`https://explorer.fusespark.io`, `@SmokeEthFuseTestnet`],
     [`https://puppyscan.shib.io`, `@SmokeEthShibariumTestnet`],
-    [`https://optimism.blockscout.com`, `@SmokeEthOptimismMainnet`],
     [`https://optimism-sepolia.blockscout.com`, `@SmokeEthOptimismSepolia`],
     [`https://rootstock.blockscout.com`, `@SmokeEthRootstock`],
     [`https://base.blockscout.com`, `@SmokeEthBaseMainnet`],
@@ -29,8 +28,9 @@ const urls = [
     [`https://etc.blockscout.com`, `@SmokeEthETCMainnet`],
     [`https://explorer.evm.shimmer.network`, `@SmokeEthIotaShimmer`],
     [`https://explorer.evm.testnet.shimmer.network`, `@SmokeEthIotaShimmer`],
-    [`https://zksync-era-mainnet.blockscout.com`, `@SmokeEthzkSync`],
+    [`https://zksync.blockscout.com`, `@SmokeEthzkSync`],
     [`https://stability-betanet.blockscout.com`, `@SmokeEthStability`],
+    [`https://optimism.blockscout.com`, `@SmokeEthOptimismMainnet`],
 ]
 
 for (const [url, tag] of urls) {

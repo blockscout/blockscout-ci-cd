@@ -8,6 +8,7 @@
     "test": "npx playwright test",
     "report": "npx playwright show-report html-report",
     "test:prod:smoke:all": "npx playwright test --project=Chrome --grep=@SmokeEth --retries=3 --timeout=60000",
+    "test:prod:smoke:gas_tracker": "npx playwright test --project=Chrome --grep=@GasTracker --retries=0 --timeout=60000",
     "test:prod:smoke:mainnet": "npx playwright test --project=Chrome --grep=@SmokeEthMainnet --retries=3 --timeout=60000",
     "test:prod:lh:mainnet": "npx playwright test --project=Chrome --grep=@LHSmokeEthMainnet --retries=3 --timeout=280000",
     "test:prod:smoke:sepolia": "npx playwright test --project=Chrome --grep=@SmokeEthSepolia --retries=3 --timeout=60000",
