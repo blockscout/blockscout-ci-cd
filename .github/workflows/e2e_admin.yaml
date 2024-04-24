@@ -27,7 +27,7 @@ env:
 jobs:
   test:
     name: Admin console tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
       - name: Setup node

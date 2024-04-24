@@ -48,7 +48,7 @@ on:
 jobs:
   v1v2-smoke:
     name: Run Blockscout load test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout github repo (+ download lfs dependencies)
         uses: actions/checkout@v2

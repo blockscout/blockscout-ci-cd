@@ -12,7 +12,7 @@ on:
 jobs:
   helm-publish:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [helm-lint]
     steps:
       - name: Checkout
@@ -35,7 +35,7 @@ jobs:
           personal_token: ${{ secrets.GITHUB_TOKEN }}
 
   helm-lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2.0.0
