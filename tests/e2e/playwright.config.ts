@@ -16,6 +16,10 @@ const config: PlaywrightTestConfig = {
     // sets timeout for each test case
     timeout: 60000,
 
+    expect: {
+        timeout: 15000,
+    },
+
     // number of retries if test case fails
     retries: 0,
 

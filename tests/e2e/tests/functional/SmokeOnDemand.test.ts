@@ -1,5 +1,6 @@
 import test from '@lib/BaseTest'
 import chalk from "chalk"
+import { readFileSync } from "fs"
 
 test.describe.configure({ mode: `parallel` })
 /*
@@ -11,6 +12,13 @@ test.describe.configure({ mode: `parallel` })
 const url = process.env.BLOCKSCOUT_URL
 const COMMON_TOKEN_NAME = `USDT`
 const COMMON_TOKEN_FULL_NAME = `Tether USD \\(USDT\\)`
+
+let staticData
+
+test.beforeAll(async () => {
+    const fileName = url.split(`//`)[1].split(`.`).slice(0, -2).join(`.`)
+    staticData = JSON.parse(readFileSync(`static/${fileName}.json`).toString())
+})
 
 test(`@OnDemandSmoke Main page components`, async ({ newHomePage }) => {
     await newHomePage.open_custom(url)
@@ -113,11 +121,39 @@ test(`@OnDemandSmoke Check read contract tabs`, async ({ newHomePage }) => {
 
 test(`@OnDemandSmoke Check write contract tabs`, async ({ newHomePage }) => {
     await newHomePage.openFirstVerifiedContract(url)
-    await newHomePage.checkContractsWriteTabs()
+    if (await newHomePage.hasWriteContractTab()) {
+        await newHomePage.checkContractsWriteTabs()
+    } else {
+        console.log(chalk.yellow(`Contract doesn't have any write methods!`))
+    }
 })
 
 test(`@OnDemandSmoke Check contracts code tabs`, async ({ newHomePage }) => {
     await newHomePage.openFirstVerifiedContract(url)
     await newHomePage.checkContractsCodeTab()
     await newHomePage.checkContractUMLDiagram()
+})
+
+test(`@OnDemandSmoke Check ERC-721 inventory tab`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`${url}/token/${staticData.erc721.address}`)
+    await newHomePage.checkERC721Inventory(staticData.erc721)
+    await newHomePage.open_custom(`${url}/token/${staticData.erc721.address}/instance/${staticData.erc721.instance}`)
+    await newHomePage.checkInventoryERC721Element(staticData.erc721)
+    await newHomePage.checkInventoryERC721MetadataTab(staticData.erc721)
+})
+
+test(`@OnDemandSmoke Check ERC-404 inventory tab`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`${url}/token/${staticData.erc404.address}`)
+    await newHomePage.checkERC404Inventory(staticData.erc404)
+    await newHomePage.open_custom(`${url}/token/${staticData.erc404.address}/instance/${staticData.erc404.instance}`)
+    await newHomePage.checkInventoryERC404Element(staticData.erc404)
+    await newHomePage.checkInventoryERC404MetadataTab(staticData.erc404)
+})
+
+test(`@OnDemandSmoke Check ERC-1155 inventory tab`, async ({ newHomePage }) => {
+    await newHomePage.open_custom(`${url}/token/${staticData.erc1155.address}`)
+    await newHomePage.checkERC1155Inventory(staticData.erc1155)
+    await newHomePage.open_custom(`${url}/token/${staticData.erc1155.address}/instance/${staticData.erc1155.instance}`)
+    await newHomePage.checkInventoryERC1155Element(staticData.erc1155)
+    await newHomePage.checkInventoryERC1155MetadataTab(staticData.erc1155)
 })

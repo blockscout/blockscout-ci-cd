@@ -1,6 +1,6 @@
 import { WebActions } from "@lib/WebActions"
 import type { BrowserContext, Page } from 'playwright'
-import chalk from "chalk"
+import { expect } from "@playwright/test"
 import { CommonPage } from "./Common"
 
 export class NewHomePage extends CommonPage {
@@ -80,6 +80,10 @@ export class NewHomePage extends CommonPage {
         return this.actions.page.isVisible(`text=/Blob txns/`)
     }
 
+    async hasWriteContractTab(): Promise<boolean> {
+        return this.page.getByRole(`tab`, { name: `Write contract` }).isVisible()
+    }
+
     async checkBlobTransactions(): Promise<void> {
         await this.page.click(`text=/Blob txns/`)
         const firstRow = `text=/Blob txn$/ >> ../../../.. >> nth=0`
@@ -127,6 +131,115 @@ export class NewHomePage extends CommonPage {
         await this.page.getByText(`Optimization enabled`).isVisible()
         await this.page.getByText(`Verified at`).isVisible()
         await this.page.getByText(`Contract source code`, { exact: true }).isVisible()
+    }
+
+    async checkERC721Inventory(data: any): Promise<void> {
+        await expect(this.page.getByText(`ERC-721`)).toBeVisible()
+        await expect(this.page.getByText(`Max total supply`)).toBeVisible()
+        await expect(this.page.locator(`p`).filter({ hasText: `Holders` })).toBeVisible()
+        await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
+        await expect(this.page.getByText(`Sponsored`)).toBeVisible()
+        await expect(this.page.getByRole(`tab`, { name: `Inventory` })).toBeVisible()
+        await expect(this.page.getByRole(`tab`, { name: `Token transfers` })).toBeVisible()
+        await expect(this.page.getByRole(`tab`, { name: `Holders` })).toBeVisible()
+        await expect(this.page.getByRole(`tab`, { name: `Contract` })).toBeVisible()
+        await expect(this.page.getByRole(`tab`, { name: `Contract` })).toBeVisible()
+
+        await this.actions.verifyElementIsDisplayed(this.tokenInventoryElement(0, 0))
+        await this.actions.verifyElementIsDisplayed(`${this.tokenInventoryElement(0, 2)} >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`${this.tokenInventoryElement(0, 4)} >> text=/0x/`)
+    }
+
+    async checkInventoryERC721Element(data: any): Promise<void> {
+        await expect(this.page.getByText(`ERC-721`)).toBeVisible()
+        await expect(this.page.getByText(`Owner`)).toBeVisible()
+        await expect(this.page.getByText(`Creator`)).toBeVisible()
+        await expect(this.page.locator(`p`).filter({ hasText: `Token ID` })).toBeVisible()
+        await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
+        await expect(this.page.getByText(`Name`)).toBeVisible()
+        await expect(this.page.getByText(`Description`)).toBeVisible()
+        await expect(this.page.getByText(`Attributes`)).toBeVisible()
+        await expect(this.page.getByText(`Sponsored`)).toBeVisible()
+    }
+
+    async checkInventoryERC721MetadataTab(data: any): Promise<void> {
+        await this.page.getByRole(`tab`, { name: `Metadata` }).click()
+        await this.page.getByRole(`combobox`).selectOption(`JSON`)
+        const textContent = await this.page.locator(`body >> section >> div >> nth=26`).textContent()
+        const minified = JSON.stringify(JSON.parse(textContent))
+        await expect(minified).toContain(
+            data.metadata,
+        )
+    }
+
+    async checkERC404Inventory(data: any): Promise<void> {
+        await expect(this.page.getByText(`ERC-404`, { exact: true })).toBeVisible()
+        await expect(this.page.getByText(`Max total supply`)).toBeVisible()
+        await expect(this.page.locator(`p`).filter({ hasText: `Holders` })).toBeVisible()
+        await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
+        await expect(this.page.getByText(`Decimals`)).toBeVisible()
+        await expect(this.page.getByText(`Sponsored`)).toBeVisible()
+        await expect(this.page.getByRole(`tab`, { name: `Inventory` })).toBeVisible()
+        await expect(this.page.getByRole(`tab`, { name: `Token transfers` })).toBeVisible()
+        await expect(this.page.getByRole(`tab`, { name: `Holders` })).toBeVisible()
+        await expect(this.page.getByRole(`tab`, { name: `Contract` })).toBeVisible()
+    }
+
+    async checkInventoryERC404Element(data: any): Promise<void> {
+        await expect(this.page.getByText(`ERC-404`, { exact: true })).toBeVisible()
+        await expect(this.page.getByText(`Owner`)).toBeVisible()
+        await expect(this.page.getByText(`Creator`)).toBeVisible()
+        await expect(this.page.locator(`p`).filter({ hasText: `Token ID` })).toBeVisible()
+        await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
+        await expect(this.page.getByText(`Name`)).toBeVisible()
+        await expect(this.page.getByText(`Description`)).toBeVisible()
+        await expect(this.page.getByText(`Attributes`)).toBeVisible()
+        await expect(this.page.getByText(`Sponsored`)).toBeVisible()
+    }
+
+    async checkInventoryERC404MetadataTab(data: any): Promise<void> {
+        await this.page.getByRole(`tab`, { name: `Metadata` }).click()
+        await this.page.getByRole(`combobox`).selectOption(`JSON`)
+        const textContent = await this.page.locator(`body >> section >> div >> nth=26`).textContent()
+        const minified = JSON.stringify(JSON.parse(textContent))
+        await expect(minified).toContain(
+            data.metadata,
+        )
+    }
+
+    async checkERC1155Inventory(data: any): Promise<void> {
+        await expect(this.page.getByText(`ERC-1155`)).toBeVisible()
+        await expect(this.page.getByText(`Max total supply`)).toBeVisible()
+        await expect(this.page.locator(`p`).filter({ hasText: `Holders` })).toBeVisible()
+        await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
+        await expect(this.page.getByText(`Sponsored`)).toBeVisible()
+        await expect(this.page.getByRole(`tab`, { name: `Inventory` })).toBeVisible()
+        await expect(this.page.getByRole(`tab`, { name: `Token transfers` })).toBeVisible()
+        await expect(this.page.getByRole(`tab`, { name: `Holders` })).toBeVisible()
+        await expect(this.page.getByRole(`tab`, { name: `Contract` })).toBeVisible()
+    }
+
+    async checkInventoryERC1155Element(data: any): Promise<void> {
+        await expect(this.page.getByText(`ERC-1155`)).toBeVisible()
+        await expect(this.page.getByText(`Owner`, { exact: true })).toBeVisible()
+        await expect(this.page.getByText(`Creator`)).toBeVisible()
+        await expect(this.page.locator(`p`).filter({ hasText: `Token ID` })).toBeVisible()
+        await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
+        await expect(this.page.getByText(`Sponsored`)).toBeVisible()
+    }
+
+    async checkInventoryERC1155MetadataTab(data: any): Promise<void> {
+        await this.page.getByRole(`tab`, { name: `Metadata` }).click()
+        await this.page.getByRole(`combobox`).selectOption(`JSON`)
+        const textContent = await this.page.locator(`body >> section >> div >> nth=26`).textContent()
+        const minified = JSON.stringify(JSON.parse(textContent))
+        await expect(minified).toContain(
+            data.metadata,
+        )
+    }
+
+    tokenInventoryElement(row: number, el: number): string {
+        return `div[role="tabpanel"] >> nth=${row} >> div >> div >> div >> nth=0 >> div >> nth=${el}`
     }
 
     async checkContractUMLDiagram(): Promise<void> {

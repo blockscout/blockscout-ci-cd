@@ -7,9 +7,11 @@ import { expect } from "@playwright/test"
 import { TestToken } from '../../../contracts/typechain/contracts/TestToken'
 import { TestNFT } from '../../../contracts/typechain/contracts/TestNFT'
 
-const emailTimeout = 30000
+const emailTimeout = 120000
+const emailWait = 40000
 
 test(`@AccountImage @Notifications Check notification received on Ether transfer`, async ({ authorized }) => {
+    test.setTimeout(emailWait + emailTimeout)
     await authorized.openWatchlist()
     const recipient = authorized.contracts.newWallet()
     console.log(`created recipient address: ${recipient.address}`)
@@ -24,7 +26,7 @@ test(`@AccountImage @Notifications Check notification received on Ether transfer
     console.log(`sending Ether to recipient`)
     await authorized.contracts.sendEther(recipient.address, `0.01`)
     console.log(`awaiting blockscout indexing`)
-    await authorized.delay(30000)
+    await authorized.delay(emailWait)
 
     const emailResult = await authorized.ms.waitForMatchingEmails(
         { matches: [{ field: MatchOptionFieldEnum.SUBJECT, should: MatchOptionShouldEnum.CONTAIN, value: watchName }] },
@@ -39,6 +41,7 @@ test(`@AccountImage @Notifications Check notification received on Ether transfer
 })
 
 test(`@AccountImage @Notifications Check notification received on ERC20 transfer`, async ({ authorized }) => {
+    test.setTimeout(emailWait + emailTimeout)
     const { TestTokenAddress } = process.env
     await authorized.openWatchlist()
 
@@ -57,7 +60,7 @@ test(`@AccountImage @Notifications Check notification received on ERC20 transfer
     const receipt = await (await token.transfer(recipient.address, 1)).wait()
     console.log(`receipt: ${JSON.stringify(receipt)}`)
     console.log(`awaiting blockscout indexing`)
-    await authorized.delay(30000)
+    await authorized.delay(emailWait)
 
     const emailResult = await authorized.ms.waitForMatchingEmails(
         { matches: [{ field: MatchOptionFieldEnum.SUBJECT, should: MatchOptionShouldEnum.CONTAIN, value: watchName }] },
@@ -86,7 +89,7 @@ test.skip(`@AccountImage @Notifications Check notification received on NFT trans
         name: watchName,
     } as WatchListSpec)
     await authorized.checkNotificationItem()
-    await authorized.delay(5000)
+    await authorized.delay(emailWait)
     // const receipt = await (await nft.transferOwnership(recipient.address)).wait()
     // console.log(`transferred ownership: ${JSON.stringify(receipt)}`)
     const receipt = await (await nft.mintNFT(recipient.address, watchName)).wait()

@@ -43,7 +43,7 @@
     "test:prod:smoke:native_accounts": "npx playwright test --project=Chrome --grep=@NativeAccounts --retries=3 --timeout=60000",
     "test:prod:smoke:userops": "npx playwright test --project=Chrome --grep=@UserOps --retries=3 --timeout=60000",
     "test:prod:smoke:ens": "npx playwright test --project=Chrome --grep=@ENS --retries=3 --timeout=60000",
-    "test:ondemand": "npx playwright test --project=Chrome --grep=@OnDemandSmoke --retries=0 --timeout=30000",
+    "test:ondemand": "npx playwright test --project=Chrome --grep=@OnDemandSmoke --retries=0 --timeout=60000",
     "test:prod:smoke:marketplace": "npx playwright test --project=Chrome --grep=@Marketplace --retries=3 --timeout=30000",
     "test:rollup": "npx playwright test --project=Chrome --grep=@Rollup",
     "test:authorized": "npx playwright test --project=Chrome --grep=@Authorized",

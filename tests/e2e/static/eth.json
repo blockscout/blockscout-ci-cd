@@ -1,0 +1,17 @@
+{
+  "erc721": {
+    "address": "0x382EDfe4c6168858C81893fE00fCB7b68914d929",
+    "instance": "100003764",
+    "metadata": "{\"attributes\":[{\"trait_type\":\"Accent Color\",\"value\":\"#6bffd3\"},{\"trait_type\":\"Primary Color\",\"value\":\"#6efdff\"},{\"trait_type\":\"Number\",\"value\":\"3764\"}],\"description\":\"ERC20721 Is ERC20 + ERC721 and functions both in Uniswap, and Opensea.\",\"image\":\"https://raw.githubusercontent.com/SerecThunderson/assets/main/emeralds/assets/3764_6bffd3_6efdff.png\",\"name\":\"Uniswap Emerald 3764\"}"
+  },
+  "erc404": {
+    "address": "0x954a75564Cb355EA2D6FcCc6c1212FD01FdcB06f",
+    "instance": "1960",
+    "metadata": "{\"attributes\":[{\"trait_type\":\"Color\",\"value\":\"Blue\"}],\"description\":\"Plumpy Dragons is a ERC-404 collection of 888 NFTs. For every 1 million $LOONG you claim a lucky dragon.\",\"image\":\"https://bafybeicsmfawinz6xsw2xkeqd3sd64gsxwm3u5lcx6ctfipm5o3zu4mqwa.ipfs.nftstorage.link/3.gif\",\"name\":\"Plumpy Dragon #1960\"}"
+  },
+  "erc1155": {
+    "address": "0x495f947276749Ce646f68AC8c248420045cb7b5e",
+    "instance": "115791876765286112095983152656382440851705833563249709443730295126148562026497",
+    "metadata": "{\"animation_url\":null,\"description\":\"The CyberPunk Comic is a collection of three comic book editions. The second edition consists of 4001 NFTs.\\n\\nThe comic is drawn in the classic way on paper and colored by hand in a combined technique.\\n\\nThe world was tormented by many wars and pandemics. It was horrible. Then the great nuclear war happened and the world was at the edge of extinction. Millions of sick and homeless are hiding without basic life necessities. People are left to fend for themselves...\\n\\nVisit https://comic.cyberpunkfighters.com/issue-no-2/191 to download the full digital version free of charge by the token owner. \",\"external_link\":\"https://comic.cyberpunkfighters.com/issue-no-2/191\",\"image\":\"https://i.seadn.io/gae/9yma_w49sUkMKJkky6SzgWAk2XNslR-ullz1CYGhhKjw0IaF8BIPOvmWhlJfvr015l_0xMX0vuNcmoizW0MkGfmAmVfMrzPgaB6W4g?w=500&auto=format\",\"name\":\"CyberPunk Comic Issue 2 #00191\",\"traits\":[{\"display_type\":null,\"max_value\":null,\"trait_type\":\"Issue Number\",\"value\":\"Issue 2\"},{\"display_type\":null,\"max_value\":null,\"trait_type\":\"Rarity\",\"value\":\"Gold\"}]}"
+  }
+}
