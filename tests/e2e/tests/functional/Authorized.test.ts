@@ -33,7 +33,7 @@ test(`@AccountImage @Authorized Check address tag`, async ({ authorized }) => {
     await authorized.actions.verifyElementIsDisplayed(`text=${tagName} >> nth=1`, `failed to find text on the page`)
     await authorized.actions.focusElement(`text=${TestTokenAddress} >> nth=1`)
     await authorized.actions.clickElement(`text=${TestTokenAddress} >> nth=1`)
-    await authorized.actions.verifyElementIsDisplayed(`text=${tagName} >> nth=1`, `failed to find text on the page`)
+    await authorized.actions.verifyElementIsDisplayed(`text=${tagName} >> nth=0`, `failed to find text on the page`)
 
     await authorized.openAccount()
     await authorized.selectPrivateTagsTab()

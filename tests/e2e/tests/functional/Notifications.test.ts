@@ -8,7 +8,7 @@ import { TestToken } from '../../../contracts/typechain/contracts/TestToken'
 import { TestNFT } from '../../../contracts/typechain/contracts/TestNFT'
 
 const emailTimeout = 120000
-const emailWait = 40000
+const emailWait = 30000
 
 test(`@AccountImage @Notifications Check notification received on Ether transfer`, async ({ authorized }) => {
     test.setTimeout(emailWait + emailTimeout)

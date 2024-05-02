@@ -250,9 +250,9 @@ export class AuthorizedArea extends CommonPage {
     }
 
     async checkProfile(): Promise<void> {
-        await this.actions.verifyElementAttribute(this.PROFILE_NAME, `value`, `3cad691b-44e3-4613-bab2-c3ef59ae1f03@mailslurp.com`)
-        await this.actions.verifyElementAttribute(this.PROFILE_NICKNAME, `value`, `3cad691b-44e3-4613-bab2-c3ef59ae1f03`)
-        await this.actions.verifyElementAttribute(this.PROFILE_EMAIL, `value`, `3cad691b-44e3-4613-bab2-c3ef59ae1f03@mailslurp.com`)
+        await this.actions.verifyElementAttribute(this.PROFILE_NAME, `value`, process.env.ACCOUNT_USERNAME)
+        await this.actions.verifyElementAttribute(this.PROFILE_NICKNAME, `value`, process.env.ACCOUNT_USERNAME.split(`@`)[0])
+        await this.actions.verifyElementAttribute(this.PROFILE_EMAIL, `value`, process.env.ACCOUNT_USERNAME)
     }
 
     async check_tag_list(row: number, col: number, text: string): Promise<void> {

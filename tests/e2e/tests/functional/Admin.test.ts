@@ -9,13 +9,13 @@ const envURL = `https://admin-ts-test.k8s-dev.blockscout.com`
 test.beforeEach(async ({ adminPage }) => {
     adminPage.setBaseURL(envURL)
     await adminPage.open()
-    await adminPage.login(process.env.ACCOUNT_USERNAME, process.env.ACCOUNT_PASSWORD)
+    await adminPage.login(process.env.ADMIN_ACCOUNT_USERNAME, process.env.ADMIN_ACCOUNT_PASSWORD)
 })
 
 test(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, adminPage }) => {
     await adminPage.selectSuperUserTab()
     await adminPage.selectSuperUserTabSubmissions()
-    await adminPage.clearMySubmissions(process.env.ACCOUNT_USERNAME)
+    await adminPage.clearMySubmissions(process.env.ADMIN_ACCOUNT_USERNAME)
     await adminPage.closeFilterPanel()
     const iconURL = `https://cdn-icons-png.flaticon.com/128/2989/2989898.png`
     const uniqueSupportURL = faker.random.alphaNumeric(8)
@@ -23,14 +23,14 @@ test(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, 
     await adminPage.createNewAdminSubmission({
         ChainID: `Goerli`,
         TokenAddress: tokenAddr,
-        BlockscoutUserEmail: process.env.ACCOUNT_USERNAME,
+        BlockscoutUserEmail: process.env.ADMIN_ACCOUNT_USERNAME,
         RequesterName: `test_submission_user`,
-        RequesterEmail: process.env.ACCOUNT_USERNAME,
+        RequesterEmail: process.env.ADMIN_ACCOUNT_USERNAME,
         ProjectName: uniqueSupportURL,
         ProjectWebSite: `https://ya.ru`,
         IconURL: iconURL,
         ProjectDescription: `desc`,
-        ProjectEmail: process.env.ACCOUNT_USERNAME,
+        ProjectEmail: process.env.ADMIN_ACCOUNT_USERNAME,
         ProjectSector: `DeFi`,
         Comment: `comment`,
         Docs: `docs`,
@@ -78,13 +78,13 @@ test(`@Admin Delete/Create TokenInfo`, async ({ newHomeGoerli, tokenPage, adminP
         IsUserSubmitted: true,
         ChainID: `Goerli`,
         TokenAddress: tokenAddr,
-        BlockscoutUserEmail: process.env.ACCOUNT_USERNAME,
+        BlockscoutUserEmail: process.env.ADMIN_ACCOUNT_USERNAME,
         RequesterName: `test_submission_user`,
         ProjectName: `test_project`,
         ProjectWebSite: `https://ya.ru`,
         ProjectDescription: `desc`,
         IconURL: iconURL,
-        ProjectEmail: process.env.ACCOUNT_USERNAME,
+        ProjectEmail: process.env.ADMIN_ACCOUNT_USERNAME,
         ProjectSector: `DeFi`,
         Comment: `comment`,
         Docs: `docs`,
