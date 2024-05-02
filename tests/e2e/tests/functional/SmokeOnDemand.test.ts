@@ -143,6 +143,10 @@ test(`@OnDemandSmoke Check ERC-721 inventory tab`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check ERC-404 inventory tab`, async ({ newHomePage }) => {
+    if (staticData.erc404 === undefined) {
+        console.log(`no erc-404 tokens exist`)
+        return
+    }
     await newHomePage.open_custom(`${url}/token/${staticData.erc404.address}`)
     await newHomePage.checkERC404Inventory(staticData.erc404)
     await newHomePage.open_custom(`${url}/token/${staticData.erc404.address}/instance/${staticData.erc404.instance}`)

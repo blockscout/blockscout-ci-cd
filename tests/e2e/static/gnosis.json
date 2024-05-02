@@ -1,0 +1,17 @@
+{
+  "erc721": {
+    "address": "0x3962DC3A015059a5a83445B6097dBfFCB9A965E9",
+    "instance": "9999998548",
+    "metadata": "{\"attributes\":[{\"key\":\"Rarity :\",\"trait_type\":\"Rarity :\",\"value\":\"Legendary\"},{\"trait_type\":\"Reward\",\"value\":\"$3000\"},{\"key\":\"Website:\",\"trait_type\":\"Website :\",\"value\":\"airmetacoin.com\"}],\"description\":\"Meta Coin coupon holders can receive the $USDT asset in our metaverse for a certain period of time. Hurry up to receive your reward.\",\"external_url\":\"https://www.airmetacoin.com\",\"image\":\"https://i.ibb.co/6w1XjcS/legendary.png\",\"name\":\"Meta Coin Airdrop\"}"
+  },
+  "erc404": {
+    "address": "",
+    "instance": "",
+    "metadata": ""
+  },
+  "erc1155": {
+    "address": "0x62698cAD59C13fa5f7d0a58bFF9A59Cf70E54897",
+    "instance": "658254",
+    "metadata": ""
+  }
+}
