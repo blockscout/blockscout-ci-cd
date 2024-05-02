@@ -1,0 +1,17 @@
+{
+  "erc721": {
+    "address": "0x3b916B8f6A710e9240FF08c1dD646dD8E8ED9e1e",
+    "instance": "100001648",
+    "metadata": "{\"attributes\":[{\"trait_type\":\"Color\",\"value\":\"Cyan\"},{\"trait_type\":\"Mouth\",\"value\":\":<\"},{\"trait_type\":\"Eyes\",\"value\":\"Alien\"},{\"trait_type\":\"Hat\",\"value\":\"Dunce\"},{\"trait_type\":\"Accessory\",\"value\":\"None\"}],\"description\":\"Base Dog is the world's first Fungible Non-Fungible Dog.\",\"external_url\":\"https://dog.741.gg\",\"image\":\"https://raw.githubusercontent.com/SJ741/E741-Assets/main/E741/B/baseDog/png/1648.png\",\"name\":\"Base Dog #1648\"}"
+  },
+  "erc404": {
+    "address": "0xC2242D173b610220a5921BC16BD8d9cB31156142",
+    "instance": "16187",
+    "metadata": "{\"attributes\":[{\"trait_type\":\"Color\",\"value\":\"Pink\"}],\"description\":\"A collection of 10,000 ERC404 tokens on Base. Less is more...\",\"external_url\":\"https://baseic.xyz\",\"image\":\"https://raw.githubusercontent.com/baseic-erc404/baseic/main/3.png\",\"name\":\"Baseic #16187\"}"
+  },
+  "erc1155": {
+    "address": "0x206571b68c66E1d112b74d65695043ad2b5F95D5",
+    "instance": "11086",
+    "metadata": "{\"attributes\":[{\"key\":\"Rarity\",\"trait_type\":\"Rarity\",\"value\":\"Prime\"},{\"key\":\"Class\",\"trait_type\":\"Class\",\"value\":\"Masterpiece\"},{\"key\":\"Parallel\",\"trait_type\":\"Parallel\",\"value\":\"Universal\"},{\"key\":\"Artist\",\"trait_type\":\"Artist\",\"value\":\"Taehoon Park\"}],\"description\":\"Parallel Masterpieces - Alpha Set - Universal: Lord Harf, Cartel Treasurer // Art by Taehoon Park // 2023\",\"external_url\":\"https://rarible.com/token/0x76be3b62873462d2142405439777e971754e8e77:11086\",\"image\":\"https://nftmedia.parallelnft.com/parallel-alpha/Qmdwoayu9KbMZwAUM6cJmL9wHp34Ykwqbaswfimx2gfTjK/image.png\",\"ipfs_hash\":\"QmXNPueRZftDY27edyNzU3dgFSp5a3RUE2vWAH8mromrnn\",\"name\":\"Parallel Masterpiece // Alpha // Lord Harf, Cartel Treasurer\",\"token_id\":11086}"
+  }
+}
