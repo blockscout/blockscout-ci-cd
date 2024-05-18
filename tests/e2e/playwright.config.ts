@@ -28,6 +28,16 @@ const config: PlaywrightTestConfig = {
 
     projects: [
         {
+            name: `ScoutCloud`,
+            use: {
+                baseURL: `https://scoutcloud.services.blockscout.com`,
+                extraHTTPHeaders: {
+                    Accept: `application/vnd.github.v3+json`,
+                    'x-api-key': `663867b8-689c-428c-8676-eee9d2fd6089`,
+                },
+            },
+        },
+        {
             name: `Chrome`,
             use: {
                 browserName: `chromium`,

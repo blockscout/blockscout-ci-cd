@@ -440,7 +440,7 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(this.BLOCK_PAGE_IS_VALID)
     }
 
-    async checkBlocks(context: BrowserContext): Promise<void> {
+    async checkBlocks(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=0 >> text=/Block/`, `no Blocks header is present`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=1 >> text=/Size.*bytes/`, `no Size in bytes header is present`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=2 >> text=/Validator|Miner/`, `no Validator|Miner header is present`)
@@ -459,16 +459,6 @@ export class NewHomePage extends CommonPage {
 
         await this.actions.clickElement(this.RECENT_BLOCK_URL)
         await this.actions.verifyElementIsDisplayed(this.BLOCK_PAGE_IS_VALID)
-
-        // const [newWindow] = await Promise.all([
-        //     context.waitForEvent(`page`),
-        //     await this.actions.clickElement(this.RECENT_BLOCK_URL),
-        // ])
-        // await newWindow.waitForLoadState(`load`)
-        // await newWindow.waitForSelector(this.BLOCK_PAGE_IS_VALID, { state: `visible`, timeout: 10000 })
-        //     .catch(() => { throw new Error(`failed to validate block page`) })
-        // // expect(newWindow.url()).toContain(urlText)
-        // // await newWindow.close()
     }
 
     async checkNativeAccounts(): Promise<void> {
