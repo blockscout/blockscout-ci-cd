@@ -22,7 +22,7 @@ test(`@Rollup Txn batches table verification`, async ({ context, newRollupTxnBat
     await newRollupTxnBatches.validateTable(context)
 })
 
-test.only(`@Rollup Txn batches table verification (ZKEVM)`, async ({ context, newRollupTxnBatchesZKEvm }) => {
+test(`@Rollup Txn batches table verification (ZKEVM)`, async ({ context, newRollupTxnBatchesZKEvm }) => {
     await newRollupTxnBatchesZKEvm.open()
     await newRollupTxnBatchesZKEvm.validateTable(context, 40)
 })

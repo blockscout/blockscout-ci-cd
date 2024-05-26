@@ -64,7 +64,7 @@ test(`@SmokeEthIotaShimmer Iota Shimmer blocks`, async ({ context, newHomePage }
 
 test(`@SmokeEthImmutable Immutable blocks`, async ({ context, newHomePage }) => {
     await newHomePage.open_custom(`https://explorer.testnet.immutable.com/blocks`)
-    await newHomePage.checkBlocks()
+    await newHomePage.checkBlocksImmutable()
 })
 
 test(`@SmokeEthShibariumMainnet Shibarium blocks`, async ({ context, newHomePage }) => {
