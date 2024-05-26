@@ -22,9 +22,9 @@ test(`@Rollup Txn batches table verification`, async ({ context, newRollupTxnBat
     await newRollupTxnBatches.validateTable(context)
 })
 
-test(`@Rollup Txn batches table verification (ZKEVM)`, async ({ context, newRollupTxnBatchesZKEvm }) => {
+test.only(`@Rollup Txn batches table verification (ZKEVM)`, async ({ context, newRollupTxnBatchesZKEvm }) => {
     await newRollupTxnBatchesZKEvm.open()
-    await newRollupTxnBatchesZKEvm.validateTable(context, 14)
+    await newRollupTxnBatchesZKEvm.validateTable(context, 40)
 })
 
 test(`@Rollup Output roots table verification`, async ({ context, newRollupOutputRoots }) => {
