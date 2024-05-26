@@ -10,7 +10,7 @@ import { TestNFT } from '../../../contracts/typechain/contracts/TestNFT'
 const emailTimeout = 120000
 const emailWait = 30000
 
-test.skip(`@AccountImage @Notifications Check notification received on Ether transfer`, async ({ authorized }) => {
+test(`@AccountImage @Notifications Check notification received on Ether transfer`, async ({ authorized }) => {
     test.setTimeout(emailWait + emailTimeout)
     await authorized.openWatchlist()
     const recipient = authorized.contracts.newWallet()
@@ -40,7 +40,7 @@ test.skip(`@AccountImage @Notifications Check notification received on Ether tra
     await authorized.deleteAddressWatch()
 })
 
-test.skip(`@AccountImage @Notifications Check notification received on ERC20 transfer`, async ({ authorized }) => {
+test(`@AccountImage @Notifications Check notification received on ERC20 transfer`, async ({ authorized }) => {
     test.setTimeout(emailWait + emailTimeout)
     const { TestTokenAddress } = process.env
     await authorized.openWatchlist()
