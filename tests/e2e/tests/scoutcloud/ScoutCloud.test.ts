@@ -117,7 +117,7 @@ const getInstanceDeployments = async (r, instance) => {
 //     expect(response.ok()).toBeTruthy()
 // })
 
-// test(`@ScoutCloud Clean up all instances`, async ({ request }) => {
+// test.only(`@ScoutCloud Clean up all instances`, async ({ request }) => {
 //     const instances = await getInstances(request)
 //     l.info(`Instances: ${JSON.stringify(instances, null, 2)}`)
 //     await deleteInstances(request, instances)

@@ -116,7 +116,13 @@ jobs:
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-build-${{ env.cache-name }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
-      - name: Run playwright smoke suite
+      - name: Set environment variables
+        run: |
+          echo "SCOUTCLOUD_RPC_URL=${{ inputs.rpc_url || 'https://sepolia.drpc.org' }}" >> $GITHUB_ENV
+          echo "SCOUTCLOUD_SERVER_SIZE=${{ inputs.server_size || 'small' }}" >> $GITHUB_ENV
+          echo "SCOUTCLOUD_CHAIN_TYPE=${{ inputs.chain_type || 'ethereum' }}" >> $GITHUB_ENV
+          echo "SCOUTCLOUD_NODE_TYPE=${{ inputs.node_type || 'geth' }}" >> $GITHUB_ENV
+      - name: Deploy and test ScoutCloud instance UI
         working-directory: blockscout-ci-cd/tests/e2e
         run: |
           npx playwright install
