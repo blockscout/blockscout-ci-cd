@@ -6,7 +6,7 @@ import chalk from 'chalk'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import winston from "winston"
 
-const logLevel = `debug`
+const logLevel = `info`
 
 const l = winston.createLogger({
     level: logLevel,
