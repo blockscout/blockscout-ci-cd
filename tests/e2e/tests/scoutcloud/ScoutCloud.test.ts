@@ -51,7 +51,7 @@ const getInstances = async (r) => {
     l.info(`url requested: ${response.url()}`)
     l.info(`body: ${await response.body()}`)
     expect(response.ok()).toBeTruthy()
-    return bodyJSON[`instance_id`]
+    return bodyJSON
 }
 
 const getInstance = async (r, instance) => {
@@ -60,6 +60,17 @@ const getInstance = async (r, instance) => {
     l.debug(`url requested: ${resp.url()}`)
     l.debug(`body: ${body}`)
 }
+
+const deleteInstances = async (r, instances) => {
+    for (const i of instances['items']) {
+        l.info(`Removing instance: ${i['instance_id']}`)
+        const resp = await r.delete(`/api/v1/instances/${i['instance_id']}`)
+        const body = await resp.body()
+        l.debug(`url requested: ${resp.url()}`)
+        l.debug(`body: ${body}`)
+    }
+}
+
 
 const updateStatus = async (r, instance, cfg) => {
     const resp = await r.post(`/api/v1/instances/${instance}/status:update`, {
@@ -115,6 +126,12 @@ const getInstanceDeployments = async (r, instance) => {
 //     expect(response.ok()).toBeTruthy()
 // })
 
+// test(`@ScoutCloud Clean up all instances`, async ({ request }) => {
+//     const instances = await getInstances(request)
+//     l.info(`Instances: ${JSON.stringify(instances, null, 2)}`)
+//     await deleteInstances(request, instances)
+// })
+
 // test(`@ScoutCloud Stop static deployment`, async ({ request }) => {
 //     const instanceID = ``
 //     const deploymentID = ``
@@ -125,7 +142,7 @@ const getInstanceDeployments = async (r, instance) => {
 // })
 
 // eslint-disable-next-line no-shadow
-test(`@ScoutCloud Create New Instance`, async ({ request, newHomePage }) => {
+test(`@ScoutCloud Create New Instance, check UI, delete it`, async ({ request, newHomePage }) => {
     const instanceID = await createInstance(request, {
         name: `autotest-${faker.random.alpha(8)}`,
         config: {
@@ -147,4 +164,7 @@ test(`@ScoutCloud Create New Instance`, async ({ request, newHomePage }) => {
     await newHomePage.checkBlocksWidget()
     await updateStatus(request, instanceID, { action: `STOP` })
     await waitForStatus(request, deploymentID, `STOPPING`, 10000, 50)
+    const instances = await getInstances(request)
+    l.info(`Instances: ${JSON.stringify(instances, null, 2)}`)
+    await deleteInstances(request, instances)
 })
