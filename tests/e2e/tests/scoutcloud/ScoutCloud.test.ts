@@ -24,16 +24,6 @@ const l = winston.createLogger({
 
 test.describe.configure({ mode: `parallel` })
 
-export default defineConfig({
-    use: {
-        baseURL: `https://scoutcloud.services.blockscout.com`,
-        extraHTTPHeaders: {
-            Accept: `application/vnd.github.v3+json`,
-            'x-api-key': process.env.SCOUTCLOUD_TOKEN,
-        },
-    },
-})
-
 const createInstance = async (r, cfg) => {
     const response = await r.post(`/api/v1/instances`, {
         data: cfg,

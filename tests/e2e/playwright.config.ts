@@ -30,7 +30,7 @@ const config: PlaywrightTestConfig = {
         {
             name: `ScoutCloud`,
             use: {
-                baseURL: `https://scoutcloud.services.blockscout.com`,
+                baseURL: process.env.SCOUTCLOUD_URL,
                 extraHTTPHeaders: {
                     Accept: `application/vnd.github.v3+json`,
                     'x-api-key': `663867b8-689c-428c-8676-eee9d2fd6089`,

@@ -61,25 +61,11 @@ env:
   SCOUTCLOUD_CHAIN_TYPE: ${{ inputs.chain_type }}
   SCOUTCLOUD_NODE_TYPE: ${{ inputs.node_type }}
 
-  BLOCKSCOUT_URL: ${{ secrets.E2E_BLOCKSCOUT_URL }}
-  FRONTEND_URL: ${{ secrets.E2E_FRONTEND_URL }}
-  NETWORK_URL: ${{ secrets.E2E_NETWORK_URL }}
-  ACCOUNT_USERNAME: ${{ secrets.ACCOUNT_USERNAME }}
-  ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
-  MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
-  MAILSLURP_EMAIL_ID: ${{ secrets.MAILSLURP_EMAIL_ID }}
-  ENV: test
-  RESOURCE_MODE: account
-  PUBLIC: false
-  PORT: 4000
-  PORT_PG: 5432
-  PORT_NETWORK_HTTP: 8545
-  PORT_NETWORK_WS: 8546
-  WALLET: ${{ secrets.WALLET }}
   PWDEBUG: 0
   LOAD_AUTH_CTX: 0
   LOAD_CONTRACTS_DATA: 0
   ACCOUNT: 1
+  PROD: 1
 
 jobs:
   e2e_tests:
