@@ -62,15 +62,16 @@ const getInstance = async (r, instance) => {
 }
 
 const deleteInstances = async (r, instances) => {
-    for (const i of instances['items']) {
-        l.info(`Removing instance: ${i['instance_id']}`)
-        const resp = await r.delete(`/api/v1/instances/${i['instance_id']}`)
+    for (const i of instances[`items`]) {
+        l.info(`Removing instance: ${i[`instance_id`]}`)
+        // eslint-disable-next-line no-await-in-loop
+        const resp = await r.delete(`/api/v1/instances/${i[`instance_id`]}`)
+        // eslint-disable-next-line no-await-in-loop
         const body = await resp.body()
         l.debug(`url requested: ${resp.url()}`)
         l.debug(`body: ${body}`)
     }
 }
-
 
 const updateStatus = async (r, instance, cfg) => {
     const resp = await r.post(`/api/v1/instances/${instance}/status:update`, {

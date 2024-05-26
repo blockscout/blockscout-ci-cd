@@ -5,6 +5,8 @@ concurrency:
   cancel-in-progress: true
 
 on:
+  schedule:
+    - cron: '*/180 * * * *'
   workflow_dispatch:
   workflow_call:
 
