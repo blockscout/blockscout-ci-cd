@@ -6,8 +6,8 @@ concurrency:
 
 on:
   push:
-#  schedule:
-#    - cron: '*/180 * * * *'
+  schedule:
+    - cron: '*/180 * * * *'
   workflow_dispatch:
     inputs:
       rpc_url:

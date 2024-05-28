@@ -6,7 +6,7 @@ import chalk from 'chalk'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import winston from "winston"
 
-const logLevel = `info`
+const logLevel = `debug`
 
 const l = winston.createLogger({
     level: logLevel,
@@ -51,29 +51,6 @@ const getInstance = async (r, instance) => {
     l.debug(`body: ${body}`)
 }
 
-const deleteInstances = async (r, instances) => {
-    for (const i of instances[`items`]) {
-        l.info(`Removing instance: ${i[`instance_id`]}`)
-        // eslint-disable-next-line no-await-in-loop
-        const resp = await r.delete(`/api/v1/instances/${i[`instance_id`]}`)
-        // eslint-disable-next-line no-await-in-loop
-        const body = await resp.body()
-        l.debug(`url requested: ${resp.url()}`)
-        l.debug(`body: ${body}`)
-    }
-}
-
-const updateStatus = async (r, instance, cfg) => {
-    const resp = await r.post(`/api/v1/instances/${instance}/status:update`, {
-        data: cfg,
-    })
-    const body = await resp.body()
-    l.info(`url requested: ${resp.url()}`)
-    l.info(`body: ${body}`)
-    const bodyJSON = await resp.json()
-    return bodyJSON[`deployment_id`]
-}
-
 const getDeployment = async (r, deployment) => {
     const resp = await r.get(`/api/v1/deployments/${deployment}`)
     const body = await resp.body()
@@ -86,6 +63,17 @@ const getDeployment = async (r, deployment) => {
 const delay = async (time: number) => new Promise((resolve) => {
     setTimeout(resolve, time)
 })
+
+const updateStatus = async (r, instance, cfg) => {
+    const resp = await r.post(`/api/v1/instances/${instance}/status:update`, {
+        data: cfg,
+    })
+    const body = await resp.body()
+    l.info(`url requested: ${resp.url()}`)
+    l.info(`body: ${body}`)
+    const bodyJSON = await resp.json()
+    return bodyJSON[`deployment_id`]
+}
 
 const waitForStatus = async (r, deployment, requiredStatus, waitMillis, retries) => {
     for (let i = 0; i < retries; i += 1) {
@@ -100,6 +88,27 @@ const waitForStatus = async (r, deployment, requiredStatus, waitMillis, retries)
         await delay(waitMillis)
     }
     throw Error(`timeout waiting for deployment status`)
+}
+
+const deleteAllInstances = async (r) => {
+    const instances = await getInstances(r)
+    l.info(`Instances: ${JSON.stringify(instances, null, 2)}`)
+    for (const i of instances[`items`]) {
+        l.info(`Removing instance: ${i[`instance_id`]}`)
+        // eslint-disable-next-line no-await-in-loop
+        const deploymentID = await updateStatus(r, i[`instance_id`], { action: `STOP` })
+        // eslint-disable-next-line no-await-in-loop
+        l.info(`Waiting for status: STOPPED`)
+        // eslint-disable-next-line no-await-in-loop
+        await waitForStatus(r, deploymentID, `STOPPED`, 10000, 50)
+
+        // eslint-disable-next-line no-await-in-loop
+        const resp = await r.delete(`/api/v1/instances/${i[`instance_id`]}`)
+        // eslint-disable-next-line no-await-in-loop
+        const body = await resp.body()
+        l.info(`url requested: ${resp.url()}`)
+        l.info(`body: ${body}`)
+    }
 }
 
 const getInstanceDeployments = async (r, instance) => {
@@ -118,9 +127,7 @@ const getInstanceDeployments = async (r, instance) => {
 // })
 
 // test.only(`@ScoutCloud Clean up all instances`, async ({ request }) => {
-//     const instances = await getInstances(request)
-//     l.info(`Instances: ${JSON.stringify(instances, null, 2)}`)
-//     await deleteInstances(request, instances)
+//     await deleteAllInstances(request)
 // })
 
 // test(`@ScoutCloud Stop static deployment`, async ({ request }) => {
@@ -134,16 +141,18 @@ const getInstanceDeployments = async (r, instance) => {
 
 // eslint-disable-next-line no-shadow
 test(`@ScoutCloud Create New Instance, check UI, delete it`, async ({ request, newHomePage }) => {
+    await deleteAllInstances(request)
+    const instanceName = faker.random.alpha(8)
     const instanceID = await createInstance(request, {
-        name: `autotest-${faker.random.alpha(8)}`,
+        name: `autotest-${instanceName}`,
         config: {
+            instance_url: `autotest-${instanceName}.cloud.blockscout.com`,
             rpc_url: process.env.SCOUTCLOUD_RPC_URL,
             server_size: process.env.SCOUTCLOUD_SERVER_SIZE,
             chain_type: process.env.SCOUTCLOUD_CHAIN_TYPE,
             node_type: process.env.SCOUTCLOUD_NODE_TYPE,
         },
     })
-    await getInstance(request, instanceID)
     const deploymentID = await updateStatus(request, instanceID, { action: `START` })
     await waitForStatus(request, deploymentID, `RUNNING`, 10000, 50)
     const status = await getDeployment(request, deploymentID)
@@ -153,9 +162,5 @@ test(`@ScoutCloud Create New Instance, check UI, delete it`, async ({ request, n
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()
     await newHomePage.checkBlocksWidget()
-    await updateStatus(request, instanceID, { action: `STOP` })
-    await waitForStatus(request, deploymentID, `STOPPING`, 10000, 50)
-    const instances = await getInstances(request)
-    l.info(`Instances: ${JSON.stringify(instances, null, 2)}`)
-    await deleteInstances(request, instances)
+    await deleteAllInstances(request)
 })
