@@ -118,25 +118,8 @@ const getInstanceDeployments = async (r, instance) => {
     l.debug(`body: ${body}`)
 }
 
-// eslint-disable-next-line no-shadow
-// test.skip(`@ScoutCloud Get status`, async ({ request }) => {
-//     const response = await request.get(`/api/v1/users/profile`)
-//     l.debug(`url requested: ${response.url()}`)
-//     l.debug(`body: ${await response.body()}`)
-//     expect(response.ok()).toBeTruthy()
-// })
-
 // test.only(`@ScoutCloud Clean up all instances`, async ({ request }) => {
 //     await deleteAllInstances(request)
-// })
-
-// test(`@ScoutCloud Stop static deployment`, async ({ request }) => {
-//     const instanceID = ``
-//     const deploymentID = ``
-//     const status = await getDeployment(request, deploymentID)
-//     l.info(`Blockscout URL: ${status[`blockscout_url`]}`)
-//     await updateStatus(request, instanceID, { action: `STOP` })
-//     await waitForStatus(request, deploymentID, `STOPPED`, 10000, 18)
 // })
 
 // eslint-disable-next-line no-shadow
