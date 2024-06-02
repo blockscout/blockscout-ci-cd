@@ -40,11 +40,11 @@ export class AddressPage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=14 >> text=/0x.*at txn 0x.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=21 >> text=/Balance/`)
         await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=25 >> text=/\\d+.*ETH.*\\(\\$.*\\)/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=26 >> text=/Transactions/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=30 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=31 >> text=/Gas used/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=35 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=36 >> text=/Last balance update/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=40 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=30 >> text=/Transactions/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=31 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=35 >> text=/Gas used/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=36 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=40 >> text=/Last balance update/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=21 >> div >> nth=41 >> text=/\\d+/`)
     }
 }
