@@ -127,7 +127,8 @@ test.skip(`@Admin Delete/Create Address`, async ({ adminPage }) => {
     await adminPage.actions.clickElement(`section >> nth=5 >> text=/Save/`)
 })
 
-test(`@Admin Create Public tag`, async ({ adminPage }) => {
+test(`@Admin Create Public tag, bind to address and check`, async ({ adminPage, newHomePage }) => {
+    const bindAddress = `0x7cF5b79bfe291A67AB02b393E456cCc4c266F753`
     const publicTag = `PlaywrightTestTag`
     const slug = faker.random.alphaNumeric(8)
     await adminPage.actions.clickElement(`section >> nth=1 >> text=/Metadata/`)
@@ -139,9 +140,36 @@ test(`@Admin Create Public tag`, async ({ adminPage }) => {
     await adminPage.actions.clickElement(`input[id="react-select-4-input"]`)
     await adminPage.actions.clickElement(`section >> nth=5 >> text=/classifier/ >> nth=1`)
     await adminPage.actions.clickElement(`section >> nth=5 >> text=/Save/`)
+    await adminPage.delay(1000)
 
-    await adminPage.filterByInputRef(`filter-slug`, slug)
+    await adminPage.actions.clickElement(`text=/Address Public Tags/`)
+    await adminPage.delay(1000)
+    await adminPage.actions.clickElement(`section >> nth=5 >> text=/Create new/`)
+    await adminPage.actions.clickElement(`section >> nth=5 >> input >> nth=0`)
+    await adminPage.actions.clickElement(`text=/Sepolia/`)
+    await adminPage.actions.enterElementText(`section >> nth=5 >> input >> nth=1`, bindAddress)
+    await adminPage.delay(1000)
+    await adminPage.actions.clickElement(`section >> nth=5 >> text=/0x/ >> nth=1`)
+    await adminPage.actions.enterElementText(`section >> nth=5 >> input >> nth=2`, publicTag)
+    await adminPage.delay(1000)
+    await adminPage.actions.clickElement(`section >> nth=5 >> text=/${publicTag}/ >> nth=1`)
+    await adminPage.delay(1000)
+    await adminPage.actions.clickElement(`section >> nth=5 >> text=/Save/`)
+
+    await newHomePage.open_custom(`https://eth-sepolia.k8s-dev.blockscout.com/address/${bindAddress}`)
+    await newHomePage.actions.verifyElementIsDisplayed(`text=/${publicTag}/`)
+
+    await adminPage.open()
+    await adminPage.login(process.env.ADMIN_ACCOUNT_USERNAME, process.env.ADMIN_ACCOUNT_PASSWORD)
+
+    await adminPage.actions.clickElement(`section >> nth=1 >> text=/^Public Tags/`)
+    await adminPage.filterByInputRef(`filter-name`, publicTag)
+    await adminPage.delay(3000)
     await adminPage.selectFirstListElement()
+    await adminPage.delay(3000)
+    await adminPage.actions.verifyElementIsDisplayed(`text=/${publicTag}/`)
     await adminPage.actions.clickElement(`section >> nth=5 >> text=/Delete/`)
+    await adminPage.delay(3000)
     await adminPage.actions.clickElement(`button[label="Confirm"]`)
+    await adminPage.page.waitForLoadState(`networkidle`)
 })
