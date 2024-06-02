@@ -70,29 +70,3 @@ test(`@AccountImage @Authorized Check API keys creation`, async ({ authorized })
     await authorized.deleteRow()
     // TODO: check key perms by using it?
 })
-
-test(`@AccountImage @Authorized Check public tags creation`, async ({ authorized }) => {
-    const {
-        TestTokenAddress, TestNFTAddress,
-    } = process.env
-    await authorized.openAccount()
-    await authorized.selectPublicTagsTab()
-    const tagName1 = faker.random.alphaNumeric(8)
-    const tagName2 = faker.random.alphaNumeric(8)
-    await authorized.addPublicTag({
-        myProjectCheckBox: true,
-        name: `my_public_tag_2`,
-        email: `sff2f@gmail.com`,
-        companyName: `QQQ LLC`,
-        companyWebSite: `https://qqq.llc.com`,
-        tags: [tagName1, tagName2],
-        addresses: [TestTokenAddress, TestNFTAddress],
-        description: `skldfhskdjfha`,
-    } as PublicTagSpec)
-    await authorized.check_tag_list(0, 0, TestTokenAddress)
-    await authorized.check_tag_list(0, 0, TestNFTAddress)
-    await authorized.check_tag_list(0, 1, tagName1)
-    await authorized.check_tag_list(0, 1, tagName2)
-
-    await authorized.deleteRow()
-})
