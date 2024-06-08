@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { Httpx } from 'https://jslib.k6.io/httpx/0.0.3/index.js'
+import { Httpx } from 'https://jslib.k6.io/httpx/0.1.0/index.js'
 import {
     Scenario,
 } from 'k6/options'
@@ -10,15 +10,16 @@ import { randomTestAPICall } from "./random.test.suite"
 export const defaultSession = () => {
     const session = new Httpx({
         baseURL: __ENV.BASE_URL,
-        headers: {
-            'User-Agent': `K6 Load Testing Tool/1.0`,
-        },
+        // headers: {
+        //     'User-Agent': ``,
+        // },
         timeout: __ENV.TIMEOUT, // milliseconds
     })
 
     session.addTags({
         apiType: `rpc`,
     })
+    session.clearHeader(`User-Agent`)
     return session
 }
 
@@ -75,6 +76,38 @@ export const RampingStrategy = {
     ],
     preAllocatedVUs: 50,
 }
+
+const rampPublicUser = (name: string) => ({
+    executor: `ramping-arrival-rate`,
+    stages: [
+        // { duration: `1m`, target: 1 },
+        // { duration: `1m`, target: 2 },
+        // { duration: `1m`, target: 3 },
+        // { duration: `1m`, target: 4 },
+        { duration: `2m`, target: 50 },
+        { duration: `5m`, target: 50 },
+
+        // { duration: `1m`, target: 25 },
+        // { duration: `1m`, target: 50 },
+        // { duration: `1m`, target: 75 },
+        // { duration: `1m`, target: 100 },
+        // { duration: `1m`, target: 125 },
+        // { duration: `1m`, target: 150 },
+        // { duration: `1m`, target: 175 },
+        // { duration: `1m`, target: 200 },
+    ],
+    preAllocatedVUs: 120,
+    exec: name,
+} as Scenario)
+
+const rampPrivateUser = (name: string) => ({
+    executor: `ramping-arrival-rate`,
+    stages: [
+        { duration: `5m`, target: 3 },
+    ],
+    preAllocatedVUs: 10,
+    exec: name,
+} as Scenario)
 
 export const defaultAPISoakSettings = {
     executor: `constant-arrival-rate`,
@@ -176,6 +209,11 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
             10,
             1,
         )
+    case `ramp`:
+        return {
+            testPrivateUser: rampPrivateUser(`backendV2TokenTransfersPrivate`),
+            testPublicUser: rampPublicUser(`backendV2AddressesInternalTx`),
+        }
     case `stress`:
         return GeneratePerAPIBaselineSuite(
             RampingStrategy,

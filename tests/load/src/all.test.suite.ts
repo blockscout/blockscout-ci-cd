@@ -12,7 +12,6 @@ export * from './random.test.suite'
 export const options: Options = {
     noCookiesReset: true,
     thresholds: defaultThresholds,
-    userAgent: `MyK6UserAgentString/1.0`,
     // managed by Loki debug in gun.ts
     discardResponseBodies: false,
     scenarios: selectScenario(__ENV.SCENARIO),

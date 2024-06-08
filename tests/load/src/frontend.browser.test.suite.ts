@@ -41,6 +41,7 @@ export function handleSummary(data) {
                 stream: {
                     test: `browser`,
                     page: pageName,
+                    base_url: url,
                 },
                 values: [
                     [`${new Date().getTime() * 1e6}`, JSON.stringify(data.metrics)],
@@ -48,7 +49,6 @@ export function handleSummary(data) {
             },
         ],
     }
-    // const LokiURL = `http://localhost:3100/loki/api/v1/push`
     const res = http.post(lokiURL, JSON.stringify(payload), {
         headers: { 'Content-Type': `application/json` },
     })

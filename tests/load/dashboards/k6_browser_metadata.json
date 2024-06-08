@@ -48,7 +48,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisLabel": "ms",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -120,8 +120,8 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "last_over_time({test=\"browser\"}\n| json\n| unwrap iteration_duration_values_med [$__interval]) by (page)",
-          "legendFormat": "{{page}}",
+          "expr": "last_over_time({test=\"browser\"}\n| json\n| unwrap iteration_duration_values_med [$__interval]) by (base_url, page)",
+          "legendFormat": "{{base_url}}{{page}}",
           "queryType": "range",
           "refId": "A"
         }
@@ -144,7 +144,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisLabel": "ms",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -215,8 +215,8 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "last_over_time({test=\"browser\"}\n| json\n| unwrap browser_http_req_duration_values_p_90_ [$__interval]) by (page)",
-          "legendFormat": "{{page}}",
+          "expr": "last_over_time({test=\"browser\"}\n| json\n| unwrap browser_http_req_duration_values_p_90_ [$__interval]) by (base_url, page)",
+          "legendFormat": "{{base_url}}{{page}}",
           "queryType": "range",
           "refId": "A"
         }
@@ -310,8 +310,8 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "last_over_time({test=\"browser\"}\n| json\n| unwrap iterations_values_count [$__interval]) by (page)",
-          "legendFormat": "{{page}}",
+          "expr": "last_over_time({test=\"browser\"}\n| json\n| unwrap iterations_values_count [$__interval]) by (base_url, page)",
+          "legendFormat": "{{base_url}}{{page}}",
           "queryType": "range",
           "refId": "A"
         }
@@ -334,7 +334,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisLabel": "ms",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -405,9 +405,9 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "last_over_time({test=\"browser\"}\n| json\n| unwrap browser_web_vital_cls_values_p_90_ [$__interval]) by (page)",
+          "expr": "last_over_time({test=\"browser\"}\n| json\n| unwrap browser_web_vital_cls_values_p_90_ [$__interval]) by (base_url, page)",
           "hide": false,
-          "legendFormat": "{{page}}",
+          "legendFormat": "{{base_url}}{{page}}",
           "queryType": "range",
           "refId": "B"
         }
@@ -430,7 +430,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisLabel": "ms",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -501,8 +501,8 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "last_over_time({test=\"browser\"}\n| json\n| unwrap browser_web_vital_fcp_values_p_90_ [$__interval]) by (page)",
-          "legendFormat": "{{page}}",
+          "expr": "last_over_time({test=\"browser\"}\n| json\n| unwrap browser_web_vital_fcp_values_p_90_ [$__interval]) by (base_url, page)",
+          "legendFormat": "{{base_url}}{{page}}",
           "queryType": "range",
           "refId": "A"
         }
@@ -525,7 +525,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisLabel": "ms",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -596,8 +596,8 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "last_over_time({test=\"browser\"}\n| json\n| unwrap browser_web_vital_lcp_values_p_90_ [$__interval]) by (page)",
-          "legendFormat": "{{page}}",
+          "expr": "last_over_time({test=\"browser\"}\n| json\n| unwrap browser_web_vital_lcp_values_p_90_ [$__interval]) by (base_url, page)",
+          "legendFormat": "{{base_url}}{{page}}",
           "queryType": "range",
           "refId": "A"
         }
@@ -620,7 +620,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisLabel": "ms",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -691,8 +691,8 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "last_over_time({test=\"browser\"}\n| json\n| unwrap browser_web_vital_ttfb_values_p_90_ [$__interval]) by (page)",
-          "legendFormat": "{{page}}",
+          "expr": "last_over_time({test=\"browser\"}\n| json\n| unwrap browser_web_vital_ttfb_values_p_90_ [$__interval]) by (base_url, page)",
+          "legendFormat": "{{base_url}}{{page}}",
           "queryType": "range",
           "refId": "A"
         }
@@ -759,7 +759,7 @@
     "list": []
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},

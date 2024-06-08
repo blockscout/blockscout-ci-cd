@@ -189,6 +189,26 @@ export const backendV2TXInternal = () => {
     })
 }
 
+export const backendV2TokenTransfersPrivate = () => {
+    group(`/v2/tokens/{}/transfers with key`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/api/v2/tokens/${randomItem(testData.tokens)}/transfers?apikey=2aV6rpIkjqA74W0lGXpulm29KprMbEg7`,
+            params: {
+                tags: {
+                    name: `TokenTransfers (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`TokenTransfers (backendV2) has failed`)
+        }
+    })
+}
+
 export const backendV2TokenTransfers = () => {
     group(`/v2/tokens/{}/transfers?apikey={}`, () => {
         const res = shoot(session, {

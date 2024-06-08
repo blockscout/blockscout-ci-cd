@@ -8,7 +8,7 @@ const session = defaultSession()
 
 export const randomTestAPICall = () => {
     // const randomURL = randomString(500)
-    group(`random url`, () => {
+    group(`random url load`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/`,
