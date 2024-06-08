@@ -8,6 +8,7 @@ export * from './frontend.test.suite'
 export * from './backend.test.suite'
 export * from './bens.test.suite'
 export * from './random.test.suite'
+export * from './metadata.test.suite'
 
 export const options: Options = {
     noCookiesReset: true,

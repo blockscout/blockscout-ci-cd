@@ -386,6 +386,18 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
             10,
             5,
         )
+    case `stressMetadata`:
+        return GeneratePerAPIBaselineSuite(
+            SmokeStrategy,
+            [
+                `metadata`,
+                `addresses`,
+                `tagsSearch`,
+            ],
+            120,
+            120,
+            50,
+        )
     default:
         throw Error(`no such scenario: ${scenarioName}`)
     }
