@@ -6,7 +6,7 @@ concurrency:
 
 on:
   schedule:
-    - cron: '*/180 * * * *'
+    - cron: '* */12 * * *'
   workflow_dispatch:
   workflow_call:
 
