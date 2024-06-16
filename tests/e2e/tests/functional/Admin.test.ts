@@ -21,7 +21,7 @@ test(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, 
     const uniqueSupportURL = faker.random.alphaNumeric(8)
     const tokenAddr = `0xcf2195871809ea72ad11ff8549e8483a0be672a9`
     await adminPage.createNewAdminSubmission({
-        ChainID: `Goerli`,
+        ChainID: `Sepolia`,
         TokenAddress: tokenAddr,
         BlockscoutUserEmail: process.env.ADMIN_ACCOUNT_USERNAME,
         RequesterName: `test_submission_user`,
@@ -76,7 +76,7 @@ test(`@Admin Delete/Create TokenInfo`, async ({ newHomeGoerli, tokenPage, adminP
 
     await adminPage.createNewTokenInfo({
         IsUserSubmitted: true,
-        ChainID: `Goerli`,
+        ChainID: `Sepolia`,
         TokenAddress: tokenAddr,
         BlockscoutUserEmail: process.env.ADMIN_ACCOUNT_USERNAME,
         RequesterName: `test_submission_user`,
