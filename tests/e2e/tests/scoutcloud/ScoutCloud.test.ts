@@ -137,7 +137,7 @@ test(`@ScoutCloud Create New Instance, check UI, delete it`, async ({ request, n
         },
     })
     const deploymentID = await updateStatus(request, instanceID, { action: `START` })
-    await waitForStatus(request, deploymentID, `RUNNING`, 10000, 50)
+    await waitForStatus(request, deploymentID, `RUNNING`, 10000, 70)
     const status = await getDeployment(request, deploymentID)
     const url = status[`blockscout_url`]
     l.info(`Blockscout URL: ${status[`blockscout_url`]}`)
