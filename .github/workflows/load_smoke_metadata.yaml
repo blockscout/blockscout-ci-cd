@@ -1,4 +1,4 @@
-name: Load baseline (Bens)
+name: Load Smoke (Metadata)
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -7,52 +7,53 @@ on:
     inputs:
       test_name:
         description: 'Test name'
-        default: ci-api-bens
+        type: string
+        default: ci-api-metadata
       url:
         description: 'Environment Root URL'
         required: true
-        default: 'https://bens-rs-test.k8s-dev.blockscout.com'
+        default: 'https://metadata-test.k8s-dev.blockscout.com'
         type: choice
         options:
-          - https://bens-rs-test.k8s-dev.blockscout.com
+          - https://metadata-test.k8s-dev.blockscout.com
       data_file_path:
         description: 'Path to test data file'
         required: true
-        default: '../test_data/bens.json'
+        default: '../test_data/sepolia.json'
         type: choice
         options:
-          - '../test_data/bens.json'
+          - '../test_data/sepolia-metadata.json'
       request_timeout:
         description: 'Global request timeout'
         required: true
-        default: 20000
+        default: 60000
   workflow_call:
     inputs:
       test_name:
         description: 'Test name'
-        default: ci-api-bens
+        default: ci-api-metadata
       url:
         description: 'Environment Root URL'
         required: true
-        default: 'https://bens-rs-test.k8s-dev.blockscout.com'
+        default: 'https://metadata-test.k8s-dev.blockscout.com'
         type: choice
         options:
-          - https://bens-rs-test.k8s-dev.blockscout.com
+          - https://metadata-test.k8s-dev.blockscout.com
       data_file_path:
         description: 'Path to test data file'
         required: true
-        default: '../test_data/bens.json'
+        default: '../test_data/sepolia.json'
         type: choice
         options:
-          - '../test_data/bens.json'
+          - '../test_data/sepolia-metadata.json'
       request_timeout:
         description: 'Global request timeout'
         required: true
-        default: 20000
+        default: 60000
 
 jobs:
-  v1v2-baseline:
-    name: Run BENS load test
+  smokeMetadata:
+    name: Run Blockscout metadata load test
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout github repo (+ download lfs dependencies)
@@ -79,13 +80,20 @@ jobs:
             ${{ runner.os }}-
       - name: Install deps
         run: npm ci
-      - name: Run v1 test
+      - name: Run v1/v2 Smoke Test
         env:
-          SCENARIO: stressBensV1
+          SCENARIO: stressMetadata
           K6_TEST_ID: ${{ inputs.test_name }}-v1
           BASE_URL: ${{ inputs.url }}
           TIMEOUT: ${{ inputs.request_timeout }}
+          START_BLOCK: ${{ inputs.start_block }}
+          END_BLOCK: ${{ inputs.end_block }}
           TEST_DATA_FILE: ${{ inputs.data_file_path }}
+          API_KEY_SEPOLIA: ${{ secrets.API_KEY_SEPOLIA }}
+          API_KEY_GOERLI: ${{ secrets.API_KEY_GOERLI }}
+          API_KEY_GOERLI_ALLOY: ${{ secrets.API_KEY_GOERLI_ALLOY }}
+          API_KEY_GNOSIS: ${{ secrets.API_KEY_GNOSIS }}
+          API_KEY_ETH: ${{ secrets.API_KEY_ETH }}
           K6_OUT: ${{ secrets.K6_OUT }}
         run: |
           npm run test:ci

@@ -1,7 +1,7 @@
 name: E2E Prod performance tests
 on:
-  schedule:
-    - cron: '*/180 * * * *'
+#  schedule:
+#    - cron: '*/180 * * * *'
 env:
   ENV: prod
 jobs:

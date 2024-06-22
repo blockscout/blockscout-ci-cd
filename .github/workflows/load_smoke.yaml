@@ -44,7 +44,48 @@ on:
         description: 'Global request timeout'
         required: true
         default: 20000
-    
+  workflow_call:
+    inputs:
+      test_name:
+        description: 'Test name'
+        default: ci-api-smoke
+      url:
+        description: 'Environment Root URL'
+        required: true
+        default: 'https://eth-sepolia.blockscout.com/api'
+        type: choice
+        options:
+          - https://eth-goerli-alloydb.k8s.blockscout.com/api
+          - https://eth.k8s-prod-1.blockscout.com/api
+          - https://eth-goerli.blockscout.com/api
+          - https://eth-sepolia.blockscout.com/api
+          - https://gnosis.blockscout.com/api
+          - https://eth.blockscout.com/api
+      start_block:
+        description: 'Start block for static requests (default is Sepolia)'
+        required: true
+        default: 4900358
+      end_block:
+        description: 'End block for static requests (default is Sepolia)'
+        required: true
+        default: 4900359
+      data_file_path:
+        description: 'Path to test data file'
+        required: true
+        default: '../test_data/sepolia.json'
+        type: choice
+        options:
+          - '../test_data/alloy-goerli.json'
+          - '../test_data/eth-prod-1.json'
+          - '../test_data/goerli.json'
+          - '../test_data/sepolia.json'
+          - '../test_data/gnosis.json'
+          - '../test_data/ethereum.json'
+      request_timeout:
+        description: 'Global request timeout'
+        required: true
+        default: 20000
+
 jobs:
   v1v2-smoke:
     name: Run Blockscout load test

@@ -26,7 +26,30 @@ on:
         description: 'Global request timeout'
         required: true
         default: 20000
-    
+  workflow_call:
+    inputs:
+      test_name:
+        description: 'Test name'
+        default: ci-api-advfilter
+      url:
+        description: 'Environment Root URL'
+        required: true
+        default: 'https://review-advanced-filter.k8s-dev.blockscout.com/node-api/proxy'
+        type: choice
+        options:
+          - https://review-advanced-filter.k8s-dev.blockscout.com/node-api/proxy
+      data_file_path:
+        description: 'Path to test data file'
+        required: true
+        default: '../test_data/sepolia.json'
+        type: choice
+        options:
+          - '../test_data/advfilter.json'
+      request_timeout:
+        description: 'Global request timeout'
+        required: true
+        default: 20000
+
 jobs:
   advfilter:
     name: Run Advfilter load test
