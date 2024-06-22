@@ -6,6 +6,7 @@ import {
 
 import { SharedArray } from 'k6/data'
 import { randomTestAPICall } from "./random.test.suite"
+import { advfilterMain } from "./advanced.tx.test.suite"
 
 export const defaultSession = () => {
     const session = new Httpx({
@@ -214,6 +215,38 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
             testPrivateUser: rampPrivateUser(`backendV2TokenTransfersPrivate`),
             testPublicUser: rampPublicUser(`backendV2AddressesInternalTx`),
         }
+    case `advfilter`:
+        return GeneratePerAPIBaselineSuite(
+            SmokeStrategy,
+            [
+                `advfilter`,
+                // token types
+                `advfilterERC20`,
+                `advfilterERC721`,
+                `advfilterERC1155`,
+                `advfilterERC404`,
+                `advfilterCoinTransfer`,
+                // methods
+                `advfilterMethodTransfer`,
+                `advfilterMethodMint`,
+                `advfilterMethodApprove`,
+                `advfilterMethodBuy`,
+                `advfilterMethodExecute`,
+                `advfilterMethodWithdraw`,
+                `advfilterMethodDeposit`,
+                // age
+                `advfilterAge7d`,
+                `advfilterAge1m`,
+                // address relation
+                `advfilterAndRelation`,
+                // from/to
+                `advfilterFrom`,
+                `advfilterTo`,
+            ],
+            30,
+            30,
+            5,
+        )
     case `stress`:
         return GeneratePerAPIBaselineSuite(
             RampingStrategy,
@@ -312,8 +345,8 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
                 // `backendV2BackendVersion`,
                 // `backendV2JSONRPCURL`,
             ],
-            30,
-            30,
+            300,
+            300,
             5,
         )
     case `avg`:

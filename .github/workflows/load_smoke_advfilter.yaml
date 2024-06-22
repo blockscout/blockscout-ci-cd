@@ -1,4 +1,4 @@
-name: Load Smoke (Blockscout)
+name: Load Smoke (advfilter)
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -7,55 +7,35 @@ on:
     inputs:
       test_name:
         description: 'Test name'
-        default: ci-api-smoke
+        default: ci-api-advfilter
       url:
         description: 'Environment Root URL'
         required: true
-        default: 'https://eth-sepolia.blockscout.com/api'
+        default: 'https://review-advanced-filter.k8s-dev.blockscout.com/node-api/proxy'
         type: choice
         options:
-          - https://eth-goerli-alloydb.k8s.blockscout.com/api
-          - https://eth.k8s-prod-1.blockscout.com/api
-          - https://eth-goerli.blockscout.com/api
-          - https://eth-sepolia.blockscout.com/api
-          - https://gnosis.blockscout.com/api
-          - https://eth.blockscout.com/api
-      start_block:
-        description: 'Start block for static requests (default is Sepolia)'
-        required: true
-        default: 4900358
-      end_block:
-        description: 'End block for static requests (default is Sepolia)'
-        required: true
-        default: 4900359
+          - https://review-advanced-filter.k8s-dev.blockscout.com/node-api/proxy
       data_file_path:
         description: 'Path to test data file'
         required: true
         default: '../test_data/sepolia.json'
         type: choice
         options:
-          - '../test_data/alloy-goerli.json'
-          - '../test_data/eth-prod-1.json'
-          - '../test_data/goerli.json'
-          - '../test_data/sepolia.json'
-          - '../test_data/gnosis.json'
-          - '../test_data/ethereum.json'
+          - '../test_data/advfilter.json'
       request_timeout:
         description: 'Global request timeout'
         required: true
         default: 20000
     
 jobs:
-  v1v2-smoke:
-    name: Run Blockscout load test
+  advfilter:
+    name: Run Advfilter load test
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout github repo (+ download lfs dependencies)
+      - name: Checkout github repo
         uses: actions/checkout@v2
         with:
           lfs: true
-      - name: Checkout LFS objects
-        run: git lfs checkout
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -74,9 +54,9 @@ jobs:
             ${{ runner.os }}-
       - name: Install deps
         run: npm ci
-      - name: Run v1/v2 Smoke Test
+      - name: Run smoke test
         env:
-          SCENARIO: smoke
+          SCENARIO: advfilter
           K6_TEST_ID: ${{ inputs.test_name }}-v1
           BASE_URL: ${{ inputs.url }}
           TIMEOUT: ${{ inputs.request_timeout }}

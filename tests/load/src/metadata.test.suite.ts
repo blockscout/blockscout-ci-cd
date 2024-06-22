@@ -8,18 +8,18 @@ const session = defaultSession()
 
 function getRandomItems(arr: any, n: any) {
     if (n > arr.length) {
-        throw new Error(`N cannot be greater than the length of the array`);
+        throw new Error(`N cannot be greater than the length of the array`)
     }
 
     // Shuffle the array using Fisher-Yates shuffle algorithm
-    const shuffled = arr.slice(); // Make a copy of the original array
+    const shuffled = arr.slice() // Make a copy of the original array
     for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
     }
 
     // Return the first N items from the shuffled array
-    return shuffled.slice(0, n);
+    return shuffled.slice(0, n)
 }
 
 export const metadata = () => {
