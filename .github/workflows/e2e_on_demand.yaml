@@ -9,6 +9,12 @@ on:
         description: 'Environment base URL'
         required: true
         default: 'http://eth.blockscout.com/'
+  workflow_call:
+    inputs:
+      url:
+        description: 'Environment base URL'
+        required: true
+        default: 'http://eth.blockscout.com/'
 env:
   ENV: prod
   BLOCKSCOUT_URL: ${{ inputs.url }}
