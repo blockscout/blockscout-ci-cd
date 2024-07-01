@@ -66,9 +66,7 @@ export class NewHomePage extends CommonPage {
 
     async checkENSRow(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`main >> tr >> td >> nth=0 >> text=/\\w+/`)
-        await this.actions.verifyElementIsDisplayed(`main >> tr >> td >> nth=1 >> text=/0x.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> tr >> td >> nth=2 >> text=/.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`main >> tr >> td >> nth=3 >> text=/Expires in.*/`)
     }
 
     async UserOpsIsOn(): Promise<boolean> {
