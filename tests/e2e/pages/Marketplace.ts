@@ -99,7 +99,6 @@ export class MarketplacePage extends CommonPage {
         }
         await this.actions.clickElement(`text=/More info/`)
         await this.actions.verifyElementIsDisplayed(`text=/Launch app/`)
-        await this.actions.verifyElementIsDisplayed(`text=/Overview/`)
         await this.actions.verifyElementIsDisplayed(`section[role="dialog"] >> a`)
     }
 

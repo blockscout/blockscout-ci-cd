@@ -312,7 +312,7 @@ export class NewHomePage extends CommonPage {
         await this.actions.page.hover(this.GAS_TRACKER_HEADER_URL)
         await this.delay(2000)
         await this.actions.verifyElementIsDisplayed(`text=/Last update/`)
-        await this.actions.verifyElementIsDisplayed(`text=/Fast/`)
+        await this.actions.verifyElementIsDisplayed(`text=/Fast/ >> nth=0`)
         await this.actions.verifyElementIsDisplayed(`text=/.*Gwei/`)
     }
 
