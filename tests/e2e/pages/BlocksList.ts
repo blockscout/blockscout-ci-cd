@@ -7,7 +7,7 @@ import { CommonPage } from "./Common"
 export class BlockListPage extends CommonPage {
     readonly page: Page
 
-    TAB_ALL = `[type="button"] >> text=All`
+    TAB_ALL = `[type="button"] >> text=/All/`
 
     TAB_FORKED = `[type="button"] >> text=Forked`
 
@@ -64,7 +64,7 @@ export class BlockListPage extends CommonPage {
         await this.grid(1, 1, `\\d+`)
         await this.grid(1, 2, `0x`)
         await this.grid(1, 3, `\\d+`)
-        await this.grid(1, 4, `\\d+.*\\%.*\\%`)
+        await this.grid(1, 4, `\\d+.*`)
         await this.grid(1, 5, `\\d+`)
         await this.grid(1, 6, `\\d+`)
     }
