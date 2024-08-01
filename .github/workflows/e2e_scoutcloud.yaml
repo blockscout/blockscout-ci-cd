@@ -7,7 +7,7 @@ on:
       rpc_url:
         description: 'RPC URL'
         required: true
-        default: 'https://sepolia.drpc.org'
+        default: 'https://node-e2e.k8s-dev.blockscout.com/http'
         type: string
       server_size:
         description: 'Server size'
@@ -112,7 +112,7 @@ jobs:
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
       - name: Set environment variables
         run: |
-          echo "SCOUTCLOUD_RPC_URL=${{ inputs.rpc_url || secrets.SCOUTCLOUD_URL }}" >> $GITHUB_ENV
+          echo "SCOUTCLOUD_RPC_URL=${{ inputs.rpc_url || 'https://node-e2e.k8s-dev.blockscout.com/http' }}" >> $GITHUB_ENV
           echo "SCOUTCLOUD_SERVER_SIZE=${{ inputs.server_size || 'small' }}" >> $GITHUB_ENV
           echo "SCOUTCLOUD_CHAIN_TYPE=${{ inputs.chain_type || 'ethereum' }}" >> $GITHUB_ENV
           echo "SCOUTCLOUD_NODE_TYPE=${{ inputs.node_type || 'geth' }}" >> $GITHUB_ENV
