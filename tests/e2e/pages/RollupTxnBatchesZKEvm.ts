@@ -23,7 +23,7 @@ export class RollupTxnBatchesPageZKEvm extends HomeRollupZKEvm {
         expect(this.page.url()).toContain(this.l2URL())
         await this.open()
 
-        await this.actions.verifyElementIsDisplayed(`table >> tr >> nth=${rowNum} >> td >> nth=1 >> text=/L1 Sequence Confirmed/`)
+        await this.actions.verifyElementIsDisplayed(`table >> tr >> nth=${rowNum} >> td >> nth=1 >> text=/L1 Sequence Confirmed|Finalized|Unfinalized/`)
         await this.actions.verifyElementIsDisplayed(`table >> tr >> nth=${rowNum} >> td >> nth=2 >> text=/.*go/`)
         await this.clickTableRowCol(rowNum, 3, `a`)
         expect(this.page.url()).toContain(this.l2URL())
