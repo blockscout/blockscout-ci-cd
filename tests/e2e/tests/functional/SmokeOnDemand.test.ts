@@ -21,6 +21,7 @@ test.beforeAll(async () => {
 })
 
 test(`@OnDemandSmoke Main page components`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(url)
     await newHomePage.checkIndexing()
     await newHomePage.checkHeader()
@@ -29,38 +30,45 @@ test(`@OnDemandSmoke Main page components`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check blocks`, async ({ context, newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(`${url}/blocks`)
-    await newHomePage.checkBlocks(context)
+    await newHomePage.checkBlocks()
 })
 
 test(`@OnDemandSmoke Check transactions`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(`${url}/txs`)
     await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
 })
 
 test(`@OnDemandSmoke Check search`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(url)
     await newHomePage.search(COMMON_TOKEN_NAME)
     await newHomePage.findInSearchItems(COMMON_TOKEN_FULL_NAME)
 })
 
 test(`@OnDemandSmoke Check stats`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(`${url}/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()
 })
 
 test(`@OnDemandSmoke Check accounts`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(`${url}/accounts`)
     await newHomePage.checkNativeAccountsNoPerc()
 })
 
 test(`@OnDemandSmoke Check verified contracts`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(`${url}/verified-contracts`)
     await newHomePage.checkVerifiedContractsStats()
 })
 
 test(`@OnDemandSmoke Check ENS`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(url)
     if (await newHomePage.isENSEnabled()) {
         await newHomePage.open_custom(`${url}/name-domains?only_active=true`)
@@ -72,6 +80,7 @@ test(`@OnDemandSmoke Check ENS`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check gas tracker`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(url)
     if (await newHomePage.isGasTrackerOn()) {
         await newHomePage.checkGasTrackerBar()
@@ -83,6 +92,7 @@ test(`@OnDemandSmoke Check gas tracker`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check market`, async ({ marketplace }) => {
+    await marketplace.checkRequests(marketplace.page)
     await marketplace.open(url)
     if (await marketplace.isOn()) {
         await marketplace.openMarketplace()
@@ -94,6 +104,7 @@ test(`@OnDemandSmoke Check market`, async ({ marketplace }) => {
 })
 
 test(`@OnDemandSmoke Check user operations`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(url)
     if (await newHomePage.UserOpsIsOn()) {
         await newHomePage.open_custom(`${url}/ops`)
@@ -105,21 +116,27 @@ test(`@OnDemandSmoke Check user operations`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check blobs`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(`${url}/txs`)
     if (await newHomePage.BlobIsOn()) {
+        if (staticData.blob === undefined) {
+            throw new Error(`No blobs in static data!`)
+        }
         await newHomePage.checkBlobTransactions()
-        await newHomePage.checkParticularBlob(url, `0x671cc5e15f140d220c36b0abaf0f76afd108c23c83cc63bb8ded37de1ffffc5b`)
+        await newHomePage.checkParticularBlob(url, staticData.blob)
     } else {
         console.log(chalk.yellow(`Blob txns is OFF!`))
     }
 })
 
 test(`@OnDemandSmoke Check read contract tabs`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.openFirstVerifiedContract(url)
     await newHomePage.checkContractReadTabs()
 })
 
 test(`@OnDemandSmoke Check write contract tabs`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.openFirstVerifiedContract(url)
     if (await newHomePage.hasWriteContractTab()) {
         await newHomePage.checkContractsWriteTabs()
@@ -129,12 +146,14 @@ test(`@OnDemandSmoke Check write contract tabs`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check contracts code tabs`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.openFirstVerifiedContract(url)
     await newHomePage.checkContractsCodeTab()
     await newHomePage.checkContractUMLDiagram()
 })
 
 test(`@OnDemandSmoke Check ERC-721 inventory tab`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(`${url}/token/${staticData.erc721.address}`)
     await newHomePage.checkERC721Inventory(staticData.erc721)
     await newHomePage.open_custom(`${url}/token/${staticData.erc721.address}/instance/${staticData.erc721.instance}`)
@@ -143,6 +162,7 @@ test(`@OnDemandSmoke Check ERC-721 inventory tab`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check ERC-404 inventory tab`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     if (staticData.erc404 === undefined) {
         console.log(`no erc-404 tokens exist`)
         return
@@ -155,6 +175,7 @@ test(`@OnDemandSmoke Check ERC-404 inventory tab`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check ERC-1155 inventory tab`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(`${url}/token/${staticData.erc1155.address}`)
     await newHomePage.checkERC1155Inventory(staticData.erc1155)
     await newHomePage.open_custom(`${url}/token/${staticData.erc1155.address}/instance/${staticData.erc1155.instance}`)

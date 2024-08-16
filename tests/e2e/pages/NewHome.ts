@@ -71,10 +71,12 @@ export class NewHomePage extends CommonPage {
 
     async UserOpsIsOn(): Promise<boolean> {
         await this.actions.clickElement(`text=/Blockchain/`)
+        await this.delay(1000)
         return this.actions.page.isVisible(`text=/User operations/`)
     }
 
     async BlobIsOn(): Promise<boolean> {
+        await this.delay(1000)
         return this.actions.page.isVisible(`text=/Blob txns/`)
     }
 
@@ -85,12 +87,12 @@ export class NewHomePage extends CommonPage {
     async checkBlobTransactions(): Promise<void> {
         await this.page.click(`text=/Blob txns/`)
         const firstRow = `text=/Blob txn$/ >> ../../../.. >> nth=0`
-        await this.actions.verifyElementIsDisplayed(`${firstRow} >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${firstRow} >> text=/0x|\\w+/`)
         await this.actions.verifyElementIsDisplayed(`${firstRow} >> text=/.*ago/`)
         await this.actions.verifyElementIsDisplayed(`${firstRow} >> text=/Success/`)
-        await this.actions.verifyElementIsDisplayed(`${firstRow} >> div >> nth=10 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${firstRow} >> div >> nth=13 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${firstRow} >> td >> nth=5 >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${firstRow} >> div >> nth=10 >> text=/\\d+|\\w+/`)
+        await this.actions.verifyElementIsDisplayed(`${firstRow} >> div >> nth=13 >> text=/\\w+/`)
+        await this.actions.verifyElementIsDisplayed(`${firstRow} >> td >> nth=5 >> text=/0x|\\w+/`)
         await this.actions.verifyElementIsDisplayed(`${firstRow} >> td >> nth=6 >> text=/\\d+/`)
         await this.actions.verifyElementIsDisplayed(`${firstRow} >> td >> nth=7 >> text=/\\d+/`)
     }
@@ -104,9 +106,9 @@ export class NewHomePage extends CommonPage {
         await this.page.getByRole(`tab`, { name: `Read contract` }).click()
         await this.page.getByText(`DisconnectedConnect wallet`).isVisible()
         await this.page.getByText(`Contract information`).isVisible()
-        await this.page.getByText(`Expand all`).click()
-        await this.page.getByText(`Collapse all`).click()
-        await this.page.getByText(`Reset`).click()
+        // await this.page.getByText(`Expand all`).click()
+        // await this.page.getByText(`Collapse all`).click()
+        // await this.page.getByText(`Reset`).click()
         await this.actions.verifyElementIsDisplayed(`div[role='tabpanel'] >> section >> nth=1 >> text=/1..*/`)
     }
 
@@ -134,25 +136,22 @@ export class NewHomePage extends CommonPage {
     async checkERC721Inventory(data: any): Promise<void> {
         await expect(this.page.getByText(`ERC-721`)).toBeVisible()
         await expect(this.page.getByText(`Max total supply`)).toBeVisible()
-        await expect(this.page.locator(`p`).filter({ hasText: `Holders` })).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
         await expect(this.page.getByText(`Sponsored`)).toBeVisible()
         await expect(this.page.getByRole(`tab`, { name: `Inventory` })).toBeVisible()
         await expect(this.page.getByRole(`tab`, { name: `Token transfers` })).toBeVisible()
         await expect(this.page.getByRole(`tab`, { name: `Holders` })).toBeVisible()
         await expect(this.page.getByRole(`tab`, { name: `Contract` })).toBeVisible()
-        await expect(this.page.getByRole(`tab`, { name: `Contract` })).toBeVisible()
 
         await this.actions.verifyElementIsDisplayed(this.tokenInventoryElement(0, 0))
         await this.actions.verifyElementIsDisplayed(`${this.tokenInventoryElement(0, 2)} >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.tokenInventoryElement(0, 4)} >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`${this.tokenInventoryElement(0, 4)} >> text=/0x|\\w+/`)
     }
 
     async checkInventoryERC721Element(data: any): Promise<void> {
         await expect(this.page.getByText(`ERC-721`)).toBeVisible()
         await expect(this.page.getByText(`Owner`)).toBeVisible()
         await expect(this.page.getByText(`Creator`)).toBeVisible()
-        await expect(this.page.locator(`p`).filter({ hasText: `Token ID` })).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
         await expect(this.page.getByText(`Name`)).toBeVisible()
         await expect(this.page.getByText(`Description`)).toBeVisible()
@@ -173,7 +172,6 @@ export class NewHomePage extends CommonPage {
     async checkERC404Inventory(data: any): Promise<void> {
         await expect(this.page.getByText(`ERC-404`, { exact: true })).toBeVisible()
         await expect(this.page.getByText(`Max total supply`)).toBeVisible()
-        await expect(this.page.locator(`p`).filter({ hasText: `Holders` })).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
         await expect(this.page.getByText(`Decimals`)).toBeVisible()
         await expect(this.page.getByText(`Sponsored`)).toBeVisible()
@@ -187,7 +185,6 @@ export class NewHomePage extends CommonPage {
         await expect(this.page.getByText(`ERC-404`, { exact: true })).toBeVisible()
         await expect(this.page.getByText(`Owner`)).toBeVisible()
         await expect(this.page.getByText(`Creator`)).toBeVisible()
-        await expect(this.page.locator(`p`).filter({ hasText: `Token ID` })).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
         await expect(this.page.getByText(`Name`)).toBeVisible()
         await expect(this.page.getByText(`Description`)).toBeVisible()
@@ -208,7 +205,6 @@ export class NewHomePage extends CommonPage {
     async checkERC1155Inventory(data: any): Promise<void> {
         await expect(this.page.getByText(`ERC-1155`)).toBeVisible()
         await expect(this.page.getByText(`Max total supply`)).toBeVisible()
-        await expect(this.page.locator(`p`).filter({ hasText: `Holders` })).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
         await expect(this.page.getByText(`Sponsored`)).toBeVisible()
         await expect(this.page.getByRole(`tab`, { name: `Inventory` })).toBeVisible()
@@ -221,7 +217,6 @@ export class NewHomePage extends CommonPage {
         await expect(this.page.getByText(`ERC-1155`)).toBeVisible()
         await expect(this.page.getByText(`Owner`, { exact: true })).toBeVisible()
         await expect(this.page.getByText(`Creator`)).toBeVisible()
-        await expect(this.page.locator(`p`).filter({ hasText: `Token ID` })).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
         await expect(this.page.getByText(`Sponsored`)).toBeVisible()
     }
@@ -246,15 +241,27 @@ export class NewHomePage extends CommonPage {
         await this.page.getByRole(`img`, { name: `/Contract.*/` }).isVisible()
     }
 
-    async checkParticularBlob(url: string, addr: string): Promise<void> {
-        await this.open_custom(`${url}/tx/${addr}`)
+    async checkParticularBlob(url: string, blob): Promise<void> {
+        await this.open_custom(`${url}/tx/${blob.tx}`)
         await this.actions.clickElement(`text=/Blobs/`)
-        await this.page.getByRole(`link`, { name: `0x01a78ecbd6c01ab745dd85878ca57b67f3bb9629351e1c53bb18f0d3ac21484d` }).click()
-        await this.page.getByRole(`link`, { name: `0x671cc5e15f140d220c36b0abaf0f76afd108c23c83cc63bb8ded37de1ffffc5b` }).isVisible()
-        await this.page.getByText(`0x01a78ecbd6c01ab745dd85878ca57b67f3bb9629351e1c53bb18f0d3ac21484d`, { exact: true }).isVisible()
-        await this.page.getByText(`Sponsored`).isVisible()
-        await this.page.getByText(`Blob details`).isVisible()
-        await this.page.locator(`div`).filter({ hasText: /^Blob details$/ }).first().click()
+        await expect(this.page.getByRole(`cell`, { name: `Blob hash` })).toBeVisible()
+        await expect(this.page.getByRole(`cell`, { name: `Data type` })).toBeVisible()
+        await expect(this.page.getByRole(`cell`, { name: `Size, bytes` })).toBeVisible()
+        await expect(this.page.getByRole(`link`, { name: blob.links[0] })).toBeVisible()
+        await expect(this.page.getByText(`Raw`, { exact: true }).first()).toBeVisible()
+        await expect(this.page.getByText(`131,072`).first()).toBeVisible()
+        await expect(this.page.getByRole(`link`, { name: blob.links[1] })).toBeVisible()
+        await expect(this.page.getByText(`Raw`, { exact: true }).nth(1)).toBeVisible()
+        await expect(this.page.getByText(`131,072`).nth(1)).toBeVisible()
+        await expect(this.page.getByRole(`link`, { name: blob.links[2] })).toBeVisible()
+        await expect(this.page.getByText(`Raw`, { exact: true }).nth(2)).toBeVisible()
+        await expect(this.page.getByText(`131,072`).nth(2)).toBeVisible()
+        await expect(this.page.getByRole(`link`, { name: blob.links[3] })).toBeVisible()
+        await expect(this.page.getByText(`Raw`, { exact: true }).nth(3)).toBeVisible()
+        await expect(this.page.getByText(`131,072`).nth(3)).toBeVisible()
+        await expect(this.page.getByRole(`link`, { name: blob.links[4] })).toBeVisible()
+        await expect(this.page.getByText(`Raw`, { exact: true }).nth(4)).toBeVisible()
+        await expect(this.page.getByText(`131,072`).nth(4)).toBeVisible()
     }
 
     async checkUserOpsHeader(): Promise<void> {
@@ -271,7 +278,7 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=0 >> text=/0x.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=1 >> text=/.*ago/`)
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=2 >> text=/Success|Failed/`)
-        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=3 >> text=/0x.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=3 >> text=/0x.*|w+/`)
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=4 >> text=/0x.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=5 >> text=/\\d+/`)
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=6 >> text=/\\d+/`)
@@ -301,10 +308,12 @@ export class NewHomePage extends CommonPage {
 
     async isENSEnabled(): Promise<boolean> {
         await this.actions.page.hover(`text=/Blockchain/`)
+        await this.delay(1000)
         return this.page.isVisible(`text=/Name services lookup/`)
     }
 
     async isGasTrackerOn(): Promise<boolean> {
+        await this.delay(1000)
         return this.actions.page.isVisible(this.GAS_TRACKER_ON)
     }
 

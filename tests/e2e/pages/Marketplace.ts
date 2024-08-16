@@ -83,6 +83,7 @@ export class MarketplacePage extends CommonPage {
     }
 
     async isOn(): Promise<boolean> {
+        await this.delay(1000)
         return this.actions.page.isVisible(this.DAPPS_PAGE_BUTTON)
     }
 

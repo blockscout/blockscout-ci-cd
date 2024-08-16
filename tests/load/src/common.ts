@@ -302,9 +302,9 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
         return GeneratePerAPIBaselineSuite(
             SmokeStrategy,
             [`backendTXActions`],
-            10,
-            10,
-            1,
+            180,
+            180,
+            5,
         )
     case `stressBensV1`:
         return GeneratePerAPIBaselineSuite(

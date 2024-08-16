@@ -3,6 +3,7 @@
 import { APIActions } from "@lib/APIActions"
 import { WebActions } from "@lib/WebActions"
 import type { Page } from 'playwright'
+import chalk from "chalk"
 
 export interface TXDecodedLogProps {
     methodIDText: string
@@ -93,6 +94,29 @@ export class CommonPage {
         this.page = page
         this.actions = new WebActions(this.page)
         this.apiActions = new APIActions()
+    }
+
+    async checkRequests(page): Promise<void> {
+        await page.route(`/**`, async (route) => {
+            try {
+                const response = await route.fetch()
+                if (response.status() >= 399 && response.status() <= 499) {
+                    console.log(chalk.yellow(`${response.status()} ${response.url()}`))
+                } else if (response.status() >= 500) {
+                    console.log(chalk.red(`${response.status()} ${response.url()}`))
+                    throw new Error(`>500 request detected: ${response.status()} ${response.url()}`)
+                }
+                await route.fulfill({ response })
+            } catch (error) {
+                if (error.message.includes(`route.fetch: Test ended`)) {
+                    return
+                }
+                if (error.message.includes(`getaddrinfo ENOTFOUND`)) {
+                    return
+                }
+                throw error
+            }
+        })
     }
 
     replaceAll(str: string, find: string, replace: string) {

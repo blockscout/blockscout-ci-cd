@@ -10,6 +10,7 @@ export * from './bens.test.suite'
 export * from './random.test.suite'
 export * from './metadata.test.suite'
 export * from './advanced.tx.test.suite'
+export * from './txactions.test.suite'
 
 export const options: Options = {
     noCookiesReset: true,
