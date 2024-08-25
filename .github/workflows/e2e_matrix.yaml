@@ -13,6 +13,7 @@ jobs:
     name: E2E Matrix
     runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
         url: [
           "https://eth.blockscout.com",
@@ -65,14 +66,17 @@ jobs:
         run: npm ci
       - name: Lint
         run: npm run lint
-      - name: Cache playwright binaries
-        uses: actions/cache@v2
+      - name: Cache Playwright browsers
         id: playwright-cache
+        uses: actions/cache@v3
         with:
-          path: |
-            ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright
-      - name: Install Playwright
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
       - name: Run playwright
         env:
