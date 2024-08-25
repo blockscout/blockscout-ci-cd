@@ -10,7 +10,8 @@ This repo contains E2E and stress/load tests for Blockscout APIs
 
 ## Production tests
 To add your environment to the E2E tests suite you need to:
-1. Create a new JSON file for static data under `tests/e2e/data/static`
+1. Create a new JSON file for static data under `tests/e2e/data/static`.
+File should be called by domain, for example for `https://eth-sepolia.blockscout.com` file should have name `eth-sepolia.json`
 2. Fill different entities data (tokens/blobs/etc), [eth-sepolia.json](tests/e2e/static/eth-sepolia.json)
 3. Add your environment URL to [e2e_matrix](.github/workflows/e2e_matrix.yaml)
 

@@ -1,0 +1,14 @@
+{
+  "search": {
+    "query": "USDT",
+    "result": "Tether USD"
+  },
+  "erc721": {
+    "address": "0x599329D5838d505f1ff39955D544a7d696C6bdD0",
+    "instance": "1000010313"
+  },
+  "erc1155": {
+    "address": "0x07CdC97Ca96Ff755d0f380AaB039b84ce51E2714",
+    "instance": "8391542"
+  }
+}

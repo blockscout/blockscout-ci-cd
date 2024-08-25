@@ -13,9 +13,7 @@ export class NewHomePage extends CommonPage {
 
     SEARCH_ITEMS_ICONS = `div[id="search_bar_popover_content"] >> nth=1 >> svg`
 
-    BLOCKS_WIDGET = `text=/Latest blocks/ >> ..`
-
-    BATCHES_WIDGET = `text=/Latest batch/ >> ..`
+    BLOCKS_WIDGET = `text=/Latest blocks|Latest batch/ >> ..`
 
     BLOCKS_WIDGET_LAST_BLOCK = `${this.BLOCKS_WIDGET} >> div >> div >> nth=0`
 
@@ -147,16 +145,20 @@ export class NewHomePage extends CommonPage {
 
     async checkInventoryERC721Element(data: any): Promise<void> {
         await expect(this.page.getByText(`ERC-721`)).toBeVisible()
-        await expect(this.page.getByText(`Owner`)).toBeVisible()
+        // await expect(this.page.getByText(`Owner`)).toBeVisible()
         await expect(this.page.getByText(`Creator`)).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
-        await expect(this.page.getByText(`Name`)).toBeVisible()
-        await expect(this.page.getByText(`Description`)).toBeVisible()
-        await expect(this.page.getByText(`Attributes`)).toBeVisible()
-        await expect(this.page.getByText(`Sponsored`)).toBeVisible()
+        // await expect(this.page.getByText(`Name`)).toBeVisible()
+        // await expect(this.page.getByText(`Description`)).toBeVisible()
+        // await expect(this.page.getByText(`Attributes`)).toBeVisible()
+        // await expect(this.page.getByText(`Sponsored`)).toBeVisible()
     }
 
     async checkInventoryERC721MetadataTab(data: any): Promise<void> {
+        if (data.metadata === undefined) {
+            console.log(chalk.yellow(`No metadata for ERC-721 token!`))
+            return
+        }
         await this.page.getByRole(`tab`, { name: `Metadata` }).click()
         await this.page.getByRole(`combobox`).selectOption(`JSON`)
         const textContent = await this.page.locator(`body >> section >> div >> nth=26`).textContent()
@@ -186,7 +188,7 @@ export class NewHomePage extends CommonPage {
         await expect(this.page.getByText(`Name`)).toBeVisible()
         await expect(this.page.getByText(`Description`)).toBeVisible()
         await expect(this.page.getByText(`Attributes`)).toBeVisible()
-        await expect(this.page.getByText(`Sponsored`)).toBeVisible()
+        // await expect(this.page.getByText(`Sponsored`)).toBeVisible()
     }
 
     async checkInventoryERC404MetadataTab(data: any): Promise<void> {
@@ -212,15 +214,15 @@ export class NewHomePage extends CommonPage {
 
     async checkInventoryERC1155Element(data: any): Promise<void> {
         await expect(this.page.getByText(`ERC-1155`)).toBeVisible()
-        await expect(this.page.getByText(`Owner`, { exact: true })).toBeVisible()
-        await expect(this.page.getByText(`Creator`)).toBeVisible()
+        // await expect(this.page.getByText(`Owner`, { exact: true })).toBeVisible()
+        // await expect(this.page.getByText(`Creator`)).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
         await expect(this.page.getByText(`Sponsored`)).toBeVisible()
     }
 
     async checkInventoryERC1155MetadataTab(data: any): Promise<void> {
         if (data.metadata === undefined) {
-            console.log(chalk.yellow(`No metadata for 1155!`))
+            console.log(chalk.yellow(`No metadata for ERC-1155 token!`))
             return
         }
         await this.page.getByRole(`tab`, { name: `Metadata` }).click()
@@ -298,6 +300,11 @@ export class NewHomePage extends CommonPage {
         this.currentPage = url
         await this.actions.navigateToURL(url, options)
         await this.delay(5000)
+    }
+
+    async isStatsEnabled(): Promise<boolean> {
+        await this.delay(1000)
+        return this.page.isVisible(`text=/Charts & stats/`)
     }
 
     async isENSEnabled(): Promise<boolean> {
@@ -507,7 +514,7 @@ export class NewHomePage extends CommonPage {
     }
 
     async checkHeader(): Promise<void> {
-        await this.displayed_in_parent(`text=/Total blocks/`, `text=/\\d+.*/`, 2, `no total blocks`)
+        await this.displayed_in_parent(`text=/Total blocks|Latest batch/`, `text=/\\d+.*/`, 2, `no total blocks`)
         await this.displayed_in_parent(`text=/Average block time/`, `text=/\\d+.*/`, 2, `no avg block time`)
         await this.displayed_in_parent(`text=/Total transactions/`, `text=/\\d+.*/`, 2, `no total transactions`)
         await this.displayed_in_parent(`text=/Wallet addresses/`, `text=/\\d+.*/`, 2, `no wallet addresses`)

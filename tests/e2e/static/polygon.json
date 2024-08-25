@@ -1,0 +1,19 @@
+{
+  "search": {
+    "query": "USDT",
+    "result": "Tether USD"
+  },
+  "erc404": {
+    "address": "0xAd34776C9FEeE12A87BEa6491bB58D02933a872B",
+    "instance": "333",
+    "metadata": "{\"attributes\":[{\"trait_type\":\"Background\",\"value\":\"Spring Sunset\"},{\"trait_type\":\"Body\",\"value\":\"Yellow Sunglasses\"},{\"trait_type\":\"Legendary Items\",\"value\":\"Bong 3\"},{\"display_type\":\"number\",\"trait_type\":\"Rarity Rank\",\"value\":39}],\"description\":\"Error 404 | LlamaNotFound #333 - The first ever ERC404 token standard collection in Polygon Blockchain\",\"image\":\"ipfs://QmeKKcyz6Ly694pM54zCPodAPMinoaDvozwhAcQ3kxPBAz/333.jpeg\",\"name\":\"Error 404 | LlamaNotFound #333\"}"
+  },
+  "erc721": {
+    "address": "0xE9d2FA815B95A9d087862a09079549F351DaB9bd",
+    "instance": "8100"
+  },
+  "erc1155": {
+    "address": "0x127E47abA094a9a87D084a3a93732909Ff031419",
+    "instance": "0"
+  }
+}

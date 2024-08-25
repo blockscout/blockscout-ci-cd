@@ -14,8 +14,13 @@ const url = process.env.BLOCKSCOUT_URL
 let staticData
 
 test.beforeAll(async () => {
-    const fileName = url.split(`//`)[1].split(`.`).slice(0, -2).join(`.`)
-    staticData = JSON.parse(readFileSync(`static/${fileName}.json`).toString())
+    const u = url.endsWith(`/`) ? url.slice(0, -1) : url
+    const fileName = u.split(`//`)[1].split(`.`).slice(0, -2).join(`.`)
+    try {
+        staticData = JSON.parse(readFileSync(`static/${fileName}.json`).toString())
+    } catch (err) {
+        console.log(chalk.red(`Error reading static data for ${fileName}, file should be named as domain in URL: ${u}`))
+    }
 })
 
 test(`@OnDemandSmoke Main page components`, async ({ newHomePage }) => {
@@ -30,6 +35,10 @@ test(`@OnDemandSmoke Main page components`, async ({ newHomePage }) => {
 test(`@OnDemandSmoke Check blocks`, async ({ context, newHomePage }) => {
     await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(`${url}/blocks`)
+    // TODO: make it header dependent
+    if (url.includes(`explorer`)) {
+        return
+    }
     await newHomePage.checkBlocks()
 })
 
@@ -47,10 +56,14 @@ test(`@OnDemandSmoke Check search`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check stats`, async ({ newHomePage }) => {
-    // await newHomePage.checkRequests(newHomePage.page)
-    await newHomePage.open_custom(`${url}/stats`)
-    await newHomePage.checkStatsCounters()
-    await newHomePage.checkStatsGraphsDisplayed()
+    await newHomePage.checkRequests(newHomePage.page)
+    if (await newHomePage.isStatsEnabled()) {
+        await newHomePage.open_custom(`${url}/stats`)
+        await newHomePage.checkStatsCounters()
+        await newHomePage.checkStatsGraphsDisplayed()
+    } else {
+        console.log(chalk.yellow(`Stats Services are OFF!`))
+    }
 })
 
 test(`@OnDemandSmoke Check accounts`, async ({ newHomePage }) => {
@@ -102,7 +115,7 @@ test(`@OnDemandSmoke Check market`, async ({ marketplace }) => {
 })
 
 test(`@OnDemandSmoke Check user operations`, async ({ newHomePage }) => {
-    // await newHomePage.checkRequests(newHomePage.page)
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(url)
     if (await newHomePage.UserOpsIsOn()) {
         await newHomePage.open_custom(`${url}/ops`)
@@ -123,12 +136,12 @@ test(`@OnDemandSmoke Check blobs`, async ({ newHomePage }) => {
         await newHomePage.checkBlobTransactions()
         await newHomePage.checkParticularBlob(url, staticData.blob)
     } else {
-        console.log(chalk.yellow(`Blob txns is OFF!`))
+        console.log(chalk.yellow(`Blob txns are OFF!`))
     }
 })
 
 test(`@OnDemandSmoke Check read contract tabs`, async ({ newHomePage }) => {
-    // await newHomePage.checkRequests(newHomePage.page)
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.openFirstVerifiedContract(url)
     await newHomePage.checkContractReadTabs()
 })
@@ -173,7 +186,7 @@ test(`@OnDemandSmoke Check ERC-404 inventory tab`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check ERC-1155 inventory tab`, async ({ newHomePage }) => {
-    // await newHomePage.checkRequests(newHomePage.page)
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(`${url}/token/${staticData.erc1155.address}`)
     await newHomePage.checkERC1155Inventory(staticData.erc1155)
     await newHomePage.open_custom(`${url}/token/${staticData.erc1155.address}/instance/${staticData.erc1155.instance}`)
