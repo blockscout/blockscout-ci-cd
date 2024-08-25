@@ -1,38 +1,26 @@
 # E2E UI/API tests
 
-## Setup
-    ```
-    npm install
-    npm install-deps
-    ```
+## E2E Environment tests (contract deployments)
+```
+source .envrc && npm run test:smoke:account
+```
 
-## Deploy environment
-To deploy the whole `blockscout` stack for test use
-    ```
-    helm secrets upgrade --install  bs-local-tests . -f ./values/e2e/values.yaml -f ./values/e2e/secrets.yaml -n bs-local-tests --create-namespace --set global.env=local
-    kubectl get secret regcred -o yaml | sed 's/namespace: .*/namespace: bs-local-tests/' | kubectl apply -f -
-    ```
+## Debug
+You can use [VSCode addon](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright), or set `PWDEBUG=1` and run any target
 
-## Run tests
-Run tests for prod
-    ```
-    ENV=prod npm run test:prod:smoke 
-    ```
-Run tests for k8s with generating contracts data
-    ```
-    source .env && npm run test:smoke:account
-    ```
-You can also reuse authorization token wiht adding `LOAD_AUTH_CTX=1`
-Deployed contract addresses are also reusable `LOAD_CONTRACTS_DATA=1`
+## Production tests
+To add your environment to the E2E tests suite you need to:
+1. Create a new JSON file for static data under `tests/e2e/data/static`.
+   File should be called by domain, for example for `https://eth-sepolia.blockscout.com` file should have name `eth-sepolia.json`
+2. Fill different entities data (tokens/blobs/etc), [eth-sepolia.json](tests/e2e/static/eth-sepolia.json)
+3. Add your environment URL to [e2e_matrix](.github/workflows/e2e_matrix.yaml)
 
-Run verification service suite
-    ```
-    source .env && npm run test:smoke:verification
-    ```
-Run comparison tests between Etherscan and Blockscout (Goerli)
-    ```
-    source .env && npm run test:etherscan
-    ```
+## Production tests debug
+```
+export BLOCKSCOUT_URL=...
+export PWDEBUG=0 # 1 - debug, 0 - no debug
+source .envrc && npm run test:ondemand
+```
 
 ## Run RPC compatibility tests
 Add vars to `.envrc`
@@ -49,6 +37,3 @@ Then run the test
 ```
 node test_rpc.mjs
 ```
-
-## Debug
-You can use [VSCode addon](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright), or set `PWDEBUG=1` and run any target
