@@ -1,13 +1,5 @@
 # E2E UI/API tests
 
-## E2E Environment tests (contract deployments)
-```
-source .envrc && npm run test:smoke:account
-```
-
-## Debug
-You can use [VSCode addon](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright), or set `PWDEBUG=1` and run any target
-
 ## Production tests
 To add your environment to the E2E tests suite you need to:
 1. Create a new JSON file for static data under `tests/e2e/data/static`.
@@ -20,6 +12,11 @@ To add your environment to the E2E tests suite you need to:
 export BLOCKSCOUT_URL=...
 export PWDEBUG=0 # 1 - debug, 0 - no debug
 source .envrc && npm run test:ondemand
+```
+
+## E2E Environment tests (contract deployments)
+```
+source .envrc && npm run test:smoke:account
 ```
 
 ## Run RPC compatibility tests
@@ -37,3 +34,6 @@ Then run the test
 ```
 node test_rpc.mjs
 ```
+
+## Debug
+You can use [VSCode addon](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright), or set `PWDEBUG=1` and run any target
