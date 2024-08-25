@@ -1,7 +1,4 @@
 name: E2E Env Matrix
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-env-matrix
-  cancel-in-progress: true
 on:
   push:
   schedule:
@@ -74,8 +71,7 @@ jobs:
         with:
           path: |
             ~/.cache/ms-playwright
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
-          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
+          key: ${{ runner.os }}-playwright
       - name: Install Playwright
         run: npx playwright install --with-deps
       - name: Run playwright
