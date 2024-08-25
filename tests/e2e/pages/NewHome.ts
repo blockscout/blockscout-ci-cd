@@ -247,21 +247,14 @@ export class NewHomePage extends CommonPage {
         await expect(this.page.getByRole(`cell`, { name: `Blob hash` })).toBeVisible()
         await expect(this.page.getByRole(`cell`, { name: `Data type` })).toBeVisible()
         await expect(this.page.getByRole(`cell`, { name: `Size, bytes` })).toBeVisible()
-        await expect(this.page.getByRole(`link`, { name: blob.links[0] })).toBeVisible()
-        await expect(this.page.getByText(`Raw`, { exact: true }).first()).toBeVisible()
-        await expect(this.page.getByText(`131,072`).first()).toBeVisible()
-        await expect(this.page.getByRole(`link`, { name: blob.links[1] })).toBeVisible()
-        await expect(this.page.getByText(`Raw`, { exact: true }).nth(1)).toBeVisible()
-        await expect(this.page.getByText(`131,072`).nth(1)).toBeVisible()
-        await expect(this.page.getByRole(`link`, { name: blob.links[2] })).toBeVisible()
-        await expect(this.page.getByText(`Raw`, { exact: true }).nth(2)).toBeVisible()
-        await expect(this.page.getByText(`131,072`).nth(2)).toBeVisible()
-        await expect(this.page.getByRole(`link`, { name: blob.links[3] })).toBeVisible()
-        await expect(this.page.getByText(`Raw`, { exact: true }).nth(3)).toBeVisible()
-        await expect(this.page.getByText(`131,072`).nth(3)).toBeVisible()
-        await expect(this.page.getByRole(`link`, { name: blob.links[4] })).toBeVisible()
-        await expect(this.page.getByText(`Raw`, { exact: true }).nth(4)).toBeVisible()
-        await expect(this.page.getByText(`131,072`).nth(4)).toBeVisible()
+        for (const link of blob.links) {
+            // eslint-disable-next-line no-await-in-loop
+            await expect(this.page.getByRole(`link`, { name: link })).toBeVisible()
+            // eslint-disable-next-line no-await-in-loop
+            await expect(this.page.getByText(`Raw`, { exact: true }).first()).toBeVisible()
+            // eslint-disable-next-line no-await-in-loop
+            await expect(this.page.getByText(`131,072`).first()).toBeVisible()
+        }
     }
 
     async checkUserOpsHeader(): Promise<void> {

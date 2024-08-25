@@ -1,23 +1,51 @@
-name: E2E Prod tests
+name: E2E On-demand Tests
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 on:
+  push:
   schedule:
-    - cron: '*/180 * * * *'
+    - cron: '0 */3 * * *'
 env:
   ENV: prod
 jobs:
-  test_smoke_prod:
-    strategy:
-      fail-fast: false
-      matrix:
-        instance: [mainnet, sepolia, gnosis, gnosis_chiado, optimism, astar, shiden, shibuya, rootstock, neon, neon_devnet, base, base_sepolia, athens_3, pegasus, phoenix, shimmer, shimmer_mainnet, immutable, shibarium_mainnet, shibarium_testnet, fuse, fuse_testnet, etc_mordor, etc, zk_sync, stability]
+  on_demand_matrix:
     permissions:
       id-token: write
       contents: read
-    name: Smoke tests
+    name: E2E Matrix
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        url: [
+          "https://eth.blockscout.com",
+          "http://gnosis.blockscout.com",
+          "https://gnosis-chiado.blockscout.com",
+          "https://blockscout.com/astar",
+          "https://blockscout.com/shiden",
+          "https://blockscout.com/shibuya",
+          "https://neon.blockscout.com",
+          "https://neon-devnet.blockscout.com",
+          "https://zetachain-athens-3.blockscout.com",
+          "https://pegasus.lightlink.io",
+          "https://phoenix.lightlink.io",
+          "https://explorer.testnet.immutable.com",
+          "https://www.shibariumscan.io",
+          "https://explorer.fuse.io",
+          "https://explorer.fusespark.io",
+          "https://puppyscan.shib.io",
+          "https://optimism-sepolia.blockscout.com",
+          "https://rootstock.blockscout.com",
+          "https://base.blockscout.com",
+          "https://base-sepolia.blockscout.com",
+          "https://etc-mordor.blockscout.com",
+          "https://etc.blockscout.com",
+          "https://explorer.evm.shimmer.network",
+          "https://explorer.evm.testnet.shimmer.network",
+          "https://zksync.blockscout.com",
+          "https://stability-betanet.blockscout.com",
+          "https://optimism.blockscout.com"
+        ]
     steps:
       - uses: actions/checkout@v3
       - name: Setup node
@@ -40,13 +68,6 @@ jobs:
         run: npm ci
       - name: Lint
         run: npm run lint
-      - name: Build contracts
-        working-directory: ./tests/contracts
-        run: |
-          # gyp build from root
-          npm config set user 0
-          npm ci
-          npm run build
       - name: Cache playwright binaries
         uses: actions/cache@v2
         id: playwright-cache
@@ -58,8 +79,10 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps
       - name: Run playwright
+        env:
+          BLOCKSCOUT_URL: ${{ matrix.url }}
         run: |
-          npm run test:prod:smoke:${{ matrix.instance }}
+          npm run test:ondemand
       - uses: actions/upload-artifact@v3
         if: always()
         with:
