@@ -81,7 +81,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: v14.17.0
+          node-version: 20
       - name: Cache node modules
         id: cache-npm
         uses: actions/cache@v3
@@ -104,14 +104,17 @@ jobs:
           npm config set user 0
           npm ci
           npm run build
-      - name: Cache playwright binaries
-        uses: actions/cache@v2
+      - name: Cache Playwright browsers
         id: playwright-cache
+        uses: actions/cache@v3
         with:
-          path: |
-            ~/.cache/ms-playwright
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
-          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+      - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
       - name: Set environment variables
         run: |
           echo "SCOUTCLOUD_RPC_URL=${{ inputs.rpc_url || 'https://node-e2e.k8s-dev.blockscout.com/http' }}" >> $GITHUB_ENV
