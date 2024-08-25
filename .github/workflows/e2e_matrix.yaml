@@ -1,6 +1,6 @@
-name: E2E On-demand Tests
+name: E2E Env Matrix
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-env-matrix
   cancel-in-progress: true
 on:
   push:
