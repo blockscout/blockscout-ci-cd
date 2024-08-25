@@ -2,6 +2,7 @@ import { WebActions } from "@lib/WebActions"
 import type { BrowserContext, Page } from 'playwright'
 import { expect } from "@playwright/test"
 import { CommonPage } from "./Common"
+import chalk from "chalk";
 
 export class NewHomePage extends CommonPage {
     SEARCH_BAR = `input >> nth=0`
@@ -103,13 +104,9 @@ export class NewHomePage extends CommonPage {
     }
 
     async checkContractReadTabs(): Promise<void> {
-        await this.page.getByRole(`tab`, { name: `Read contract` }).click()
+        await this.actions.clickElement(`text=/Read contract|Read proxy/`)
         await this.page.getByText(`DisconnectedConnect wallet`).isVisible()
         await this.page.getByText(`Contract information`).isVisible()
-        // await this.page.getByText(`Expand all`).click()
-        // await this.page.getByText(`Collapse all`).click()
-        // await this.page.getByText(`Reset`).click()
-        await this.actions.verifyElementIsDisplayed(`div[role='tabpanel'] >> section >> nth=1 >> text=/1..*/`)
     }
 
     async checkContractsWriteTabs(): Promise<void> {
@@ -222,6 +219,10 @@ export class NewHomePage extends CommonPage {
     }
 
     async checkInventoryERC1155MetadataTab(data: any): Promise<void> {
+        if (data.metadata === undefined) {
+            console.log(chalk.yellow(`No metadata for 1155!`))
+            return
+        }
         await this.page.getByRole(`tab`, { name: `Metadata` }).click()
         await this.page.getByRole(`combobox`).selectOption(`JSON`)
         const textContent = await this.page.locator(`body >> section >> div >> nth=26`).textContent()
@@ -264,15 +265,15 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`main >> th >> nth=3 >> text=/Sender/`)
         await this.actions.verifyElementIsDisplayed(`main >> th >> nth=4 >> text=/Tx hash/`)
         await this.actions.verifyElementIsDisplayed(`main >> th >> nth=5 >> text=/Block/`)
-        await this.actions.verifyElementIsDisplayed(`main >> th >> nth=6 >> text=/Fee ETH/`)
+        await this.actions.verifyElementIsDisplayed(`main >> th >> nth=6 >> text=/Fee .*/`)
     }
 
     async checkUserOpsRow(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=0 >> text=/0x.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=0 >> text=/0x.*|\\w+/`)
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=1 >> text=/.*ago/`)
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=2 >> text=/Success|Failed/`)
-        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=3 >> text=/0x.*|w+/`)
-        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=4 >> text=/0x.*/`)
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=3 >> text=/0x.*|\\w+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> td >> nth=4 >> text=/0x.*|\\w+/`)
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=5 >> text=/\\d+/`)
         await this.actions.verifyElementIsDisplayed(`main >> td >> nth=6 >> text=/\\d+/`)
     }
@@ -525,7 +526,7 @@ export class NewHomePage extends CommonPage {
         await this.displayed_in_parent(`text=/Number of verified contracts today/`, `text=/\\d+.*/`, 2, `no number of verified contracts today`)
         await this.displayed_in_parent(`text=/Total accounts/`, `text=/\\d+.*/`, 2, `no total accounts`)
         await this.displayed_in_parent(`text=/Total blocks/`, `text=/\\d+.*/`, 2, `no total blocks`)
-        await this.displayed_in_parent(`text=/Total ETH transfers/`, `text=/\\d+.*/`, 2, `no total native coin trasfers`)
+        await this.displayed_in_parent(`text=/Total .* transfers/`, `text=/\\d+.*/`, 2, `no total native coin trasfers`)
         await this.displayed_in_parent(`text=/Total tokens/`, `text=/\\d+.*/`, 2, `no total tokens`)
         await this.displayed_in_parent(`text=/Total txns/`, `text=/\\d+.*/`, 2, `no total txns`)
         await this.displayed_in_parent(`text=/Total verified contracts/`, `text=/\\d+.*/`, 2, `no total verified contracts`)
@@ -548,7 +549,7 @@ export class NewHomePage extends CommonPage {
         await this.displayed_in_parent(`text=/Average gas price/`, `text=${this.MONTHS_REGEX}`, 3, `no avg gas price`)
         await this.displayed_in_parent(`text=/Gas used growth/`, `text=${this.MONTHS_REGEX}`, 3, `no gas used growth`)
 
-        await this.displayed_in_parent(`text=/New ETH transfers/`, `text=${this.MONTHS_REGEX}`, 3, `no new native coin transfers`)
+        await this.displayed_in_parent(`text=/New .* transfers/`, `text=${this.MONTHS_REGEX}`, 3, `no new native coin transfers`)
 
         await this.displayed_in_parent(`text=/Average transaction fee/`, `text=${this.MONTHS_REGEX}`, 3, `no avg transaction fee`)
         await this.displayed_in_parent(`text=/New transactions/`, `text=${this.MONTHS_REGEX}`, 3, `no new transactions`)

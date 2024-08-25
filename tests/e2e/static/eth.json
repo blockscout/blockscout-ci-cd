@@ -1,4 +1,8 @@
 {
+  "search": {
+    "query": "USDT",
+    "result": "Tether USD \\(USDT\\)"
+  },
   "blob": {
     "tx": "0x1ea6a48b07105a62838a963574bb8f42d88c2bbfacffc14b4376909606e2fb28",
     "links": [

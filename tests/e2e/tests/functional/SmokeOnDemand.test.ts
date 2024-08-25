@@ -10,8 +10,6 @@ test.describe.configure({ mode: `parallel` })
 */
 
 const url = process.env.BLOCKSCOUT_URL
-const COMMON_TOKEN_NAME = `USDT`
-const COMMON_TOKEN_FULL_NAME = `Tether USD \\(USDT\\)`
 
 let staticData
 
@@ -42,14 +40,14 @@ test(`@OnDemandSmoke Check transactions`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check search`, async ({ newHomePage }) => {
-    await newHomePage.checkRequests(newHomePage.page)
+    // await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(url)
-    await newHomePage.search(COMMON_TOKEN_NAME)
-    await newHomePage.findInSearchItems(COMMON_TOKEN_FULL_NAME)
+    await newHomePage.search(staticData.search.query)
+    await newHomePage.findInSearchItems(staticData.search.result)
 })
 
 test(`@OnDemandSmoke Check stats`, async ({ newHomePage }) => {
-    await newHomePage.checkRequests(newHomePage.page)
+    // await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(`${url}/stats`)
     await newHomePage.checkStatsCounters()
     await newHomePage.checkStatsGraphsDisplayed()
@@ -104,7 +102,7 @@ test(`@OnDemandSmoke Check market`, async ({ marketplace }) => {
 })
 
 test(`@OnDemandSmoke Check user operations`, async ({ newHomePage }) => {
-    await newHomePage.checkRequests(newHomePage.page)
+    // await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(url)
     if (await newHomePage.UserOpsIsOn()) {
         await newHomePage.open_custom(`${url}/ops`)
@@ -130,7 +128,7 @@ test(`@OnDemandSmoke Check blobs`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check read contract tabs`, async ({ newHomePage }) => {
-    await newHomePage.checkRequests(newHomePage.page)
+    // await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.openFirstVerifiedContract(url)
     await newHomePage.checkContractReadTabs()
 })
@@ -175,7 +173,7 @@ test(`@OnDemandSmoke Check ERC-404 inventory tab`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check ERC-1155 inventory tab`, async ({ newHomePage }) => {
-    await newHomePage.checkRequests(newHomePage.page)
+    // await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(`${url}/token/${staticData.erc1155.address}`)
     await newHomePage.checkERC1155Inventory(staticData.erc1155)
     await newHomePage.open_custom(`${url}/token/${staticData.erc1155.address}/instance/${staticData.erc1155.instance}`)

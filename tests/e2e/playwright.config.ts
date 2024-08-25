@@ -51,6 +51,15 @@ const config: PlaywrightTestConfig = {
                 video: `retain-on-failure`,
                 trace: `retain-on-failure`,
                 launchOptions: {
+                    args: [
+                        // `--disable-notifications`,
+                        `--disable-gpu`,
+                        `--disable-setuid-sandbox`,
+                        // `--deterministic-fetch`,
+                        // `--disable-features=IsolateOrigins,site-per-process`,
+                        // `--disable-site-isolation-trials`,
+                        // `--disable-web-security`,
+                    ],
                     slowMo: 0,
                 },
             },

@@ -16,9 +16,10 @@ jobs:
         url: [
           "https://eth.blockscout.com",
           "https://eth-sepolia.blockscout.com",
+          "https://eth-sepolia.k8s-dev.blockscout.com",
           "https://base.blockscout.com",
-#          "https://eth-sepolia.k8s-dev.blockscout.com",
-#          "http://gnosis.blockscout.com",
+          "https://gnosis.blockscout.com",
+          "https://optimism.blockscout.com"
 #          "https://gnosis-chiado.blockscout.com",
 #          "https://blockscout.com/astar",
 #          "https://blockscout.com/shiden",
@@ -43,7 +44,6 @@ jobs:
 #          "https://explorer.evm.testnet.shimmer.network",
 #          "https://zksync.blockscout.com",
 #          "https://stability-betanet.blockscout.com",
-#          "https://optimism.blockscout.com"
         ]
     steps:
       - uses: actions/checkout@v3
