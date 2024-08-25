@@ -132,7 +132,6 @@ export class NewHomePage extends CommonPage {
         await expect(this.page.getByText(`ERC-721`)).toBeVisible()
         await expect(this.page.getByText(`Max total supply`)).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
-        await expect(this.page.getByText(`Sponsored`)).toBeVisible()
         await expect(this.page.getByRole(`tab`, { name: `Inventory` })).toBeVisible()
         await expect(this.page.getByRole(`tab`, { name: `Token transfers` })).toBeVisible()
         await expect(this.page.getByRole(`tab`, { name: `Holders` })).toBeVisible()
@@ -151,7 +150,6 @@ export class NewHomePage extends CommonPage {
         // await expect(this.page.getByText(`Name`)).toBeVisible()
         // await expect(this.page.getByText(`Description`)).toBeVisible()
         // await expect(this.page.getByText(`Attributes`)).toBeVisible()
-        // await expect(this.page.getByText(`Sponsored`)).toBeVisible()
     }
 
     async checkInventoryERC721MetadataTab(data: any): Promise<void> {
@@ -173,7 +171,6 @@ export class NewHomePage extends CommonPage {
         await expect(this.page.getByText(`Max total supply`)).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
         await expect(this.page.getByText(`Decimals`)).toBeVisible()
-        await expect(this.page.getByText(`Sponsored`)).toBeVisible()
         await expect(this.page.getByRole(`tab`, { name: `Inventory` })).toBeVisible()
         await expect(this.page.getByRole(`tab`, { name: `Token transfers` })).toBeVisible()
         await expect(this.page.getByRole(`tab`, { name: `Holders` })).toBeVisible()
@@ -188,7 +185,6 @@ export class NewHomePage extends CommonPage {
         await expect(this.page.getByText(`Name`)).toBeVisible()
         await expect(this.page.getByText(`Description`)).toBeVisible()
         await expect(this.page.getByText(`Attributes`)).toBeVisible()
-        // await expect(this.page.getByText(`Sponsored`)).toBeVisible()
     }
 
     async checkInventoryERC404MetadataTab(data: any): Promise<void> {
@@ -205,7 +201,6 @@ export class NewHomePage extends CommonPage {
         await expect(this.page.getByText(`ERC-1155`)).toBeVisible()
         await expect(this.page.getByText(`Max total supply`)).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
-        await expect(this.page.getByText(`Sponsored`)).toBeVisible()
         await expect(this.page.getByRole(`tab`, { name: `Inventory` })).toBeVisible()
         await expect(this.page.getByRole(`tab`, { name: `Token transfers` })).toBeVisible()
         await expect(this.page.getByRole(`tab`, { name: `Holders` })).toBeVisible()
@@ -214,10 +209,7 @@ export class NewHomePage extends CommonPage {
 
     async checkInventoryERC1155Element(data: any): Promise<void> {
         await expect(this.page.getByText(`ERC-1155`)).toBeVisible()
-        // await expect(this.page.getByText(`Owner`, { exact: true })).toBeVisible()
-        // await expect(this.page.getByText(`Creator`)).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
-        await expect(this.page.getByText(`Sponsored`)).toBeVisible()
     }
 
     async checkInventoryERC1155MetadataTab(data: any): Promise<void> {
