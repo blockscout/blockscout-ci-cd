@@ -132,7 +132,6 @@ test(`@ScoutCloud Create New Instance, check UI, delete it`, async ({ request, n
             instance_url: `autotest-${instanceName}.cloud.blockscout.com`,
             rpc_url: process.env.SCOUTCLOUD_RPC_URL,
             server_size: process.env.SCOUTCLOUD_SERVER_SIZE,
-            chain_type: process.env.SCOUTCLOUD_CHAIN_TYPE,
             node_type: process.env.SCOUTCLOUD_NODE_TYPE,
         },
     })

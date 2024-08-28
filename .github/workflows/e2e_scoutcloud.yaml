@@ -19,12 +19,11 @@ on:
       chain_type:
         description: 'Chain type'
         required: true
-        default: 'ethereum'
         type: string
       node_type:
         description: 'Node type'
         required: true
-        default: 'geth'
+        default: 'GETH'
         type: string
   workflow_call:
     inputs:
@@ -41,12 +40,11 @@ on:
       chain_type:
         description: 'Chain type'
         required: true
-        default: 'ethereum'
         type: string
       node_type:
         description: 'Node type'
         required: true
-        default: 'geth'
+        default: 'GETH'
         type: string
 
 env:
@@ -54,7 +52,6 @@ env:
   SCOUTCLOUD_TOKEN: ${{ secrets.SCOUTCLOUD_TOKEN }}
   SCOUTCLOUD_RPC_URL: ${{ inputs.rpc_url }}
   SCOUTCLOUD_SERVER_SIZE: ${{ inputs.server_size }}
-  SCOUTCLOUD_CHAIN_TYPE: ${{ inputs.chain_type }}
   SCOUTCLOUD_NODE_TYPE: ${{ inputs.node_type }}
 
   PWDEBUG: 0
@@ -119,7 +116,6 @@ jobs:
         run: |
           echo "SCOUTCLOUD_RPC_URL=${{ inputs.rpc_url || 'https://node-e2e.k8s-dev.blockscout.com/http' }}" >> $GITHUB_ENV
           echo "SCOUTCLOUD_SERVER_SIZE=${{ inputs.server_size || 'small' }}" >> $GITHUB_ENV
-          echo "SCOUTCLOUD_CHAIN_TYPE=${{ inputs.chain_type || 'ethereum' }}" >> $GITHUB_ENV
           echo "SCOUTCLOUD_NODE_TYPE=${{ inputs.node_type || 'geth' }}" >> $GITHUB_ENV
       - name: Deploy and test ScoutCloud instance UI
         working-directory: blockscout-ci-cd/tests/e2e
