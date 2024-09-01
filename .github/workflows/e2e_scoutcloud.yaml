@@ -116,7 +116,7 @@ jobs:
         run: |
           echo "SCOUTCLOUD_RPC_URL=${{ inputs.rpc_url || 'https://node-e2e.k8s-dev.blockscout.com/http' }}" >> $GITHUB_ENV
           echo "SCOUTCLOUD_SERVER_SIZE=${{ inputs.server_size || 'small' }}" >> $GITHUB_ENV
-          echo "SCOUTCLOUD_NODE_TYPE=${{ inputs.node_type || 'geth' }}" >> $GITHUB_ENV
+          echo "SCOUTCLOUD_NODE_TYPE=${{ inputs.node_type || 'GETH' }}" >> $GITHUB_ENV
       - name: Deploy and test ScoutCloud instance UI
         working-directory: blockscout-ci-cd/tests/e2e
         run: |
