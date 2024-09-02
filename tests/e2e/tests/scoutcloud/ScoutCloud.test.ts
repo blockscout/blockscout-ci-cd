@@ -125,6 +125,7 @@ const getInstanceDeployments = async (r, instance) => {
 // eslint-disable-next-line no-shadow
 test(`@ScoutCloud Create New Instance, check UI, delete it`, async ({ request, newHomePage }) => {
     await deleteAllInstances(request)
+
     const instanceName = faker.random.alpha(8)
     const instanceID = await createInstance(request, {
         name: `autotest-${instanceName}`,
