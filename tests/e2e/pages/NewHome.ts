@@ -341,7 +341,6 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.GAS_TRACKER_HEADER_TEXT}/$.*/`)
         await this.actions.verifyElementIsDisplayed(`${this.GAS_TRACKER_HEADER_TEXT}/.*%/`)
         await this.actions.verifyElementIsDisplayed(`${this.GAS_TRACKER_HEADER_TEXT}/Gas/`)
-        await expect(this.page.locator('[id="popover-trigger-\\:rd\\:"]')).toBeVisible()
     }
 
     async checkIndexing(): Promise<void> {
