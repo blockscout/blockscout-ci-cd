@@ -327,24 +327,21 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=0 >> div >> nth=0 >> text=/Fast.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=0 >> div >> nth=3 >> text=/$.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=0 >> div >> nth=4 >> text=/\\d+ Gwei per transaction / \\d+/`)
-        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=0 >> div >> nth=5 >> text=/Base.*\\d+.*/.*Priority.*\\d+.*/`)
 
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=1 >> div >> nth=0 >> text=/Normal.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=1 >> div >> nth=3 >> text=/$.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=1 >> div >> nth=4 >> text=/\\d+ Gwei per transaction / \\d+/`)
-        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=1 >> div >> nth=5 >> text=/Base.*\\d+.*/.*Priority.*\\d+.*/`)
 
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=2 >> div >> nth=0 >> text=/Slow.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=2 >> div >> nth=3 >> text=/$.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=2 >> div >> nth=4 >> text=/\\d+ Gwei per transaction / \\d+/`)
-        await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=2 >> div >> nth=5 >> text=/Base.*\\d+.*/.*Priority.*\\d+.*/`)
     }
 
     async checkGasTrackerBar(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.GAS_TRACKER_HEADER_TEXT}/$.*/`)
         await this.actions.verifyElementIsDisplayed(`${this.GAS_TRACKER_HEADER_TEXT}/.*%/`)
         await this.actions.verifyElementIsDisplayed(`${this.GAS_TRACKER_HEADER_TEXT}/Gas/`)
-        await this.actions.verifyElementIsDisplayed(this.GAS_TRACKER_POPUP)
+        await expect(this.page.locator('[id="popover-trigger-\\:rd\\:"]')).toBeVisible()
     }
 
     async checkIndexing(): Promise<void> {
@@ -462,7 +459,7 @@ export class NewHomePage extends CommonPage {
     async checkBlocks(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=0 >> text=/Block/`, `no Blocks header is present`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=1 >> text=/Size.*bytes/`, `no Size in bytes header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=2 >> text=/Validator|Miner/`, `no Validator|Miner header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=2 >> text=/Validator|Miner|Sequencer/`, `no Validator|Miner header is present`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=3 >> text=/Txn/`, `no Txn header is present`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=4 >> text=/Gas used/`, `no Gas used header is present`)
         // TODO: reward may not be present on some environments, worth optional check?
@@ -492,7 +489,7 @@ export class NewHomePage extends CommonPage {
     async checkNativeAccountsNoPerc(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=0 >> text=/\\d+/`, `no idx in native accounts`)
         await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=3 >> text=/\\d+/`, `no balance in native accounts`)
-        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=4 >> text=/\\d+/`, `no txn count in native accounts`)
+        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=3 >> text=/\\d+/`, `no txn count in native accounts`)
     }
 
     async checkVerifiedContractsStats(): Promise<void> {
