@@ -175,13 +175,13 @@ export class AuthorizedArea extends CommonPage {
 
     async openAccount(options?: Object): Promise<void> {
         await this.actions.navigateToURL(process.env.BLOCKSCOUT_URL, options)
-        await this.actions.clickElement(this.SIGNED_IN)
+        await this.page.getByRole(`button`, { name: `profile menu` }).click()
         await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}auth/profile`, options)
     }
 
     async openWatchlist(options?: Object): Promise<void> {
         await this.actions.navigateToURL(process.env.BLOCKSCOUT_URL, options)
-        await this.actions.clickElement(this.SIGNED_IN)
+        await this.page.getByRole(`button`, { name: `profile menu` }).click()
         await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}account/watchlist`, options)
     }
 
@@ -243,7 +243,7 @@ export class AuthorizedArea extends CommonPage {
     }
 
     async signIn(email: string, password: string): Promise<void> {
-        await this.actions.clickElement(this.SIGN_IN)
+        await this.page.getByRole(`link`, { name: `profile menu` }).click()
         await this.actions.enterElementText(this.AUTH0_INPUT_USERNAME, email)
         await this.actions.enterElementText(this.AUTH0_INPUT_PASSWORD, password)
         await this.actions.clickElement(this.AUTH0_SUBMIT)

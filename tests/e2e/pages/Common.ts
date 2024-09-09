@@ -22,10 +22,6 @@ export class CommonPage {
 
     HEADER_STATS = `main >> div >> nth=8 >> div >> div`
 
-    SIGN_IN = `body >> div[data-label="hero plate"] >> a >> nth=0`
-
-    SIGNED_IN = `body >> div[data-label="hero plate"] >> div >> nth=2`
-
     ACCOUNT_MENU = `#navbarBlocksDropdown >> nth=1`
 
     AUTH0_SIGN_UP = `text=Sign up`
@@ -210,7 +206,7 @@ export class CommonPage {
 
     async signUp(email: string, password: string): Promise<void> {
         await this.actions.navigateToURL(process.env.BLOCKSCOUT_URL)
-        await this.actions.clickElement(this.SIGN_IN)
+        await this.page.getByRole(`link`, { name: `profile menu` }).click()
         await this.actions.clickElement(this.AUTH0_SIGN_UP)
         await this.actions.enterElementText(this.AUTH0_INPUT_EMAIL, email)
         await this.actions.enterElementText(this.AUTH0_INPUT_PASSWORD, password)
@@ -309,7 +305,7 @@ export class CommonPage {
 
     async isSignedIn(): Promise<void> {
         await this.page.reload()
-        await this.actions.clickElement(this.SIGNED_IN)
+        await this.page.getByRole(`link`, { name: `profile menu` }).click()
         await this.actions.verifyElementIsDisplayed(this.LOGGED_IN_AS, `login failed`)
     }
 }

@@ -2,8 +2,6 @@ import { WebActions } from "@lib/WebActions"
 import type { BrowserContext, Page } from 'playwright'
 
 export class HomePage {
-    SIGN_IN = `text=Sign in`
-
     SEARCH_INPUT = `#main-search-autocomplete`
 
     AD_BANNER = `#ad-banner`
