@@ -96,13 +96,6 @@ const deleteAllInstances = async (r) => {
     for (const i of instances[`items`]) {
         l.info(`Removing instance: ${i[`instance_id`]}`)
         // eslint-disable-next-line no-await-in-loop
-        const deploymentID = await updateStatus(r, i[`instance_id`], { action: `STOP` })
-        // eslint-disable-next-line no-await-in-loop
-        l.info(`Waiting for status: STOPPED`)
-        // eslint-disable-next-line no-await-in-loop
-        await waitForStatus(r, deploymentID, `STOPPED`, 10000, 50)
-
-        // eslint-disable-next-line no-await-in-loop
         const resp = await r.delete(`/api/v1/instances/${i[`instance_id`]}`)
         // eslint-disable-next-line no-await-in-loop
         const body = await resp.body()
