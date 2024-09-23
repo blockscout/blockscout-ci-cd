@@ -24,6 +24,7 @@ jobs:
           "https://polygon.blockscout.com",
           "https://explorer.immutable.com",
           "https://zkevm.blockscout.com"
+          "https://arbitrum.blockscout.com"
         ]
     steps:
       - uses: actions/checkout@v3
