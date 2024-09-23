@@ -23,7 +23,7 @@ jobs:
           "https://rootstock.blockscout.com",
           "https://polygon.blockscout.com",
           "https://explorer.immutable.com",
-          "https://zkevm.blockscout.com"
+          "https://zkevm.blockscout.com",
           "https://arbitrum.blockscout.com"
         ]
     steps:
