@@ -318,11 +318,10 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`text=/.*Gwei/`)
     }
 
-    async checkGasTrackerView(): Promise<void> {
+    async checkGasTrackerView(url: string): Promise<void> {
         await this.actions.navigateToURL(`${this.currentPage}/gas-tracker`)
         await this.actions.verifyElementIsDisplayed(`main >> text=/Network utilization \\d+.\\d+% — .* load/`)
         await this.actions.verifyElementIsDisplayed(`main >> text=/Last updated.*/`)
-        await this.actions.verifyElementIsDisplayed(`text=/Average gas price/`)
 
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=0 >> div >> nth=0 >> text=/Fast.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=0 >> div >> nth=3 >> text=/$.*/`)
@@ -335,6 +334,11 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=2 >> div >> nth=0 >> text=/Slow.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=2 >> div >> nth=3 >> text=/$.*/`)
         await this.actions.verifyElementIsDisplayed(`main >> ul >> li >> nth=2 >> div >> nth=4 >> text=/\\d+ Gwei per transaction / \\d+/`)
+
+        if (url.includes(`arbitrum`)) {
+            return
+        }
+        await this.actions.verifyElementIsDisplayed(`text=/Average gas price/`)
     }
 
     async checkGasTrackerBar(): Promise<void> {
@@ -458,7 +462,7 @@ export class NewHomePage extends CommonPage {
     async checkBlocks(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=0 >> text=/Block/`, `no Blocks header is present`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=1 >> text=/Size.*bytes/`, `no Size in bytes header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=2 >> text=/Validator|Miner|Sequencer/`, `no Validator|Miner header is present`)
+        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=2 >> text=/Validator|Miner|Sequencer|Poster/`, `no Validator|Miner header is present`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=3 >> text=/Txn/`, `no Txn header is present`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=4 >> text=/Gas used/`, `no Gas used header is present`)
         // TODO: reward may not be present on some environments, worth optional check?

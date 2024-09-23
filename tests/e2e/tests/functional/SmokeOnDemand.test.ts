@@ -19,7 +19,7 @@ test.beforeAll(async () => {
     try {
         staticData = JSON.parse(readFileSync(`static/${fileName}.json`).toString())
     } catch (err) {
-        console.log(chalk.red(`Error reading static data for ${fileName}, file should be named as domain in URL: ${u}`))
+        console.log(chalk.red(`Error reading static data for ${fileName}, file should be named as domain in URL: ${u}, err: ${err}`))
     }
 })
 
@@ -49,7 +49,7 @@ test(`@OnDemandSmoke Check transactions`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check search`, async ({ newHomePage }) => {
-    // await newHomePage.checkRequests(newHomePage.page)
+    await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(url)
     await newHomePage.search(staticData.search.query)
     await newHomePage.findInSearchItems(staticData.search.result)
@@ -96,7 +96,7 @@ test(`@OnDemandSmoke Check gas tracker`, async ({ newHomePage }) => {
     if (await newHomePage.isGasTrackerOn()) {
         await newHomePage.checkGasTrackerBar()
         await newHomePage.checkGasTrackerPopup()
-        await newHomePage.checkGasTrackerView()
+        await newHomePage.checkGasTrackerView(url)
     } else {
         console.log(chalk.yellow(`Gas Tracker is OFF!`))
     }
@@ -165,6 +165,10 @@ test(`@OnDemandSmoke Check contracts code tabs`, async ({ newHomePage }) => {
 
 test(`@OnDemandSmoke Check ERC-721 inventory tab`, async ({ newHomePage }) => {
     await newHomePage.checkRequests(newHomePage.page)
+    if (!staticData.erc721) {
+        console.log(`no erc-721 tokens exist`)
+        return
+    }
     await newHomePage.open_custom(`${url}/token/${staticData.erc721.address}`)
     await newHomePage.checkERC721Inventory(staticData.erc721)
     await newHomePage.open_custom(`${url}/token/${staticData.erc721.address}/instance/${staticData.erc721.instance}`)
@@ -187,6 +191,10 @@ test(`@OnDemandSmoke Check ERC-404 inventory tab`, async ({ newHomePage }) => {
 
 test(`@OnDemandSmoke Check ERC-1155 inventory tab`, async ({ newHomePage }) => {
     await newHomePage.checkRequests(newHomePage.page)
+    if (staticData.erc404 === undefined) {
+        console.log(`no erc-1155 tokens exist`)
+        return
+    }
     await newHomePage.open_custom(`${url}/token/${staticData.erc1155.address}`)
     await newHomePage.checkERC1155Inventory(staticData.erc1155)
     await newHomePage.open_custom(`${url}/token/${staticData.erc1155.address}/instance/${staticData.erc1155.instance}`)
