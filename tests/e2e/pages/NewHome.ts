@@ -310,6 +310,30 @@ export class NewHomePage extends CommonPage {
         return this.actions.page.isVisible(this.GAS_TRACKER_ON)
     }
 
+    async isL1L2DepositsEnabled(): Promise<boolean> {
+        await this.actions.page.hover(`text=/Blockchain/`)
+        await this.delay(1000)
+        return this.actions.page.isVisible(`text=/Deposits.*/`)
+    }
+
+    async isL1L2WithdrawalsEnabled(): Promise<boolean> {
+        await this.actions.page.hover(`text=/Blockchain/`)
+        await this.delay(1000)
+        return this.actions.page.isVisible(`text=/Withdrawals.*/`)
+    }
+
+    async isL1L2TxnBatchesEnabled(): Promise<boolean> {
+        await this.actions.page.hover(`text=/Blockchain/`)
+        await this.delay(1000)
+        return this.actions.page.isVisible(`text=/Txn batches.*/`)
+    }
+
+    async isL1L2OutputRootsEnabled(): Promise<boolean> {
+        await this.actions.page.hover(`text=/Blockchain/`)
+        await this.delay(1000)
+        return this.actions.page.isVisible(`text=/Output roots/`)
+    }
+
     async checkGasTrackerPopup(): Promise<void> {
         await this.actions.page.hover(this.GAS_TRACKER_HEADER_URL)
         await this.delay(2000)
