@@ -328,6 +328,12 @@ export class NewHomePage extends CommonPage {
         return this.actions.page.isVisible(`text=/Txn batches.*/`)
     }
 
+    async isL1L2OutputRootsEnabled(): Promise<boolean> {
+        await this.actions.page.hover(`text=/Blockchain/`)
+        await this.delay(1000)
+        return this.actions.page.isVisible(`text=/Output roots/`)
+    }
+
     async checkGasTrackerPopup(): Promise<void> {
         await this.actions.page.hover(this.GAS_TRACKER_HEADER_URL)
         await this.delay(2000)

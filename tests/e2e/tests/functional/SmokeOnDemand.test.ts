@@ -210,6 +210,7 @@ test(`@OnDemandSmoke Check L1->L2 Deposits`, async ({ newHomePage }) => {
         await newHomePage.open_custom(`${url}/deposits`)
     } else {
         console.log(chalk.yellow(`L1->L2 Deposits are OFF!`))
+        return
     }
     const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
     const row = await newHomePage.actions.page.locator(`table >> tr >> nth=1 >> td`).all()
@@ -231,6 +232,24 @@ test(`@OnDemandSmoke Check L1->L2 Deposits`, async ({ newHomePage }) => {
         expect(await row[4].textContent()).toMatch(/0x.*/)
         expect(await row[5].textContent()).toMatch(/\d+/)
     }
+    if (url.includes(`base`)) {
+        expect(header).toEqual(`L1 block NoL2 txn hashAgeL1 txn hashL1 txn originGas limit`)
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/0x.*/)
+        expect(await row[2].textContent()).toMatch(/ago.*/)
+        expect(await row[3].textContent()).toMatch(/0x.*/)
+        expect(await row[4].textContent()).toMatch(/\d+/)
+    }
+    if (url.includes(`zkevm`)) {
+        expect(header).toEqual(`L1 blockIndexL1 txn hashAgeL2 txn hashValueToken`)
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/\d+/)
+        expect(await row[2].textContent()).toMatch(/0x.*/)
+        expect(await row[3].textContent()).toMatch(/.*ago/)
+        expect(await row[4].textContent()).toMatch(/0x.*/)
+        expect(await row[5].textContent()).toMatch(/\d+/)
+        expect(await row[6].textContent()).toMatch(/ETH/)
+    }
 })
 
 test(`@OnDemandSmoke Check L1->L2 Withdrawals`, async ({ newHomePage }) => {
@@ -240,6 +259,7 @@ test(`@OnDemandSmoke Check L1->L2 Withdrawals`, async ({ newHomePage }) => {
         await newHomePage.open_custom(`${url}/withdrawals`)
     } else {
         console.log(chalk.yellow(`L1->L2 Withdrawals are OFF!`))
+        return
     }
     const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
     const row = await newHomePage.actions.page.locator(`table >> tr >> nth=1 >> td`).all()
@@ -253,12 +273,32 @@ test(`@OnDemandSmoke Check L1->L2 Withdrawals`, async ({ newHomePage }) => {
         expect(await row[5].textContent()).toMatch(/N\/A/)
     }
     if (url.includes(`optimism`)) {
+        expect(header).toEqual(`Msg nonceFromL2 txn hashAgeStatusL1 txn hashTime left`)
         expect(await row[0].textContent()).toMatch(/\d+/)
         expect(await row[1].textContent()).toMatch(/0x.*|N\/A/)
         expect(await row[2].textContent()).toMatch(/0x.*/)
         expect(await row[3].textContent()).toMatch(/.*ago|N\/A/)
         expect(await row[4].textContent()).toMatch(/Waiting.*|Ready to prove/)
         expect(await row[5].textContent()).toMatch(/N\/A/)
+    }
+    if (url.includes(`base`)) {
+        expect(header).toEqual(`Msg nonceFromL2 txn hashAgeStatusL1 txn hashTime left`)
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/0x.*/)
+        expect(await row[2].textContent()).toMatch(/0x.*/)
+        expect(await row[3].textContent()).toMatch(/ago.*/)
+        expect(await row[4].textContent()).toMatch(/Waiting.*|Ready to prove/)
+        expect(await row[5].textContent()).toMatch(/N\/A/)
+    }
+    if (url.includes(`zkevm`)) {
+        expect(header).toEqual(`BlockIndexL2 txn hashAgeL1 txn hashValueToken`)
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/\d+/)
+        expect(await row[2].textContent()).toMatch(/0x.*/)
+        expect(await row[3].textContent()).toMatch(/ago.*/)
+        expect(await row[4].textContent()).toMatch(/Pending Claim|0x.*/)
+        expect(await row[5].textContent()).toMatch(/\d+/)
+        expect(await row[6].textContent()).toMatch(/ETH/)
     }
 })
 
@@ -269,6 +309,7 @@ test(`@OnDemandSmoke Check L1->L2 Txn batches`, async ({ newHomePage }) => {
         await newHomePage.open_custom(`${url}/batches`)
     } else {
         console.log(chalk.yellow(`L1->L2 Txn batches are OFF!`))
+        return
     }
     const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
     const row = await newHomePage.actions.page.locator(`table >> tr >> nth=1 >> td`).all()
@@ -287,5 +328,61 @@ test(`@OnDemandSmoke Check L1->L2 Txn batches`, async ({ newHomePage }) => {
         expect(await row[1].textContent()).toMatch(/\d+/)
         expect(await row[2].textContent()).toMatch(/\d+/)
         expect(await row[3].textContent()).toMatch(/.*ago/)
+    }
+    if (url.includes(`base`)) {
+        for (const sel of row) {
+            // eslint-disable-next-line no-await-in-loop
+            console.log(`data: ${await sel.textContent()}`)
+        }
+        expect(header).toEqual(`L2 block #L2 block txn countL1 txn hashAge`)
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/\d+/)
+        expect(await row[2].textContent()).toMatch(/\d+/)
+        expect(await row[3].textContent()).toMatch(/.*ago/)
+    }
+    if (url.includes(`zkevm`)) {
+        expect(header).toEqual(`Batch #StatusAgeTxn countVerify tx hashSequence hash`)
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/Unfinalized|L1 Sequence Confirmed|Finalized/)
+        expect(await row[2].textContent()).toMatch(/Undefined/)
+        expect(await row[3].textContent()).toMatch(/\d+/)
+        expect(await row[4].textContent()).toMatch(/Pending|0x.*/)
+        expect(await row[5].textContent()).toMatch(/Pending|0x.*/)
+    }
+})
+
+test(`@OnDemandSmoke Check L1->L2 Output roots`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
+    await newHomePage.open_custom(url)
+    if (await newHomePage.isL1L2OutputRootsEnabled()) {
+        await newHomePage.open_custom(`${url}/output-roots`)
+    } else {
+        console.log(chalk.yellow(`L1->L2 output roots are OFF!`))
+        return
+    }
+    const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
+    const row = await newHomePage.actions.page.locator(`table >> tr >> nth=1 >> td`).all()
+    expect(header).toEqual(`L2 output indexAgeL2 block #L1 txn hashOutput root`)
+    expect(await row[0].textContent()).toMatch(/\d+/)
+    expect(await row[1].textContent()).toMatch(/.*ago/)
+    expect(await row[2].textContent()).toMatch(/\d+/)
+    expect(await row[3].textContent()).toMatch(/0x.*/)
+    expect(await row[4].textContent()).toMatch(/0x.*/)
+})
+
+test(`@OnDemandSmoke Check L1->L2 Optimism dispute games`, async ({ newHomePage }) => {
+    if (url.includes(`optimism`)) {
+        await newHomePage.checkRequests(newHomePage.page)
+        await newHomePage.open_custom(`${url}/dispute-games`)
+        const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
+        const row = await newHomePage.actions.page.locator(`table >> tr >> nth=1 >> td`).all()
+        expect(header).toEqual(`IndexGame typeAddressL2 block #AgeStatusResolution age`)
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/\d+/)
+        expect(await row[2].textContent()).toMatch(/0x.*/)
+        expect(await row[3].textContent()).toMatch(/\d+/)
+        expect(await row[4].textContent()).toMatch(/.*ago/)
+        expect(await row[5].textContent()).toMatch(/In progress|Defender wins/)
+        expect(await row[6].textContent()).toMatch(/N\/A/)
     }
 })
