@@ -1,6 +1,7 @@
 import test from '@lib/BaseTest'
 import chalk from "chalk"
 import { readFileSync } from "fs"
+import { expect } from "@playwright/test"
 
 test.describe.configure({ mode: `parallel` })
 /*
@@ -200,4 +201,91 @@ test(`@OnDemandSmoke Check ERC-1155 inventory tab`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`${url}/token/${staticData.erc1155.address}/instance/${staticData.erc1155.instance}`)
     await newHomePage.checkInventoryERC1155Element(staticData.erc1155)
     await newHomePage.checkInventoryERC1155MetadataTab(staticData.erc1155)
+})
+
+test(`@OnDemandSmoke Check L1->L2 Deposits`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
+    await newHomePage.open_custom(url)
+    if (await newHomePage.isL1L2DepositsEnabled()) {
+        await newHomePage.open_custom(`${url}/deposits`)
+    } else {
+        console.log(chalk.yellow(`L1->L2 Deposits are OFF!`))
+    }
+    const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
+    const row = await newHomePage.actions.page.locator(`table >> tr >> nth=1 >> td`).all()
+    if (url.includes(`arbitrum`)) {
+        expect(header).toEqual(`L1 blockMessage #L2 transactionAgeStatusL1 transaction`)
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/\d+/)
+        expect(await row[2].textContent()).toMatch(/N\/A/)
+        expect(await row[3].textContent()).toMatch(/.*ago/)
+        expect(await row[4].textContent()).toMatch(/Pending|Finalized|Waiting/)
+        expect(await row[5].textContent()).toMatch(/0x.*/)
+    }
+    if (url.includes(`optimism`)) {
+        expect(header).toEqual(`L1 block NoL2 txn hashAgeL1 txn hashL1 txn originGas limit`)
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/0x.*/)
+        expect(await row[2].textContent()).toMatch(/ago.*/)
+        expect(await row[3].textContent()).toMatch(/0x.*/)
+        expect(await row[4].textContent()).toMatch(/0x.*/)
+        expect(await row[5].textContent()).toMatch(/\d+/)
+    }
+})
+
+test(`@OnDemandSmoke Check L1->L2 Withdrawals`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
+    await newHomePage.open_custom(url)
+    if (await newHomePage.isL1L2WithdrawalsEnabled()) {
+        await newHomePage.open_custom(`${url}/withdrawals`)
+    } else {
+        console.log(chalk.yellow(`L1->L2 Withdrawals are OFF!`))
+    }
+    const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
+    const row = await newHomePage.actions.page.locator(`table >> tr >> nth=1 >> td`).all()
+    if (url.includes(`arbitrum`)) {
+        expect(header).toEqual(`FromMessage #L2 transactionAgeStatusL1 transaction`)
+        expect(await row[0].textContent()).toMatch(/0x.*/)
+        expect(await row[1].textContent()).toMatch(/\d+/)
+        expect(await row[2].textContent()).toMatch(/0x.*/)
+        expect(await row[3].textContent()).toMatch(/.*ago/)
+        expect(await row[4].textContent()).toMatch(/Pending|Finalized|Waiting/)
+        expect(await row[5].textContent()).toMatch(/N\/A/)
+    }
+    if (url.includes(`optimism`)) {
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/0x.*|N\/A/)
+        expect(await row[2].textContent()).toMatch(/0x.*/)
+        expect(await row[3].textContent()).toMatch(/.*ago|N\/A/)
+        expect(await row[4].textContent()).toMatch(/Waiting.*|Ready to prove/)
+        expect(await row[5].textContent()).toMatch(/N\/A/)
+    }
+})
+
+test(`@OnDemandSmoke Check L1->L2 Txn batches`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
+    await newHomePage.open_custom(url)
+    if (await newHomePage.isL1L2TxnBatchesEnabled()) {
+        await newHomePage.open_custom(`${url}/batches`)
+    } else {
+        console.log(chalk.yellow(`L1->L2 Txn batches are OFF!`))
+    }
+    const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
+    const row = await newHomePage.actions.page.locator(`table >> tr >> nth=1 >> td`).all()
+    if (url.includes(`arbitrum`)) {
+        expect(header).toEqual(`Batch #L1 statusL1 blockBlock countL1 transactionAgeTxn count`)
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/Unfinalizedblob|Finalizedblob/)
+        expect(await row[2].textContent()).toMatch(/\d+/)
+        expect(await row[3].textContent()).toMatch(/\d+/)
+        expect(await row[4].textContent()).toMatch(/0x.*/)
+        expect(await row[5].textContent()).toMatch(/\d+/)
+    }
+    if (url.includes(`optimism`)) {
+        expect(header).toEqual(`L2 block #L2 block txn countL1 txn hashAge`)
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/\d+/)
+        expect(await row[2].textContent()).toMatch(/\d+/)
+        expect(await row[3].textContent()).toMatch(/.*ago/)
+    }
 })
