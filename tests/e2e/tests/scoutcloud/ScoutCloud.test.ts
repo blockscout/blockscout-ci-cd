@@ -95,6 +95,13 @@ const deleteAllInstances = async (r) => {
     l.info(`Instances: ${JSON.stringify(instances, null, 2)}`)
     for (const i of instances[`items`]) {
         l.info(`Removing instance: ${i[`instance_id`]}`)
+        // // eslint-disable-next-line no-await-in-loop
+        const deploymentID = await updateStatus(r, i[`instance_id`], { action: `STOP` })
+        // eslint-disable-next-line no-await-in-loop
+        l.info(`Waiting for status: STOPPED`)
+        // eslint-disable-next-line no-await-in-loop
+        await waitForStatus(r, deploymentID, `STOPPED`, 10000, 50)
+
         // eslint-disable-next-line no-await-in-loop
         const resp = await r.delete(`/api/v1/instances/${i[`instance_id`]}`)
         // eslint-disable-next-line no-await-in-loop
@@ -129,7 +136,7 @@ test(`@ScoutCloud Create New Instance, check UI, delete it`, async ({ request, n
         },
     })
     const deploymentID = await updateStatus(request, instanceID, { action: `START` })
-    await waitForStatus(request, deploymentID, `RUNNING`, 10000, 70)
+    await waitForStatus(request, deploymentID, `RUNNING`, 20000, 70)
     const status = await getDeployment(request, deploymentID)
     const url = status[`blockscout_url`]
     l.info(`Blockscout URL: ${status[`blockscout_url`]}`)
