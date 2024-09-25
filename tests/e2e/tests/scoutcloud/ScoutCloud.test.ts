@@ -119,9 +119,9 @@ const getInstanceDeployments = async (r, instance) => {
     l.debug(`body: ${body}`)
 }
 
-test.only(`@ScoutCloud Clean up all instances`, async ({ request }) => {
-    await deleteAllInstances(request)
-})
+// test.only(`@ScoutCloud Clean up all instances`, async ({ request }) => {
+//     await deleteAllInstances(request)
+// })
 
 // eslint-disable-next-line no-shadow
 test(`@ScoutCloud Create New Instance, check UI, delete it`, async ({ request, newHomePage }) => {
