@@ -373,7 +373,7 @@ test(`@OnDemandSmoke Check L1->L2 Txn batches`, async ({ newHomePage }) => {
     if (url.includes(`zksync`)) {
         expect(header).toEqual(`Batch #StatusAgeTxn countCommit txProve tx`)
         expect(await row[0].textContent()).toMatch(/\d+/)
-        expect(await row[1].textContent()).toMatch(/Sent to L1|Validated on L1/)
+        expect(await row[1].textContent()).toMatch(/Sealed on L2|Sent to L1|Validated on L1/)
         expect(await row[2].textContent()).toMatch(/.*ago/)
         expect(await row[3].textContent()).toMatch(/\d+/)
         expect(await row[4].textContent()).toMatch(/Pending|0x.*/)
