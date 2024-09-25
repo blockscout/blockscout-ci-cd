@@ -24,7 +24,9 @@ jobs:
           "https://polygon.blockscout.com",
           "https://explorer.immutable.com",
           "https://zkevm.blockscout.com",
-          "https://arbitrum.blockscout.com"
+          "https://arbitrum.blockscout.com",
+          "https://zksync.blockscout.com",
+          "https://www.shibariumscan.io"
         ]
     steps:
       - uses: actions/checkout@v3

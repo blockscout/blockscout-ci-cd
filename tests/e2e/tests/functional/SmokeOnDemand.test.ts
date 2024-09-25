@@ -214,6 +214,18 @@ test(`@OnDemandSmoke Check L1->L2 Deposits`, async ({ newHomePage }) => {
     }
     const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
     const row = await newHomePage.actions.page.locator(`table >> tr >> nth=1 >> td`).all()
+    if (url.includes(`www`)) {
+        for (const sel of row) {
+            // eslint-disable-next-line no-await-in-loop
+            console.log(`data: ${await sel.textContent()}`)
+        }
+        expect(header).toEqual(`L1 block NoL1 txn hashL2 txn hashUserAge`)
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/0x.*/)
+        expect(await row[2].textContent()).toMatch(/0x.*/)
+        expect(await row[3].textContent()).toMatch(/0x.*/)
+        expect(await row[4].textContent()).toMatch(/.*ago/)
+    }
     if (url.includes(`arbitrum`)) {
         expect(header).toEqual(`L1 blockMessage #L2 transactionAgeStatusL1 transaction`)
         expect(await row[0].textContent()).toMatch(/\d+/)
@@ -252,7 +264,7 @@ test(`@OnDemandSmoke Check L1->L2 Deposits`, async ({ newHomePage }) => {
     }
 })
 
-test(`@OnDemandSmoke Check L1->L2 Withdrawals`, async ({ newHomePage }) => {
+test.only(`@OnDemandSmoke Check L1->L2 Withdrawals`, async ({ newHomePage }) => {
     await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(url)
     if (await newHomePage.isL1L2WithdrawalsEnabled()) {
@@ -263,6 +275,15 @@ test(`@OnDemandSmoke Check L1->L2 Withdrawals`, async ({ newHomePage }) => {
     }
     const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
     const row = await newHomePage.actions.page.locator(`table >> tr >> nth=1 >> td`).all()
+    if (url.includes(`www`)) {
+        expect(header).toEqual(`L2 block NoL2 txn hashL1 txn hashUserAge`)
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/0x.*/)
+        expect(await row[2].textContent()).toMatch(/0x.*/)
+        expect(await row[3].textContent()).toMatch(/0x.*/)
+        expect(await row[4].textContent()).toMatch(/.*ago/)
+    }
+
     if (url.includes(`arbitrum`)) {
         expect(header).toEqual(`FromMessage #L2 transactionAgeStatusL1 transaction`)
         expect(await row[0].textContent()).toMatch(/0x.*/)
@@ -345,6 +366,15 @@ test(`@OnDemandSmoke Check L1->L2 Txn batches`, async ({ newHomePage }) => {
         expect(await row[0].textContent()).toMatch(/\d+/)
         expect(await row[1].textContent()).toMatch(/Unfinalized|L1 Sequence Confirmed|Finalized/)
         expect(await row[2].textContent()).toMatch(/Undefined/)
+        expect(await row[3].textContent()).toMatch(/\d+/)
+        expect(await row[4].textContent()).toMatch(/Pending|0x.*/)
+        expect(await row[5].textContent()).toMatch(/Pending|0x.*/)
+    }
+    if (url.includes(`zksync`)) {
+        expect(header).toEqual(`Batch #StatusAgeTxn countCommit txProve tx`)
+        expect(await row[0].textContent()).toMatch(/\d+/)
+        expect(await row[1].textContent()).toMatch(/Sent to L1|Validated on L1/)
+        expect(await row[2].textContent()).toMatch(/.*ago/)
         expect(await row[3].textContent()).toMatch(/\d+/)
         expect(await row[4].textContent()).toMatch(/Pending|0x.*/)
         expect(await row[5].textContent()).toMatch(/Pending|0x.*/)
