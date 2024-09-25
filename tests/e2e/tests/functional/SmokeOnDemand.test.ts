@@ -264,7 +264,7 @@ test(`@OnDemandSmoke Check L1->L2 Deposits`, async ({ newHomePage }) => {
     }
 })
 
-test.only(`@OnDemandSmoke Check L1->L2 Withdrawals`, async ({ newHomePage }) => {
+test(`@OnDemandSmoke Check L1->L2 Withdrawals`, async ({ newHomePage }) => {
     await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(url)
     if (await newHomePage.isL1L2WithdrawalsEnabled()) {
