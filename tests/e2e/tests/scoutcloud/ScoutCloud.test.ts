@@ -96,6 +96,7 @@ const deleteAllInstances = async (r) => {
     for (const i of instances[`items`]) {
         l.info(`Removing instance: ${i[`instance_id`]}`)
         // // eslint-disable-next-line no-await-in-loop
+        // eslint-disable-next-line no-await-in-loop
         const deploymentID = await updateStatus(r, i[`instance_id`], { action: `STOP` })
         // eslint-disable-next-line no-await-in-loop
         l.info(`Waiting for status: STOPPED`)
@@ -118,9 +119,9 @@ const getInstanceDeployments = async (r, instance) => {
     l.debug(`body: ${body}`)
 }
 
-// test.only(`@ScoutCloud Clean up all instances`, async ({ request }) => {
-//     await deleteAllInstances(request)
-// })
+test.only(`@ScoutCloud Clean up all instances`, async ({ request }) => {
+    await deleteAllInstances(request)
+})
 
 // eslint-disable-next-line no-shadow
 test(`@ScoutCloud Create New Instance, check UI, delete it`, async ({ request, newHomePage }) => {
