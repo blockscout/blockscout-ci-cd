@@ -16,11 +16,11 @@ let staticData
 
 test.beforeAll(async () => {
     const u = url.endsWith(`/`) ? url.slice(0, -1) : url
-    const fileName = u.split(`//`)[1].split(`.`).slice(0, -2).join(`.`)
+    const fileName = u.split(`//`)[1].split(`.`).slice(0, -1).join(`.`)
     try {
         staticData = JSON.parse(readFileSync(`static/${fileName}.json`).toString())
     } catch (err) {
-        console.log(chalk.red(`Error reading static data for ${fileName}, file should be named as domain in URL: ${u}, err: ${err}`))
+        console.log(chalk.red(`Error reading static data for ${fileName}, file should be named as first two domain sections of URL: ${u}, err: ${err}`))
     }
 })
 
@@ -58,6 +58,7 @@ test(`@OnDemandSmoke Check search`, async ({ newHomePage }) => {
 
 test(`@OnDemandSmoke Check stats`, async ({ newHomePage }) => {
     await newHomePage.checkRequests(newHomePage.page)
+    await newHomePage.open_custom(url)
     if (await newHomePage.isStatsEnabled()) {
         await newHomePage.open_custom(`${url}/stats`)
         await newHomePage.checkStatsCounters()
@@ -215,10 +216,6 @@ test(`@OnDemandSmoke Check L1->L2 Deposits`, async ({ newHomePage }) => {
     const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
     const row = await newHomePage.actions.page.locator(`table >> tr >> nth=1 >> td`).all()
     if (url.includes(`www`)) {
-        for (const sel of row) {
-            // eslint-disable-next-line no-await-in-loop
-            console.log(`data: ${await sel.textContent()}`)
-        }
         expect(header).toEqual(`L1 block NoL1 txn hashL2 txn hashUserAge`)
         expect(await row[0].textContent()).toMatch(/\d+/)
         expect(await row[1].textContent()).toMatch(/0x.*/)

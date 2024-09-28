@@ -19,7 +19,7 @@ export class NewHomePage extends CommonPage {
 
     TXNS_FIELDS = `body >> div >> nth=98 >> div >> div >> div >> div >> div >> div >> div`
 
-    MONTHS_REGEX = `/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec/`
+    MONTHS_REGEX = `/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/`
 
     NATIVE_ACCOUNTS_ROW = `table >> tr >> nth=1 >> td`
 
@@ -556,7 +556,7 @@ export class NewHomePage extends CommonPage {
     }
 
     async checkStatsGraphsDisplayed(): Promise<void> {
-        await this.displayed_in_parent(`text=/Accounts growth/`, `text=${this.MONTHS_REGEX}`, 3, `no accounts growth`)
+        await this.displayed_in_parent(`text=/Accounts growth|Number of accounts/`, `text=${this.MONTHS_REGEX}`, 3, `no accounts growth`)
         await this.displayed_in_parent(`text=/Active accounts/`, `text=${this.MONTHS_REGEX}`, 3, `no active accounts`)
         await this.displayed_in_parent(`text=/New accounts/`, `text=${this.MONTHS_REGEX}`, 3, `no new accounts`)
 
@@ -566,19 +566,19 @@ export class NewHomePage extends CommonPage {
         await this.displayed_in_parent(`text=/New blocks/`, `text=${this.MONTHS_REGEX}`, 3, `no new blocks`)
 
         await this.displayed_in_parent(`text=/New verified contracts/`, `text=${this.MONTHS_REGEX}`, 3)
-        await this.displayed_in_parent(`text=/Verified contracts growth/`, `text=${this.MONTHS_REGEX}`, 3, `no verified contracts growth`)
+        await this.displayed_in_parent(`text=/Verified contracts growth|Number of verified contracts/`, `text=${this.MONTHS_REGEX}`, 3, `no verified contracts growth`)
 
         await this.displayed_in_parent(`text=/Average gas limit/`, `text=${this.MONTHS_REGEX}`, 3, `no avg gas limit`)
         await this.displayed_in_parent(`text=/Average gas price/`, `text=${this.MONTHS_REGEX}`, 3, `no avg gas price`)
-        await this.displayed_in_parent(`text=/Gas used growth/`, `text=${this.MONTHS_REGEX}`, 3, `no gas used growth`)
+        await this.displayed_in_parent(`text=/Gas used growth|Total gas usage/`, `text=${this.MONTHS_REGEX}`, 3, `no gas used growth`)
 
         await this.displayed_in_parent(`text=/New .* transfers/`, `text=${this.MONTHS_REGEX}`, 3, `no new native coin transfers`)
 
         await this.displayed_in_parent(`text=/Average transaction fee/`, `text=${this.MONTHS_REGEX}`, 3, `no avg transaction fee`)
         await this.displayed_in_parent(`text=/New transactions/`, `text=${this.MONTHS_REGEX}`, 3, `no new transactions`)
-        await this.displayed_in_parent(`text=/Transactions fees/`, `text=${this.MONTHS_REGEX}`, 3, `no transactions fees`)
-        await this.displayed_in_parent(`text=/Transactions growth/`, `text=${this.MONTHS_REGEX}`, 3, `no transactions growth`)
-        await this.displayed_in_parent(`text=/Transactions success rate/`, `text=${this.MONTHS_REGEX}`, 3, `no transactions success rate`)
+        await this.displayed_in_parent(`text=/Transaction fees/`, `text=${this.MONTHS_REGEX}`, 3, `no transactions fees`)
+        await this.displayed_in_parent(`text=/Transaction growth|Number of transactions/`, `text=${this.MONTHS_REGEX}`, 3, `no transactions growth`)
+        await this.displayed_in_parent(`text=/Transaction success rate/`, `text=${this.MONTHS_REGEX}`, 3, `no transactions success rate`)
     }
 
     async checkBlocksWidget(): Promise<void> {
