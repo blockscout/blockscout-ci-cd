@@ -8,11 +8,6 @@
     "instance": "20435313",
     "metadata": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaW5ZTWluIG1lZXQiIHZpZXdCb3g9IjAgMCAzNTAgMzUwIj48c3R5bGU+LmJhc2UgeyBmaWxsOiB3aGl0ZTsgZm9udC1mYW1pbHk6IEhlbHZldGljYTsgZm9udC1zaXplOiAzMHB4OyB9PC9zdHlsZT48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJoc2woMTM5LCA5NiUsIDM4JSkiLz48dGV4dCB4PSIzMyUiIHk9IjUwJSIgY2xhc3M9ImJhc2UiPjIwNDM1MzEzPC90ZXh0Pjwvc3ZnPg=="
   },
-  "erc404": {
-    "address": "",
-    "instance": "",
-    "metadata": ""
-  },
   "erc1155": {
     "address": "0x7E8f28A51471A9A434505aC58Ded39c422e73028",
     "instance": "2",

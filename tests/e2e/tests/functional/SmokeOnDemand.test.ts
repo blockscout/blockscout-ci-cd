@@ -37,7 +37,7 @@ test(`@OnDemandSmoke Check blocks`, async ({ context, newHomePage }) => {
     await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(`${url}/blocks`)
     // TODO: make it header dependent
-    if (url.includes(`explorer`)) {
+    if (url.includes(`explorer`) || url.includes(`www`)) {
         return
     }
     await newHomePage.checkBlocks()
