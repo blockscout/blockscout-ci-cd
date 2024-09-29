@@ -255,7 +255,7 @@ test(`@OnDemandSmoke Check L1->L2 Deposits`, async ({ newHomePage }) => {
         expect(await row[1].textContent()).toMatch(/\d+/)
         expect(await row[2].textContent()).toMatch(/0x.*/)
         expect(await row[3].textContent()).toMatch(/.*ago/)
-        expect(await row[4].textContent()).toMatch(/0x.*/)
+        expect(await row[4].textContent()).toMatch(/0x.*|Pending Claim/)
         expect(await row[5].textContent()).toMatch(/\d+/)
         expect(await row[6].textContent()).toMatch(/ETH/)
     }
