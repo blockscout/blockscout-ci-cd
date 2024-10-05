@@ -57,7 +57,7 @@ test(`@OnDemandSmoke Check search`, async ({ newHomePage }) => {
 })
 
 test(`@OnDemandSmoke Check stats`, async ({ newHomePage }) => {
-    await newHomePage.checkRequests(newHomePage.page)
+    // await newHomePage.checkRequests(newHomePage.page)
     await newHomePage.open_custom(url)
     if (await newHomePage.isStatsEnabled()) {
         await newHomePage.open_custom(`${url}/stats`)

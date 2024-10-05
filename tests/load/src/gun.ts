@@ -24,7 +24,7 @@ export const shoot = (client: any, req: Request): Response => {
     case `all`:
         console.debug(JSON.stringify(resp))
         break
-    case undefined:
+    case `none`:
         break
     default:
         throw Error(`unknown LOKI_DEBUG type: ${__ENV.LOKI_GUN_DEBUG}`)
