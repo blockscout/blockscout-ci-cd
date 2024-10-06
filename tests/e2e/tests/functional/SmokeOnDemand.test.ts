@@ -341,11 +341,13 @@ test(`@OnDemandSmoke Check L1->L2 Txn batches`, async ({ newHomePage }) => {
         expect(await row[5].textContent()).toMatch(/\d+/)
     }
     if (url.includes(`optimism`)) {
-        expect(header).toEqual(`L2 block #L2 block txn countL1 txn hashAge`)
+        expect(header).toEqual(`Batch IDStorageAgeL1 txn countL2 blocksTxn`)
         expect(await row[0].textContent()).toMatch(/\d+/)
-        expect(await row[1].textContent()).toMatch(/\d+/)
-        expect(await row[2].textContent()).toMatch(/\d+/)
-        expect(await row[3].textContent()).toMatch(/.*ago/)
+        expect(await row[1].textContent()).toMatch(/EIP-4844 blob/)
+        expect(await row[2].textContent()).toMatch(/.*ago/)
+        expect(await row[3].textContent()).toMatch(/\d+/)
+        expect(await row[4].textContent()).toMatch(/\d+/)
+        expect(await row[5].textContent()).toMatch(/\d+/)
     }
     if (url.includes(`base`)) {
         expect(header).toEqual(`Batch IDStorageAgeL1 txn countL2 blocksTxn`)
