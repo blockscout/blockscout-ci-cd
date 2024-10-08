@@ -14,8 +14,9 @@ jobs:
       fail-fast: false
       matrix:
         url: [
-          "https://eth.blockscout.com",
+          "https://eth-sepolia.k8s-dev.blockscout.com",
           "https://eth-sepolia.blockscout.com",
+          "https://eth.blockscout.com",
           "https://base.blockscout.com",
           "https://gnosis.blockscout.com",
           "https://optimism.blockscout.com",

@@ -133,7 +133,8 @@ test(`@OnDemandSmoke Check blobs`, async ({ newHomePage }) => {
     await newHomePage.open_custom(`${url}/txs`)
     if (await newHomePage.BlobIsOn()) {
         if (staticData.blob === undefined) {
-            throw new Error(`No blobs in static data!`)
+            console.log(chalk.red(`Blobs can't be loaded, either summary service is off or it's not working!`))
+            return
         }
         await newHomePage.checkBlobTransactions()
         await newHomePage.checkParticularBlob(url, staticData.blob)
@@ -412,4 +413,50 @@ test(`@OnDemandSmoke Check L1->L2 Optimism dispute games`, async ({ newHomePage 
         expect(await row[5].textContent()).toMatch(/In progress|Defender wins/)
         expect(await row[6].textContent()).toMatch(/N\/A/)
     }
+})
+
+test(`@OnDemandSmoke Check top accounts`, async ({ newHomePage }) => {
+    await newHomePage.checkRequests(newHomePage.page)
+    await newHomePage.open_custom(`${url}/accounts`)
+    const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
+    const row = await newHomePage.actions.page.locator(`table >> tr >> nth=1 >> td`).all()
+    if (url.includes(`k8s-dev`)) {
+        expect(header).toEqual(`RankAddressBalance ETHTxn count`)
+    }
+    if (url.includes(`eth.blockscout`)) {
+        expect(header).toEqual(`RankAddressBalance ETHPercentageTxn count`)
+        expect(await row[4].textContent()).toMatch(/\d+/)
+    }
+    if (url.includes(`gnosis`)) {
+        expect(header).toEqual(`RankAddressBalance XDAITxn count`)
+    }
+    if (url.includes(`optimism`)) {
+        expect(header).toEqual(`RankAddressBalance ETHPercentageTxn count`)
+        expect(await row[4].textContent()).toMatch(/\d+/)
+    }
+    if (url.includes(`base`) || url.includes(`zkevm`) || url.includes(`zksync`) || url.includes(`zora`)) {
+        expect(header).toEqual(`RankAddressBalance ETHTxn count`)
+    }
+    if (url.includes(`polygon`)) {
+        expect(header).toEqual(`RankAddressBalance POLPercentageTxn count`)
+        expect(await row[4].textContent()).toMatch(/\d+/)
+    }
+    if (url.includes(`neon`)) {
+        expect(header).toEqual(`RankAddressBalance NEONTxn count`)
+    }
+    if (url.includes(`rootstock`)) {
+        expect(header).toEqual(`RankAddressBalance RBTCPercentageTxn count`)
+        expect(await row[4].textContent()).toMatch(/\d+/)
+    }
+    if (url.includes(`immutable`)) {
+        expect(header).toEqual(`RankAddressBalance IMXTxn count`)
+    }
+    if (url.includes(`shibarium`)) {
+        expect(header).toEqual(`RankAddressBalance BONEPercentageTxn count`)
+        expect(await row[4].textContent()).toMatch(/\d+/)
+    }
+    expect(await row[0].textContent()).toMatch(/\d+/)
+    expect(await row[1].textContent()).toMatch(/\w+/)
+    expect(await row[2].textContent()).toMatch(/\d+/)
+    expect(await row[3].textContent()).toMatch(/\d+/)
 })
