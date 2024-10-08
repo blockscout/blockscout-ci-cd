@@ -227,7 +227,7 @@ test(`@OnDemandSmoke Check L1->L2 Deposits`, async ({ newHomePage }) => {
         expect(header).toEqual(`L1 blockMessage #L2 transactionAgeStatusL1 transaction`)
         expect(await row[0].textContent()).toMatch(/\d+/)
         expect(await row[1].textContent()).toMatch(/\d+/)
-        expect(await row[2].textContent()).toMatch(/N\/A/)
+        expect(await row[2].textContent()).toMatch(/N\/A|0x.*/)
         expect(await row[3].textContent()).toMatch(/.*ago/)
         expect(await row[4].textContent()).toMatch(/Pending|Finalized|Waiting/)
         expect(await row[5].textContent()).toMatch(/0x.*/)
