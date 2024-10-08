@@ -288,10 +288,10 @@ export class NewHomePage extends CommonPage {
         await this.actions.navigateToURL(`/`, options)
     }
 
-    async open_custom(url: string, options = { waitUntil: `load` }): Promise<void> {
+    async open_custom(url: string, options = { waitUntil: `load`, delay: 5000 }): Promise<void> {
         this.currentPage = url
         await this.actions.navigateToURL(url, options)
-        await this.delay(5000)
+        await this.delay(options.delay)
     }
 
     async isStatsEnabled(): Promise<boolean> {
