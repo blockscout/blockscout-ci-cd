@@ -415,9 +415,9 @@ test(`@OnDemandSmoke Check L1->L2 Optimism dispute games`, async ({ newHomePage 
     }
 })
 
-test.only(`@OnDemandSmoke Check top accounts`, async ({ newHomePage }) => {
+test(`@OnDemandSmoke Check top accounts`, async ({ newHomePage }) => {
     await newHomePage.checkRequests(newHomePage.page)
-    await newHomePage.open_custom(`${url}/accounts`, { waitUntil: `load`, delay: 7000 })
+    await newHomePage.open_custom(`${url}/accounts`, { waitUntil: `load`, delay: 10000 })
     const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
     const row = await newHomePage.actions.page.locator(`table >> tr >> nth=1 >> td`).all()
     if (url.includes(`k8s-dev`)) {
