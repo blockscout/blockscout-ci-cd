@@ -16,6 +16,9 @@ const urls = (process.env.BLOCKSCOUT_URL || ``).split(`,`)
 let staticData
 
 const loadDataFile = (url: string) => {
+    if (process.env.ENV === `test` || process.env.ENV === `scoutcloud`) {
+        return
+    }
     const u = url.endsWith(`/`) ? url.slice(0, -1) : url
     const fileName = u.split(`//`)[1].split(`.`).slice(0, -1).join(`.`)
     try {
@@ -27,7 +30,7 @@ const loadDataFile = (url: string) => {
 
 urls.forEach((url: string) => {
     loadDataFile(url)
-    test(`@OnDemandSmoke ${url} Main page components`, async ({ newHomePage }) => {
+    test(`@Live ${url} Main page components`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         await newHomePage.checkIndexing()
@@ -36,7 +39,7 @@ urls.forEach((url: string) => {
         await newHomePage.checkDailyTransactions()
     })
 
-    test(`@OnDemandSmoke ${url} Check blocks`, async ({ context, newHomePage }) => {
+    test(`@Live ${url} Check blocks`, async ({ context, newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(`${url}/blocks`)
         // TODO: make it header dependent
@@ -46,18 +49,18 @@ urls.forEach((url: string) => {
         await newHomePage.checkBlocks()
     })
 
-    test(`@OnDemandSmoke ${url} Check transactions`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check transactions`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(`${url}/txs`)
         await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
     })
-    test(`@OnDemandSmoke ${url} Check search`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check search`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         await newHomePage.search(staticData.search.query)
         await newHomePage.findInSearchItems(staticData.search.result)
     })
-    test(`@OnDemandSmoke ${url} Check stats`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check stats`, async ({ newHomePage }) => {
         // await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isStatsEnabled()) {
@@ -68,17 +71,17 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`Stats Services are OFF!`))
         }
     })
-    test(`@OnDemandSmoke ${url} Check accounts`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check accounts`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(`${url}/accounts`)
         await newHomePage.checkNativeAccountsNoPerc()
     })
-    test(`@OnDemandSmoke ${url} Check verified contracts`, async ({ newHomePage }) => {
+    test.only(`@Live ${url} Check verified contracts`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(`${url}/verified-contracts`)
         await newHomePage.checkVerifiedContractsStats()
     })
-    test(`@OnDemandSmoke ${url} Check ENS`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check ENS`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isENSEnabled()) {
@@ -89,7 +92,7 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`ENS Services are OFF!`))
         }
     })
-    test(`@OnDemandSmoke ${url} Check gas tracker`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check gas tracker`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isGasTrackerOn()) {
@@ -100,7 +103,7 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`Gas Tracker is OFF!`))
         }
     })
-    test(`@OnDemandSmoke ${url} Check market`, async ({ marketplace }) => {
+    test(`@Live ${url} Check market`, async ({ marketplace }) => {
         await marketplace.checkRequests(marketplace.page)
         await marketplace.open(url)
         if (await marketplace.isOn()) {
@@ -111,7 +114,7 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`DApps Marketplace is OFF!`))
         }
     })
-    test(`@OnDemandSmoke ${url} Check user operations`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check user operations`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.UserOpsIsOn()) {
@@ -122,7 +125,7 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`User Operations are OFF!`))
         }
     })
-    test(`@OnDemandSmoke ${url} Check blobs`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check blobs`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(`${url}/txs`)
         if (await newHomePage.BlobIsOn()) {
@@ -136,12 +139,12 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`Blob txns are OFF!`))
         }
     })
-    test(`@OnDemandSmoke ${url} Check read contract tabs`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check read contract tabs`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.openFirstVerifiedContract(url)
         await newHomePage.checkContractReadTabs()
     })
-    test(`@OnDemandSmoke ${url} Check write contract tabs`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check write contract tabs`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.openFirstVerifiedContract(url)
         if (await newHomePage.hasWriteContractTab()) {
@@ -150,13 +153,13 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`Contract doesn't have any write methods!`))
         }
     })
-    test(`@OnDemandSmoke ${url} Check contracts code tabs`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check contracts code tabs`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.openFirstVerifiedContract(url)
         await newHomePage.checkContractsCodeTab()
         await newHomePage.checkContractUMLDiagram()
     })
-    test(`@OnDemandSmoke ${url} Check ERC-721 inventory tab`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check ERC-721 inventory tab`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         if (!staticData.erc721) {
             console.log(`no erc-721 tokens exist`)
@@ -168,7 +171,7 @@ urls.forEach((url: string) => {
         await newHomePage.checkInventoryERC721Element(staticData.erc721)
         await newHomePage.checkInventoryERC721MetadataTab(staticData.erc721)
     })
-    test(`@OnDemandSmoke ${url} Check ERC-404 inventory tab`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check ERC-404 inventory tab`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         if (staticData.erc404 === undefined) {
             console.log(`no erc-404 tokens exist`)
@@ -180,7 +183,7 @@ urls.forEach((url: string) => {
         await newHomePage.checkInventoryERC404Element(staticData.erc404)
         await newHomePage.checkInventoryERC404MetadataTab(staticData.erc404)
     })
-    test(`@OnDemandSmoke ${url} Check ERC-1155 inventory tab`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check ERC-1155 inventory tab`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         if (staticData.erc404 === undefined) {
             console.log(`no erc-1155 tokens exist`)
@@ -192,7 +195,7 @@ urls.forEach((url: string) => {
         await newHomePage.checkInventoryERC1155Element(staticData.erc1155)
         await newHomePage.checkInventoryERC1155MetadataTab(staticData.erc1155)
     })
-    test(`@OnDemandSmoke ${url} Check L1->L2 Deposits`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check L1->L2 Deposits`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isL1L2DepositsEnabled()) {
@@ -248,7 +251,7 @@ urls.forEach((url: string) => {
             expect(await row[6].textContent()).toMatch(/.*/)
         }
     })
-    test(`@OnDemandSmoke ${url} Check L1->L2 Withdrawals`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check L1->L2 Withdrawals`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isL1L2WithdrawalsEnabled()) {
@@ -306,7 +309,7 @@ urls.forEach((url: string) => {
             expect(await row[6].textContent()).toMatch(/ETH/)
         }
     })
-    test(`@OnDemandSmoke ${url} Check L1->L2 Txn batches`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check L1->L2 Txn batches`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isL1L2TxnBatchesEnabled()) {
@@ -363,7 +366,7 @@ urls.forEach((url: string) => {
             expect(await row[5].textContent()).toMatch(/Pending|0x.*/)
         }
     })
-    test(`@OnDemandSmoke ${url} Check L1->L2 Output roots`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check L1->L2 Output roots`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isL1L2OutputRootsEnabled()) {
@@ -381,7 +384,7 @@ urls.forEach((url: string) => {
         expect(await row[3].textContent()).toMatch(/0x.*/)
         expect(await row[4].textContent()).toMatch(/0x.*/)
     })
-    test(`@OnDemandSmoke ${url} Check L1->L2 Optimism dispute games`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check L1->L2 Optimism dispute games`, async ({ newHomePage }) => {
         if (url.includes(`optimism`)) {
             await newHomePage.checkRequests(newHomePage.page)
             await newHomePage.open_custom(`${url}/dispute-games`)
@@ -397,7 +400,7 @@ urls.forEach((url: string) => {
             expect(await row[6].textContent()).toMatch(/N\/A/)
         }
     })
-    test(`@OnDemandSmoke ${url} Check top accounts`, async ({ newHomePage }) => {
+    test(`@Live ${url} Check top accounts`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(`${url}/accounts`, { waitUntil: `load`, delay: 10000 })
         const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()

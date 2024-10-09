@@ -54,6 +54,7 @@ env:
   SCOUTCLOUD_SERVER_SIZE: ${{ inputs.server_size }}
   SCOUTCLOUD_NODE_TYPE: ${{ inputs.node_type }}
 
+  ENV: "scoutcloud"
   PWDEBUG: 0
   LOAD_AUTH_CTX: 0
   LOAD_CONTRACTS_DATA: 0
