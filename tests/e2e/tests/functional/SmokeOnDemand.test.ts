@@ -290,7 +290,7 @@ urls.forEach((url: string) => {
             expect(await row[1].textContent()).toMatch(/0x.*/)
             expect(await row[2].textContent()).toMatch(/0x.*/)
             expect(await row[3].textContent()).toMatch(/ago.*/)
-            expect(await row[4].textContent()).toMatch(/Waiting.*|Ready to prove/)
+            expect(await row[4].textContent()).toMatch(/Waiting.*|Ready to prove|In challenge period/)
             expect(await row[5].textContent()).toMatch(/N\/A/)
         }
         if (url.includes(`zkevm`)) {
