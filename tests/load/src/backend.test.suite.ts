@@ -72,7 +72,7 @@ export const backendV2GasPriceOracle = () => {
     group(`/v1/gas-price-oracle`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api/v1/gas-price-oracle`,
+            url: `/api/v1/gas-price-oracle?apikey=${testData.APIKey}`,
             params: {
                 tags: {
                     name: `GasPriceOracle (backendV2)`,
@@ -575,7 +575,7 @@ export const backendV2TXDetails = () => {
     group(`/api/v2/transactions/{}/summary`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api/v2/transactions/${randomItem(testData.txs)}/summary`,
+            url: `/api/v2/transactions/${randomItem(testData.txs)}/summary?apikey=${testData.APIKey}`,
             params: {
                 tags: {
                     name: `TXDetails`,

@@ -28,7 +28,8 @@ jobs:
           "https://arbitrum.blockscout.com",
           "https://zksync.blockscout.com",
           "https://www.shibariumscan.io",
-          "https://explorer.zora.energy"
+          "https://explorer.zora.energy",
+          "https://blast.blockscout.com"
         ]
     steps:
       - uses: actions/checkout@v3
