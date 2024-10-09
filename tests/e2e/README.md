@@ -7,11 +7,23 @@ To add your environment to the E2E tests suite you need to:
 2. Fill different entities data (tokens/blobs/etc), [eth-sepolia.blockscout.json](tests/e2e/static/eth-sepolia.blockscout.json)
 3. Add your environment URL to [e2e_matrix](.github/workflows/e2e_matrix.yaml)
 
+To configure tests we are using `.envrc` format, put all your vars there and `source .envrc` before running tests
+
 ## Live (production) tests debug
 ```
 export BLOCKSCOUT_URL=...
 export PWDEBUG=0 # 1 - debug, 0 - no debug
 source .envrc && npm run test:ondemand
+```
+
+Examples to run particular set of tests on multiple environments
+```
+BLOCKSCOUT_URLS=(
+  "https://eth-sepolia.k8s-dev.blockscout.com"
+  "https://eth.blockscout.com"
+)
+export BLOCKSCOUT_URL=$(IFS=,; echo "${BLOCKSCOUT_URLS[*]}")
+source .envrc && npx playwright test --project=Chrome --grep=@Live --grep=@Accounts --retries=0 --timeout=60000
 ```
 
 ## E2E Environment tests (contract deployments)
