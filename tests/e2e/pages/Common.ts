@@ -1,6 +1,5 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable guard-for-in */
-import { APIActions } from "@lib/APIActions"
 import { WebActions } from "@lib/WebActions"
 import type { Page } from 'playwright'
 import chalk from "chalk"
@@ -17,8 +16,6 @@ export class CommonPage {
     readonly page: Page
 
     actions: WebActions
-
-    apiActions: APIActions
 
     HEADER_STATS = `main >> div >> nth=8 >> div >> div`
 
@@ -89,7 +86,6 @@ export class CommonPage {
     constructor(page: Page) {
         this.page = page
         this.actions = new WebActions(this.page)
-        this.apiActions = new APIActions()
     }
 
     async checkRequests(page): Promise<void> {

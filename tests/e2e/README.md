@@ -9,7 +9,7 @@ To add your environment to the E2E tests suite you need to:
 
 To configure tests we are using `.envrc` format, put all your vars there and `source .envrc` before running tests
 
-## Live (production) tests debug
+## Live (production) UI tests debug
 ```
 export BLOCKSCOUT_URL=...
 export PWDEBUG=0 # 1 - debug, 0 - no debug
@@ -24,6 +24,16 @@ BLOCKSCOUT_URLS=(
 )
 export BLOCKSCOUT_URL=$(IFS=,; echo "${BLOCKSCOUT_URLS[*]}")
 source .envrc && npx playwright test --project=Chrome --grep=@Live --grep=@Accounts --retries=0 --timeout=60000
+```
+
+## Live (production) API tests debug
+```
+BLOCKSCOUT_URLS=(
+  "https://eth-sepolia.k8s-dev.blockscout.com"
+  "https://eth.blockscout.com"
+)
+export BLOCKSCOUT_URL=$(IFS=,; echo "${BLOCKSCOUT_URLS[*]}")
+source .envrc && npx playwright test --project=Chrome --grep=@Live --grep=@Api --retries=0 --timeout=120000
 ```
 
 ## E2E Environment tests (contract deployments)

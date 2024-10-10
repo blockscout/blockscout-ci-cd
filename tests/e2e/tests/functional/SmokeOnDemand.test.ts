@@ -2,34 +2,15 @@ import test from '@lib/BaseTest'
 import chalk from "chalk"
 import { readFileSync } from "fs"
 import { expect } from "@playwright/test"
+import { LoadDataFile } from "@lib/File"
 
 test.describe.configure({ mode: `parallel` })
-/*
-    these tests are for common smoke functionality across all priority envs
-    they do not interact with contract deployments, checking static data
-    test logic is common, however we separate the tests for visibility
-*/
 
 // Fetch the BLOCKSCOUT_URLS environment variable and split it into an array
 const urls = (process.env.BLOCKSCOUT_URL || ``).split(`,`)
 
-let staticData
-
-const loadDataFile = (url: string) => {
-    if (process.env.ENV === `test` || process.env.ENV === `scoutcloud`) {
-        return
-    }
-    const u = url.endsWith(`/`) ? url.slice(0, -1) : url
-    const fileName = u.split(`//`)[1].split(`.`).slice(0, -1).join(`.`)
-    try {
-        staticData = JSON.parse(readFileSync(`static/${fileName}.json`).toString())
-    } catch (err) {
-        console.log(chalk.red(`Error reading static data for ${fileName}, file should be named as first two domain sections of URL: ${u}, err: ${err}`))
-    }
-}
-
 urls.forEach((url: string) => {
-    loadDataFile(url)
+    const staticData = LoadDataFile(url)
     test(`@Live @MainPage ${url} Main page components`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
