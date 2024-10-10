@@ -1,6 +1,6 @@
 import { readFileSync } from "fs"
 import chalk from "chalk"
-import { APIRequestContext, expect, request } from "@playwright/test"
+import { expect, request } from "@playwright/test"
 
 export const LoadDataFile = (url: string): any => {
     if (process.env.ENV === `test` || process.env.ENV === `scoutcloud`) {
