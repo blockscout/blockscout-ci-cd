@@ -1,8 +1,10 @@
 import { test as baseTest } from '@playwright/test'
 import { HomePage } from '@pages/Home'
+import { BlocksPage } from '@pages/Blocks'
 import { TransactionPage } from '@pages/Transaction'
 import { TokensPage } from '@pages/Tokens'
 import { TokenPage } from '@pages/Token'
+import { AddressPage } from '@pages/Address'
 import { AuthorizedArea } from '@pages/Login'
 import { CommonPage } from '@pages/Common'
 import MailSlurp from 'mailslurp-client'
@@ -10,6 +12,7 @@ import { AdminPage } from '@pages/Admin'
 
 import { VerificationPage } from '@pages/Verification'
 import { TransactionsListPage } from '@pages/TransactionsList'
+import { BlockListPage } from '@pages/BlocksList'
 import { MarketplacePage } from '@pages/Marketplace'
 import { NewHomePage } from '@pages/NewHome'
 import { EtherscanGoerliPage } from '@pages/EtherscanGoerli'
@@ -26,8 +29,11 @@ const test = baseTest.extend<{
     authorized: AuthorizedArea,
     transactionPage: TransactionPage,
     transactionsListPage: TransactionsListPage,
+    blocksPage: BlocksPage,
+    blocksListPage: BlockListPage,
     tokensPage: TokensPage
     tokenPage: TokenPage,
+    addressPage: AddressPage,
     verificationPage: VerificationPage,
     etherscanGoerliPage: EtherscanGoerliPage,
     etherscanMainnet: EtherscanMainnetPage,
@@ -58,11 +64,20 @@ const test = baseTest.extend<{
     transactionsListPage: async ({ page }, use) => {
         await use(new TransactionsListPage(page))
     },
+    blocksPage: async ({ page }, use) => {
+        await use(new BlocksPage(page))
+    },
+    blocksListPage: async ({ page }, use) => {
+        await use(new BlockListPage(page))
+    },
     tokensPage: async ({ page }, use) => {
         await use(new TokensPage(page))
     },
     tokenPage: async ({ page }, use) => {
         await use(new TokenPage(page))
+    },
+    addressPage: async ({ page }, use) => {
+        await use(new AddressPage(page))
     },
     verificationPage: async ({ page }, use) => {
         await use(new VerificationPage(page))
