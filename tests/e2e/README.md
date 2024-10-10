@@ -40,8 +40,8 @@ source .envrc && npx playwright test --project=Chrome --grep=@Live --grep=@Api -
 
 ## E2E Account Tests
 ```
-export BLOCKSCOUT_URL=
 export ENV=test
+export BLOCKSCOUT_URL=
 export NETWORK_URL=
 export WALLET=
 export ADMIN_ACCOUNT_USERNAME=
@@ -50,7 +50,6 @@ export ACCOUNT_USERNAME=
 export ACCOUNT_PASSWORD=
 export MAILSLURP_API_KEY=
 export MAILSLURP_EMAIL_ID=
-export PROD=1
 export LOAD_AUTH_CTX=1 # use 0 to authorize and save new cookie
 export LOAD_CONTRACTS_DATA=1 # use 0 to deploy new set of contracts
 
@@ -66,6 +65,15 @@ export ADMIN_ACCOUNT_USERNAME=
 export ADMIN_ACCOUNT_PASSWORD=
 
 source .envrc && npm run test:admin
+```
+
+## Run ScoutCloud Tests
+```
+source .envrc && npm run test:scoutcloud
+```
+In case auto-deploy failed you can force cleanup all the test environments
+```
+source .envrc && npm run test:scoutcloud:cleanup
 ```
 
 ## Run RPC Compatibility Tests

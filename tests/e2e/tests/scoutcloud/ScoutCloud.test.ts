@@ -1,6 +1,6 @@
 /* eslint-disable dot-notation */
 import test from '@lib/BaseTest'
-import { expect, defineConfig, request } from "@playwright/test"
+import { expect } from "@playwright/test"
 import { faker } from '@faker-js/faker'
 import chalk from 'chalk'
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -112,6 +112,19 @@ const deleteAllInstances = async (r) => {
     }
 }
 
+const forceDeleteInstances = async (r) => {
+    const instances = await getInstances(r)
+    l.info(`Instances: ${JSON.stringify(instances, null, 2)}`)
+    for (const i of instances[`items`]) {
+        // eslint-disable-next-line no-await-in-loop
+        const resp = await r.delete(`/api/v1/instances/${i[`instance_id`]}`)
+        // eslint-disable-next-line no-await-in-loop
+        const body = await resp.body()
+        l.info(`url requested: ${resp.url()}`)
+        l.info(`body: ${body}`)
+    }
+}
+
 const getInstanceDeployments = async (r, instance) => {
     const resp = await r.get(`/api/v1/instances/${instance}/deployments`)
     const body = await resp.body()
@@ -119,9 +132,10 @@ const getInstanceDeployments = async (r, instance) => {
     l.debug(`body: ${body}`)
 }
 
-// test.only(`@ScoutCloud Clean up all instances`, async ({ request }) => {
-//     await deleteAllInstances(request)
-// })
+// eslint-disable-next-line no-shadow
+test(`@DeploymentCleanup Clean up all instances`, async ({ request }) => {
+    await forceDeleteInstances(request)
+})
 
 // eslint-disable-next-line no-shadow
 test(`@ScoutCloud Create New Instance, check UI, delete it`, async ({ request, newHomePage }) => {

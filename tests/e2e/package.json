@@ -8,6 +8,7 @@
     "test": "npx playwright test",
     "report": "npx playwright show-report html-report",
     "test:scoutcloud": "npx playwright test --project=ScoutCloud --grep=@ScoutCloud --retries=0 --timeout=3600000",
+    "test:scoutcloud:cleanup": "npx playwright test --project=ScoutCloud --grep=@DeploymentCleanup --retries=0 --timeout=3600000",
     "test:ondemand": "npx playwright test --project=Chrome --grep=@Live --retries=0 --timeout=60000",
     "test:notifications": "npx playwright test --project=Chrome --grep=@Notifications",
     "test:smoke:account": "npx playwright test --project=Chrome --grep=@AccountImage",
