@@ -12,7 +12,7 @@ test.beforeEach(async ({ adminPage }) => {
     await adminPage.login(process.env.ADMIN_ACCOUNT_USERNAME, process.env.ADMIN_ACCOUNT_PASSWORD)
 })
 
-test(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, adminPage }) => {
+test(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomePage, adminPage }) => {
     await adminPage.selectSuperUserTab()
     await adminPage.selectSuperUserTabSubmissions()
     await adminPage.clearMySubmissions(process.env.ADMIN_ACCOUNT_USERNAME)
@@ -57,14 +57,9 @@ test(`@Admin Delete/Create SuperSubmission`, async ({ tokenPage, newHomeGoerli, 
     await adminPage.filterByEmailProjectName(uniqueSupportURL)
     await adminPage.selectFirstListElement()
     await adminPage.approve()
-    // await adminPage.delay(10000)
-
-    // await newHomeGoerli.openAddress(tokenAddr)
-    // await tokenPage.selectProjectInfo()
-    // await tokenPage.actions.verifyElementIsDisplayed(`text=${uniqueSupportURL}`)
 })
 
-test(`@Admin Delete/Create TokenInfo`, async ({ newHomeGoerli, tokenPage, adminPage }) => {
+test(`@Admin Delete/Create TokenInfo`, async ({ newHomePage, tokenPage, adminPage }) => {
     await adminPage.selectTokenServicesTab()
     await adminPage.selectTokenInfosTab()
     const iconURL = `https://cdn-icons-png.flaticon.com/128/2989/2989898.png`
@@ -103,11 +98,6 @@ test(`@Admin Delete/Create TokenInfo`, async ({ newHomeGoerli, tokenPage, adminP
         CGTickerURL: iconURL,
         LlamaTickerURL: iconURL,
     })
-
-    // await newHomeGoerli.openAddress(tokenAddr)
-    // await newHomeGoerli.delay(3000)
-    // await tokenPage.selectProjectInfo()
-    // await tokenPage.actions.verifyElementIsDisplayed(`text=${uniqueSupportURL}`)
 })
 
 test.skip(`@Admin Delete/Create Address`, async ({ adminPage }) => {

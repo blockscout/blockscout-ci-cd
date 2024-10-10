@@ -19,8 +19,6 @@ export class CommonPage {
 
     HEADER_STATS = `main >> div >> nth=8 >> div >> div`
 
-    ACCOUNT_MENU = `#navbarBlocksDropdown >> nth=1`
-
     AUTH0_SIGN_UP = `text=Sign up`
 
     AUTH0_INPUT_EMAIL = `input[name="email"]`
@@ -33,45 +31,11 @@ export class CommonPage {
 
     LOGGED_IN_AS = `text=Signed in as`
 
-    VERIFY_MSG = `To see accurate decoded input data, the contract must be verified`
-
-    TX = `[data-test='chain_transaction']`
-
-    TX_STATUS = `[data-test='transaction_status']`
-
-    TX_HASH = `[data-test='transaction_hash_link']`
-
-    TX_ADDR_BAR = `[data-test='address_hash_link']`
-
-    TX_INTERNAL = `[data-test='internal_transaction']`
-
-    CARD_BODY_KEYS = `[class='card-body fs-14'] >> dt`
-
-    CARD_BODY_VALUES = `[class='card-body fs-14'] >> dd`
-
-    TOKEN_TILES = `[class='tile tile-type-token-transfer fade-in']`
-
-    TOKEN_HOLDERS_TAB = `[data-test='token_holders_tab']`
-
     TX_LOGS_TAB = `[data-test='transaction_logs_link']`
-
-    INTERNAL_TXS_TAB = `[data-test='internal_transactions_tab_link']`
-
-    TX_RAW_TRACE_TAB = `text=Raw Trace`
-
-    TOKEN_HOLDERS_LIST = `[data-test='token_holders']`
-
-    VERIFY_ALERT_ROW = `[data-items] >> [class='alert alert-info'] >> nth=0`
 
     TABLE_TABPANEL_DIV = `[role="tabpanel"] >> div >> nth=`
 
     DETAILS_TAB_FOOTER = `text=View details`
-
-    ALERT_DIV = `[role="alert"]`
-
-    HEADER_TX_AD = `main >> div >> nth=0 >> a`
-
-    LOG_DIV = `div[role="tabpanel"] >> div >> nth=`
 
     NETWORK_MENU = `[aria-label="Network menu"]`
 
@@ -109,10 +73,6 @@ export class CommonPage {
                 throw error
             }
         })
-    }
-
-    replaceAll(str: string, find: string, replace: string) {
-        return str.replace(new RegExp(find, `g`), replace)
     }
 
     async displayed_in_parent(locator: string, selector: string, parentNum: number, error: string = ``): Promise<void> {
@@ -192,14 +152,6 @@ export class CommonPage {
         })
     }
 
-    async check_tx_list_row(row: number, col: number, text: string): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`table >> tr >> nth=${row} >> td >> nth=${col} >> text=/${text}/`)
-    }
-
-    async check_header_tx_ad(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(this.HEADER_TX_AD)
-    }
-
     async signUp(email: string, password: string): Promise<void> {
         await this.actions.navigateToURL(process.env.BLOCKSCOUT_URL)
         await this.page.getByRole(`link`, { name: `profile menu` }).click()
@@ -209,94 +161,12 @@ export class CommonPage {
         await this.actions.clickElement(this.AUTH0_SUBMIT)
     }
 
-    async alert_div_has_text(text: string): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.ALERT_DIV} >> text=${text}`)
-    }
-
     async delay(amount: number): Promise<void> {
         await this.actions.delay(amount)
     }
 
     async hasText(text: string): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`text=${text}`, `failed to find text on the page`)
-    }
-
-    async waitBlocksSynced(): Promise<void> {
-        await this.waitNoText(`indexing this chain right now`)
-    }
-
-    async waitNoText(status: string): Promise<void> {
-        await this.actions.waitReloadNoText(`text=${status}`)
-    }
-
-    async select_token_holders_tab(): Promise<void> {
-        await this.actions.clickElement(this.TOKEN_HOLDERS_TAB)
-    }
-
-    async select_internal_txs_tab(): Promise<void> {
-        await this.actions.clickElement(this.INTERNAL_TXS_TAB)
-    }
-
-    async select_logs_tab(): Promise<void> {
-        await this.actions.clickElement(this.TX_LOGS_TAB)
-    }
-
-    async select_trace_tab(): Promise<void> {
-        await this.actions.clickElement(this.TX_RAW_TRACE_TAB)
-    }
-
-    async check_verify_alert(): Promise<void> {
-        await this.actions.verifyElementContainsText(this.VERIFY_ALERT_ROW, this.VERIFY_MSG)
-    }
-
-    async check_tx_logs(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}1 >> text=/Transaction/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}3 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}4 >> text=/Topics/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}7 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}11 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}20 >> text=/Data/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}21 >> text=/0x/`)
-
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}23 >> text=/Transaction/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}24 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}26 >> text=/Topics/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}29 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}33 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}42 >> text=/Data/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}43 >> text=/0x/`)
-
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}45 >> text=/Transaction/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}46 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}48 >> text=/Topics/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}51 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}55 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}60 >> text=/Data/`)
-        await this.actions.verifyElementIsDisplayed(`${this.LOG_DIV}61 >> text=/0x/`)
-    }
-
-    async check_decoded_tx_logs(num: number, p: TXDecodedLogProps): Promise<void> {
-        await this.actions.verifyElementContainsText(`[data-items] >> dd >> table >> nth=0 >> tr >> nth=0 >> td >> nth=0`, p.methodIDText)
-        await this.actions.verifyElementContainsText(`[data-items] >> dd >> table >> nth=0 >> tr >> nth=0 >> td >> nth=1`, p.methodID)
-        await this.actions.verifyElementContainsText(`[data-items] >> dd >> table >> nth=0 >> tr >> nth=1 >> td >> nth=0`, p.callText)
-        await this.actions.verifyElementContainsText(`[data-items] >> dd >> table >> nth=0 >> tr >> nth=1 >> td >> nth=1`, p.call)
-        for (const rowIdx in p.logFields) {
-            for (const colIdx in p.logFields[rowIdx]) {
-                await this.actions.verifyElementContainsText(`[data-items] >> dd >> table >> nth=1 >> tr >> nth=${2 + Number(rowIdx)} >> td >> nth=${colIdx}`, p.logFields[rowIdx][colIdx])
-            }
-        }
-    }
-
-    async check_decoded_inputs(num: number, p: TXDecodedLogProps): Promise<void> {
-        await this.actions.verifyElementContainsText(`[class="card-body"] >> nth=1 >> table >> nth=0 >> tr >> nth=0 >> td >> nth=0`, p.methodIDText)
-        await this.actions.verifyElementContainsText(`[class="card-body"] >> nth=1 >> table >> nth=0 >> tr >> nth=0 >> td >> nth=1`, p.methodID)
-        await this.actions.verifyElementContainsText(`[class="card-body"] >> nth=1 >> table >> nth=0 >> tr >> nth=1 >> td >> nth=0`, p.callText)
-        await this.actions.verifyElementContainsText(`[class="card-body"] >> nth=1 >> table >> nth=0 >> tr >> nth=1 >> td >> nth=1`, p.call)
-        for (const rowIdx in p.logFields) {
-            for (const colIdx in p.logFields[rowIdx]) {
-                await this.actions.verifyElementContainsText(`[class="card-body"] >> nth=1 >> table >> nth=1 >> tr >> nth=${2 + Number(rowIdx)} >> td >> nth=${colIdx}`, p.logFields[rowIdx][colIdx])
-            }
-        }
     }
 
     async isSignedIn(): Promise<void> {

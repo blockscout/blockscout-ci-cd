@@ -11,12 +11,6 @@ export class TransactionsListPage extends CommonPage {
 
     TABLE_HEADER = `table >> thead >> tr >> th >> nth=`
 
-    TABLE_CELL = `table >> tbody >> tr >> nth= >> td >> nth=`
-
-    async table_element_displayed(row: number, col: number, text: string): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`table >> tbody >> tr >> nth=${row} >> td >> nth=${col} >> text=${text}`)
-    }
-
     constructor(page: Page) {
         super(page)
         this.page = page
@@ -44,11 +38,5 @@ export class TransactionsListPage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`text=/Failed/`)
         await this.actions.verifyElementIsDisplayed(`text=/alwaysReverts/`)
         await this.actions.verifyElementIsDisplayed(`text=/0.01/`)
-    }
-
-    async findText(tags: string[]): Promise<void> {
-        for (const t of tags) {
-            await this.actions.verifyElementIsDisplayed(`text=${t}`, `element with text ${t} haven't been found`)
-        }
     }
 }

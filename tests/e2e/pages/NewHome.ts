@@ -9,10 +9,6 @@ export class NewHomePage extends CommonPage {
 
     SEARCH_ITEM = `section[role="dialog"] >> nth=1 >> div >> nth=`
 
-    SEARCH_ITEMS = `section[role="dialog"] >> nth=1`
-
-    SEARCH_ITEMS_ICONS = `div[id="search_bar_popover_content"] >> nth=1 >> svg`
-
     BLOCKS_WIDGET = `text=/Latest blocks|Latest batch/ >> ..`
 
     BLOCKS_WIDGET_LAST_BLOCK = `${this.BLOCKS_WIDGET} >> div >> div >> nth=0`
@@ -32,8 +28,6 @@ export class NewHomePage extends CommonPage {
     BLOCK_PAGE_IS_VALID = `h1 >> text=/Block\\s\\#\\d+/`
 
     GAS_TRACKER_ON = `div >> div >> nth=4 >> span >> nth=0 >> text=/ETH/`
-
-    GAS_TRACKER_POPUP = `div >> div >> nth=6 >> span >> nth=1 >> text=/$.*/`
 
     GAS_TRACKER_HEADER_TEXT = `div[id="__next"] >> div >> div >> nth=1 >> text=`
 
@@ -56,11 +50,6 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`main >> th >> nth=1 >> text=/Address/`)
         await this.actions.verifyElementIsDisplayed(`main >> th >> nth=2 >> text=/Registered on/`)
         await this.actions.verifyElementIsDisplayed(`main >> th >> nth=3 >> text=/Expiration date/`)
-    }
-
-    async sortENSRows(): Promise<void> {
-        await this.actions.clickElement(`text=/Registered on/ >> nth=2`)
-        await this.actions.clickElement(`text=/Registered on/ >> nth=2`)
     }
 
     async checkENSRow(): Promise<void> {
@@ -144,12 +133,8 @@ export class NewHomePage extends CommonPage {
 
     async checkInventoryERC721Element(data: any): Promise<void> {
         await expect(this.page.getByText(`ERC-721`)).toBeVisible()
-        // await expect(this.page.getByText(`Owner`)).toBeVisible()
         await expect(this.page.getByText(`Creator`)).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
-        // await expect(this.page.getByText(`Name`)).toBeVisible()
-        // await expect(this.page.getByText(`Description`)).toBeVisible()
-        // await expect(this.page.getByText(`Attributes`)).toBeVisible()
     }
 
     async checkInventoryERC721MetadataTab(data: any): Promise<void> {
@@ -276,10 +261,6 @@ export class NewHomePage extends CommonPage {
         await this.actions.enterElementText(this.SEARCH_BAR, text)
     }
 
-    async checkSearchItemText(pos: number, text: string): Promise<void> {
-        await this.actions.verifyElementContainsText(`${this.SEARCH_ITEM}${pos}`, text)
-    }
-
     async findInSearchItems(text: string): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`text=/${text}/`)
     }
@@ -381,108 +362,6 @@ export class NewHomePage extends CommonPage {
         }
     }
 
-    async checkL2Blocks(context: BrowserContext): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=0 >> text=/Block/`, `no Blocks header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=1 >> text=/Size.*bytes/`, `no Size in bytes header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=2 >> text=/Validator|Miner/`, `no Validator|Miner header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=3 >> text=/Txn/`, `no Txn header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=4 >> text=/Gas used/`, `no Gas used header is present`)
-
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=0 >> text=/\\d+.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=1 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=2 >> text=/0x|\\w/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=3 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=4 >> text=/\\d+/`)
-
-        await this.actions.clickElement(this.RECENT_BLOCK_URL)
-        await this.actions.verifyElementIsDisplayed(this.BLOCK_PAGE_IS_VALID)
-    }
-
-    async checkBlocksnoMiner(context: BrowserContext): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=0 >> text=/Block/`, `no Blocks header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=1 >> text=/Size.*bytes/`, `no Size in bytes header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=3 >> text=/Txn/`, `no Txn header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=4 >> text=/Gas used/`, `no Gas used header is present`)
-
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=0 >> text=/\\d+.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=1 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=3 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=4 >> text=/\\d+.*/`)
-
-        await this.actions.clickElement(this.RECENT_BLOCK_URL)
-        await this.actions.verifyElementIsDisplayed(this.BLOCK_PAGE_IS_VALID)
-    }
-
-    async checkBlocksNoFees(context: BrowserContext): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=0 >> text=/Block/`, `no Blocks header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=1 >> text=/Size.*bytes/`, `no Size in bytes header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=2 >> text=/Validator|Miner/`, `no Validator|Miner header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=3 >> text=/Txn/`, `no Txn header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=4 >> text=/Gas used/`, `no Gas used header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=5 >> text=/Reward.*/`, `no Reward header is present`)
-
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=0 >> text=/\\d+.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=1 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=2 >> text=/0x|\\w/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=3 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=4 >> text=/\\d+.*/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=5 >> text=/\\d+/`)
-
-        await this.actions.clickElement(this.RECENT_BLOCK_URL)
-        await this.actions.verifyElementIsDisplayed(this.BLOCK_PAGE_IS_VALID)
-    }
-
-    async checkBlocksNoHeader(context: BrowserContext): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=0 >> text=/Block/`, `no Blocks header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=1 >> text=/Size.*bytes/`, `no Size in bytes header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=2 >> text=/Txn/`, `no Txn header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=3 >> text=/Gas used/`, `no Gas used header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=4 >> text=/Reward.*/`, `no Reward header is present`)
-
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=0 >> text=/\\d+.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=1 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=2 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=3 >> text=/\\d+.*\\d+\\%.*\\d+\\%/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=4 >> text=/\\d+/`)
-
-        await this.actions.clickElement(this.RECENT_BLOCK_URL)
-        await this.actions.verifyElementIsDisplayed(this.BLOCK_PAGE_IS_VALID)
-    }
-
-    async checkBlocksNoHeaderNoReward(context: BrowserContext): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=0 >> text=/Block/`, `no Blocks header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=1 >> text=/Size.*bytes/`, `no Size in bytes header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=2 >> text=/Txn/`, `no Txn header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=3 >> text=/Gas used/`, `no Gas used header is present`)
-
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=0 >> text=/\\d+.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=1 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=2 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=3 >> text=/\\d+.*/`)
-
-        await this.actions.clickElement(this.RECENT_BLOCK_URL)
-        await this.actions.verifyElementIsDisplayed(this.BLOCK_PAGE_IS_VALID)
-    }
-
-    async checkBlocksImmutable(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=0 >> text=/Block/`, `no Blocks header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=1 >> text=/Size.*bytes/`, `no Size in bytes header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=2 >> text=/Txn/`, `no Txn header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=3 >> text=/Gas used/`, `no Gas used header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=4 >> text=/Reward.*/`, `no Reward header is present`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=5 >> text=/Burnt fees.*/`, `no Burnt fees header is present`)
-
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=0 >> text=/\\d+.*ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=1 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=2 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=3 >> text=/\\d+.*/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=4 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_FIRST_ROW} >> nth=5 >> text=/\\d+.*\\d+\\%/`)
-
-        await this.actions.clickElement(this.RECENT_BLOCK_URL)
-        await this.actions.verifyElementIsDisplayed(this.BLOCK_PAGE_IS_VALID)
-    }
-
     async checkBlocks(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=0 >> text=/Block/`, `no Blocks header is present`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_HEADER} >> nth=1 >> text=/Size.*bytes/`, `no Size in bytes header is present`)
@@ -504,19 +383,6 @@ export class NewHomePage extends CommonPage {
 
         await this.actions.clickElement(this.RECENT_BLOCK_URL)
         await this.actions.verifyElementIsDisplayed(this.BLOCK_PAGE_IS_VALID)
-    }
-
-    async checkNativeAccounts(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=0 >> text=/\\d+/`, `no idx in native accounts`)
-        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=3 >> text=/\\d+/`, `no balance in native accounts`)
-        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=4 >> text=/\\d+/`, `no percentage in native accounts`)
-        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=5 >> text=/\\d+/`, `no txn count in native accounts`)
-    }
-
-    async checkNativeAccountsNoPerc(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=0 >> text=/\\d+/`, `no idx in native accounts`)
-        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=3 >> text=/\\d+/`, `no balance in native accounts`)
-        await this.actions.verifyElementIsDisplayed(`${this.NATIVE_ACCOUNTS_ROW} >> nth=3 >> text=/\\d+/`, `no txn count in native accounts`)
     }
 
     async checkVerifiedContractsStats(): Promise<void> {
@@ -598,25 +464,5 @@ export class NewHomePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> text=/\\d+/`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> text=Validator`)
         await this.actions.verifyElementIsDisplayed(`${this.BLOCKS_WIDGET_LAST_BLOCK} >> text=/0x/`)
-    }
-
-    async check_txn_widget(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=0 >> text=/Token transfer/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=1 >> text=/Success/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=5 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=6 >> text=/ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=10 >> text=/NFTV/`)
-
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=11 >> text=/Contract creation/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=12 >> text=/Success/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=16 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=17 >> text=/ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=21 >> text=/NFTV/`)
-
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=22 >> text=/Contract call/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=23 >> text=/Failed/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=27 >> text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=28 >> text=/ago/`)
-        await this.actions.verifyElementIsDisplayed(`${this.TXNS_FIELDS} >> nth=32 >> text=/EPICV/`)
     }
 }
