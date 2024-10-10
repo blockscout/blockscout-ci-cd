@@ -9,12 +9,6 @@ export class BlockListPage extends CommonPage {
 
     TAB_ALL = `[type="button"] >> text=/All/`
 
-    TAB_FORKED = `[type="button"] >> text=Forked`
-
-    TAB_UNCLES = `[type="button"] >> text=Uncles`
-
-    TOTAL_BLOCKS_COUNT = `text=/Total of .* blocks/`
-
     TABLE_HEADING_1 = `th:has-text("Block")`
 
     TABLE_HEADING_2 = `th:has-text("Size, bytes")`
@@ -28,8 +22,6 @@ export class BlockListPage extends CommonPage {
     TABLE_HEADING_6 = `th:has-text("Reward ETH")`
 
     TABLE_HEADING_7 = `th:has-text("Burnt fees ETH")`
-
-    TABLE_GRID_CELL = `[role="gridcell"] >> nth=`
 
     async grid(row: number, col: number, regex: string): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`tbody >> tr >> nth=${row} >> td >> nth=${col} >> text=/${regex}/`)
