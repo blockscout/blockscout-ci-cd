@@ -13,19 +13,17 @@ To configure tests we are using `.envrc` format, put all your vars there and `so
 
 ## Live (production) UI Tests
 ```
-export BLOCKSCOUT_URL=...
-
-source .envrc && npm run test:ondemand
-```
-
-Examples to run particular set of tests on multiple environments
-```
 BLOCKSCOUT_URLS=(
   "https://eth-sepolia.k8s-dev.blockscout.com"
   "https://eth.blockscout.com"
 )
 export BLOCKSCOUT_URL=$(IFS=,; echo "${BLOCKSCOUT_URLS[*]}")
 
+source .envrc && npm run test:ondemand
+```
+
+Examples to run particular set of tests on multiple environments
+```
 source .envrc && npx playwright test --project=Chrome --grep=@Live --grep=@Accounts --retries=0 --timeout=60000
 ```
 
