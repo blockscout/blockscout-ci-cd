@@ -24,13 +24,9 @@ export class MarketplacePage extends CommonPage {
 
     APP_TILE_HEADER = `main >> div[role="group"] >> text=`
 
-    APP_TILE_BODY = `[role="group"]`
-
     APP_STARGAZER = `[role="group"] >> [title="Mark as favorite"] >> nth=`
 
     FAVORITES_BTN = `div[role="tablist"] >> button >> nth=0`
-
-    FILTER_ITEM = `[role="menuitem"] >> nth=`
 
     SUBMIT_APP = `text=Submit an app`
 

@@ -9,8 +9,6 @@ export class TokenPage extends CommonPage {
 
     actions: WebActions
 
-    DESCRIPTION_DIV = `main >> div >> nth=`
-
     HOLDERS_TAB = `button >> text=/Holders/`
 
     HOLDERS_ITEM = `table >> tr >> nth=1 >> td >> nth=`

@@ -12,10 +12,6 @@ export class AddressPage extends CommonPage {
     // overriding, non-consistent attributes on some pages for tabs
     TX_LOGS_TAB = `text=Logs`
 
-    TX_LOG = `[data-test='address_log']`
-
-    DESCRIPTION_BLOCK = `main >> div >> nth=`
-
     constructor(page: Page) {
         super(page)
         this.page = page
