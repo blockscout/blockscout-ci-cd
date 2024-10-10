@@ -61,6 +61,8 @@ source .envrc && npm run test:smoke:account
 
 ## Run Admin Panel Tests
 ```
+export ENV=test
+export BLOCKSCOUT_URL=
 export ADMIN_PANEL_URL=
 export ADMIN_ACCOUNT_USERNAME=
 export ADMIN_ACCOUNT_PASSWORD=

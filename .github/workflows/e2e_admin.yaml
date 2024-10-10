@@ -7,24 +7,11 @@ on:
   schedule:
     - cron: '0 */3 * * *'
 env:
-#  ENV: prod
+  ENV: test
+  ADMIN_PANEL_URL: ${{ secrets.ADMIN_PANEL_URL }}
   BLOCKSCOUT_URL: ${{ secrets.E2E_BLOCKSCOUT_URL }}
-#  FRONTEND_URL: ${{ secrets.E2E_FRONTEND_URL }}
-#  NETWORK_URL: ${{ secrets.E2E_NETWORK_URL }}
   ADMIN_ACCOUNT_USERNAME: ${{ secrets.ADMIN_ACCOUNT_USERNAME }}
   ADMIN_ACCOUNT_PASSWORD: ${{ secrets.ADMIN_ACCOUNT_PASSWORD }}
-#  MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
-#  MAILSLURP_EMAIL_ID: ${{ secrets.MAILSLURP_EMAIL_ID }}
-#  RESOURCE_MODE: account
-#  PUBLIC: false
-#  PORT: 4000
-#  PORT_PG: 5432
-#  PORT_NETWORK_HTTP: 8545
-#  PORT_NETWORK_WS: 8546
-#  WALLET: ${{ secrets.WALLET }}
-#  PWDEBUG: 0
-#  PROD: 1
-  ADMIN_PANEL_URL: ${{ secrets.ADMIN_PANEL_URL }}
 jobs:
   test:
     name: Admin console tests
