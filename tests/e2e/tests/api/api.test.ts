@@ -1,11 +1,11 @@
-import {test, request, expect, APIRequestContext} from '@playwright/test'
-import {LoadDataFile, LoadTokens, paginationToQuery} from "@lib/File"
+import {test, expect} from '@playwright/test'
+import {LoadDataFile, LoadTokens } from "@lib/File"
 
 const urls = (process.env.BLOCKSCOUT_URL || ``).split(`,`)
 
 urls.forEach((url: string) => {
     LoadDataFile(url)
-    test(`@Live @Api ${url} Check tokens data`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check tokens data`, async ({ request }): Promise<void> => {
         const data = await LoadTokens(url,'ERC-1155', 3)
         for (const t of data.tokens) {
             console.log(`addr: ${t.address}`)
