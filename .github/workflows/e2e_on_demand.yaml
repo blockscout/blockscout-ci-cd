@@ -45,8 +45,6 @@ jobs:
             ${{ runner.os }}-
       - name: Install deps
         run: npm ci
-      - name: Lint
-        run: npm run lint
       - name: Cache playwright binaries
         uses: actions/cache@v2
         id: playwright-cache

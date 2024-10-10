@@ -9,10 +9,12 @@ To add your environment to the E2E tests suite you need to:
 
 To configure tests we are using `.envrc` format, put all your vars there and `source .envrc` before running tests
 
-## Live (production) UI tests debug
+# How to run
+
+## Live (production) UI Tests
 ```
 export BLOCKSCOUT_URL=...
-export PWDEBUG=0 # 1 - debug, 0 - no debug
+
 source .envrc && npm run test:ondemand
 ```
 
@@ -23,21 +25,24 @@ BLOCKSCOUT_URLS=(
   "https://eth.blockscout.com"
 )
 export BLOCKSCOUT_URL=$(IFS=,; echo "${BLOCKSCOUT_URLS[*]}")
+
 source .envrc && npx playwright test --project=Chrome --grep=@Live --grep=@Accounts --retries=0 --timeout=60000
 ```
 
-## Live (production) API tests debug
+## Live (production) API Tests
 ```
 BLOCKSCOUT_URLS=(
   "https://eth-sepolia.k8s-dev.blockscout.com"
   "https://eth.blockscout.com"
 )
 export BLOCKSCOUT_URL=$(IFS=,; echo "${BLOCKSCOUT_URLS[*]}")
+
 source .envrc && npx playwright test --project=Chrome --grep=@Live --grep=@Api --retries=0 --timeout=120000
 ```
 
-## E2E Environment tests (contract deployments)
+## E2E Account Tests
 ```
+export BLOCKSCOUT_URL=
 export ENV=test
 export NETWORK_URL=
 export WALLET=
@@ -48,23 +53,40 @@ export ACCOUNT_PASSWORD=
 export MAILSLURP_API_KEY=
 export MAILSLURP_EMAIL_ID=
 export PROD=1
-export PWDEBUG=0
 export LOAD_AUTH_CTX=1 # use 0 to authorize and save new cookie
 export LOAD_CONTRACTS_DATA=1 # use 0 to deploy new set of contracts
 
 source .envrc && npm run test:smoke:account
 ```
 
-## Run RPC compatibility tests
+## Run Admin Panel Tests
+```
+export ADMIN_PANEL_URL=
+export ADMIN_ACCOUNT_USERNAME=
+export ADMIN_ACCOUNT_PASSWORD=
+
+source .envrc && npm run test:admin
+```
+
+## Run RPC Compatibility Tests
 Add vars to `.envrc`
 ```
-export RPC_TEST_URL="https://rpc.ankr.com/eth"
-export RPC_TEST_BLOCK_NUMBER="19172504"
-export RPC_TEST_ADDRESS="..."
-export RPC_TEST_TX="..."
-export RPC_TEST_CONTRACT="..."
+export RPC_TEST_URL=
+export RPC_TEST_BLOCK_NUMBER=
+export RPC_TEST_ADDRESS=
+export RPC_TEST_TX=
+export RPC_TEST_CONTRACT=
+
 source .envrc && node test_rpc.mjs
 ```
 
-## Debug
+## CI runs
+- [Live matrix](../../.github/workflows/e2e_matrix.yaml)
+- [E2E Account (internal env)](../../.github/workflows/e2e_new.yaml)
+- [Admin panel tests](../../.github/workflows/e2e_admin.yaml)
+
+## Playwright Debug
 You can use [VSCode addon](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright), or set `PWDEBUG=1` and run any target
+```
+export PWDEBUG=0 # 1 - debug, 0 - no debug
+```

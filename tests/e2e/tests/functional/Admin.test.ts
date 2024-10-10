@@ -4,7 +4,7 @@ import test from '@lib/BaseTest'
 
 test.describe.configure({ mode: `parallel` })
 
-const envURL = `https://admin-ts-test.k8s-dev.blockscout.com`
+const envURL = process.env.ADMIN_PANEL_URL
 
 test.beforeEach(async ({ adminPage }) => {
     adminPage.setBaseURL(envURL)
