@@ -9,9 +9,11 @@ urls.forEach((url: string) => {
         const data = await LoadTokens(url, `ERC-1155`, 3)
         for (const t of data.tokens) {
             console.log(`addr: ${t.address}`)
+            // eslint-disable-next-line no-await-in-loop
             const resp = await request.get(`${url}/api/v2/tokens/${t.address}`)
             expect(resp.ok()).toBeTruthy()
             expect(resp.status()).toBe(200)
+            // eslint-disable-next-line no-await-in-loop
             const body = await resp.json()
             console.log(`body: ${JSON.stringify(body, null, 2)}`)
         }

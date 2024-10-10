@@ -9,13 +9,14 @@ export const LoadDataFile = (url: string): any => {
     const u = url.endsWith(`/`) ? url.slice(0, -1) : url
     const fileName = u.split(`//`)[1].split(`.`).slice(0, -1).join(`.`)
     try {
+        // eslint-disable-next-line consistent-return
         return JSON.parse(readFileSync(`static/${fileName}.json`).toString())
     } catch (err) {
         console.log(chalk.red(`Error reading static data for ${fileName}, file should be named as first two domain sections of URL: ${u}, err: ${err}`))
     }
 }
 
-const newReqCtx = async (url: string) => await request.newContext({
+const newReqCtx = async (url: string) => request.newContext({
     baseURL: url,
     extraHTTPHeaders: {},
 })
@@ -25,6 +26,7 @@ export const paginationToQuery = (params: { [key: string]: any }): string => {
         .map(([key, value]) => {
             // If value is undefined or an empty string, set it explicitly as null
             if (value === undefined || value === ``) {
+                // eslint-disable-next-line no-param-reassign
                 value = `null`
             }
             return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
@@ -42,12 +44,14 @@ export const LoadTokens = async (url: string, type: string, pages: number): Prom
     }
     let pageParams = ``
     let urlWithParams = ``
-    for (let i = 0; i < pages; i++) {
+    for (let i = 0; i < pages; i += 1) {
         urlWithParams = `${url}/api/v2/tokens?type=${type}&${pageParams}`
         // console.log(`url with params: ${urlWithParams}`)
+        // eslint-disable-next-line no-await-in-loop
         const resp = await r.get(urlWithParams)
         expect(resp.ok()).toBeTruthy()
         expect(resp.status()).toBe(200)
+        // eslint-disable-next-line no-await-in-loop
         const body = await resp.json()
         pageParams = paginationToQuery(body.next_page_params)
         data.tokens.push(...body.items)
