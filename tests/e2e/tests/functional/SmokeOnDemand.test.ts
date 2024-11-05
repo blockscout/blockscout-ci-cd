@@ -122,7 +122,7 @@ urls.forEach((url: string) => {
     test(`@Live @ContractsRead ${url} Check read contract tabs`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         if (await newHomePage.hasVerifiedContracts(url)) {
-            await newHomePage.open_custom(`${url}/verified-contracts`)
+            await newHomePage.openFirstVerifiedContract(url)
             await newHomePage.checkContractReadTabs()
         }
     })
@@ -130,7 +130,7 @@ urls.forEach((url: string) => {
         await newHomePage.checkRequests(newHomePage.page)
         if (await newHomePage.hasVerifiedContracts(url)) {
             if (await newHomePage.hasWriteContractTab()) {
-                await newHomePage.open_custom(`${url}/verified-contracts`)
+                await newHomePage.openFirstVerifiedContract(url)
                 await newHomePage.checkContractsWriteTabs()
             } else {
                 console.log(chalk.yellow(`Contract doesn't have any write methods!`))
@@ -140,7 +140,7 @@ urls.forEach((url: string) => {
     test(`@Live @ContractsCode ${url} Check contracts code tabs`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         if (await newHomePage.hasVerifiedContracts(url)) {
-            await newHomePage.open_custom(`${url}/verified-contracts`)
+            await newHomePage.openFirstVerifiedContract(url)
             await newHomePage.checkContractsCodeTab()
             await newHomePage.checkContractUMLDiagram()
         }
