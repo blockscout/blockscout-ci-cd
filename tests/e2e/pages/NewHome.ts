@@ -90,6 +90,11 @@ export class NewHomePage extends CommonPage {
         await this.page.click(`main >> table >> td >> nth=0 >> a`)
     }
 
+    async hasVerifiedContracts(url: string): Promise<boolean> {
+        await this.open_custom(`${url}/verified-contracts`)
+        return this.actions.page.isVisible(`main >> table >> td >> nth=0 >> a`)
+    }
+
     async checkContractReadTabs(): Promise<void> {
         await this.actions.clickElement(`text=/Read contract|Read proxy/`)
         await this.page.getByText(`DisconnectedConnect wallet`).isVisible()

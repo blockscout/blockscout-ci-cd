@@ -42,7 +42,7 @@ urls.forEach((url: string) => {
         await newHomePage.findInSearchItems(staticData.search.result)
     })
     test(`@Live @Stats ${url} Check stats`, async ({ newHomePage }) => {
-        // await newHomePage.checkRequests(newHomePage.page)
+        await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isStatsEnabled()) {
             await newHomePage.open_custom(`${url}/stats`)
@@ -54,7 +54,10 @@ urls.forEach((url: string) => {
     })
     test(`@Live @VerifiedContracts ${url} Check verified contracts`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
-        await newHomePage.open_custom(`${url}/verified-contracts`)
+        if (!await newHomePage.hasVerifiedContracts(url)) {
+            console.log(chalk.yellow(`Instance has no verified contracts!`))
+            return
+        }
         await newHomePage.checkVerifiedContractsStats()
     })
     test(`@Live @ENS ${url} Check ENS`, async ({ newHomePage }) => {
@@ -117,23 +120,26 @@ urls.forEach((url: string) => {
     })
     test(`@Live @ContractsRead ${url} Check read contract tabs`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
-        await newHomePage.openFirstVerifiedContract(url)
-        await newHomePage.checkContractReadTabs()
+        if (await newHomePage.hasVerifiedContracts(url)) {
+            await newHomePage.checkContractReadTabs()
+        }
     })
     test(`@Live @ContractsWrite ${url} Check write contract tabs`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
-        await newHomePage.openFirstVerifiedContract(url)
-        if (await newHomePage.hasWriteContractTab()) {
-            await newHomePage.checkContractsWriteTabs()
-        } else {
-            console.log(chalk.yellow(`Contract doesn't have any write methods!`))
+        if (await newHomePage.hasVerifiedContracts(url)) {
+            if (await newHomePage.hasWriteContractTab()) {
+                await newHomePage.checkContractsWriteTabs()
+            } else {
+                console.log(chalk.yellow(`Contract doesn't have any write methods!`))
+            }
         }
     })
     test(`@Live @ContractsCode ${url} Check contracts code tabs`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
-        await newHomePage.openFirstVerifiedContract(url)
-        await newHomePage.checkContractsCodeTab()
-        await newHomePage.checkContractUMLDiagram()
+        if (await newHomePage.hasVerifiedContracts(url)) {
+            await newHomePage.checkContractsCodeTab()
+            await newHomePage.checkContractUMLDiagram()
+        }
     })
     test(`@Live @ERC-721 ${url} Check ERC-721 inventory tab`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)

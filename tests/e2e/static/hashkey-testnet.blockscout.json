@@ -1,0 +1,11 @@
+{
+  "search": {
+    "query": "USDT",
+    "result": "TEST USDT"
+  },
+  "erc721": {
+    "address": "0x09C1Da54894Dc5715F391F8C9DFCd665D9a74A22",
+    "instance": "9",
+    "metadata": "{\"description\":\"Chinese Zodiac NFT\",\"image\":\"https://bafybeihr2vj6qmi5crxwa6rrqnppvnrlg7e7odep7jwxuu43bhbmptdoxq.ipfs.w3s.link/DALL%C2%B7E%202024-10-02%2016.08.45%20-%20Pixel%20art%20of%20a%20horse%2C%20representing%20the%20Chinese%20zodiac.%20The%20horse%20should%20be%20distinct%2C%20vibrant%2C%20and%20simplified%20in%20classic%20pixel%20art%20style%2C%20suitable%20for%20.webp\",\"name\":\"Horse\"}"
+  }
+}
