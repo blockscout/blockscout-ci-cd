@@ -37,16 +37,18 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Set up SSH key
+    - name: Set up SSH key and script
       shell: bash
       run: |
         mkdir -p ~/.ssh
         echo "${{ inputs.docker-arm-host-key }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
+        curl -o $PWD/select-remote-builder.sh https://raw.githubusercontent.com/blockscout/blockscout-ci-cd/refs/heads/multiarch-buildx/scripts/select-remote-builder.sh
+        chmod +x $PWD/select-remote-builder.sh
     - name: Find builder
       if: ${{ inputs.docker-remote-multi-platform }}
       shell: bash
-      run: echo "BUILDER_IP=$(./.github/scripts/select-builder.sh ${{ inputs.docker-arm-host }} root ~/.ssh/id_rsa)" >> $GITHUB_ENV
+      run: echo "BUILDER_IP=$(./select-remote-builder.sh ${{ inputs.docker-arm-host }} root ~/.ssh/id_rsa)" >> $GITHUB_ENV
     - name: Set up SSH
       if: ${{ inputs.docker-remote-multi-platform }}
       uses: MrSquaare/ssh-setup-action@523473d91581ccbf89565e12b40faba93f2708bd # v1.1.0
