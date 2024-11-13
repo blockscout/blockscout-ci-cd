@@ -46,7 +46,7 @@ runs:
         mkdir -p ~/.ssh
         echo "${{ inputs.docker-arm-host-key }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        curl -o $PWD/select-remote-builder.sh https://raw.githubusercontent.com/blockscout/blockscout-ci-cd/refs/heads/multiarch-buildx/scripts/select-remote-builder.sh
+        curl -o $PWD/select-remote-builder.sh https://raw.githubusercontent.com/blockscout/blockscout-ci-cd/refs/heads/master/scripts/select-remote-builder.sh
         chmod +x $PWD/select-remote-builder.sh
     - name: Find builder
       if: ${{ inputs.docker-remote-multi-platform }}
