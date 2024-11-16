@@ -388,14 +388,14 @@ urls.forEach((url: string) => {
             expect(await row[4].textContent()).toMatch(/\d+/)
         }
         if (url.includes(`gnosis`)) {
-            expect(header).toEqual(`RankAddressBalance XDAITxn count`)
+            expect(header).toEqual(`RankAddressBalance XDAIPercentageTxn count`)
         }
         if (url.includes(`optimism`)) {
             expect(header).toEqual(`RankAddressBalance ETHPercentageTxn count`)
             expect(await row[4].textContent()).toMatch(/\d+/)
         }
         if (url.includes(`base`) || url.includes(`zkevm`) || url.includes(`zksync`) || url.includes(`zora`)) {
-            expect(header).toEqual(`RankAddressBalance ETHTxn count`)
+            expect(header).toEqual(`RankAddressBalance ETHPercentageTxn count`)
         }
         if (url.includes(`polygon`)) {
             expect(header).toEqual(`RankAddressBalance POLPercentageTxn count`)
