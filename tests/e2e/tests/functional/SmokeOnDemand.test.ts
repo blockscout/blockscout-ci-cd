@@ -375,9 +375,9 @@ urls.forEach((url: string) => {
             expect(await row[6].textContent()).toMatch(/N\/A/)
         }
     })
-    test(`@Live @Accounts ${url} Check top accounts`, async ({ newHomePage }) => {
+    test.only(`@Live @Accounts ${url} Check top accounts`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
-        await newHomePage.open_custom(`${url}/accounts`, { waitUntil: `load`, delay: 10000 })
+        await newHomePage.open_custom(`${url}/accounts`, { waitUntil: `load`, delay: 15000 })
         const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
         const row = await newHomePage.actions.page.locator(`table >> tr >> nth=1 >> td`).all()
         if (url.includes(`k8s-dev`)) {

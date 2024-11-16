@@ -99,6 +99,9 @@ export class MarketplacePage extends CommonPage {
         await this.actions.verifyElementIsDisplayed(`section[role="dialog"] >> a`)
     }
 
+    async openRandomApp(): Promise<void> {
+    }
+
     async addFavoriteApp(name: string): Promise<void> {
         await this.actions.page.hover(`${this.APP_TILE_HEADER}${name}`)
         await this.actions.clickElement(`${this.APP_STARGAZER}${this.apps[name]}`)
