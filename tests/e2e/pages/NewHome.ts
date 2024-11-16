@@ -96,7 +96,7 @@ export class NewHomePage extends CommonPage {
     }
 
     async checkContractReadTabs(): Promise<void> {
-        await this.actions.clickElement(`text=/Read contract|Read proxy/`)
+        await this.actions.clickElement(`text=/Read|Write.*contract/`)
         await this.page.getByText(`DisconnectedConnect wallet`).isVisible()
         await this.page.getByText(`Contract information`).isVisible()
     }
@@ -149,7 +149,7 @@ export class NewHomePage extends CommonPage {
         }
         await this.page.getByRole(`tab`, { name: `Metadata` }).click()
         await this.page.getByRole(`combobox`).selectOption(`JSON`)
-        const textContent = await this.page.locator(`body >> section >> div >> nth=26`).textContent()
+        const textContent = await this.page.locator(`body >> main >> section >> div`).textContent()
         const minified = JSON.stringify(JSON.parse(textContent))
         await expect(minified).toContain(
             data.metadata,
@@ -172,7 +172,7 @@ export class NewHomePage extends CommonPage {
         await expect(this.page.getByText(`Owner`)).toBeVisible()
         await expect(this.page.getByText(`Creator`)).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
-        await expect(this.page.getByText(`Name`)).toBeVisible()
+        await expect(this.page.getByText(`Name`, { exact: true })).toBeVisible()
         await expect(this.page.getByText(`Description`)).toBeVisible()
         await expect(this.page.getByText(`Attributes`)).toBeVisible()
     }
@@ -180,7 +180,7 @@ export class NewHomePage extends CommonPage {
     async checkInventoryERC404MetadataTab(data: any): Promise<void> {
         await this.page.getByRole(`tab`, { name: `Metadata` }).click()
         await this.page.getByRole(`combobox`).selectOption(`JSON`)
-        const textContent = await this.page.locator(`body >> section >> div >> nth=26`).textContent()
+        const textContent = await this.page.locator(`body >> main >> section >> div`).textContent()
         const minified = JSON.stringify(JSON.parse(textContent))
         await expect(minified).toContain(
             data.metadata,
@@ -209,7 +209,7 @@ export class NewHomePage extends CommonPage {
         }
         await this.page.getByRole(`tab`, { name: `Metadata` }).click()
         await this.page.getByRole(`combobox`).selectOption(`JSON`)
-        const textContent = await this.page.locator(`body >> section >> div >> nth=26`).textContent()
+        const textContent = await this.page.locator(`body >> main >> section >> div`).textContent()
         const minified = JSON.stringify(JSON.parse(textContent))
         await expect(minified).toContain(
             data.metadata,

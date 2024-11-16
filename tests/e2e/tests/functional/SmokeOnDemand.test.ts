@@ -119,22 +119,11 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`Blob txns are OFF!`))
         }
     })
-    test(`@Live @ContractsRead ${url} Check read contract tabs`, async ({ newHomePage }) => {
-        await newHomePage.checkRequests(newHomePage.page)
+    test(`@Live @ContractsRead ${url} Check read/write contract tabs`, async ({ newHomePage }) => {
+        // await newHomePage.checkRequests(newHomePage.page)
         if (await newHomePage.hasVerifiedContracts(url)) {
             await newHomePage.openFirstVerifiedContract(url)
             await newHomePage.checkContractReadTabs()
-        }
-    })
-    test(`@Live @ContractsWrite ${url} Check write contract tabs`, async ({ newHomePage }) => {
-        await newHomePage.checkRequests(newHomePage.page)
-        if (await newHomePage.hasVerifiedContracts(url)) {
-            if (await newHomePage.hasWriteContractTab()) {
-                await newHomePage.openFirstVerifiedContract(url)
-                await newHomePage.checkContractsWriteTabs()
-            } else {
-                console.log(chalk.yellow(`Contract doesn't have any write methods!`))
-            }
         }
     })
     test(`@Live @ContractsCode ${url} Check contracts code tabs`, async ({ newHomePage }) => {

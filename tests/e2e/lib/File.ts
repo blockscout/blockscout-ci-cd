@@ -4,6 +4,7 @@ import { expect, request } from "@playwright/test"
 
 export const LoadDataFile = (url: string): any => {
     if (process.env.ENV === `test` || process.env.ENV === `scoutcloud`) {
+        console.log(`static data was not loaded, have you set ENV param?`)
         return
     }
     const u = url.endsWith(`/`) ? url.slice(0, -1) : url
