@@ -90,6 +90,7 @@ urls.forEach((url: string) => {
             await marketplace.openMarketplace()
             // await marketplace.checkDefaultAppsList()
             await marketplace.checkAllFeaturesOn()
+            // await marketplace.openRandomApp()
         } else {
             console.log(chalk.yellow(`DApps Marketplace is OFF!`))
         }
@@ -375,7 +376,7 @@ urls.forEach((url: string) => {
             expect(await row[6].textContent()).toMatch(/N\/A/)
         }
     })
-    test.only(`@Live @Accounts ${url} Check top accounts`, async ({ newHomePage }) => {
+    test(`@Live @Accounts ${url} Check top accounts`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(`${url}/accounts`, { waitUntil: `load`, delay: 15000 })
         const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()
@@ -394,8 +395,11 @@ urls.forEach((url: string) => {
             expect(header).toEqual(`RankAddressBalance ETHPercentageTxn count`)
             expect(await row[4].textContent()).toMatch(/\d+/)
         }
-        if (url.includes(`base`) || url.includes(`zkevm`) || url.includes(`zksync`) || url.includes(`zora`)) {
+        if (url.includes(`base`)) {
             expect(header).toEqual(`RankAddressBalance ETHPercentageTxn count`)
+        }
+        if (url.includes(`zkevm`) || url.includes(`zksync`) || url.includes(`zora`)) {
+            expect(header).toEqual(`RankAddressBalance ETHTxn count`)
         }
         if (url.includes(`polygon`)) {
             expect(header).toEqual(`RankAddressBalance POLPercentageTxn count`)
