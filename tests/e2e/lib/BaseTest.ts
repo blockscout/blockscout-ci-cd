@@ -1,6 +1,5 @@
 import { test as baseTest } from '@playwright/test'
 import { HomePage } from '@pages/Home'
-import { BlocksPage } from '@pages/Blocks'
 import { TransactionPage } from '@pages/Transaction'
 import { TokensPage } from '@pages/Tokens'
 import { TokenPage } from '@pages/Token'
@@ -15,8 +14,6 @@ import { TransactionsListPage } from '@pages/TransactionsList'
 import { BlockListPage } from '@pages/BlocksList'
 import { MarketplacePage } from '@pages/Marketplace'
 import { NewHomePage } from '@pages/NewHome'
-import { EtherscanGoerliPage } from '@pages/EtherscanGoerli'
-import { EtherscanMainnetPage } from '@pages/EtherscanMainnet'
 import Contracts from './Contracts'
 import testConfig from '../testConfig'
 
@@ -29,14 +26,11 @@ const test = baseTest.extend<{
     authorized: AuthorizedArea,
     transactionPage: TransactionPage,
     transactionsListPage: TransactionsListPage,
-    blocksPage: BlocksPage,
     blocksListPage: BlockListPage,
     tokensPage: TokensPage
     tokenPage: TokenPage,
     addressPage: AddressPage,
     verificationPage: VerificationPage,
-    etherscanGoerliPage: EtherscanGoerliPage,
-    etherscanMainnet: EtherscanMainnetPage,
 }>({
     adminPage: async ({ page }, use) => {
         await use(new AdminPage(page))
@@ -64,9 +58,6 @@ const test = baseTest.extend<{
     transactionsListPage: async ({ page }, use) => {
         await use(new TransactionsListPage(page))
     },
-    blocksPage: async ({ page }, use) => {
-        await use(new BlocksPage(page))
-    },
     blocksListPage: async ({ page }, use) => {
         await use(new BlockListPage(page))
     },
@@ -81,12 +72,6 @@ const test = baseTest.extend<{
     },
     verificationPage: async ({ page }, use) => {
         await use(new VerificationPage(page))
-    },
-    etherscanGoerliPage: async ({ page }, use) => {
-        await use(new EtherscanGoerliPage(page))
-    },
-    etherscanMainnet: async ({ page }, use) => {
-        await use(new EtherscanMainnetPage(page))
     },
 })
 
