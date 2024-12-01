@@ -54,7 +54,7 @@ const test = baseTest.extend<{
         await use(new HomePage(page))
     },
     authorized: async ({ browser }, use) => {
-        const ctx = await browser.newContext({ storageState: `state.json` })
+        const ctx = await browser.newContext()
         const page = await ctx.newPage()
         await use(new AuthorizedArea(page, new MailSlurp({ apiKey: process.env.MAILSLURP_API_KEY }), new Contracts(testConfig.networkURL)))
     },

@@ -60,7 +60,7 @@ const checkAPIKey = async (authorized) => {
     await authorized.deleteRow()
 }
 
-test(`@AccountImage @Authorized Check all authorized functionality`, async ({ authorized }) => {
+test.only(`@AccountImage @Authorized Check all authorized functionality`, async ({ authorized }) => {
     const { ACCOUNT_USERNAME } = process.env
     await authorized.open({ timeout: 90000 })
     await authorized.signIn(ACCOUNT_USERNAME)
