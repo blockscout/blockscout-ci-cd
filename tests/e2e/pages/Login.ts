@@ -2,7 +2,9 @@
 /* eslint-disable guard-for-in */
 import { APIRequestContext, expect, request } from "@playwright/test"
 import { WebActions } from "@lib/WebActions"
-import { MailSlurp } from "mailslurp-client"
+import {
+    MailSlurp, MatchOptionFieldEnum, MatchOptionShouldEnum, WaitForMatchingEmailsSortEnum,
+} from "mailslurp-client"
 import type { Page } from 'playwright'
 import Contracts from "@lib/Contracts"
 import testConfig from "../testConfig"
@@ -65,14 +67,6 @@ export class AuthorizedArea extends CommonPage {
 
     actions: WebActions
 
-    ACCOUNT_MENU_PROFILE = `text=Profile`
-
-    PROFILE_NAME = `#name`
-
-    PROFILE_NICKNAME = `#nickname`
-
-    PROFILE_EMAIL = `#email`
-
     WATCHLIST_TAB = `text=Watch list`
 
     WATCHLIST_ADDRESS_INPUT = `[role="dialog"] >> text=/Address.*0x/`
@@ -111,23 +105,23 @@ export class AuthorizedArea extends CommonPage {
 
     ADDRESS_TAGS_TAB_ADD_ADDRESS = `text=Add address tag`
 
-    ADDRESS_TAGS_ADDRESS_INPUT = `#address`
+    ADDRESS_TAGS_ADDRESS_INPUT = `section >> input >> nth=0`
 
-    ADDRESS_TAGS_NAME_INPUT = `#tag`
+    ADDRESS_TAGS_NAME_INPUT = `section >> input >> nth=1`
 
     TX_TAGS_TAB = `section >> text=Transaction Tags`
 
     TX_TAGS_TAB_ADD_TX = `text=Add transaction tag`
 
-    TX_TAGS_TX_INPUT = `#transaction`
+    TX_TAGS_TX_INPUT = `section >> input >> nth=0`
 
-    TX_TAGS_NAME_INPUT = `#tag`
+    TX_TAGS_NAME_INPUT = `section >> input >> nth=1`
 
     API_KEYS_TAB = `text=API Keys`
 
     API_KEYS_ADD_BTN = `text=Add API Key`
 
-    API_KEYS_NAME_INPUT = `#name`
+    API_KEYS_NAME_INPUT = `section >> input >> nth=0`
 
     PUBLIC_TAGS_TAB = `text=Public Tags`
 
@@ -159,8 +153,6 @@ export class AuthorizedArea extends CommonPage {
 
     DELETE_ROW_ICON = `[aria-label="delete"] >> nth=1`
 
-    DELETE_ROW_BTN = `text=Delete`
-
     constructor(page: Page, ms: MailSlurp, contracts: Contracts) {
         super(page)
         this.page = page
@@ -175,13 +167,11 @@ export class AuthorizedArea extends CommonPage {
 
     async openAccount(options?: Object): Promise<void> {
         await this.actions.navigateToURL(process.env.BLOCKSCOUT_URL, options)
-        await this.page.getByRole(`button`, { name: `profile menu` }).click()
         await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}auth/profile`, options)
     }
 
     async openWatchlist(options?: Object): Promise<void> {
         await this.actions.navigateToURL(process.env.BLOCKSCOUT_URL, options)
-        await this.page.getByRole(`button`, { name: `profile menu` }).click()
         await this.actions.navigateToURL(`${process.env.BLOCKSCOUT_URL}account/watchlist`, options)
     }
 
@@ -242,17 +232,56 @@ export class AuthorizedArea extends CommonPage {
         })
     }
 
-    async signIn(email: string, password: string): Promise<void> {
-        await this.page.getByRole(`link`, { name: `profile menu` }).click()
-        await this.actions.enterElementText(this.AUTH0_INPUT_USERNAME, email)
-        await this.actions.enterElementText(this.AUTH0_INPUT_PASSWORD, password)
-        await this.actions.clickElement(this.AUTH0_SUBMIT)
+    async signIn(email: string): Promise<void> {
+        await this.actions.clickElement(`text=/Log in/ >> nth=1`)
+        await this.actions.clickElement(`text=/Continue with email/`)
+        await this.actions.enterElementText(`text=/Email/`, email)
+        await this.actions.clickElement(`text=/Send a code/`)
+        console.log(`Awaiting OTP code..`)
+        await this.delay(10000)
+        const ms = new MailSlurp({ apiKey: process.env.MAILSLURP_API_KEY })
+
+        const matchingEmails = await ms.waitController.waitForMatchingEmails(
+            {
+                matchOptions: {
+                    matches: [
+                        {
+                            field: MatchOptionFieldEnum.FROM,
+                            should: MatchOptionShouldEnum.CONTAIN,
+                            value: `root@auth0.com`,
+                        },
+                    ],
+                },
+                count: 1,
+                inboxId: `aa226cd3-042c-4f9d-82d1-884d632766f6`,
+                timeout: 30000,
+                sort: WaitForMatchingEmailsSortEnum.DESC,
+            },
+        )
+        console.log(`subject: ${matchingEmails[0].subject}`)
+        const emailId = matchingEmails[0].id
+        const em = await ms.getEmail(emailId)
+        console.log(`OTP: ${this.extractVerificationCode(em.body)}`)
+        const code = this.extractVerificationCode(em.body)
+        for (const i in code) {
+            const selectorNum = Number(i) + 1
+            await this.actions.enterElementText(`form >> input >> nth=${selectorNum}`, code[i])
+        }
+        await this.actions.clickElement(`form >> text=/Submit/`)
+        await this.delay(5000)
+        await this.actions.clickElement(`section >> button >> nth=0`)
+        console.log(`Signed in`)
+    }
+
+    extractVerificationCode(body) {
+        const regex = /Your verification code is: <strong[^>]*>(\d+)<\/strong>/
+        const match = body.match(regex)
+        return match ? match[1] : null
     }
 
     async checkProfile(): Promise<void> {
-        await this.actions.verifyElementAttribute(this.PROFILE_NAME, `value`, process.env.ACCOUNT_USERNAME)
-        await this.actions.verifyElementAttribute(this.PROFILE_NICKNAME, `value`, process.env.ACCOUNT_USERNAME.split(`@`)[0])
-        await this.actions.verifyElementAttribute(this.PROFILE_EMAIL, `value`, process.env.ACCOUNT_USERNAME)
+        await this.actions.verifyElementAttribute(`body >> input >> nth=2`, `value`, process.env.ACCOUNT_USERNAME)
+        await this.actions.verifyElementAttribute(`body >> input >> nth=3`, `value`, process.env.ACCOUNT_USERNAME)
     }
 
     async check_tag_list(row: number, col: number, text: string): Promise<void> {

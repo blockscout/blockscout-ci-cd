@@ -14,5 +14,4 @@ test(`@AccountImage @Transactions Check contract creation tx props`, async ({ tr
     await transactionPage.open(TestTokenDeployTXHash)
     await transactionPage.check_tx_description()
     await transactionPage.check_tx_details()
-    // await transactionPage.check_transaction_logs()
 })

@@ -11,7 +11,7 @@
     "test:scoutcloud:cleanup": "npx playwright test --project=ScoutCloud --grep=@DeploymentCleanup --retries=0 --timeout=3600000",
     "test:ondemand": "npx playwright test --project=Chrome --grep=@Live --retries=0 --timeout=60000",
     "test:notifications": "npx playwright test --project=Chrome --grep=@Notifications",
-    "test:smoke:account": "npx playwright test --project=Chrome --grep=@AccountImage",
+    "test:smoke:account": "npx playwright test --project=Chrome --grep=@AccountImage --timeout=180000",
     "test:admin": "npx playwright test --project=Chrome --grep=@Admin",
     "test:smoke:verification": "npx playwright test --project=Chrome --grep=@Verification",
     "test:api": "npx playwright test --project=Chrome --grep @API",

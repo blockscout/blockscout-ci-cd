@@ -39,7 +39,7 @@ export class TransactionPage extends CommonPage {
 
     async check_tx_details(): Promise<void> {
         await this.actions.clickElement(this.DETAILS_TAB_FOOTER)
-        await this.check_table_element(`Other`, 2, `Txn type: \\d+.*Nonce: \\d+.*Position: \\d+`)
+        await this.actions.verifyElementIsDisplayed(`main >> text=/Txn type.*Nonce.*Position/`)
         await this.check_table_element(`Raw input`, 0, `0x`)
     }
 }

@@ -100,6 +100,8 @@ export class MarketplacePage extends CommonPage {
     }
 
     async openRandomApp(): Promise<void> {
+        await this.actions.clickElement(`main >> div[role="group"] >> nth=0`)
+        await this.actions.clickElement(`text=/Launch app/`)
     }
 
     async addFavoriteApp(name: string): Promise<void> {

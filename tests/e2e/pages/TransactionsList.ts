@@ -32,11 +32,11 @@ export class TransactionsListPage extends CommonPage {
     }
 
     async check_table_data(): Promise<void> {
-        await this.actions.verifyElementIsDisplayed(`text=/0x/`)
-        await this.actions.verifyElementIsDisplayed(`text=/Token transfer/`)
-        await this.actions.verifyElementIsDisplayed(`text=/Success/`)
-        await this.actions.verifyElementIsDisplayed(`text=/Failed/`)
-        await this.actions.verifyElementIsDisplayed(`text=/alwaysReverts/`)
-        await this.actions.verifyElementIsDisplayed(`text=/0.01/`)
+        await this.actions.verifyElementIsDisplayed(`body >> text=/0x/`)
+        await this.actions.verifyElementIsDisplayed(`body >> text=/Token transfer/ >> nth=1`)
+        await this.actions.verifyElementIsDisplayed(`body >> text=/Success/`)
+        await this.actions.verifyElementIsDisplayed(`body >> text=/Failed/`)
+        await this.actions.verifyElementIsDisplayed(`body >> text=/alwaysReverts/`)
+        await this.actions.verifyElementIsDisplayed(`body >> text=/0.01/`)
     }
 }

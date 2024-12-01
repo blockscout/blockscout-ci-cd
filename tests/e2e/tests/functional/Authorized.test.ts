@@ -5,20 +5,8 @@ import { PublicTagSpec, WatchListSpec } from '@pages/Login'
 
 test.describe.configure({ mode: `parallel` })
 
-// auth bug with frontend
-test.skip(`@AccountImage @Authorized @SignUp Sign up`, async ({ commonPage }) => {
-    const randomEmail = faker.internet.email()
-    const securePwd = `sa1djfhSKDJFH28372!@#`
-    await commonPage.signUp(randomEmail, securePwd)
-    await commonPage.isSignedIn()
-})
-
-test(`@AccountImage @Authorized Check profile info`, async ({ authorized }) => {
-    await authorized.openAccount()
-    await authorized.checkProfile()
-})
-
-test(`@AccountImage @Authorized Check address tag`, async ({ authorized }) => {
+const checkAddressTag = async (authorized) => {
+    console.log(`Checking address tag creation..`)
     const {
         TestTokenAddress,
     } = process.env
@@ -39,9 +27,10 @@ test(`@AccountImage @Authorized Check address tag`, async ({ authorized }) => {
     await authorized.selectPrivateTagsTab()
     await authorized.selectAddressTagTab()
     await authorized.deleteRow()
-})
+}
 
-test(`@AccountImage @Authorized Check transaction tag`, async ({ authorized }) => {
+const checkTxTag = async (authorized) => {
+    console.log(`Checking tx tag creation..`)
     const {
         TestTokenDeployTXHash,
     } = process.env
@@ -59,14 +48,25 @@ test(`@AccountImage @Authorized Check transaction tag`, async ({ authorized }) =
     await authorized.selectPrivateTagsTab()
     await authorized.selectTXTagTab()
     await authorized.deleteRow()
-})
+}
 
-test(`@AccountImage @Authorized Check API keys creation`, async ({ authorized }) => {
+const checkAPIKey = async (authorized) => {
+    console.log(`Checking API key creation..`)
     await authorized.openAccount()
     await authorized.selectAPIKeysTab()
     const keyName = faker.random.alphaNumeric(8)
     await authorized.addAPIKey(keyName)
     await authorized.check_tag_list(0, 0, keyName)
     await authorized.deleteRow()
-    // TODO: check key perms by using it?
+}
+
+test(`@AccountImage @Authorized Check all authorized functionality`, async ({ authorized }) => {
+    const { ACCOUNT_USERNAME } = process.env
+    await authorized.open({ timeout: 90000 })
+    await authorized.signIn(ACCOUNT_USERNAME)
+    await authorized.openAccount()
+    await authorized.checkProfile()
+    await checkAddressTag(authorized)
+    await checkTxTag(authorized)
+    await checkAPIKey(authorized)
 })
