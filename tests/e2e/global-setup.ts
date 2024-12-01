@@ -165,21 +165,5 @@ async function globalSetup(): Promise<void> {
             await setupContracts()
         }
     }
-    const storageStateFile = `state.json`
-    if (process.env.ACCOUNT === `1` && process.env.LOAD_AUTH_CTX === `0`) {
-        console.log(`creating authorization context for: ${storageStateFile}`)
-        const browser = await chromium.launch()
-        const ctx = await browser.newContext({ baseURL: process.env.BLOCKSCOUT_URL })
-        const page = await ctx.newPage()
-        const loginPage = new AuthorizedArea(page, null, null)
-        const { ACCOUNT_USERNAME, ACCOUNT_PASSWORD } = process.env
-        await loginPage.open({ timeout: 90000 })
-        await loginPage.signIn(ACCOUNT_USERNAME, ACCOUNT_PASSWORD)
-        await ctx.storageState({ path: `state.json` })
-        console.log(`authorization context saved: ${storageStateFile}`)
-        await browser.close()
-    } else {
-        console.log(`authorization context loaded from: ${storageStateFile}`)
-    }
 }
 export default globalSetup
