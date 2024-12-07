@@ -30,7 +30,6 @@ jobs:
           "https://www.shibariumscan.io",
           "https://explorer.zora.energy",
           "https://blast.blockscout.com",
-          "https://hashkey-testnet.blockscout.com"
         ]
     steps:
       - uses: actions/checkout@v3

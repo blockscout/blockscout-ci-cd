@@ -59,3 +59,28 @@ export const LoadTokens = async (url: string, type: string, pages: number): Prom
     }
     return data
 }
+
+export const LoadContracts = async (url: string, pages: number): Promise<any> => {
+    const r = await newReqCtx(url)
+    const data = {
+        contracts: [],
+    }
+    let pageParams = ``
+    let urlWithParams = ``
+    for (let i = 0; i < pages; i += 1) {
+        urlWithParams = `${url}/api/v2/smart-contracts?${pageParams}`
+        console.log(`url with params: ${urlWithParams}`)
+        // eslint-disable-next-line no-await-in-loop
+        const resp = await r.get(urlWithParams)
+        expect(resp.ok()).toBeTruthy()
+        expect(resp.status()).toBe(200)
+        // eslint-disable-next-line no-await-in-loop
+        const body = await resp.json()
+        if (body.next_page_params === null) {
+            return data
+        }
+        pageParams = paginationToQuery(body.next_page_params)
+        data.contracts.push(...body.items)
+    }
+    return data
+}

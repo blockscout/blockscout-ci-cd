@@ -15,6 +15,7 @@
     "test:admin": "npx playwright test --project=Chrome --grep=@Admin",
     "test:smoke:verification": "npx playwright test --project=Chrome --grep=@Verification",
     "test:api": "npx playwright test --project=Chrome --grep @API",
+    "test:verifiedcontracts": "npx playwright test --project=Chrome --grep @VC",
     "test:visual": "npx playwright test visualComparision.test.ts --project=Chrome",
     "lint": "eslint --ext .ts ."
   },

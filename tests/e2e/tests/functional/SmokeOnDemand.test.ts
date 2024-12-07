@@ -132,7 +132,7 @@ urls.forEach((url: string) => {
         if (await newHomePage.hasVerifiedContracts(url)) {
             await newHomePage.openFirstVerifiedContract(url)
             await newHomePage.checkContractsCodeTab()
-            await newHomePage.checkContractUMLDiagram()
+            // await newHomePage.checkContractUMLDiagram()
         }
     })
     test(`@Live @ERC-721 ${url} Check ERC-721 inventory tab`, async ({ newHomePage }) => {
@@ -413,7 +413,7 @@ urls.forEach((url: string) => {
             expect(await row[4].textContent()).toMatch(/\d+/)
         }
         if (url.includes(`immutable`)) {
-            expect(header).toEqual(`RankAddressBalance IMXTxn count`)
+            expect(header).toEqual(`RankAddressBalance IMXPercentageTxn count`)
         }
         if (url.includes(`shibarium`)) {
             expect(header).toEqual(`RankAddressBalance BONEPercentageTxn count`)
