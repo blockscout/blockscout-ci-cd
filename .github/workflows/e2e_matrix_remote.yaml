@@ -5,6 +5,6 @@ on:
 
 jobs:
   test:
-    uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_matrix.yaml@main
+    uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_matrix.yaml@master
     with:
       urls: '["https://eth-sepolia.k8s-dev.blockscout.com"]'
