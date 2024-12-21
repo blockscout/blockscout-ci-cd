@@ -303,7 +303,7 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
             SmokeStrategy,
             [`backendTXActions`],
             180,
-            180,
+            600,
             5,
         )
     case `stressBensV1`:

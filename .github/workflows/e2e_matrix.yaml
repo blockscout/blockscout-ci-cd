@@ -1,8 +1,22 @@
 name: E2E Env Matrix
+
 on:
   push:
   schedule:
     - cron: '0 */3 * * *'
+  workflow_call:
+    inputs:
+      urls:
+        description: "List of URLs to test"
+        required: true
+        type: array
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "Comma-separated list of URLs to test"
+        required: true
+        type: string
+
 jobs:
   on_demand_matrix:
     permissions:
@@ -13,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        url: [
+        url: ${{ fromJson(inputs.urls || toJson(github.event.inputs.urls.split(',')) || toJson([
           "https://eth-sepolia.k8s-dev.blockscout.com",
           "https://eth-sepolia.blockscout.com",
           "https://eth.blockscout.com",
@@ -29,8 +43,8 @@ jobs:
           "https://zksync.blockscout.com",
           "https://www.shibariumscan.io",
           "https://explorer.zora.energy",
-          "https://blast.blockscout.com",
-        ]
+          "https://blast.blockscout.com"
+          ])) }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup node
