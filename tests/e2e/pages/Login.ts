@@ -233,10 +233,9 @@ export class AuthorizedArea extends CommonPage {
     }
 
     async signIn(email: string): Promise<void> {
-        await this.actions.clickElement(`text=/Log in/ >> nth=1`)
-        await this.actions.clickElement(`text=/Continue with email/`)
-        await this.actions.enterElementText(`text=/Email/`, email)
-        await this.actions.clickElement(`text=/Send a code/`)
+        await this.actions.clickElement(`text=/Connect/ >> nth=1`)
+        await this.actions.enterElementText(`input[data-testid="wui-input-text"]`, email)
+        await this.actions.clickElement(`wui-card >> button >> nth=2`)
         console.log(`Awaiting OTP code..`)
         await this.delay(10000)
         const ms = new MailSlurp({ apiKey: process.env.MAILSLURP_API_KEY })
@@ -248,7 +247,7 @@ export class AuthorizedArea extends CommonPage {
                         {
                             field: MatchOptionFieldEnum.FROM,
                             should: MatchOptionShouldEnum.CONTAIN,
-                            value: `root@auth0.com`,
+                            value: `no-reply@reown.com`,
                         },
                     ],
                 },
@@ -262,19 +261,18 @@ export class AuthorizedArea extends CommonPage {
         const emailId = matchingEmails[0].id
         const em = await ms.getEmail(emailId)
         console.log(`OTP: ${this.extractVerificationCode(em.body)}`)
+        console.log(`body: ${em.body}`)
         const code = this.extractVerificationCode(em.body)
         for (const i in code) {
-            const selectorNum = Number(i) + 1
-            await this.actions.enterElementText(`form >> input >> nth=${selectorNum}`, code[i])
+            const selectorNum = Number(i)
+            await this.actions.enterElementText(`wui-card >> input >> nth=${selectorNum}`, code[i])
         }
-        await this.actions.clickElement(`form >> text=/Submit/`)
-        await this.delay(5000)
-        await this.actions.clickElement(`section >> button >> nth=0`)
+        await this.delay(20000)
         console.log(`Signed in`)
     }
 
     extractVerificationCode(body) {
-        const regex = /Your verification code is: <strong[^>]*>(\d+)<\/strong>/
+        const regex = /data-letter-spacing-original="0.1em">(\d+)/
         const match = body.match(regex)
         return match ? match[1] : null
     }
