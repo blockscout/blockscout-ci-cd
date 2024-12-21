@@ -1,4 +1,4 @@
-name: E2E Env Matrix
+name: E2E Env Matrix Reusable
 
 on:
   push:
@@ -7,14 +7,14 @@ on:
   workflow_call:
     inputs:
       urls:
-        description: "List of URLs to test"
+        description: "List of URLs to test (JSON stringified array)"
         required: true
-        type: array
+        type: string
   workflow_dispatch:
     inputs:
       urls:
         description: "Comma-separated list of URLs to test"
-        required: true
+        required: false
         type: string
 
 jobs:
@@ -27,24 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        url: ${{ fromJson(inputs.urls || toJson(github.event.inputs.urls.split(',')) || toJson([
-          "https://eth-sepolia.k8s-dev.blockscout.com",
-          "https://eth-sepolia.blockscout.com",
-          "https://eth.blockscout.com",
-          "https://base.blockscout.com",
-          "https://gnosis.blockscout.com",
-          "https://optimism.blockscout.com",
-          "https://neon.blockscout.com",
-          "https://rootstock.blockscout.com",
-          "https://polygon.blockscout.com",
-          "https://explorer.immutable.com",
-          "https://zkevm.blockscout.com",
-          "https://arbitrum.blockscout.com",
-          "https://zksync.blockscout.com",
-          "https://www.shibariumscan.io",
-          "https://explorer.zora.energy",
-          "https://blast.blockscout.com"
-          ])) }}
+        url: ${{ fromJson(inputs.urls || '[]') || fromJson('["https://eth-sepolia.k8s-dev.blockscout.com","https://eth-sepolia.blockscout.com","https://eth.blockscout.com","https://base.blockscout.com","https://gnosis.blockscout.com","https://optimism.blockscout.com","https://neon.blockscout.com","https://rootstock.blockscout.com","https://polygon.blockscout.com","https://explorer.immutable.com","https://zkevm.blockscout.com","https://arbitrum.blockscout.com","https://zksync.blockscout.com","https://www.shibariumscan.io","https://explorer.zora.energy","https://blast.blockscout.com"]') }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup node
