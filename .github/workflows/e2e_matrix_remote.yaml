@@ -1,0 +1,10 @@
+name: Call E2E Matrix Remotely
+
+on:
+  push:
+
+jobs:
+  test:
+    uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_matrix.yaml@main
+    with:
+      urls: '["https://eth-sepolia.k8s-dev.blockscout.com"]'
