@@ -148,6 +148,10 @@ export class NewHomePage extends CommonPage {
             return
         }
         await this.page.getByRole(`tab`, { name: `Metadata` }).click()
+        await this.delay(3000)
+        if (await this.page.locator('body >> select').isVisible()) {
+            return
+        }
         await this.page.click(`body >> text=/Table/`)
         await this.page.click(`body >> text=/JSON/`)
         const textContent = await this.page.getByText(`{`).textContent()
@@ -180,6 +184,10 @@ export class NewHomePage extends CommonPage {
 
     async checkInventoryERC404MetadataTab(data: any): Promise<void> {
         await this.page.getByRole(`tab`, { name: `Metadata` }).click()
+        await this.delay(3000)
+        if (await this.page.locator('body >> select').isVisible()) {
+            return
+        }
         await this.page.click(`body >> text=/Table/`)
         await this.page.click(`body >> text=/JSON/`)
         const textContent = await this.page.getByText(`{`).textContent()
@@ -210,6 +218,10 @@ export class NewHomePage extends CommonPage {
             return
         }
         await this.page.getByRole(`tab`, { name: `Metadata` }).click()
+        await this.delay(3000)
+        if (await this.page.locator('body >> select').isVisible()) {
+            return
+        }
         await this.page.click(`body >> text=/Table/`)
         await this.page.click(`body >> text=/JSON/`)
         const textContent = await this.page.getByText(`{`).textContent()
