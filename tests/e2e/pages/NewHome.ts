@@ -148,8 +148,9 @@ export class NewHomePage extends CommonPage {
             return
         }
         await this.page.getByRole(`tab`, { name: `Metadata` }).click()
-        await this.page.getByRole(`combobox`).selectOption(`JSON`)
-        const textContent = await this.page.locator(`body >> main >> section >> div`).textContent()
+        await this.page.click(`body >> text=/Table/`)
+        await this.page.click(`body >> text=/JSON/`)
+        const textContent = await this.page.getByText(`{`).textContent()
         const minified = JSON.stringify(JSON.parse(textContent))
         await expect(minified).toContain(
             data.metadata,
@@ -179,8 +180,9 @@ export class NewHomePage extends CommonPage {
 
     async checkInventoryERC404MetadataTab(data: any): Promise<void> {
         await this.page.getByRole(`tab`, { name: `Metadata` }).click()
-        await this.page.getByRole(`combobox`).selectOption(`JSON`)
-        const textContent = await this.page.locator(`body >> main >> section >> div`).textContent()
+        await this.page.click(`body >> text=/Table/`)
+        await this.page.click(`body >> text=/JSON/`)
+        const textContent = await this.page.getByText(`{`).textContent()
         const minified = JSON.stringify(JSON.parse(textContent))
         await expect(minified).toContain(
             data.metadata,
@@ -208,8 +210,9 @@ export class NewHomePage extends CommonPage {
             return
         }
         await this.page.getByRole(`tab`, { name: `Metadata` }).click()
-        await this.page.getByRole(`combobox`).selectOption(`JSON`)
-        const textContent = await this.page.locator(`body >> main >> section >> div`).textContent()
+        await this.page.click(`body >> text=/Table/`)
+        await this.page.click(`body >> text=/JSON/`)
+        const textContent = await this.page.getByText(`{`).textContent()
         const minified = JSON.stringify(JSON.parse(textContent))
         await expect(minified).toContain(
             data.metadata,
