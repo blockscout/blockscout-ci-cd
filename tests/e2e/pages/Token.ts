@@ -34,14 +34,14 @@ export class TokenPage extends CommonPage {
     async check_token(): Promise<void> {
         await this.actions.verifyElementIsDisplayed(`main >> div >> nth=10 >> text=/0x/`)
         await this.actions.verifyElementIsDisplayed(`main >> div >> text=/EPIC/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=1 >> text=/Max total supply/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=4 >> text=/\\d+.*EPC/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=10 >> text=/Holders/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=13 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=17 >> text=/Transfers/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=20 >> text=/\\d+/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=24 >> text=/Decimals/`)
-        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> div >> nth=28 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=20 >> text=/Max total supply/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=22 >> text=/\\d+.*EPC/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=26 >> text=/Holders/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=30 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=33 >> text=/Transfers/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=37 >> text=/\\d+/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=40 >> text=/Decimals/`)
+        await this.actions.verifyElementIsDisplayed(`main >> div >> nth=44 >> text=/\\d+/`)
     }
 
     async select_holders_tab(): Promise<void> {
