@@ -135,7 +135,7 @@ urls.forEach((url: string) => {
             // await newHomePage.checkContractUMLDiagram()
         }
     })
-    test.only(`@Live @ERC-721 ${url} Check ERC-721 inventory tab`, async ({ newHomePage }) => {
+    test(`@Live @ERC-721 ${url} Check ERC-721 inventory tab`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         if (!staticData.erc721) {
             console.log(`no erc-721 tokens exist`)
