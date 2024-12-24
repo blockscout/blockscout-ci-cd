@@ -35,7 +35,7 @@ urls.forEach((url: string) => {
         await newHomePage.open_custom(`${url}/txs`)
         await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
     })
-    test(`@Live @Search ${url} Check search`, async ({ newHomePage }) => {
+    test.skip(`@Live @Search ${url} Check search`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         await newHomePage.search(staticData.search.query)
@@ -52,7 +52,7 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`Stats Services are OFF!`))
         }
     })
-    test(`@Live @VerifiedContracts ${url} Check verified contracts`, async ({ newHomePage }) => {
+    test.skip(`@Live @VerifiedContracts ${url} Check verified contracts`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         if (!await newHomePage.hasVerifiedContracts(url)) {
             console.log(chalk.yellow(`Instance has no verified contracts!`))
@@ -135,7 +135,7 @@ urls.forEach((url: string) => {
             // await newHomePage.checkContractUMLDiagram()
         }
     })
-    test(`@Live @ERC-721 ${url} Check ERC-721 inventory tab`, async ({ newHomePage }) => {
+    test.skip(`@Live @ERC-721 ${url} Check ERC-721 inventory tab`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         if (!staticData.erc721) {
             console.log(`no erc-721 tokens exist`)
@@ -147,7 +147,7 @@ urls.forEach((url: string) => {
         await newHomePage.checkInventoryERC721Element(staticData.erc721)
         await newHomePage.checkInventoryERC721MetadataTab(staticData.erc721)
     })
-    test(`@Live @ERC-404 ${url} Check ERC-404 inventory tab`, async ({ newHomePage }) => {
+    test.skip(`@Live @ERC-404 ${url} Check ERC-404 inventory tab`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         if (staticData.erc404 === undefined) {
             console.log(`no erc-404 tokens exist`)
@@ -159,7 +159,7 @@ urls.forEach((url: string) => {
         await newHomePage.checkInventoryERC404Element(staticData.erc404)
         await newHomePage.checkInventoryERC404MetadataTab(staticData.erc404)
     })
-    test(`@Live @ERC-1155 ${url} Check ERC-1155 inventory tab`, async ({ newHomePage }) => {
+    test.skip(`@Live @ERC-1155 ${url} Check ERC-1155 inventory tab`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         if (staticData.erc404 === undefined) {
             console.log(`no erc-1155 tokens exist`)

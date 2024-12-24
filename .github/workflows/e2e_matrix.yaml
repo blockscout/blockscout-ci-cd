@@ -1,7 +1,6 @@
 name: E2E Env Matrix
 
 on:
-  push:
   schedule:
     - cron: '0 */3 * * *'
   workflow_call:
