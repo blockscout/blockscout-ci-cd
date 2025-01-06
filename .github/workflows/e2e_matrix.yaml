@@ -10,10 +10,18 @@ on:
         description: "List of URLs to test (JSON stringified array)"
         required: false
         type: string
+      test-data:
+        description: "Use test data or not"
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
       urls:
         description: "Comma-separated list of URLs to test"
+        required: false
+        type: string
+      test-data:
+        description: "Use test data or not"
         required: false
         type: string
 
@@ -62,6 +70,7 @@ jobs:
       - name: Run playwright
         env:
           BLOCKSCOUT_URL: ${{ matrix.url }}
+          NO_TEST_DATA: ${{ inputs.test-data }}
         run: |
           npm run test:ondemand
       - uses: actions/upload-artifact@v3
