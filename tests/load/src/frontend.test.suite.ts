@@ -107,6 +107,102 @@ export const frontendAddressDetails = () => {
     })
 }
 
+export const frontendAccounts = () => {
+    group(`/accounts`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/accounts`,
+            params: {
+                tags: {
+                    name: `accounts list (frontend)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`accounts list has failed!`)
+        }
+    })
+}
+
+export const frontendVerifiedContracts = () => {
+    group(`/verified-contracts`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/verified-contracts`,
+            params: {
+                tags: {
+                    name: `ops list (frontend)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`verified contracts list has failed!`)
+        }
+    })
+}
+export const frontendOps = () => {
+    group(`/ops`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/ops`,
+            params: {
+                tags: {
+                    name: `ops list (frontend)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`ops list has failed!`)
+        }
+    })
+}
+export const frontendTokenTransfers = () => {
+    group(`/token-transfers`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/token-transfers`,
+            params: {
+                tags: {
+                    name: `token transfers list (frontend)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`token transfers list has failed!`)
+        }
+    })
+}
+export const frontendTokens = () => {
+    group(`/tokens`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/tokens`,
+            params: {
+                tags: {
+                    name: `tokens list (frontend)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`tokens list has failed!`)
+        }
+    })
+}
 export const frontendTokenDetails = () => {
     group(`/token/{}`, () => {
         const res = shoot(session, {

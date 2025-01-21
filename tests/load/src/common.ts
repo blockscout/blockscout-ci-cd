@@ -193,6 +193,22 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
                 executor: `shared-iterations`,
             },
         }
+    case `frontend-lists`:
+        return GeneratePerAPIBaselineSuite(
+            SmokeStrategy,
+            [
+                `frontendTxs`,
+                `frontendBlocks`,
+                `frontendTokens`,
+                `frontendAccounts`,
+                `frontendTokenTransfers`,
+                `frontendOps`,
+                `frontendVerifiedContracts`,
+            ],
+            60,
+            60,
+            1,
+        )
     case `baselineFrontend`:
         return GeneratePerAPIBaselineSuite(
             SmokeStrategy,
@@ -247,6 +263,19 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
             30,
             5,
         )
+    case `lists`:
+        return GeneratePerAPIBaselineSuite(
+            SmokeStrategy,
+            [
+                `backendV2TransactionsList`,
+                `backendV2BlocksList`,
+                `backendV2TokensList`,
+                `backendV2TokenTransfersList`,
+            ],
+            60,
+            60,
+            5,
+        )
     case `smoke`:
         return GeneratePerAPIBaselineSuite(
             SmokeStrategy,
@@ -256,7 +285,7 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
                 `backendV2TXInternal`,
                 `backendV2TokenTransfers`,
                 `backendV2TokenInstances`,
-                `backendV2Transactions`,
+                `backendV2TransactionsList`,
                 `backendV2RecentTransactions`,
                 `backendV2Search`,
                 `backendV2SearchRedirect`,

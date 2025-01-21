@@ -251,7 +251,7 @@ export const backendV2TokenInstances = () => {
     })
 }
 
-export const backendV2Transactions = () => {
+export const backendV2TransactionsList = () => {
     group(`/v2/transactions?filter=validated&apikey={}`, () => {
         const res = shoot(session, {
             method: `GET`,
@@ -411,6 +411,25 @@ export const backendV2AddressesTokensERC1155 = () => {
     })
 }
 
+export const backendV2BlocksList = () => {
+    group(`/api/v2/blocks`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/api/v2/blocks`,
+            params: {
+                tags: {
+                    name: `Blocks List (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`Blocks List has failed`)
+        }
+    })
+}
 export const backendV2Blocks = () => {
     group(`/api/v2/blocks/{}`, () => {
         const res = shoot(session, {
@@ -491,6 +510,63 @@ export const backendV2AddressesTokenTransfers = () => {
     })
 }
 
+export const backendV2VerifiedContractsList = () => {
+    group(`/api/v2/verified-contracts`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/api/v2/verified-contracts`,
+            params: {
+                tags: {
+                    name: `Verified Contracts List (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`Verified Contracts List has failed`)
+        }
+    })
+}
+export const backendV2TokenTransfersList = () => {
+    group(`/api/v2/token-transfers`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/api/v2/token-transfers`,
+            params: {
+                tags: {
+                    name: `Tokens Transfers List (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`Token Transfers List has failed`)
+        }
+    })
+}
+export const backendV2TokensList = () => {
+    group(`/api/v2/tokens`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/api/v2/tokens`,
+            params: {
+                tags: {
+                    name: `Tokens List (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`Tokens List has failed`)
+        }
+    })
+}
 export const backendV2Tokens = () => {
     group(`/api/v2/tokens/{}`, () => {
         const res = shoot(session, {
