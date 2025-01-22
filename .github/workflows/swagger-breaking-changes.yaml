@@ -6,7 +6,7 @@ on:
       repository:
         description: 'The repository URL to clone (default: https://github.com/blockscout/blockscout-api-v2-swagger)'
         required: false
-        default: 'https://github.com/blockscout/blockscout-api-v2-swagger'
+        default: 'blockscout/blockscout-api-v2-swagger'
       head-branch:
         description: 'The head branch to compare (default: current branch)'
         required: false
@@ -14,15 +14,15 @@ on:
       base-branch:
         description: 'The base branch to compare against (default: master)'
         required: false
-        default: 'master'
+        default: 'main'
       head-spec-path:
         description: 'Path to the OpenAPI spec in the head branch'
         required: true
-        default: 'spec/openapi.yaml'
+        default: 'swagger.yaml'
       base-spec-path:
         description: 'Path to the OpenAPI spec in the base branch'
         required: true
-        default: 'spec/openapi.yaml'
+        default: 'swagger.yaml'
 
 jobs:
   compare-openapi:
