@@ -3,6 +3,10 @@ name: OpenAPI Diff Workflow
 on:
   workflow_dispatch:
     inputs:
+      repository:
+        description: 'The repository URL to clone (default: https://github.com/blockscout/blockscout-api-v2-swagger)'
+        required: false
+        default: 'https://github.com/blockscout/blockscout-api-v2-swagger'
       head-branch:
         description: 'The head branch to compare (default: current branch)'
         required: false
@@ -27,12 +31,14 @@ jobs:
       - name: Check out head branch
         uses: actions/checkout@v2
         with:
+          repository: ${{ github.event.inputs.repository }}
           ref: ${{ github.event.inputs.head-branch || github.ref }}
           path: head
 
       - name: Check out base branch
         uses: actions/checkout@v2
         with:
+          repository: ${{ github.event.inputs.repository }}
           ref: ${{ github.event.inputs.base-branch }}
           path: base
 
