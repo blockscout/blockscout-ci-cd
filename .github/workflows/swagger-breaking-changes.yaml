@@ -45,6 +45,6 @@ jobs:
       - name: Run OpenAPI Diff using Docker
         run: |
           docker run --rm -v $(pwd)/head:/head:ro -v $(pwd)/base:/base:ro \
-            openapitools/openapi-diff \
+            openapitools/openapi-diff --fail-on-changed \
             /head/${{ github.event.inputs.head-spec-path }} \
             /base/${{ github.event.inputs.base-spec-path }}
