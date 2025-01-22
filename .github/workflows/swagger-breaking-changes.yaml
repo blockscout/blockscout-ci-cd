@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       repository:
-        description: 'The repository URL to clone (default: https://github.com/blockscout/blockscout-api-v2-swagger)'
+        description: 'The repository URL to clone (default: blockscout/blockscout-api-v2-swagger)'
         required: false
         default: 'blockscout/blockscout-api-v2-swagger'
       head-branch:
@@ -12,7 +12,7 @@ on:
         required: false
         default: ''
       base-branch:
-        description: 'The base branch to compare against (default: master)'
+        description: 'The base branch to compare against (default: main)'
         required: false
         default: 'main'
       head-spec-path:
@@ -42,8 +42,9 @@ jobs:
           ref: ${{ github.event.inputs.base-branch }}
           path: base
 
-      - name: Run OpenAPI Diff
-        uses: mvegter/openapi-diff-action@v0.23.5
-        with:
-          head-spec: head/${{ github.event.inputs.head-spec-path }}
-          base-spec: base/${{ github.event.inputs.base-spec-path }}
+      - name: Run OpenAPI Diff using Docker
+        run: |
+          docker run --rm -v $(pwd)/head:/head:ro -v $(pwd)/base:/base:ro \
+            openapitools/openapi-diff \
+            /head/${{ github.event.inputs.head-spec-path }} \
+            /base/${{ github.event.inputs.base-spec-path }}
