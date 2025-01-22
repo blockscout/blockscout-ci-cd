@@ -169,6 +169,25 @@ export const backendV2AddressesInternalTx = () => {
     })
 }
 
+export const backendV2TXInternalCurrentBlock = () => {
+    group(`/v2/internal-transactions?apikey={}`, () => {
+        const res = shoot(session, {
+            method: `GET`,
+            url: `/api/v2/internal-transactions?apikey=${testData.APIKey}`,
+            params: {
+                tags: {
+                    name: `Last Block Internal Transactions (backendV2)`,
+                },
+            },
+        })
+        check(res, {
+            'is status 200': (r) => r.status === 200,
+        })
+        if (res.status !== 200) {
+            fail(`LastBlock Internal Transactions (backendV2) has failed`)
+        }
+    })
+}
 export const backendV2TXInternal = () => {
     group(`/v2/transactions/{}/internal-transactions?apikey={}`, () => {
         const res = shoot(session, {

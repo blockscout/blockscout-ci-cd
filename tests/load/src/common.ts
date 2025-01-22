@@ -283,6 +283,7 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
                 `backendV2TXDetails`,
                 `backendV2GasPriceOracle`,
                 `backendV2TXInternal`,
+                `backendV2TXInternalCurrentBlock`,
                 `backendV2TokenTransfers`,
                 `backendV2TokenInstances`,
                 `backendV2TransactionsList`,
