@@ -1,7 +1,7 @@
 {
   "search": {
     "query": "USDT",
-    "result": "Tether USD"
+    "result": "USDT TOKEN"
   },
   "erc721": {
     "address": "0xdcaf350d82f222a2430CaFCEE2838A5085D18230",
