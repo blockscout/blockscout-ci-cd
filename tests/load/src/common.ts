@@ -5,8 +5,6 @@ import {
 } from 'k6/options'
 
 import { SharedArray } from 'k6/data'
-import { randomTestAPICall } from "./random.test.suite"
-import { advfilterMain } from "./advanced.tx.test.suite"
 
 export const defaultSession = () => {
     const session = new Httpx({
@@ -55,6 +53,27 @@ export const loadTestData = (td: any) => {
 // eslint-disable-next-line no-restricted-globals
 const dataSharedArrray = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE)))
 export const testData = loadTestData(dataSharedArrray)
+
+const td1 = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE_1)))
+export const testData1 = loadTestData(td1)
+const td2 = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE_2)))
+export const testData2 = loadTestData(td2)
+const td3 = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE_3)))
+export const testData3 = loadTestData(td3)
+const td4 = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE_4)))
+export const testData4 = loadTestData(td4)
+const td5 = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE_5)))
+export const testData5 = loadTestData(td5)
+const td6 = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE_6)))
+export const testData6 = loadTestData(td6)
+const td7 = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE_7)))
+export const testData7 = loadTestData(td7)
+const td8 = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE_8)))
+export const testData8 = loadTestData(td8)
+const td9 = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE_9)))
+export const testData9 = loadTestData(td9)
+const td10 = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE_10)))
+export const testData10 = loadTestData(td10)
 
 export const SmokeStrategy = {
     executor: `constant-arrival-rate`,
@@ -107,6 +126,18 @@ const rampPrivateUser = (name: string) => ({
         { duration: `5m`, target: 3 },
     ],
     preAllocatedVUs: 10,
+    exec: name,
+} as Scenario)
+
+const rampMultichain = (name: string) => ({
+    executor: `ramping-arrival-rate`,
+    stages: [
+        { duration: `1m`, target: 10 },
+        { duration: `1m`, target: 15 },
+        { duration: `1m`, target: 20 },
+        { duration: `1m`, target: 25 },
+    ],
+    preAllocatedVUs: 50,
     exec: name,
 } as Scenario)
 
@@ -362,6 +393,29 @@ export const selectScenario = (scenarioName: string): { [name: string]: Scenario
             120,
             50,
         )
+    case `multichain`:
+        return GeneratePerAPIBaselineSuite(
+            SmokeStrategy,
+            [
+                `bs_getTransactionByHash`,
+            ],
+            30,
+            30,
+            30,
+        )
+    case `multichain-ramp`:
+        return {
+            one: rampMultichain(`bs_getTransactionByHash_eth`),
+            two: rampMultichain(`bs_getTransactionByHash_optimism`),
+            three: rampMultichain(`bs_getTransactionByHash_rootstock`),
+            four: rampMultichain(`bs_getTransactionByHash_gnosis`),
+            five: rampMultichain(`bs_getTransactionByHash_shibarium`),
+            six: rampMultichain(`bs_getTransactionByHash_neon`),
+            seven: rampMultichain(`bs_getTransactionByHash_zora`),
+            eight: rampMultichain(`bs_getTransactionByHash_blast`),
+            nine: rampMultichain(`bs_getTransactionByHash_etherlink`),
+            ten: rampMultichain(`bs_getTransactionByHash_nova`),
+        }
     default:
         throw Error(`no such scenario: ${scenarioName}`)
     }

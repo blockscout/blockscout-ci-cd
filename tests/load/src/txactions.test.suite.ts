@@ -13,7 +13,7 @@ export const backendTXActions = () => {
             url: `/api/v2/transactions/${randomItem(testData.txs)}/summary`,
             params: {
                 tags: {
-                    name: `TXActions`,
+                    name: `TXSummary`,
                 },
             },
         })
@@ -21,7 +21,7 @@ export const backendTXActions = () => {
             'is status 200': (r) => r.status === 200,
         })
         if (res.status !== 200) {
-            fail(`TXActions (backend) has failed`)
+            fail(`TXSummary (backend) has failed`)
         }
     })
 }
