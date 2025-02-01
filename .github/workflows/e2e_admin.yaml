@@ -56,12 +56,12 @@ jobs:
       - name: Run playwright
         run: |
           npm run test:admin
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: report
           path: tests/e2e/html-report/index.html
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: tests-results

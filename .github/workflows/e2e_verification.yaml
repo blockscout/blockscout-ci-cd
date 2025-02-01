@@ -119,18 +119,18 @@ jobs:
         working-directory: blockscout-ci-cd/tests/e2e
         run: |
           npm run test:smoke:verification
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: report
           path: blockscout-ci-cd/tests/e2e/html-report/index.html
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: tests-results
           path: blockscout-ci-cd/tests/e2e/test-results
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: state
