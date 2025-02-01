@@ -1,13 +1,34 @@
-import { check, fail, group } from 'k6'
+import { check, group } from 'k6'
+import { SharedArray } from "k6/data"
 import { randomItem } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js'
-import { defaultSession, testData } from './common'
-
-import { shoot } from './gun'
+import { defaultSession } from './common/common.js'
+import { shoot } from './common/gun.js'
+import {
+    check200, p1, sane, t30,
+} from "./common/profile.js"
 
 const session = defaultSession()
-// per API calls for VUs, frontend
+const testData = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE)))[0]
 
-export const frontendBlocks = () => {
+export const options = {
+    scenarios: {
+        blocks: Object.assign({}, p1, { exec: `blocks` }),
+        blockDetails: Object.assign({}, p1, { exec: `blockDetails` }),
+        txs: Object.assign({}, p1, { exec: `txs` }),
+        txDetails: Object.assign({}, p1, { exec: `txDetails` }),
+        addrDetails: Object.assign({}, p1, { exec: `addrDetails` }),
+        accounts: Object.assign({}, p1, { exec: `accounts` }),
+        verifiedContracts: Object.assign({}, p1, { exec: `verifiedContracts` }),
+        ops: Object.assign({}, p1, { exec: `ops` }),
+        tokenTransfers: Object.assign({}, p1, { exec: `tokenTransfers` }),
+        tokens: Object.assign({}, p1, { exec: `tokens` }),
+        tokenDetails: Object.assign({}, p1, { exec: `tokenDetails` }),
+        tokenHolderDetails: Object.assign({}, p1, { exec: `tokenHolderDetails` }),
+    },
+    thresholds: sane,
+}
+
+export const blocks = () => {
     group(`/blocks`, () => {
         const res = shoot(session, {
             method: `GET`,
@@ -16,18 +37,14 @@ export const frontendBlocks = () => {
                 tags: {
                     name: `blocks (frontend)`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`blocks (frontend) has failed`)
-        }
+        check(res, check200)
     })
 }
 
-export const frontendBlockDetails = () => {
+export const blockDetails = () => {
     group(`/block/{}`, () => {
         const res = shoot(session, {
             method: `GET`,
@@ -36,18 +53,14 @@ export const frontendBlockDetails = () => {
                 tags: {
                     name: `block details (frontend)`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`block details (frontend) has failed`)
-        }
+        check(res, check200)
     })
 }
 
-export const frontendTxs = () => {
+export const txs = () => {
     group(`/txs`, () => {
         const res = shoot(session, {
             method: `GET`,
@@ -56,18 +69,14 @@ export const frontendTxs = () => {
                 tags: {
                     name: `txs (frontend)`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`txs (frontend) has failed`)
-        }
+        check(res, check200)
     })
 }
 
-export const frontendTxDetails = () => {
+export const txDetails = () => {
     group(`/tx/{}`, () => {
         const res = shoot(session, {
             method: `GET`,
@@ -76,18 +85,14 @@ export const frontendTxDetails = () => {
                 tags: {
                     name: `tx details (frontend)`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`tx details (frontend) has failed`)
-        }
+        check(res, check200)
     })
 }
 
-export const frontendAddressDetails = () => {
+export const addrDetails = () => {
     group(`/address/{}`, () => {
         const res = shoot(session, {
             method: `GET`,
@@ -96,18 +101,14 @@ export const frontendAddressDetails = () => {
                 tags: {
                     name: `address details (frontend)`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`address details (frontend) has failed`)
-        }
+        check(res, check200)
     })
 }
 
-export const frontendAccounts = () => {
+export const accounts = () => {
     group(`/accounts`, () => {
         const res = shoot(session, {
             method: `GET`,
@@ -116,18 +117,14 @@ export const frontendAccounts = () => {
                 tags: {
                     name: `accounts list (frontend)`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`accounts list has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const frontendVerifiedContracts = () => {
+export const verifiedContracts = () => {
     group(`/verified-contracts`, () => {
         const res = shoot(session, {
             method: `GET`,
@@ -136,17 +133,13 @@ export const frontendVerifiedContracts = () => {
                 tags: {
                     name: `ops list (frontend)`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`verified contracts list has failed!`)
-        }
+        check(res, check200)
     })
 }
-export const frontendOps = () => {
+export const ops = () => {
     group(`/ops`, () => {
         const res = shoot(session, {
             method: `GET`,
@@ -155,17 +148,13 @@ export const frontendOps = () => {
                 tags: {
                     name: `ops list (frontend)`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`ops list has failed!`)
-        }
+        check(res, check200)
     })
 }
-export const frontendTokenTransfers = () => {
+export const tokenTransfers = () => {
     group(`/token-transfers`, () => {
         const res = shoot(session, {
             method: `GET`,
@@ -174,17 +163,13 @@ export const frontendTokenTransfers = () => {
                 tags: {
                     name: `token transfers list (frontend)`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`token transfers list has failed!`)
-        }
+        check(res, check200)
     })
 }
-export const frontendTokens = () => {
+export const tokens = () => {
     group(`/tokens`, () => {
         const res = shoot(session, {
             method: `GET`,
@@ -193,17 +178,13 @@ export const frontendTokens = () => {
                 tags: {
                     name: `tokens list (frontend)`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`tokens list has failed!`)
-        }
+        check(res, check200)
     })
 }
-export const frontendTokenDetails = () => {
+export const tokenDetails = () => {
     group(`/token/{}`, () => {
         const res = shoot(session, {
             method: `GET`,
@@ -212,18 +193,14 @@ export const frontendTokenDetails = () => {
                 tags: {
                     name: `token details (frontend)`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`token details (frontend) has failed`)
-        }
+        check(res, check200)
     })
 }
 
-export const frontendTokenHoldersDetails = () => {
+export const tokenHolderDetails = () => {
     group(`/token/{}?tab=holders`, () => {
         const res = shoot(session, {
             method: `GET`,
@@ -232,13 +209,9 @@ export const frontendTokenHoldersDetails = () => {
                 tags: {
                     name: `token holders details (frontend)`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`token holders details (frontend) has failed`)
-        }
+        check(res, check200)
     })
 }

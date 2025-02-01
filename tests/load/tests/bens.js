@@ -1,12 +1,29 @@
 import { check, fail, group } from 'k6'
 import { randomItem } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js'
-import { defaultSession, testData } from './common'
+import { SharedArray } from "k6/data"
+import { defaultSession } from './common/common.js'
 
-import { shoot } from './gun'
+import { shoot } from './common/gun.js'
+import {
+    check200, p5, sane, t30,
+} from "./common/profile"
 
 const session = defaultSession()
 
-export const batchResolveBens = () => {
+const testData = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE)))[0]
+
+export const options = {
+    scenarios: {
+        resolve: Object.assign({}, p5, { exec: `resolve` }),
+        lookup: Object.assign({}, p5, { exec: `lookup` }),
+        domains: Object.assign({}, p5, { exec: `domains` }),
+        domainEvent: Object.assign({}, p5, { exec: `domainEvent` }),
+        domainsLookup: Object.assign({}, p5, { exec: `domainsLookup` }),
+    },
+    thresholds: sane,
+}
+
+export const resolve = () => {
     group(`/api/v1/{}/addresses:batch-resolve-names`, () => {
         const chainID = randomItem(testData.chainIDs)
         const data = testData[chainID]
@@ -23,18 +40,14 @@ export const batchResolveBens = () => {
                 tags: {
                     name: `Batch resolve V1`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Batch resolve V1 has failed`)
-        }
+        check(res, check200)
     })
 }
 
-export const addressesLookupBens = () => {
+export const lookup = () => {
     group(`api/v1/{}/addresses:lookup?address={}&resolved_to=true&owned_by=false`, () => {
         const chainID = randomItem(testData.chainIDs)
         const data = testData[chainID]
@@ -47,16 +60,11 @@ export const addressesLookupBens = () => {
                 },
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Addresses resolve V1 has failed`)
-        }
+        check(res, check200)
     })
 }
 
-export const domainsBens = () => {
+export const domains = () => {
     group(`api/v1/{}/domains/{}`, () => {
         const chainID = randomItem(testData.chainIDs)
         const data = testData[chainID]
@@ -69,16 +77,11 @@ export const domainsBens = () => {
                 },
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Domains V1 has failed`)
-        }
+        check(res, check200)
     })
 }
 
-export const domainEventsBens = () => {
+export const domainEvent = () => {
     group(`api/v1/{}/domains/{}/events`, () => {
         const chainID = randomItem(testData.chainIDs)
         const data = testData[chainID]
@@ -91,16 +94,11 @@ export const domainEventsBens = () => {
                 },
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Domain Events V1 has failed`)
-        }
+        check(res, check200)
     })
 }
 
-export const domainsLookupBens = () => {
+export const domainsLookup = () => {
     group(`api/v1/{}/domains:lookup?name={}`, () => {
         const chainID = randomItem(testData.chainIDs)
         const data = testData[chainID]
@@ -113,32 +111,6 @@ export const domainsLookupBens = () => {
                 },
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Domains Lookup V1 has failed`)
-        }
-    })
-}
-
-// utility calls (blockscout)
-export const backendVersion = () => {
-    group(`/v2/config/backend-version`, () => {
-        const res = shoot(session, {
-            method: `GET`,
-            url: `/api/v2/config/backend-version`,
-            params: {
-                tags: {
-                    name: `Backend version (backendV2)`,
-                },
-            },
-        })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Backend version (backendV2) has failed`)
-        }
+        check(res, check200)
     })
 }

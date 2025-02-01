@@ -3,32 +3,23 @@ import { randomItem } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js'
 import { SharedArray } from 'k6/data'
 import { defaultSession } from './common/common.js'
 import { shoot } from './common/gun.js'
+import {
+    check200, p5, sane, t30,
+} from "./common/profile.js"
 
-// Load test data from an environment variable
 const testFile = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE)))
 const testData = testFile[0]
 
-// Initialize session
 const session = defaultSession()
 
-// Define options for the test
 export const options = {
     scenarios: {
-        plain: {
-            executor: `constant-arrival-rate`,
-            preAllocatedVUs: 20,
-            rate: 1,
-            exec: `backendTXActions`,
-            duration: `30s`,
-        },
+        txSummary: Object.assign({}, p5, { exec: `txSummary` }),
     },
-    thresholds: {
-        http_req_duration: [`p(95)<5000`],
-    },
+    thresholds: sane,
 }
 
-// Define the backend transaction actions
-export function backendTXActions() {
+export function txSummary() {
     group(`/api/v2/transactions/{}/summary`, () => {
         const res = shoot(session, {
             method: `GET`,
@@ -37,14 +28,9 @@ export function backendTXActions() {
                 tags: {
                     name: `TXSummary`,
                 },
-                timeout: `30s`,
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`TXSummary (backend) has failed`)
-        }
+        check(res, check200)
     })
 }

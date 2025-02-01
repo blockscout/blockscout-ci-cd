@@ -1,403 +1,319 @@
-import { check, fail, group } from 'k6'
-import { randomItem } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js'
-import { defaultSession, testData } from './common'
+import { check, group } from 'k6'
+import { defaultSession } from './common/common.js'
 
-import { shoot } from './gun'
+import { shoot } from './common/gun.js'
+import {
+    check200, p1, sane, t30,
+} from "./common/profile.js"
 
 const session = defaultSession()
 
-export const advfilter = () => {
+export const options = {
+    scenarios: {
+        af: Object.assign({}, p1, { exec: `af` }),
+        afFrom: Object.assign({}, p1, { exec: `afFrom` }),
+        afTo: Object.assign({}, p1, { exec: `afTo` }),
+        afAge7d: Object.assign({}, p1, { exec: `afAge7d` }),
+        afAge1m: Object.assign({}, p1, { exec: `afAge1m` }),
+        afERC20: Object.assign({}, p1, { exec: `afERC20` }),
+        afERC721: Object.assign({}, p1, { exec: `afERC721` }),
+        afERC1155: Object.assign({}, p1, { exec: `afERC1155` }),
+        afERC404: Object.assign({}, p1, { exec: `afERC404` }),
+        afCoinTransfer: Object.assign({}, p1, { exec: `afCoinTransfer` }),
+        afMethodTransfer: Object.assign({}, p1, { exec: `afMethodTransfer` }),
+        afMethodMint: Object.assign({}, p1, { exec: `afMethodMint` }),
+        afMethodApprove: Object.assign({}, p1, { exec: `afMethodApprove` }),
+        afMethodBuy: Object.assign({}, p1, { exec: `afMethodBuy` }),
+        afMethodExecute: Object.assign({}, p1, { exec: `afMethodExecute` }),
+        afMethodWithdraw: Object.assign({}, p1, { exec: `afMethodWithdraw` }),
+        afMethodDeposit: Object.assign({}, p1, { exec: `afMethodDeposit` }),
+    },
+    thresholds: sane,
+}
+
+export const af = () => {
     group(`/api/v2/advanced-filters`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter has failed`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterERC20 = () => {
+export const afERC20 = () => {
     group(`/api/v2/advanced-filters?tx_types=ERC-20`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?tx_types=ERC-20`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter ERC-20`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter ERC-20 has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterERC721 = () => {
+export const afERC721 = () => {
     group(`/api/v2/advanced-filters?tx_types=ERC-721`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?tx_types=ERC-721`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter ERC-721`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter ERC-721 has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterERC1155 = () => {
+export const afERC1155 = () => {
     group(`/api/v2/advanced-filters?tx_types=ERC-1155`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?tx_types=ERC-1155`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter ERC-1155`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter ERC-1155 has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterERC404 = () => {
+export const afERC404 = () => {
     group(`/api/v2/advanced-filters?tx_types=ERC-404`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?tx_types=ERC-404`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter ERC-404`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter ERC-404 has failed`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterCoinTransfer = () => {
+export const afCoinTransfer = () => {
     group(`/api/v2/advanced-filters?tx_types=coin_transfer`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?tx_types=coin_transfer`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter CoinTransfer`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterMethodTransfer = () => {
+export const afMethodTransfer = () => {
     group(`/api/v2/advanced-filters?methods=0xa9059cbb`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?methods=0xa9059cbb`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter method transfer`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter method transfer has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterMethodMint = () => {
+export const afMethodMint = () => {
     group(`/api/v2/advanced-filters?methods=0xa0712d68`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?methods=0xa0712d68`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter method mint`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter method mint has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterMethodApprove = () => {
+export const afMethodApprove = () => {
     group(`/api/v2/advanced-filters?methods=0x095ea7b3`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?methods=0x095ea7b3`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter method approve`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter method approve has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterMethodBuy = () => {
+export const afMethodBuy = () => {
     group(`/api/v2/advanced-filters?methods=0x40993b26`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?methods=0x40993b26`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter method buy`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter method buy has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterMethodExecute = () => {
+export const afMethodExecute = () => {
     group(`/api/v2/advanced-filters?methods=0x3593564c`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?methods=0x3593564c`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter method execute`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter method execute has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterMethodWithdraw = () => {
+export const afMethodWithdraw = () => {
     group(`/api/v2/advanced-filters?methods=0x3ccfd60b`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?methods=0x3ccfd60b`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter method withdraw`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter method withdraw has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterMethodDeposit = () => {
+export const afMethodDeposit = () => {
     group(`/api/v2/advanced-filters?methods=0xd0e30db0`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?methods=0xd0e30db0`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter method deposit`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter method deposit has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterAge7d = () => {
+export const afAge7d = () => {
     group(`/api/v2/advanced-filters?age=7d`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?age=7d`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter age 7d`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter age 7d has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterAge1m = () => {
+export const afAge1m = () => {
     group(`/api/v2/advanced-filters?age=1m`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?age=1m`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter age 1m`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter age 1m has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterAndRelation = () => {
+export const afAndRelation = () => {
     group(`/api/v2/advanced-filters?address_relation=and`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?address_relation=and`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter address relation`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter address relation has failed!`)
-        }
+        check(res, check200)
     })
 }
 
-export const advfilterTo = () => {
+export const afTo = () => {
     group(`/api/v2/advanced-filters?to_address_hashes_to_include=0x5e809A85Aa182A9921EDD10a4163745bb3e36284`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?to_address_hashes_to_include=0x5e809A85Aa182A9921EDD10a4163745bb3e36284`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter to`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter to has failed!`)
-        }
+        check(res, check200)
     })
 }
-// from_address_hashes_to_include=0x1199E2a4cc6BFac09B491795f2eD4ce2854Fc8F5
-export const advfilterFrom = () => {
+export const afFrom = () => {
     group(`/api/v2/advanced-filters?from_address_hashes_to_include=0x1199E2a4cc6BFac09B491795f2eD4ce2854Fc8F5`, () => {
         const res = shoot(session, {
             method: `GET`,
             url: `/api/v2/advanced-filters?from_address_hashes_to_include=0x1199E2a4cc6BFac09B491795f2eD4ce2854Fc8F5`,
             params: {
-                headers: {
-                },
                 tags: {
                     name: `Advanced Tx Filter from`,
                 },
+                timeout: t30,
             },
         })
-        check(res, {
-            'is status 200': (r) => r.status === 200,
-        })
-        if (res.status !== 200) {
-            fail(`Advanced Tx Filter from has failed!`)
-        }
+        check(res, check200)
     })
 }
