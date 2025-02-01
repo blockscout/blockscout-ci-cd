@@ -74,6 +74,7 @@ jobs:
         run: |
           npm run test:ondemand
       - name: Create artifact name
+        if: always()
         id: extract_word
         run: |
           URL_PATH=$(echo "${{ matrix.url }}" | cut -d'/' -f4-)
