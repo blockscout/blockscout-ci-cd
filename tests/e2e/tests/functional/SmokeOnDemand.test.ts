@@ -216,7 +216,7 @@ urls.forEach((url: string) => {
             expect(await row[1].textContent()).toMatch(/\d+/)
             expect(await row[2].textContent()).toMatch(/N\/A|0x.*/)
             expect(await row[3].textContent()).toMatch(/.*ago/)
-            expect(await row[4].textContent()).toMatch(/Pending|Finalized|Waiting/)
+            expect(await row[4].textContent()).toMatch(/Relayed|Pending|Finalized|Waiting/)
             expect(await row[5].textContent()).toMatch(/0x.*/)
         }
         if (url.includes(`optimism`)) {
