@@ -14,7 +14,7 @@
     "test:smoke:account": "npx playwright test --project=Chrome --grep=@AccountImage --timeout=180000",
     "test:admin": "npx playwright test --project=Chrome --grep=@Admin",
     "test:smoke:verification": "npx playwright test --project=Chrome --grep=@Verification",
-    "test:api": "npx playwright test --project=Chrome --grep @API",
+    "test:api": "npx playwright test --project=Chrome --grep @API --workers 8 --timeout=20000",
     "test:verifiedcontracts": "npx playwright test --project=Chrome --grep @VC",
     "test:visual": "npx playwright test visualComparision.test.ts --project=Chrome",
     "lint": "eslint --ext .ts ."
