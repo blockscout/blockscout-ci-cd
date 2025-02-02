@@ -6,6 +6,7 @@ test.describe.configure({ mode: `parallel` })
 
 const contractsInfoURL = `https://contracts-info.services.blockscout.com`
 const adminURL = `https://admin-rs.services.blockscout.com`
+const bensURL = `https://bens.services.blockscout.com`
 
 const urls = (process.env.BLOCKSCOUT_URL || ``).split(`,`)
 
@@ -160,6 +161,33 @@ urls.forEach((url: string) => {
             for (const op of body.items) {
                 expect(op.address.hash).toBeDefined()
             }
+        }
+    })
+    test(`@Api ${url} Check Verified Contracts`, async ({ request }): Promise<void> => {
+        const resp = await request.get(`${url}/api/v2/smart-contracts`)
+        expect(resp.status()).toBe(200)
+        const body = await resp.json()
+        for (const contract of body.items) {
+            expect(contract.address.name).toBeDefined()
+        }
+    })
+
+    test(`@Api ${url} Check Domains`, async ({ request }): Promise<void> => {
+        if (url.includes(`eth-sepolia`, `gnosis`, `eth.blockscout`, `base`, `optimism`, `neon`, `polygon`, `explorer`)) {
+            const resp = await request.get(`${bensURL}/api/v1/${urlToChainIdMap[url]}/domains:lookup?only_active=true`)
+            expect(resp.status()).toBe(200)
+            const body = await resp.json()
+            for (const domain of body.items) {
+                expect(domain.name).toBeDefined()
+            }
+        }
+    })
+    test(`@Api ${url} Check Withdrawals`, async ({ request }): Promise<void> => {
+        const resp = await request.get(`${url}/api/v2/withdrawals`)
+        expect(resp.status()).toBe(200)
+        const body = await resp.json()
+        for (const withdrawal of body.items) {
+            expect(withdrawal.amount).toBeDefined()
         }
     })
 })
