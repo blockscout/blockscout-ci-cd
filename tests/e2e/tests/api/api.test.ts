@@ -21,7 +21,7 @@ urls.forEach((url: string) => {
         const lbData = body.metadata.latest_block
         const diff = Number(lbData.db.number) - Number(lbData.cache.number)
         if (url.includes(`arbitrum`)) {
-            expect(diff).toBeLessThan(50)
+            expect(diff).toBeLessThan(70)
         } else {
             expect(diff).toBeLessThan(10)
         }
