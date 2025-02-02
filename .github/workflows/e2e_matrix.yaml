@@ -74,6 +74,7 @@ jobs:
         run: |
           npm run test:ondemand
       - name: Generate UUID
+        if: always()
         id: uuid
         run: echo "uuid=$(uuidgen)" >> $GITHUB_OUTPUT
       - name: Upload test results
