@@ -1,0 +1,71 @@
+name: E2E Env Matrix
+
+on:
+  push:
+  schedule:
+    - cron: '0 */3 * * *'
+  workflow_call:
+    inputs:
+      urls:
+        description: "List of URLs to test (JSON stringified array)"
+        required: false
+        type: string
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "Comma-separated list of URLs to test"
+        required: false
+        type: string
+
+jobs:
+  on_demand_matrix:
+    permissions:
+      id-token: write
+      contents: read
+    name: ${{ matrix.url }}
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        url: ${{ fromJson(inputs.urls || github.event.inputs.urls || '["https://eth-sepolia.k8s-dev.blockscout.com","https://eth-sepolia.blockscout.com","https://eth.blockscout.com","https://base.blockscout.com","https://gnosis.blockscout.com","https://optimism.blockscout.com","https://neon.blockscout.com","https://rootstock.blockscout.com","https://polygon.blockscout.com","https://explorer.immutable.com","https://zkevm.blockscout.com","https://arbitrum.blockscout.com","https://zksync.blockscout.com","https://www.shibariumscan.io","https://explorer.zora.energy","https://blast.blockscout.com"]') }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Install deps
+        run: npm ci
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+      - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+      - name: Run playwright
+        env:
+          BLOCKSCOUT_URL: ${{ matrix.url }}
+          NO_TEST_DATA: ${{ inputs.test-data }}
+        run: |
+          npm run test:api
+defaults:
+  run:
+    shell: bash
+    working-directory: ./tests/e2e
