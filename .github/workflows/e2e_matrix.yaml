@@ -73,18 +73,13 @@ jobs:
           NO_TEST_DATA: ${{ inputs.test-data }}
         run: |
           npm run test:ondemand
-      - name: Create artifact name
-        if: always()
-        id: extract_word
-        run: |
-          URL_PATH=$(echo "${{ matrix.url }}" | cut -d'/' -f4-)
-          FIRST_WORD=$(echo "$URL_PATH" | cut -d'/' -f1)
-          echo "first_word=$FIRST_WORD" >> $GITHUB_OUTPUT
-
+      - name: Generate UUID
+        id: uuid
+        run: echo "uuid=$(uuidgen)" >> $GITHUB_ENV
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: report-${{ steps.extract_word.outputs.first_word }}
+          name: report-${{ env.uuid }}
           path: tests/e2e/test-results
 defaults:
   run:
