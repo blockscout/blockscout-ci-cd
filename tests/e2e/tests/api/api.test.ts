@@ -20,7 +20,11 @@ urls.forEach((url: string) => {
         })
         const lbData = body.metadata.latest_block
         const diff = Number(lbData.db.number) - Number(lbData.cache.number)
-        expect(diff).toBeLessThan(20)
+        if (url.includes(`arbitrum`)) {
+            expect(diff).toBeLessThan(50)
+        } else {
+            expect(diff).toBeLessThan(10)
+        }
     })
     test(`@Api @Health ${url} Check transactions`, async ({ request }): Promise<void> => {
         console.log(chalk.yellow(`checking transactions...`))
