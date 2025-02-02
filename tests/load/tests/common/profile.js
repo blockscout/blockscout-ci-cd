@@ -1,6 +1,7 @@
+// plain load profiles, 1, 5 RPS, etc
 export const p5 = {
     executor: `constant-arrival-rate`,
-    preAllocatedVUs: 10,
+    preAllocatedVUs: 50,
     duration: `3m`,
     rate: 5,
 }
@@ -10,6 +11,17 @@ export const p1 = {
     preAllocatedVUs: 10,
     duration: `1m`,
     rate: 1,
+}
+
+// ramping load profiles, 1-5 RPS, etc
+
+export const r30 = {
+    executor: `ramping-arrival-rate`,
+    preAllocatedVUs: 10,
+    startRate: 3,
+    stages: [
+        { duration: `3m`, target: 30 },
+    ],
 }
 
 export const sane = {

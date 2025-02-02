@@ -4,7 +4,7 @@ import { SharedArray } from 'k6/data'
 import { defaultSession } from './common/common.js'
 import { shoot } from './common/gun.js'
 import {
-    check200, p5, sane, t30,
+    check200, p5, r30, sane, t30,
 } from "./common/profile.js"
 
 const testFile = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE)))
@@ -14,19 +14,21 @@ const session = defaultSession()
 
 export const options = {
     scenarios: {
-        txSummary: Object.assign({}, p5, { exec: `txSummary` }),
+        txSummaryCustom: Object.assign({}, p5, { exec: `txSummaryCustom` }),
+        // txSummaryCustom2: Object.assign({}, r30, { exec: `txSummaryCustom` }),
     },
     thresholds: sane,
 }
 
-export function txSummary() {
+export function txSummaryCustom() {
     group(`/api/v2/transactions/{}/summary`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api/v2/transactions/${randomItem(testData.txs)}/summary`,
+            url: `/api/v2/transactions/${randomItem(testData.txs)}/summary?just_request_body=true`,
+            // url: `/api/v2/transactions/${randomItem(testData.txs)}/summary`,
             params: {
                 tags: {
-                    name: `TXSummary`,
+                    name: `TXSummaryBody`,
                 },
                 timeout: t30,
             },

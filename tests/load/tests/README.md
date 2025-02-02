@@ -14,22 +14,6 @@ BEFORE=release1.json NOW=release2.json node common/compare.js
 ```
 Commit successful releases under `releases` in format `$product-vX.X.X-$profile.json`
 
-### TX Summary API
-
-```
-../bin_k6/k6-tsdb-darwin \
---env BASE_URL=https://eth.blockscout.com \
---env TEST_DATA_FILE=../test_data/eth-tx-summary.json \
---env LOKI_GUN_DEBUG=none \
---out ${K6_OUT_FILE} \
---out ${K6_OUT} \
---verbose \
-run \
---tag testid="eth-tx-summary-debug" \
---log-output=stdout \
---no-usage-report \
-tx-summary.js
-```
 
 ### Blockscout API v1 (Baseline)
 ```
@@ -114,7 +98,7 @@ run \
 multichain.js
 ```
 
-## Metadata Service (Baseline)
+### Metadata Service (Baseline)
 ```
 ../bin_k6/k6-tsdb-darwin \
 --env BASE_URL=https://metadata-test.k8s-dev.blockscout.com \
@@ -130,7 +114,7 @@ run \
 metadata.js
 ```
 
-## BENS (Baseline)
+### BENS (Baseline)
 ```
 ../bin_k6/k6-tsdb-darwin \
 --env BASE_URL=https://bens.k8s-dev.blockscout.com \
@@ -144,4 +128,38 @@ run \
 --log-output=stdout \
 --no-usage-report \
 bens.js
+```
+
+### TX Summary API
+
+```
+../bin_k6/k6-tsdb-darwin \
+--env BASE_URL=https://eth.blockscout.com \
+--env TEST_DATA_FILE=data/eth-tx-summary.json \
+--env LOKI_GUN_DEBUG=none \
+--out ${K6_OUT_FILE} \
+--out ${K6_OUT} \
+--verbose \
+run \
+--tag testid="eth-tx-summary-debug" \
+--log-output=stdout \
+--no-usage-report \
+tx-summary.js
+```
+
+### TX Summary API (custom)
+
+```
+../bin_k6/k6-tsdb-darwin \
+--env BASE_URL=https://eth.blockscout.com \
+--env TEST_DATA_FILE=data/eth-tx-summary-txs-random.json \
+--env LOKI_GUN_DEBUG=none \
+--out ${K6_OUT_FILE} \
+--out ${K6_OUT} \
+--verbose \
+run \
+--tag testid="eth-tx-summary-set-1-no-cache-random" \
+--log-output=stdout \
+--no-usage-report \
+tx-summary-custom.js
 ```

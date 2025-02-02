@@ -11,16 +11,11 @@ def fetch_and_save_transactions(api_url, output_path, chainID):
         transactions = [item["hash"] for item in data if "hash" in item]
         result = [
             {
-                "bs_getTransactionByHash": []
+                "txs": []
             }
         ]
         for tx in transactions:
-            result[0]["bs_getTransactionByHash"].append({
-                "params": [
-                    tx,
-                    {"chainId": chainID}
-                ]
-            })
+            result[0]["txs"].append(tx)
 
         # Ensure the output directory exists
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -38,5 +33,5 @@ def fetch_and_save_transactions(api_url, output_path, chainID):
 
 
 if __name__ == "__main__":
-    fetch_and_save_transactions("https://arbitrum-nova.blockscout.com/api/v2/transactions?filter=validated",
-                                "test_data/multichain-nova.json", 42170)
+    fetch_and_save_transactions("https://eth.blockscout.com/api/v2/transactions?filter=validated",
+                                "tests/data/eth-tx-summary-txs-random-2.json", 1)
