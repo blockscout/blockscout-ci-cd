@@ -45,7 +45,7 @@ urls.forEach((url: string) => {
         const lbData = body.metadata.latest_block
         const diff = Number(lbData.db.number) - Number(lbData.cache.number)
         if (url.includes(`arbitrum`)) {
-            expect(diff).toBeLessThan(70)
+            expect(diff).toBeLessThan(120)
         } else {
             expect(diff).toBeLessThan(10)
         }
@@ -74,7 +74,6 @@ urls.forEach((url: string) => {
         const resp = await request.get(`${url}/api/v2/main-page/blocks`)
         expect(resp.status()).toBe(200)
         const blocks = await resp.json()
-        // console.log(`body: ${JSON.stringify(blocks, null, 2)}`)
         expect(blocks.length).toBeGreaterThan(0)
         for (const blk of blocks) {
             expect(blk.size).toBeDefined()

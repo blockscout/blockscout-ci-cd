@@ -1,7 +1,6 @@
 const fs = require(`fs`)
 const chalk = require(`chalk`)
 
-// Function to parse JSON Lines file
 function parseJsonLines(filePath) {
     const fileContent = fs.readFileSync(filePath, `utf8`)
     return fileContent
@@ -10,11 +9,9 @@ function parseJsonLines(filePath) {
         .map((line) => JSON.parse(line)) // Parse each line as JSON
 }
 
-// Load the JSON Lines files
 const release1 = parseJsonLines(process.env.BEFORE)
 const release2 = parseJsonLines(process.env.NOW)
 
-// Function to calculate percentiles (50th, 95th, 99th)
 function calculatePercentiles(values) {
     values.sort((a, b) => a - b) // Sort values in ascending order
     return {
@@ -24,13 +21,12 @@ function calculatePercentiles(values) {
     }
 }
 
-// Extract http_req_duration metrics grouped by data.tags.name
 function extractMetrics(data) {
     const metrics = {}
     data.forEach((entry) => {
         if (entry.type === `Point` && entry.metric === `http_req_duration`) {
-            const {value} = entry.data
-            const {name} = entry.data.tags
+            const { value } = entry.data
+            const { name } = entry.data.tags
 
             if (!metrics[name]) {
                 metrics[name] = []
@@ -41,7 +37,6 @@ function extractMetrics(data) {
     return metrics
 }
 
-// Calculate percentiles for each unique name
 function calculatePercentilesForMetrics(metrics) {
     const percentiles = {}
     for (const [name, values] of Object.entries(metrics)) {
@@ -50,7 +45,6 @@ function calculatePercentilesForMetrics(metrics) {
     return percentiles
 }
 
-// Compare percentiles and calculate percentage deltas
 function comparePercentiles(percentiles1, percentiles2) {
     const deltas = {}
     for (const [name, p1] of Object.entries(percentiles1)) {
@@ -66,15 +60,10 @@ function comparePercentiles(percentiles1, percentiles2) {
     return deltas
 }
 
-// Extract metrics
 const metrics1 = extractMetrics(release1)
 const metrics2 = extractMetrics(release2)
-
-// Calculate percentiles
 const percentiles1 = calculatePercentilesForMetrics(metrics1)
 const percentiles2 = calculatePercentilesForMetrics(metrics2)
-
-// Compare percentiles
 const deltas = comparePercentiles(percentiles1, percentiles2)
 
 const colors = (data) => {
@@ -87,7 +76,6 @@ const colors = (data) => {
     return chalk.green(data)
 }
 
-// Print percentiles for each release
 console.log(chalk.bold(`Percentiles for Release 1:`))
 for (const [name, p] of Object.entries(percentiles1)) {
     console.log(`Name: ${name}`)
@@ -106,7 +94,6 @@ for (const [name, p] of Object.entries(percentiles2)) {
     console.log(`---`)
 }
 
-// Print percentage deltas
 console.log(chalk.bold(`Percentage Deltas:`))
 for (const [name, delta] of Object.entries(deltas)) {
     console.log(`Name: ${name}`)
