@@ -11,11 +11,16 @@ def fetch_and_save_transactions(api_url, output_path, chainID):
         transactions = [item["hash"] for item in data if "hash" in item]
         result = [
             {
-                "txs": []
+                "bs_getTransactionByHash": []
             }
         ]
         for tx in transactions:
-            result[0]["txs"].append(tx)
+            result[0]["bs_getTransactionByHash"].append({
+                "params": [
+                    tx,
+                    {"chainId": chainID}
+                ]
+            })
 
         # Ensure the output directory exists
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -33,5 +38,5 @@ def fetch_and_save_transactions(api_url, output_path, chainID):
 
 
 if __name__ == "__main__":
-    fetch_and_save_transactions("https://eth.blockscout.com/api/v2/transactions?filter=validated",
-                                "tests/data/eth-tx-summary-txs-random-2.json", 1)
+    fetch_and_save_transactions("https://zkevm.blockscout.com/api/v2/transactions?filter=validated",
+                                "tests/data/multichain-zkevm.json", 1101)

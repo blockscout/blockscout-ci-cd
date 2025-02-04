@@ -81,18 +81,29 @@ advanced-tx-filter.js
 ### Multi-chain Search (Baseline)
 ```
 ../bin_k6/k6-tsdb-darwin \
---env BASE_URL=https://quicknode-marketplace-integration.services.blockscout.com \
+--env BASE_URL=https://quicknode-marketplace-integration.k8s-dev.blockscout.com \
 --env QUICKNODE_ID=${QUICKNODE_ID} \
 --env QUICKNODE_INSTANCE=${QUICKNODE_INSTANCE} \
 --env TEST_DATA_FILE_1=data/multichain.json \
---env TEST_DATA_FILE_2=data/multichain-optimism.json \
+--env TEST_DATA_FILE_2=data/multichain-blast.json \
+--env TEST_DATA_FILE_3=data/multichain-etherlink.json \
+--env TEST_DATA_FILE_4=data/multichain-gnosis.json \
+--env TEST_DATA_FILE_5=data/multichain-neon.json \
+--env TEST_DATA_FILE_6=data/multichain-nova.json \
+--env TEST_DATA_FILE_7=data/multichain-optimism.json \
+--env TEST_DATA_FILE_8=data/multichain-rootstock.json \
+--env TEST_DATA_FILE_9=data/multichain-shibarium.json \
+--env TEST_DATA_FILE_10=data/multichain-astar.json \
+--env TEST_DATA_FILE_11=data/multichain-redstone.json \
+--env TEST_DATA_FILE_12=data/multichain-zkevm.json \
+--env TEST_DATA_FILE_13=data/multichain-zksync-sepolia.json \
+--env TEST_DATA_FILE_14=data/multichain-zksync-era.json \
 --env LOKI_GUN_DEBUG=none \
 --out ${K6_OUT_FILE} \
 --out ${K6_OUT} \
 --verbose \
---http-debug=full \
 run \
---tag testid="multichain-search" \
+--tag testid="multichain-search-debug" \
 --log-output=stdout \
 --no-usage-report \
 multichain.js

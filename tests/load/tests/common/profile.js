@@ -9,7 +9,7 @@ export const p5 = {
 export const p1 = {
     executor: `constant-arrival-rate`,
     preAllocatedVUs: 10,
-    duration: `1m`,
+    duration: `30m`,
     rate: 1,
 }
 
@@ -21,6 +21,15 @@ export const r30 = {
     startRate: 3,
     stages: [
         { duration: `3m`, target: 30 },
+    ],
+}
+
+export const r20 = {
+    executor: `ramping-arrival-rate`,
+    preAllocatedVUs: 20,
+    startRate: 1,
+    stages: [
+        { duration: `3m`, target: 20 },
     ],
 }
 
