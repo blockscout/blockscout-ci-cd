@@ -1,6 +1,6 @@
 ## Dashboards and metrics analysis
- - [Test runs](./dashboards/k6_tests.json)
- - [Test view + Debug Loki stream](./dashboards/k6_test_view.json)
+ - [Test runs](./k6_tests.json)
+ - [Test view + Debug Loki stream](./k6_test_view.json)
  
  To model dashboards locally you can use compose:
  ```
