@@ -25,8 +25,8 @@ function extractMetrics(data) {
     const metrics = {}
     data.forEach((entry) => {
         if (entry.type === `Point` && entry.metric === `http_req_duration`) {
-            const { value } = entry.data
-            const { name } = entry.data.tags
+            const {value} = entry.data
+            const {name} = entry.data.tags
 
             if (!metrics[name]) {
                 metrics[name] = []
@@ -76,29 +76,42 @@ const colors = (data) => {
     return chalk.green(data)
 }
 
-console.log(chalk.bold(`Percentiles for Release 1:`))
+// Function to pad strings to a fixed width
+const pad = (str, length) => str.padEnd(length, ' ');
+
+// Column widths
+const nameWidth = 40;
+const percentileWidth = 20;
+
+console.log(chalk.bold(`Percentiles for Release 1:`));
+console.log(pad('Name', nameWidth) + pad('p50', percentileWidth) + pad('p95', percentileWidth) + pad('p99', percentileWidth));
 for (const [name, p] of Object.entries(percentiles1)) {
-    console.log(`Name: ${name}`)
-    console.log(`  p50: ${p.p50.toFixed(2)}`)
-    console.log(`  p95: ${p.p95.toFixed(2)}`)
-    console.log(`  p99: ${p.p99.toFixed(2)}`)
-    console.log(`---`)
+    console.log(
+        pad(name, nameWidth) +
+        pad(p.p50.toFixed(2), percentileWidth) +
+        pad(p.p95.toFixed(2), percentileWidth) +
+        pad(p.p99.toFixed(2), percentileWidth)
+    );
 }
 
-console.log(chalk.bold(`Percentiles for Release 2:`))
+console.log(chalk.bold(`Percentiles for Release 2:`));
+console.log(pad('Name', nameWidth) + pad('p50', percentileWidth) + pad('p95', percentileWidth) + pad('p99', percentileWidth));
 for (const [name, p] of Object.entries(percentiles2)) {
-    console.log(`Name: ${name}`)
-    console.log(`  p50: ${p.p50.toFixed(2)}`)
-    console.log(`  p95: ${p.p95.toFixed(2)}`)
-    console.log(`  p99: ${p.p99.toFixed(2)}`)
-    console.log(`---`)
+    console.log(
+        pad(name, nameWidth) +
+        pad(p.p50.toFixed(2), percentileWidth) +
+        pad(p.p95.toFixed(2), percentileWidth) +
+        pad(p.p99.toFixed(2), percentileWidth)
+    );
 }
 
-console.log(chalk.bold(`Percentage Deltas:`))
+console.log(chalk.bold(`Percentage Deltas:`));
+console.log(pad('Name', nameWidth) + pad('p50', percentileWidth) + pad('p95', percentileWidth) + pad('p99', percentileWidth));
 for (const [name, delta] of Object.entries(deltas)) {
-    console.log(`Name: ${name}`)
-    console.log(colors(`p50: ${delta.p50.toFixed((2))}`))
-    console.log(colors(`p95: ${delta.p95.toFixed((2))}`))
-    console.log(colors(`p90: ${delta.p99.toFixed((2))}`))
-    console.log(`---`)
+    console.log(
+        pad(name, nameWidth) +
+        colors(pad(`${delta.p50.toFixed(2)}`, percentileWidth)) +
+        colors(pad(`${delta.p95.toFixed(2)}`, percentileWidth)) +
+        colors(pad(`${delta.p99.toFixed(2)}`, percentileWidth))
+    );
 }
