@@ -1,6 +1,6 @@
 # Verifying Release
 
-To verify a release we follow a simple process:
+To verify a release after installation we follow a simple process:
 1. Add release environment URLs to `.envrc`
     ```
    BLOCKSCOUT_URLS=(
@@ -21,11 +21,11 @@ To verify a release we follow a simple process:
    K6_OUT_FILE=json=$your_release_filename.json
    REQUEST_TIMEOUT=30000
     ```
-2. Run all the tests using `./release.sh`
-3. Confirm, hotfix or rollback the release
-
-## Comparing Performance Baselines
-```
-cd load/tests
-BEFORE=release1.json NOW=release2.json node common/compare.js
-```
+2. Run all the tests using `./release.sh --api --ui --load`
+3. Compare performance with the previous release
+   ```
+   cd load/tests
+   BEFORE=release1.json NOW=release2.json node common/compare.js
+   ```
+   
+4. Confirm, hotfix or rollback the release
