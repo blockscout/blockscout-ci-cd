@@ -189,4 +189,15 @@ urls.forEach((url: string) => {
             expect(withdrawal.amount).toBeDefined()
         }
     })
+    test(`@Api ${url} Check account abstraction status`, async ({ request }): Promise<void> => {
+        const resp = await request.get(`${url}/api/v2/proxy/account-abstraction/status`)
+        expect(resp.status()).toBe(200)
+        const body = await resp.json()
+        expect(body.finished_past_indexing).toBeTruthy()
+        expect(body.v06).toBeTruthy()
+        expect(body.v06.enabled).toBeTruthy()
+        expect(body.v06.live).toBeTruthy()
+        expect(body.v06.enabled).toBeTruthy()
+        expect(body.v07.live).toBeTruthy()
+    })
 })

@@ -4,9 +4,14 @@ source .envrc
 run_api=false
 run_ui=false
 run_load=false
+version=false
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --version)
+      version=true
+      shift
+      ;;
     --api)
       run_api=true
       shift
@@ -58,5 +63,17 @@ if $run_load; then
                  --no-usage-report \
                  blockscoutv2.js
     )
+  done
+fi
+
+if $version; then
+  for url in "${BLOCKSCOUT_URLS[@]}"; do
+    response=$(curl -s -L "${url}"/api/v2/config/backend-version)
+    if [ $? -eq 0 ]; then
+      backend_version=$(echo "$response" | jq -r '.backend_version')
+      echo "$url $backend_version"
+    else
+      echo "$url Error: Failed to retrieve data"
+    fi
   done
 fi
