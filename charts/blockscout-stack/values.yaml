@@ -1131,7 +1131,7 @@ frontend:
   enabled: false
 
   image:
-    _default: ghcr.io/blockscout/frontend:e2e
+    _default: ghcr.io/blockscout/frontend:main
     pullPolicy: IfNotPresent
 
   replicas:
