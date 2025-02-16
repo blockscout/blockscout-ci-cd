@@ -1,5 +1,3 @@
-// https://eth.blockscout.com/api/v2/transactions/0xea7cbead745789346343435cf2a0910887ab0ebef08af07cbd2f0920a2c628da/summary?just_request_body=true
-
 import { check, group } from 'k6'
 import { randomItem } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js'
 import { SharedArray } from "k6/data"
@@ -12,7 +10,7 @@ import {
 
 const session = defaultSession()
 
-const testData = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE)))[0]
+const testData = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE)))[0].Load
 
 export const options = {
     scenarios: {

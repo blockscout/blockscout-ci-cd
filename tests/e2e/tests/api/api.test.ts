@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { LoadDataFile } from "@lib/File"
 import chalk from "chalk"
+import { shouldRunWithRelease } from "../common"
 
 test.describe.configure({ mode: `parallel` })
 
@@ -32,6 +33,7 @@ const urlToChainIdMap = {
 urls.forEach((url: string) => {
     LoadDataFile(url)
     test(`@Api @Health ${url} Check health`, async ({ request }): Promise<void> => {
+        console.log(`I'm running`)
         const resp = await request.get(`${url}/api/health`)
         expect(resp.status()).toBe(200)
         const body = await resp.json()
@@ -189,15 +191,17 @@ urls.forEach((url: string) => {
             expect(withdrawal.amount).toBeDefined()
         }
     })
-    test.skip(`@Api ${url} Check account abstraction status`, async ({ request }): Promise<void> => {
-        const resp = await request.get(`${url}/api/v2/proxy/account-abstraction/status`)
-        expect(resp.status()).toBe(200)
-        const body = await resp.json()
-        expect(body.finished_past_indexing).toBeTruthy()
-        expect(body.v06).toBeTruthy()
-        expect(body.v06.enabled).toBeTruthy()
-        expect(body.v06.live).toBeTruthy()
-        expect(body.v06.enabled).toBeTruthy()
-        expect(body.v07.live).toBeTruthy()
+    test(`@Api ${url} Check account abstraction status`, async ({ request }): Promise<void> => {
+        if (shouldRunWithRelease(`v7.0.0`, `v7.0.0`)) {
+            const resp = await request.get(`${url}/api/v2/proxy/account-abstraction/status`)
+            expect(resp.status()).toBe(200)
+            const body = await resp.json()
+            expect(body.finished_past_indexing).toBeTruthy()
+            expect(body.v06).toBeTruthy()
+            expect(body.v06.enabled).toBeTruthy()
+            expect(body.v06.live).toBeTruthy()
+            expect(body.v06.enabled).toBeTruthy()
+            expect(body.v07.live).toBeTruthy()
+        }
     })
 })

@@ -9,8 +9,7 @@ import {
 } from "./common/profile.js"
 
 // Load test data from an environment variable
-const testFile = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE)))
-const testData = testFile[0]
+const testData = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE)))[0].Load
 const APIKey = __ENV.BLOCKSCOUT_API_KEY
 const startBlock = __ENV.START_BLOCK
 const endBlock = __ENV.END_BLOCK

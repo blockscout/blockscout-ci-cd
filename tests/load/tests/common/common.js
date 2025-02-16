@@ -7,7 +7,7 @@ export const defaultSession = () => {
         headers: {
             'User-Agent': `k6-test`,
         },
-        timeout: __ENV.REQUEST_TIMEOUT,
+        timeout: `30000`,
     })
 
     session.addTags({

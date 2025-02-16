@@ -7,8 +7,7 @@ import {
     check200, p5, sane, t30,
 } from "./common/profile.js"
 
-const testFile = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE)))
-const testData = testFile[0]
+const testData = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_FILE)))[0].Load
 
 const session = defaultSession()
 
