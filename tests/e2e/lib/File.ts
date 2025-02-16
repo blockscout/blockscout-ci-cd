@@ -17,7 +17,7 @@ export const LoadDataFile = (url: string): any => {
     }
 }
 
-export const LoadDataFileRelease = (url: string) => {
+export const LoadDataFileRelease = (url: string): string => {
     const u = url.endsWith(`/`) ? url.slice(0, -1) : url
     const fileName = u.split(`//`)[1].split(`.`).slice(0, -1).join(`.`)
     try {
