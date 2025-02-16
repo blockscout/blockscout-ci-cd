@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test'
-import { LoadDataFile } from "@lib/File"
+import {test, expect} from '@playwright/test'
+import {LoadDataFile} from "@lib/File"
 import chalk from "chalk"
-import { shouldRunWithRelease } from "../common"
+import {shouldRunWithRelease} from "../common"
 
-test.describe.configure({ mode: `parallel` })
+test.describe.configure({mode: `parallel`})
 
 const contractsInfoURL = `https://contracts-info.services.blockscout.com`
 const adminURL = `https://admin-rs.services.blockscout.com`
@@ -32,8 +32,7 @@ const urlToChainIdMap = {
 
 urls.forEach((url: string) => {
     LoadDataFile(url)
-    test(`@Api @Health ${url} Check health`, async ({ request }): Promise<void> => {
-        console.log(`I'm running`)
+    test(`@Api @Health ${url} Check health`, async ({request}): Promise<void> => {
         const resp = await request.get(`${url}/api/health`)
         expect(resp.status()).toBe(200)
         const body = await resp.json()
@@ -52,7 +51,7 @@ urls.forEach((url: string) => {
             expect(diff).toBeLessThan(10)
         }
     })
-    test(`@Api ${url} Check transactions`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check transactions`, async ({request}): Promise<void> => {
         const resp = await request.get(`${url}/api/v2/transactions?filter=validated`)
         expect(resp.status()).toBe(200)
         const body = await resp.json()
@@ -62,7 +61,7 @@ urls.forEach((url: string) => {
             expect(tx.hash).toBeDefined()
         }
     })
-    test(`@Api ${url} Check blocks`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check blocks`, async ({request}): Promise<void> => {
         const resp = await request.get(`${url}/api/v2/blocks?type=block`)
         expect(resp.status()).toBe(200)
         const body = await resp.json()
@@ -72,7 +71,7 @@ urls.forEach((url: string) => {
             expect(blk.size).toBeDefined()
         }
     })
-    test(`@Api ${url} Check main page blocks`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check main page blocks`, async ({request}): Promise<void> => {
         const resp = await request.get(`${url}/api/v2/main-page/blocks`)
         expect(resp.status()).toBe(200)
         const blocks = await resp.json()
@@ -82,7 +81,7 @@ urls.forEach((url: string) => {
         }
     })
 
-    test(`@Api ${url} Check main page transactions`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check main page transactions`, async ({request}): Promise<void> => {
         const resp = await request.get(`${url}/api/v2/main-page/transactions`)
         expect(resp.status()).toBe(200)
         const txs = await resp.json()
@@ -92,7 +91,7 @@ urls.forEach((url: string) => {
         }
     })
 
-    test(`@Api ${url} Check main page chart txs`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check main page chart txs`, async ({request}): Promise<void> => {
         const resp = await request.get(`${url}/api/v2/stats/charts/transactions`)
         expect(resp.status()).toBe(200)
         const txs = await resp.json()
@@ -101,7 +100,7 @@ urls.forEach((url: string) => {
         }
     })
 
-    test(`@Api ${url} Check main page stats`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check main page stats`, async ({request}): Promise<void> => {
         const resp = await request.get(`${url}/api/v2/stats`)
         expect(resp.status()).toBe(200)
         const stats = await resp.json()
@@ -110,7 +109,7 @@ urls.forEach((url: string) => {
         expect(stats.gas_prices).toBeDefined()
     })
 
-    test(`@Api ${url} Check top accounts`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check top accounts`, async ({request}): Promise<void> => {
         const resp = await request.get(`${url}/api/v2/addresses`)
         expect(resp.status()).toBe(200)
         const body = await resp.json()
@@ -119,7 +118,7 @@ urls.forEach((url: string) => {
         }
     })
 
-    test(`@Api ${url} Check tokens`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check tokens`, async ({request}): Promise<void> => {
         const resp = await request.get(`${url}/api/v2/tokens`)
         expect(resp.status()).toBe(200)
         const body = await resp.json()
@@ -128,7 +127,7 @@ urls.forEach((url: string) => {
         }
     })
 
-    test(`@Api ${url} Check token transfers`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check token transfers`, async ({request}): Promise<void> => {
         const resp = await request.get(`${url}/api/v2/token-transfers?type=`)
         expect(resp.status()).toBe(200)
         const body = await resp.json()
@@ -137,7 +136,7 @@ urls.forEach((url: string) => {
         }
     })
 
-    test(`@Api ${url} Check DEX pools`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check DEX pools`, async ({request}): Promise<void> => {
         const resp = await request.get(`${contractsInfoURL}/api/v1/chains/${urlToChainIdMap[url]}/pools`)
         expect(resp.status()).toBe(200)
         const body = await resp.json()
@@ -146,7 +145,7 @@ urls.forEach((url: string) => {
         }
     })
 
-    test(`@Api ${url} Check DApps`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check DApps`, async ({request}): Promise<void> => {
         const resp = await request.get(`${adminURL}/api/v1/chains/${contractsInfoURL[url]}/marketplace/dapps`)
         expect(resp.status()).toBe(200)
         const body = await resp.json()
@@ -154,7 +153,7 @@ urls.forEach((url: string) => {
             expect(dapp.title).toBeDefined()
         }
     })
-    test(`@Api ${url} Check User Ops`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check User Ops`, async ({request}): Promise<void> => {
         if (url.includes(`eth-sepolia`, `gnosis`, `eth.blockscout`, `base`, `optimism`, `neon`, `polygon`, `explorer`)) {
             const resp = await request.get(`${url}/api/v2/proxy/account-abstraction/operations`)
             expect(resp.status()).toBe(200)
@@ -164,7 +163,7 @@ urls.forEach((url: string) => {
             }
         }
     })
-    test(`@Api ${url} Check Verified Contracts`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check Verified Contracts`, async ({request}): Promise<void> => {
         const resp = await request.get(`${url}/api/v2/smart-contracts`)
         expect(resp.status()).toBe(200)
         const body = await resp.json()
@@ -173,7 +172,7 @@ urls.forEach((url: string) => {
         }
     })
 
-    test(`@Api ${url} Check Domains`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check Domains`, async ({request}): Promise<void> => {
         if (url.includes(`eth-sepolia`, `gnosis`, `eth.blockscout`, `base`, `optimism`, `neon`, `polygon`, `explorer`)) {
             const resp = await request.get(`${bensURL}/api/v1/${urlToChainIdMap[url]}/domains:lookup?only_active=true`)
             expect(resp.status()).toBe(200)
@@ -183,7 +182,7 @@ urls.forEach((url: string) => {
             }
         }
     })
-    test(`@Api ${url} Check Withdrawals`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check Withdrawals`, async ({request}): Promise<void> => {
         const resp = await request.get(`${url}/api/v2/withdrawals`)
         expect(resp.status()).toBe(200)
         const body = await resp.json()
@@ -191,7 +190,8 @@ urls.forEach((url: string) => {
             expect(withdrawal.amount).toBeDefined()
         }
     })
-    test(`@Api ${url} Check account abstraction status`, async ({ request }): Promise<void> => {
+
+    test(`@Api ${url} Check account abstraction status`, async ({request}): Promise<void> => {
         if (shouldRunWithRelease(`v7.0.0`, `v7.0.0`)) {
             const resp = await request.get(`${url}/api/v2/proxy/account-abstraction/status`)
             expect(resp.status()).toBe(200)
@@ -203,5 +203,126 @@ urls.forEach((url: string) => {
             expect(body.v06.enabled).toBeTruthy()
             expect(body.v07.live).toBeTruthy()
         }
+    })
+
+    test(`@Api @L2 ${url} Check Optimism type deposits`, async ({request}): Promise<void> => {
+        const resp = await request.get(`${url}/api/v2/optimism/deposits`)
+        const body = await resp.json()
+        if (resp.status() === 400 && body.message.includes(`module`)) {
+            test.skip()
+        }
+        expect(resp.status()).toBe(200)
+        expect(body.items[0].l1_block_number).toBeDefined()
+        expect(body.items[0].l2_transaction_hash).toBeDefined()
+    })
+
+    test(`@Api @L2 ${url} Check ZKEVM type deposits`, async ({request}): Promise<void> => {
+        const resp = await request.get(`${url}/api/v2/zkevm/deposits`)
+        const body = await resp.json()
+        if (resp.status() === 400 && body.message.includes(`module`)) {
+            test.skip()
+        }
+        expect(resp.status()).toBe(200)
+        expect(body.items[0].l1_transaction_hash).toBeDefined()
+        expect(body.items[0].l2_transaction_hash).toBeDefined()
+    })
+
+    test(`@Api @L2 ${url} Check Arbitrum type deposits`, async ({request}): Promise<void> => {
+        const resp = await request.get(`${url}/api/v2/arbitrum/messages/to-rollup`)
+        const body = await resp.json()
+        if (resp.status() === 400 && body.message.includes(`module`)) {
+            test.skip()
+        }
+        expect(resp.status()).toBe(200)
+        expect(body.items[0].id).toBeDefined()
+        // console.log(`resp: ${JSON.stringify(body, null, "")}`)
+    })
+
+    test(`@Api @L2 ${url} Check Optimism type withdrawals`, async ({request}): Promise<void> => {
+        const resp = await request.get(`${url}/api/v2/optimism/withdrawals`)
+        const body = await resp.json()
+        if (resp.status() === 400 && body.message.includes(`module`)) {
+            test.skip()
+        }
+        expect(resp.status()).toBe(200)
+        expect(body.items[0].from.hash).toBeDefined()
+        expect(body.items[0].l2_transaction_hash).toBeDefined()
+    })
+
+    test(`@Api @L2 ${url} Check ZKEVM type withdrawals`, async ({request}): Promise<void> => {
+        const resp = await request.get(`${url}/api/v2/zkevm/withdrawals`)
+        const body = await resp.json()
+        if (resp.status() === 400 && body.message.includes(`module`)) {
+            test.skip()
+        }
+        expect(resp.status()).toBe(200)
+        expect(body.items[0].index).toBeDefined()
+        expect(body.items[0].l2_transaction_hash).toBeDefined()
+    })
+
+    test(`@Api @L2 ${url} Check Arbitrum type withdrawals`, async ({request}): Promise<void> => {
+        const resp = await request.get(`${url}/api/v2/arbitrum/messages/from-rollup`)
+        const body = await resp.json()
+        if (resp.status() === 400 && body.message.includes(`module`)) {
+            test.skip()
+        }
+        expect(resp.status()).toBe(200)
+        expect(body.items[0].id).toBeDefined()
+        expect(body.items[0].status).toBeDefined()
+    })
+
+    test(`@Api @L2 ${url} Check Optimism batches `, async ({request}): Promise<void> => {
+        const resp = await request.get(`${url}/api/v2/optimism/batches`)
+        const body = await resp.json()
+        if (resp.status() === 400 && body.message.includes(`module`)) {
+            test.skip()
+        }
+        expect(resp.status()).toBe(200)
+        expect(body.items[0].l1_transaction_hashes).toBeDefined()
+        expect(body.items[0].l2_block_start).toBeDefined()
+    })
+
+    test(`@Api @L2 ${url} Check ZKEVM batches `, async ({request}): Promise<void> => {
+        const resp = await request.get(`${url}/api/v2/zkevm/batches`)
+        const body = await resp.json()
+        if (resp.status() === 400 && body.message.includes(`module`)) {
+            test.skip()
+        }
+        expect(resp.status()).toBe(200)
+        expect(body.items[0].number).toBeDefined()
+        expect(body.items[0].timestamp).toBeDefined()
+    })
+
+    test(`@Api @L2 ${url} Check Arbitrum batches `, async ({request}): Promise<void> => {
+        const resp = await request.get(`${url}/api/v2/arbitrum/batches`)
+        const body = await resp.json()
+        if (resp.status() === 400 && body.message.includes(`module`)) {
+            test.skip()
+        }
+        expect(resp.status()).toBe(200)
+        expect(body.items[0].batch_data_container).toBeDefined()
+        expect(body.items[0].commitment_transaction.hash).toBeDefined()
+    })
+
+    test(`@Api @L2 ${url} Check Optimism dispute games `, async ({request}): Promise<void> => {
+        const resp = await request.get(`${url}/api/v2/optimism/games`)
+        const body = await resp.json()
+        if (resp.status() === 400 && body.message.includes(`module`)) {
+            test.skip()
+        }
+        expect(resp.status()).toBe(200)
+        expect(body.items[0].contract_address).toBeDefined()
+        expect(body.items[0].l2_block_number).toBeDefined()
+    })
+
+    test(`@Api @L2 ${url} Check Optimism output roots`, async ({request}): Promise<void> => {
+        const resp = await request.get(`${url}/api/v2/optimism/output-roots`)
+        const body = await resp.json()
+        if (resp.status() === 400 && body.message.includes(`module`)) {
+            test.skip()
+        }
+        expect(resp.status()).toBe(200)
+        expect(body.items[0].l1_transaction_hash).toBeDefined()
+        expect(body.items[0].output_root).toBeDefined()
     })
 })

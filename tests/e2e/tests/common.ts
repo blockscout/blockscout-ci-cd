@@ -1,5 +1,6 @@
 import semver from 'semver'
-const c = require('ansi-colors')
+
+const c = require(`ansi-colors`)
 
 export const shouldRunWithRelease = (tag: string, minVerTag: string): boolean => {
     if (semver.gt(tag, minVerTag)) {
