@@ -17,17 +17,6 @@ export const LoadDataFile = (url: string): any => {
     }
 }
 
-export const LoadDataFileRelease = (url: string): string => {
-    const u = url.endsWith(`/`) ? url.slice(0, -1) : url
-    const fileName = u.split(`//`)[1].split(`.`).slice(0, -1).join(`.`)
-    try {
-        // eslint-disable-next-line consistent-return
-        return JSON.parse(readFileSync(`static/${fileName}.json`).toString())
-    } catch (err) {
-        console.log(chalk.red(`Error reading static data for ${fileName}, file should be named as first two domain sections of URL: ${u}, err: ${err}`))
-    }
-}
-
 const newReqCtx = async (url: string) => request.newContext({
     baseURL: url,
     extraHTTPHeaders: {},
