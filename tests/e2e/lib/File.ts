@@ -18,7 +18,7 @@ export const urlToFilename = (rawUrl) => {
 
 export const LoadDataFile = (url: string): any => {
     if (process.env.ENV === `test` || process.env.ENV === `scoutcloud`) {
-        return
+        return {UI: {}}
     }
     const fileName = urlToFilename(url)
     try {
