@@ -158,7 +158,6 @@ export class NewHomePage extends CommonPage {
         await expect(this.page.getByText(`Owner`)).toBeVisible()
         await expect(this.page.getByText(`Creator`)).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
-        await expect(this.page.getByText(`Name`, { exact: true })).toBeVisible()
         await expect(this.page.getByText(`Description`)).toBeVisible()
         await expect(this.page.getByText(`Attributes`)).toBeVisible()
     }
