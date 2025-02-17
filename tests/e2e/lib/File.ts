@@ -2,17 +2,16 @@ import { readFileSync } from "fs"
 import chalk from "chalk"
 import { expect, request } from "@playwright/test"
 
-
 export const urlToFilename = (rawUrl) => {
     try {
         const parsedUrl = new URL(rawUrl)
         let filename = parsedUrl.hostname
-        if (parsedUrl.pathname && parsedUrl.pathname !== "/") {
-            filename += "_" + parsedUrl.pathname.replace(/\//g, "_")
+        if (parsedUrl.pathname && parsedUrl.pathname !== `/`) {
+            filename += `_${parsedUrl.pathname.replace(/\//g, `_`)}`
         }
-        return filename.replace(/[<>:"/\\|?*]/g, "_")
+        return filename.replace(/[<>:"/\\|?*]/g, `_`)
     } catch (error) {
-        console.error("Invalid URL:", rawUrl)
+        console.error(`Invalid URL:`, rawUrl)
         return null
     }
 }
@@ -29,7 +28,6 @@ export const LoadDataFile = (url: string): any => {
         console.log(chalk.red(`Error reading test data: ${err}`))
     }
 }
-
 
 const newReqCtx = async (url: string) => request.newContext({
     baseURL: url,

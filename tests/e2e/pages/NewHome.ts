@@ -142,7 +142,6 @@ export class NewHomePage extends CommonPage {
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
     }
 
-
     async checkERC404Inventory(data: any): Promise<void> {
         await expect(this.page.getByText(`ERC-404`, { exact: true })).toBeVisible()
         await expect(this.page.getByText(`Max total supply`)).toBeVisible()
