@@ -2,20 +2,34 @@ import { readFileSync } from "fs"
 import chalk from "chalk"
 import { expect, request } from "@playwright/test"
 
-export const LoadDataFile = (url: string): any => {
-    if (process.env.ENV === `test` || process.env.ENV === `scoutcloud`) {
-        console.log(`static data was not loaded, have you set ENV param?`)
-        return
-    }
-    const u = url.endsWith(`/`) ? url.slice(0, -1) : url
-    const fileName = u.split(`//`)[1].split(`.`).slice(0, -1).join(`.`)
+
+export const urlToFilename = (rawUrl) => {
     try {
-        // eslint-disable-next-line consistent-return
-        return JSON.parse(readFileSync(`static/${fileName}.json`).toString())
-    } catch (err) {
-        console.log(chalk.red(`Error reading static data for ${fileName}, file should be named as first two domain sections of URL: ${u}, err: ${err}`))
+        const parsedUrl = new URL(rawUrl)
+        let filename = parsedUrl.hostname
+        if (parsedUrl.pathname && parsedUrl.pathname !== "/") {
+            filename += "_" + parsedUrl.pathname.replace(/\//g, "_")
+        }
+        return filename.replace(/[<>:"/\\|?*]/g, "_")
+    } catch (error) {
+        console.error("Invalid URL:", rawUrl)
+        return null
     }
 }
+
+export const LoadDataFile = (url: string): any => {
+    if (process.env.ENV === `test` || process.env.ENV === `scoutcloud`) {
+        return
+    }
+    const fileName = urlToFilename(url)
+    try {
+        // eslint-disable-next-line consistent-return
+        return JSON.parse(readFileSync(`../data/${fileName}.json`).toString())[0]
+    } catch (err) {
+        console.log(chalk.red(`Error reading test data: ${err}`))
+    }
+}
+
 
 const newReqCtx = async (url: string) => request.newContext({
     baseURL: url,

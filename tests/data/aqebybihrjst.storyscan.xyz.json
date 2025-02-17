@@ -1,0 +1,13 @@
+[
+  {
+    "Load": {},
+    "API": {},
+    "UI": {
+      "erc721": {
+        "address": "",
+        "instance": "",
+        "metadata": ""
+      }
+    }
+  }
+]

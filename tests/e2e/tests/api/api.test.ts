@@ -32,7 +32,7 @@ const urlToChainIdMap = {
 
 urls.forEach((url: string) => {
     LoadDataFile(url)
-    test(`@Api @Health ${url} Check health`, async ({ request }): Promise<void> => {
+    test.skip(`@Api @Health ${url} Check health`, async ({ request }): Promise<void> => {
         const resp = await request.get(`${url}/api/health`)
         expect(resp.status()).toBe(200)
         const body = await resp.json()

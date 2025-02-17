@@ -1,0 +1,22 @@
+[
+ {
+  "Load": {},
+  "API": {},
+  "UI": {
+   "search": {
+    "query": "John McAfee Legacy",
+    "result": "John McAfee Legacy"
+   },
+   "erc721": {
+    "name": "John McAfee Legacy",
+    "address": "0x91ba8A14D2CC851aBb69212c09f59e06e1e7f0a5",
+    "instance": "103596"
+   },
+   "erc1155": {
+    "name": null,
+    "address": "0xF156A90d9456D7C04270Ea8b96acCFdb8A57e2a3",
+    "instance": "54"
+   }
+  }
+ }
+]

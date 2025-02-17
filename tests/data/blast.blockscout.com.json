@@ -1,0 +1,27 @@
+[
+ {
+  "Load": {},
+  "API": {},
+  "UI": {
+   "search": {
+    "query": "Well ID",
+    "result": "Well ID"
+   },
+   "erc721": {
+    "name": "Well ID",
+    "address": "0x73A0469348BcD7AAF70D9E34BBFa794deF56081F",
+    "instance": "115792032258907017003274623665866644042409120610703718691517510802388228786263"
+   },
+   "erc1155": {
+    "name": "Visit https://blast-up.net to claim rewards!",
+    "address": "0x46097f8acCb58c407071c403089F57c13469F227",
+    "instance": "1"
+   },
+   "erc404": {
+    "name": "SEIYAN404",
+    "address": "0xAeABaE405B1fB7E86Fd80021d5287cCb1C6559EE",
+    "instance": "2580"
+   }
+  }
+ }
+]

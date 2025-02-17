@@ -1,0 +1,27 @@
+[
+  {
+    "Load": {},
+    "API": {},
+    "UI": {
+      "search": {
+        "query": "",
+        "result": ""
+      },
+      "erc721": {
+        "address": "",
+        "instance": "",
+        "metadata": ""
+      },
+      "erc404": {
+        "address": "",
+        "instance": "",
+        "metadata": ""
+      },
+      "erc1155": {
+        "address": "",
+        "instance": "",
+        "metadata": ""
+      }
+    }
+  }
+]

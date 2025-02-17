@@ -43,10 +43,59 @@ const testDataFileBoilerplate = [
     }
 ]
 
-// Initialize Airtable
-const base = new Airtable({apiKey: process.env.AIRTABLE_API_KEY}).base(BASE)
+const fetchTokenData = async (url, type) => {
+    console.log(c.green(`loading ${type} token for ${url}`))
+    const response = await fetch(`${url}/api/v2/tokens?type=${type}`)
+    if (!response.ok) {
+        throw new Error(`Failed to fetch tokens, status: ${response.status}`)
+    }
+    const data = await response.json()
+    if (data.items.length >= 1) {
+        const t = data.items[0]
+        const respInstances = await fetch(`${url}/api/v2/tokens/${t.address}/instances`)
+        const instData = await respInstances.json()
+        console.log(c.green(`found token of type: ${type} for ${url}`))
+        return {
+            name: t.name,
+            address: t.address,
+            instance: instData.items[0].id,
+        }
+    } else {
+        console.log(c.yellow(`failed to find any ${type} tokens for ${url}`))
+    }
+}
 
-async function getAirtableRecords(table, view) {
+// Data generation
+const generateTestData = async (url, type) => {
+    try {
+        const results = await Promise.all([
+            fetchTokenData(url, `ERC-721`),
+            fetchTokenData(url, `ERC-1155`),
+            fetchTokenData(url, `ERC-404`),
+        ])
+        const fullData = {
+            Load: {},
+            API: {},
+            UI: {
+                search: {
+                    query: results[0].name,
+                    result: results[0].name,
+                },
+                erc721: results[0],
+                erc1155: results[1],
+                erc404: results[2],
+            }
+        }
+        return [fullData]
+    } catch (error) {
+        console.error('Error fetching token:', error)
+        throw error
+    }
+}
+
+// Initialize Airtable
+
+async function getAirtableRecords(base, table, view) {
     const records = []
     await base(table).select({
         view: view
@@ -73,22 +122,21 @@ function urlToFilename(rawUrl) {
     }
 }
 
-function createFilesFromUrls(urls, directory) {
+function createTestDataFilesFromURLs(url, directory, data) {
     if (!fs.existsSync(directory)) {
         fs.mkdirSync(directory, {recursive: true})
     }
 
-    urls.forEach(url => {
-        const filename = urlToFilename(url)
-        if (filename) {
-            const filePath = path.join(directory, filename + ".json")
-            if (fs.existsSync(filePath)) {
-                console.log(`Skipping: ${filePath} (Already exists)`)
-                return
-            }
-            fs.writeFileSync(filePath, JSON.stringify(testDataFileBoilerplate, null, ""), "utf8")
+    const filename = urlToFilename(url)
+    if (filename) {
+        const filePath = path.join(directory, filename + ".json")
+        if (fs.existsSync(filePath)) {
+            console.log(`Skipping: ${filePath} (Already exists)`)
+            return
         }
-    })
+        console.log(c.green(`New environment: ${filePath}`))
+        fs.writeFileSync(filePath, JSON.stringify(data, null, " "), "utf8")
+    }
 }
 
 const BLOCKSCOUT_URLS = process.env.BLOCKSCOUT_URLS ? process.env.BLOCKSCOUT_URLS.split(',') : []
@@ -145,7 +193,7 @@ function runLoadTests(urls) {
         --log-output=stdout \
         --no-usage-report \
         blockscoutv2.js`,
-                {stdio: 'inherit', env: { ...process.env, BLOCKSCOUT_URLS: urls}}
+                {stdio: 'inherit', env: {...process.env, BLOCKSCOUT_URLS: urls}}
             )
         } catch (error) {
             console.error(`Error running Load test for ${url}:`, error.message)
@@ -176,8 +224,13 @@ async function getVersions(records) {
 let currentReleaseTag
 
 (async () => {
+    if (process.env.AIRTABLE_API_KEY === undefined || process.env.K6_OUT === undefined) {
+        console.log(c.red(`AIRTABLE_API_KEY and K6_OUT must be set as environment variables first`))
+        process.exit(1)
+    }
     console.log(c.green(`Loading environments data...`))
-    const records = (await getAirtableRecords(TABLE, VIEW))
+    const base = new Airtable({apiKey: process.env.AIRTABLE_API_KEY}).base(BASE)
+    const records = (await getAirtableRecords(base, TABLE, VIEW))
     const mainnets = records.filter((record) => record["Is testnet"] === undefined)
     const testnets = records.filter((record) => record["Is testnet"] === true)
     const clients = groupByClient(records)
@@ -204,7 +257,14 @@ let currentReleaseTag
     }
 
     if (process.argv[2] === 'generate') {
-        await createFilesFromUrls(urls, TEST_DATA_DIR)
+        if (process.argv[3] === undefined) {
+            console.log(c.red(`need an environment URL to generate data`))
+            process.exit(1)
+        }
+        const url = process.argv[3]
+        const resp = await generateTestData(url)
+        console.log(c.green(`data generated for ${url}: ${JSON.stringify(resp, null, " ")}`))
+        await createTestDataFilesFromURLs(url, TEST_DATA_DIR, resp)
         process.exit(0)
     }
 
@@ -215,7 +275,6 @@ let currentReleaseTag
     })
 
     const selectedClient = await typePrompt.run()
-    console.log(`clients: ${JSON.stringify(clients[selectedClient], null, "")}`)
     const selectedURLs = clients[selectedClient].map((client) => client.URL)
 
     const environmentPrompt = new MultiSelect({
@@ -227,7 +286,7 @@ let currentReleaseTag
     const testTypePrompt = new MultiSelect({
         name: 'testType',
         message: 'What needs to be tested?',
-        choices: ['API', 'UI', 'Load', 'Versions', 'CreateTestData'],
+        choices: ['API', 'UI', 'Load'],
         hint: '(Use space to select, enter to confirm)'
     })
     const selectedEnvURL = await environmentPrompt.run()
@@ -237,6 +296,10 @@ let currentReleaseTag
     console.log('Selected client:', selectedEnvURL)
     console.log('Selected environment:', selectedEnvURL)
     console.log('Selected test type:', testType)
+    if (selectedEnvURL === undefined) {
+        console.log(c.red(`no environment has been selected`))
+        process.exit(1)
+    }
     for (const t of testType) {
         switch (t) {
             case 'API':

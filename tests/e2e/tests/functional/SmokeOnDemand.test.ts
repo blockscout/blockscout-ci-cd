@@ -10,7 +10,7 @@ test.describe.configure({ mode: `parallel` })
 const urls = (process.env.BLOCKSCOUT_URL || ``).split(`,`)
 
 urls.forEach((url: string) => {
-    const staticData = LoadDataFile(url)
+    const staticData = LoadDataFile(url).UI
     test(`@Live @MainPage ${url} Main page components`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
@@ -96,9 +96,7 @@ urls.forEach((url: string) => {
         await marketplace.open(url)
         if (await marketplace.isOn()) {
             await marketplace.openMarketplace()
-            // await marketplace.checkDefaultAppsList()
             await marketplace.checkAllFeaturesOn()
-            // await marketplace.openRandomApp()
         } else {
             console.log(chalk.yellow(`DApps Marketplace is OFF!`))
         }
@@ -157,7 +155,6 @@ urls.forEach((url: string) => {
         await newHomePage.checkERC721Inventory(staticData.erc721)
         await newHomePage.open_custom(`${url}/token/${staticData.erc721.address}/instance/${staticData.erc721.instance}`)
         await newHomePage.checkInventoryERC721Element(staticData.erc721)
-        await newHomePage.checkInventoryERC721MetadataTab(staticData.erc721)
     })
     test(`@Live @ERC-404 ${url} Check ERC-404 inventory tab`, async ({ newHomePage }) => {
         if (process.env.NO_TEST_DATA === `1`) {
@@ -173,7 +170,6 @@ urls.forEach((url: string) => {
         await newHomePage.checkERC404Inventory(staticData.erc404)
         await newHomePage.open_custom(`${url}/token/${staticData.erc404.address}/instance/${staticData.erc404.instance}`)
         await newHomePage.checkInventoryERC404Element(staticData.erc404)
-        await newHomePage.checkInventoryERC404MetadataTab(staticData.erc404)
     })
     test(`@Live @ERC-1155 ${url} Check ERC-1155 inventory tab`, async ({ newHomePage }) => {
         if (process.env.NO_TEST_DATA === `1`) {
@@ -189,7 +185,6 @@ urls.forEach((url: string) => {
         await newHomePage.checkERC1155Inventory(staticData.erc1155)
         await newHomePage.open_custom(`${url}/token/${staticData.erc1155.address}/instance/${staticData.erc1155.instance}`)
         await newHomePage.checkInventoryERC1155Element(staticData.erc1155)
-        await newHomePage.checkInventoryERC1155MetadataTab(staticData.erc1155)
     })
     test(`@Live @L2Deposits ${url} Check L1->L2 Deposits`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)

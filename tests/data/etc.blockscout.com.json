@@ -1,0 +1,22 @@
+[
+ {
+  "Load": {},
+  "API": {},
+  "UI": {
+   "search": {
+    "query": "HEBE ENS NFT",
+    "result": "HEBE ENS NFT"
+   },
+   "erc721": {
+    "name": "HEBE ENS NFT",
+    "address": "0x03f4a95d964d364614E514e8638d61CDEed4f8D4",
+    "instance": "6008"
+   },
+   "erc1155": {
+    "name": null,
+    "address": "0xe31434c849a9E12c5ceC75107B0f137932873621",
+    "instance": "69"
+   }
+  }
+ }
+]

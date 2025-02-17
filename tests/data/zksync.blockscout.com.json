@@ -1,0 +1,12 @@
+[
+  {
+    "Load": {},
+    "API": {},
+    "UI": {
+      "search": {
+        "query": "USDT",
+        "result": "Tether USD"
+      }
+    }
+  }
+]

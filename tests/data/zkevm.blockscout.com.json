@@ -1,0 +1,22 @@
+[
+  {
+    "Load": {},
+    "API": {},
+    "UI": {
+      "search": {
+        "query": "USDT",
+        "result": "Tether USD"
+      },
+      "erc721": {
+        "address": "0x91553861aA69B17F2d0302811B4CeC0626602174",
+        "instance": "192028",
+        "metadata": "{\"attributes\":{\"trait_type\":\"Name\",\"value\":\"Unconstrained\"},\"image\":\"ipfs://bafybeifkvbtrx5mw4r2y6755vechzrdcdsbv23qd46324ut5wq6hwkceem/3.gif\",\"name\":\"To Ethereum, with Love\"}"
+      },
+      "erc1155": {
+        "address": "0xF57Cb671D50535126694Ce5Cc3CeBe3F32794896",
+        "instance": "10",
+        "metadata": "{\"properties\":{\"description\":{\"description\":\"Rubyscore_ZkEVM\",\"type\":\"string\"},\"image\":{\"description\":\"ipfs://QmUxmwtBFmCYbKJmoR7KwBAVb2Trs5HVmkw57D4hbFTqPP/10.png\",\"type\":\"string\"},\"name\":{\"description\":\"Rubyscore_ZkEVM 10 level\",\"type\":\"string\"}},\"title\":\"Rubyscore_Achievement\",\"type\":\"object\"}"
+      }
+    }
+  }
+]

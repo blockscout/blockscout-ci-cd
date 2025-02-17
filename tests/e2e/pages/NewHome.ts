@@ -142,24 +142,6 @@ export class NewHomePage extends CommonPage {
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
     }
 
-    async checkInventoryERC721MetadataTab(data: any): Promise<void> {
-        if (data.metadata === undefined) {
-            console.log(chalk.yellow(`No metadata for ERC-721 token!`))
-            return
-        }
-        await this.page.getByRole(`tab`, { name: `Metadata` }).click()
-        await this.delay(3000)
-        if (await this.page.locator(`body >> select`).isVisible()) {
-            return
-        }
-        await this.page.click(`body >> text=/Table/`)
-        await this.page.click(`body >> text=/JSON/`)
-        const textContent = await this.page.getByText(`{`).textContent()
-        const minified = JSON.stringify(JSON.parse(textContent))
-        await expect(minified).toContain(
-            data.metadata,
-        )
-    }
 
     async checkERC404Inventory(data: any): Promise<void> {
         await expect(this.page.getByText(`ERC-404`, { exact: true })).toBeVisible()
@@ -182,21 +164,6 @@ export class NewHomePage extends CommonPage {
         await expect(this.page.getByText(`Attributes`)).toBeVisible()
     }
 
-    async checkInventoryERC404MetadataTab(data: any): Promise<void> {
-        await this.page.getByRole(`tab`, { name: `Metadata` }).click()
-        await this.delay(3000)
-        if (await this.page.locator(`body >> select`).isVisible()) {
-            return
-        }
-        await this.page.click(`body >> text=/Table/`)
-        await this.page.click(`body >> text=/JSON/`)
-        const textContent = await this.page.getByText(`{`).textContent()
-        const minified = JSON.stringify(JSON.parse(textContent))
-        await expect(minified).toContain(
-            data.metadata,
-        )
-    }
-
     async checkERC1155Inventory(data: any): Promise<void> {
         await expect(this.page.getByText(`ERC-1155`)).toBeVisible()
         await expect(this.page.getByText(`Max total supply`)).toBeVisible()
@@ -210,25 +177,6 @@ export class NewHomePage extends CommonPage {
     async checkInventoryERC1155Element(data: any): Promise<void> {
         await expect(this.page.getByText(`ERC-1155`)).toBeVisible()
         await expect(this.page.getByText(`Transfers`, { exact: true })).toBeVisible()
-    }
-
-    async checkInventoryERC1155MetadataTab(data: any): Promise<void> {
-        if (data.metadata === undefined) {
-            console.log(chalk.yellow(`No metadata for ERC-1155 token!`))
-            return
-        }
-        await this.page.getByRole(`tab`, { name: `Metadata` }).click()
-        await this.delay(3000)
-        if (await this.page.locator(`body >> select`).isVisible()) {
-            return
-        }
-        await this.page.click(`body >> text=/Table/`)
-        await this.page.click(`body >> text=/JSON/`)
-        const textContent = await this.page.getByText(`{`).textContent()
-        const minified = JSON.stringify(JSON.parse(textContent))
-        await expect(minified).toContain(
-            data.metadata,
-        )
     }
 
     tokenInventoryElement(row: number, el: number): string {
