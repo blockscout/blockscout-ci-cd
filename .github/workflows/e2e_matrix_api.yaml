@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        url: ${{ fromJson(inputs.urls || github.event.inputs.urls || '["https://eth-sepolia.k8s-dev.blockscout.com","https://eth-sepolia.blockscout.com","https://eth.blockscout.com","https://base.blockscout.com","https://gnosis.blockscout.com","https://optimism.blockscout.com","https://neon.blockscout.com","https://rootstock.blockscout.com","https://polygon.blockscout.com","https://explorer.immutable.com","https://zkevm.blockscout.com","https://arbitrum.blockscout.com","https://zksync.blockscout.com","https://www.shibariumscan.io","https://explorer.zora.energy","https://blast.blockscout.com"]') }}
+        url: ${{ fromJson(inputs.urls || github.event.inputs.urls || '["https://eth-sepolia.k8s-dev.blockscout.com","https://eth-sepolia.blockscout.com","https://eth.blockscout.com","https://base.blockscout.com","https://gnosis.blockscout.com","https://optimism.blockscout.com","https://neon.blockscout.com","https://rootstock.blockscout.com","https://polygon.blockscout.com","https://immutable-mainnet.blockscout.com","https://zkevm.blockscout.com","https://arbitrum.blockscout.com","https://zksync.blockscout.com","https://www.shibariumscan.io","https://explorer.zora.energy","https://blast.blockscout.com"]') }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup node
