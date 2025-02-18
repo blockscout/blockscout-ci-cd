@@ -16,6 +16,7 @@ export const urlToFilename = (rawUrl) => {
     }
 }
 
+// eslint-disable-next-line consistent-return
 export const LoadDataFile = (url: string): any => {
     if (process.env.ENV === `test` || process.env.ENV === `scoutcloud`) {
         return { UI: {} }
