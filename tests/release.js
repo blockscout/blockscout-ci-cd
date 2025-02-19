@@ -234,11 +234,6 @@ let currentReleaseTag
     const mainnets = records.filter((record) => record["Is testnet"] === undefined)
     const testnets = records.filter((record) => record["Is testnet"] === true)
     const clients = groupByClient(records)
-    clients["All"] = records
-    const urls = records.map((record) => record.URL)
-    for (const r in clients) {
-        console.log(`Record: ${JSON.stringify(r, null, "")}`)
-    }
     console.log(`Total of ${records.length} networks`)
     console.log(`Mainnets: ${mainnets.length} networks`)
     console.log(`Testnets: ${testnets.length} networks`)
@@ -291,8 +286,6 @@ let currentReleaseTag
     })
     const selectedEnvURL = await environmentPrompt.run()
     const testType = await testTypePrompt.run()
-    console.log(`test type: ${testType.length}`)
-
     console.log('Selected client:', selectedEnvURL)
     console.log('Selected environment:', selectedEnvURL)
     console.log('Selected test type:', testType)

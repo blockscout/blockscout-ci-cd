@@ -266,7 +266,7 @@ export class NewHomePage extends CommonPage {
     async isL1L2WithdrawalsEnabled(): Promise<boolean> {
         await this.actions.page.hover(`text=/Blockchain/`)
         await this.delay(1000)
-        return this.actions.page.isVisible(`text=/Withdrawals.*/`)
+        return this.actions.page.isVisible(`text=/Withdrawals.*L2/`)
     }
 
     async isL1L2TxnBatchesEnabled(): Promise<boolean> {

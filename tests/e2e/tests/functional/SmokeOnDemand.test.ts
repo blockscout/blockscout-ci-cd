@@ -35,6 +35,7 @@ urls.forEach((url: string) => {
         await newHomePage.open_custom(`${url}/txs`)
         await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
     })
+
     test(`@Live @Search ${url} Check search`, async ({ newHomePage }) => {
         if (process.env.NO_TEST_DATA === `1`) {
             console.log(chalk.yellow(`Environment has no data, this test was skipped!`))

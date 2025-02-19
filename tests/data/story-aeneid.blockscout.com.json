@@ -1,1 +1,22 @@
-[{"Load":{},"API":{},"UI":{"search":{"query":"","result":""},"erc721":{"address":"","instance":"","metadata":""},"erc404":{"address":"","instance":"","metadata":""},"erc1155":{"address":"","instance":"","metadata":""}}}]
+[
+ {
+  "Load": {},
+  "API": {},
+  "UI": {
+   "search": {
+    "query": "Programmable IP License Token",
+    "result": "Programmable IP License Token"
+   },
+   "erc721": {
+    "name": "Programmable IP License Token",
+    "address": "0xFe3838BFb30B34170F00030B52eA4893d8aAC6bC",
+    "instance": "18108"
+   },
+   "erc1155": {
+    "name": "Loudamon GO!",
+    "address": "0xd92CE64E46D092455eCC24B02B55143CEE67BEeB",
+    "instance": "7"
+   }
+  }
+ }
+]
