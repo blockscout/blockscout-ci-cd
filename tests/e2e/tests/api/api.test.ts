@@ -329,4 +329,13 @@ urls.forEach((url: string) => {
         expect(body.items[0].l1_transaction_hash).toBeDefined()
         expect(body.items[0].output_root).toBeDefined()
     })
+
+    test.skip(`@Api ${url} Check Gnosis bridged tokens`, async ({ request }): Promise<void> => {
+        if (!url.includes(`gnosis`)) {
+            test.skip()
+        }
+        const resp = await request.get(`${url}/api/v2/tokens/bridged`)
+        const body = await resp.json()
+        console.log(`resp: ${JSON.stringify(body, null, " ")}`)
+    })
 })
