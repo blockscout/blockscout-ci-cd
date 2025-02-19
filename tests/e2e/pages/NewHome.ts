@@ -363,8 +363,8 @@ export class NewHomePage extends CommonPage {
     async checkHeader(): Promise<void> {
         await this.displayed_in_parent(`text=/Total blocks|Latest batch/`, `text=/\\d+.*/`, 2, `no total blocks`)
         await this.displayed_in_parent(`text=/Average block time/`, `text=/\\d+.*/`, 2, `no avg block time`)
-        await this.displayed_in_parent(`text=/Total transactions/`, `text=/\\d+.*/`, 2, `no total transactions`)
-        await this.displayed_in_parent(`text=/Wallet addresses/`, `text=/\\d+.*/`, 2, `no wallet addresses`)
+        await this.displayed_in_parent(`text=/Total txns/`, `text=/\\d+.*/`, 2, `no total transactions`)
+        await this.displayed_in_parent(`text=/Total addresses/`, `text=/\\d+.*/`, 2, `no wallet addresses`)
     }
 
     async checkHeaderL2(): Promise<void> {
