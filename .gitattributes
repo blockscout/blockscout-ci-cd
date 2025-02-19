@@ -1,0 +1,1 @@
+tests/releases/** filter=lfs diff=lfs merge=lfs -text

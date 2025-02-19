@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const fs = require(`fs`)
 const chalk = require(`chalk`)
 
@@ -9,8 +11,8 @@ function parseJsonLines(filePath) {
         .map((line) => JSON.parse(line)) // Parse each line as JSON
 }
 
-const release1 = parseJsonLines(process.env.BEFORE)
-const release2 = parseJsonLines(process.env.NOW)
+const release1 = parseJsonLines(process.argv[2])
+const release2 = parseJsonLines(process.argv[3])
 
 function calculatePercentiles(values) {
     values.sort((a, b) => a - b) // Sort values in ascending order

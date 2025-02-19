@@ -8,40 +8,13 @@ const fs = require('fs')
 const path = require('path')
 const {execSync} = require('child_process')
 
+const LoadTestClientName = `zzz-dev-sepolia`
 const TEST_DATA_DIR = `./data`
 const BASE = `appHToklbHSEswU8U`
 const TABLE = `tblqKw4KgJZxkDKOg`
 const VIEW = `viw3n1kPAZER9a10M`
 
 const groupByClient = (data) => data.reduce((acc, rec) => ((acc[rec.Client] ||= []).push(rec), acc), {})
-
-const testDataFileBoilerplate = [
-    {
-        Load: {},
-        API: {},
-        UI: {
-            search: {
-                query: "",
-                result: ""
-            },
-            erc721: {
-                address: "",
-                instance: "",
-                metadata: ""
-            },
-            erc404: {
-                address: "",
-                instance: "",
-                metadata: ""
-            },
-            erc1155: {
-                address: "",
-                instance: "",
-                metadata: ""
-            }
-        },
-    }
-]
 
 const fetchTokenData = async (url, type) => {
     console.log(c.green(`loading ${type} token for ${url}`))
@@ -192,7 +165,7 @@ function runLoadTests(urls) {
         --tag testid="${outFileName}" \
         --log-output=stdout \
         --no-usage-report \
-        blockscoutv2.js`,
+        blockscout.js`,
                 {stdio: 'inherit', env: {...process.env, BLOCKSCOUT_URLS: urls}}
             )
         } catch (error) {
@@ -234,6 +207,7 @@ let currentReleaseTag
     const mainnets = records.filter((record) => record["Is testnet"] === undefined)
     const testnets = records.filter((record) => record["Is testnet"] === true)
     const clients = groupByClient(records)
+    clients[LoadTestClientName] = [{Client: LoadTestClientName, URL: "https://eth-sepolia.k8s-dev.blockscout.com/"}]
     console.log(`Total of ${records.length} networks`)
     console.log(`Mainnets: ${mainnets.length} networks`)
     console.log(`Testnets: ${testnets.length} networks`)

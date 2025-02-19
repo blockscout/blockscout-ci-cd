@@ -8,13 +8,6 @@ Crucial parameters to vary in tests are:
 
 You can add `  --http-debug=full \` before `run` for full HTTP debug.
 
-### Comparing between releases
-```
-BEFORE=release1.json NOW=release2.json node common/compare.js
-```
-Commit successful releases under `releases` in format `$product-vX.X.X-$profile.json`
-
-
 ### Blockscout API v1 (Baseline)
 ```
 ../bin_k6/k6-tsdb-darwin \

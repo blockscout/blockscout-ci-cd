@@ -9,9 +9,25 @@ export const p5 = {
 export const p1 = {
     executor: `constant-arrival-rate`,
     preAllocatedVUs: 10,
-    duration: `3m`,
+    duration: `5m`,
     rate: 1,
 }
+
+export const p5Seq = (() => {
+    let st = 0
+    return () => {
+        const profile = {
+            executor: `constant-arrival-rate`,
+            preAllocatedVUs: 10,
+            duration: `1m`,
+            rate: 5,
+            timeUnit: `1s`,
+            startTime: `${st}m`,
+        }
+        st += 1
+        return profile
+    }
+})()
 
 // ramping load profiles, 1-5 RPS, etc
 

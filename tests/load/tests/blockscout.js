@@ -5,7 +5,7 @@ import { defaultSession } from './common/common.js'
 
 import { shoot } from './common/gun.js'
 import {
-    check200, p5, sane, t30,
+    check200, p5, p5Seq, sane, t30,
 } from "./common/profile.js"
 
 // Load test data from an environment variable
@@ -23,15 +23,15 @@ const session = defaultSession()
 
 export const options = {
     scenarios: {
-        v1AccountAddrHash: Object.assign({}, p5, { exec: `v1AccountAddrHash` }),
-        v1TXInternal: Object.assign({}, p5, { exec: `v1TXInternal` }),
-        v1AddrBalance: Object.assign({}, p5, { exec: `v1AddrBalance` }),
-        v1EthSupply: Object.assign({}, p5, { exec: `v1EthSupply` }),
-        v1TokenSupply: Object.assign({}, p5, { exec: `v1TokenSupply` }),
-        v1AddrTxs: Object.assign({}, p5, { exec: `v1AddrTxs` }),
-        v1AddrTokenTransfers: Object.assign({}, p5, { exec: `v1AddrTokenTransfers` }),
-        v1GetLogs: Object.assign({}, p5, { exec: `v1GetLogs` }),
-        v1TokenBalance: Object.assign({}, p5, { exec: `v1TokenBalance` }),
+        v1AccountAddrHash: Object.assign({}, p5Seq(), { exec: `v1AccountAddrHash` }),
+        v1TXInternal: Object.assign({}, p5Seq(), { exec: `v1TXInternal` }),
+        v1AddrBalance: Object.assign({}, p5Seq(), { exec: `v1AddrBalance` }),
+        v1EthSupply: Object.assign({}, p5Seq(), { exec: `v1EthSupply` }),
+        v1TokenSupply: Object.assign({}, p5Seq(), { exec: `v1TokenSupply` }),
+        v1AddrTxs: Object.assign({}, p5Seq(), { exec: `v1AddrTxs` }),
+        v1AddrTokenTransfers: Object.assign({}, p5Seq(), { exec: `v1AddrTokenTransfers` }),
+        v1GetLogs: Object.assign({}, p5Seq(), { exec: `v1GetLogs` }),
+        v1TokenBalance: Object.assign({}, p5Seq(), { exec: `v1TokenBalance` }),
     },
     thresholds: sane,
 }
