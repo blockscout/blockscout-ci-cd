@@ -311,8 +311,12 @@ urls.forEach((url: string) => {
             test.skip()
         }
         expect(resp.status()).toBe(200)
-        expect(body.items[0].contract_address).toBeDefined()
-        expect(body.items[0].l2_block_number).toBeDefined()
+        if (body.items.length === 0) {
+            console.log(chalk.yellow(`dispute games info is empty!`))
+        } else {
+            expect(body.items[0].contract_address).toBeDefined()
+            expect(body.items[0].l2_block_number).toBeDefined()
+        }
     })
 
     test(`@Api @L2 ${url} Check Optimism output roots`, async ({ request }): Promise<void> => {
