@@ -4,8 +4,8 @@
 To add your environment to the E2E tests suite you need to:
 1. Create a new JSON file for static data under `tests/e2e/data/static`.
    File should be called by first 2 domain words, for example for `https://eth-sepolia.blockscout.com` file should have name `eth-sepolia.blockscout.json`
-2. Fill different entities data (tokens/blobs/etc), [eth-sepolia.blockscout.json](tests/e2e/static/eth-sepolia.blockscout.json)
-3. Add your environment URL to [e2e_matrix](.github/workflows/e2e_matrix.yaml)
+2. Fill different entities data (tokens/blobs/etc), [eth-sepolia.blockscout.json](./static/eth-sepolia.blockscout.json)
+3. Add your environment URL to [e2e_matrix](/.github/workflows/e2e_matrix.yaml)
 
 To configure tests we are using `.envrc` format, put all your vars there and `source .envrc` before running tests
 
