@@ -138,7 +138,6 @@ const generateTestData = async (url) => {
         return [fullData]
     } catch (error) {
         console.error('Error fetching token:', error)
-        throw error
     }
 }
 
@@ -179,10 +178,10 @@ function createTestDataFilesFromURL(url, directory, data) {
     const filename = urlToFilename(url)
     if (filename) {
         const filePath = path.join(directory, filename + ".json")
-        if (fs.existsSync(filePath)) {
-            console.log(`Skipping: ${filePath} (Already exists)`)
-            return
-        }
+        // if (fs.existsSync(filePath)) {
+        //     console.log(`Skipping: ${filePath} (Already exists)`)
+        //     return
+        // }
         console.log(c.green(`New environment: ${filePath}`))
         fs.writeFileSync(filePath, JSON.stringify(data, null, " "), "utf8")
     }
@@ -327,6 +326,15 @@ let currentReleaseTag
         const resp = await generateTestData(url)
         console.log(c.green(`data generated for ${url}: ${JSON.stringify(resp, null, " ")}`))
         await createTestDataFilesFromURL(url, TEST_DATA_DIR, resp)
+        process.exit(0)
+    }
+
+    if (process.argv[2] === 'generate_all') {
+        for (const rec of records) {
+            const resp = await generateTestData(rec.URL)
+            console.log(c.green(`data generated for ${rec.URL}: ${JSON.stringify(resp, null, " ")}`))
+            await createTestDataFilesFromURL(rec.URL, TEST_DATA_DIR, resp)
+        }
         process.exit(0)
     }
 
