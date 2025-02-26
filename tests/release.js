@@ -272,6 +272,10 @@ async function getVersions(records) {
     await Promise.all(requests)
 }
 
+const dumpURLs = (clients) => {
+    fs.writeFileSync('urls.json', JSON.stringify(clients.map((c) => c.URL)))
+}
+
 let currentReleaseTag
 
 (async () => {
@@ -308,6 +312,12 @@ let currentReleaseTag
         process.exit(0)
     }
 
+    if (process.argv[2] === 'dump') {
+        fs.writeFileSync('mainnets.json', JSON.stringify(mainnets.map((c) => c.URL)))
+        fs.writeFileSync('testnets.json', JSON.stringify(testnets.map((c) => c.URL)))
+        process.exit(0)
+    }
+
     if (process.argv[2] === 'generate') {
         if (process.argv[3] === undefined) {
             console.log(c.red(`need an environment URL to generate data`))
@@ -338,7 +348,7 @@ let currentReleaseTag
     const testTypePrompt = new MultiSelect({
         name: 'testType',
         message: 'What needs to be tested?',
-        choices: ['API', 'UI', 'Load'],
+        choices: ['API', 'UI', 'Load', 'Dump'],
         hint: '(Use space to select, enter to confirm)'
     })
     const selectedEnvURL = await environmentPrompt.run()

@@ -1,0 +1,12 @@
+name: E2E Env Matrix (API) Mainnets
+
+on:
+  push:
+  schedule:
+    - cron: '0 */3 * * *'
+
+jobs:
+  tests:
+    uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_matrix_api.yaml@master
+    with:
+      urls: '["https://worldchain-mainnet.explorer.alchemy.com","https://shapescan.xyz","https://geist-mainnet.explorer.alchemy.com","https://spotlight-mainnet.explorer.alchemy.com","https://arbitrum-nova.blockscout.com","https://arbitrum.blockscout.com","https://shiden.blockscout.com","https://astar.blockscout.com","https://base.blockscout.com","https://blackfortscan.com","https://blackfort-mainnet-old.blockscout.com","https://blast.blockscout.com","https://celo.blockscout.com","https://creditcoin.blockscout.com","https://explorer.degen.tips","https://etc.blockscout.com","https://eth.blockscout.com","https://explorer.etherlink.com","https://filecoin.blockscout.com","https://explorer.fuse.io","https://educhain.blockscout.com","https://blockscout.lisk.com","https://explorer.re.al","https://evm-explorer.alephzero.org","https://explorer.reya.network","https://explorer.playblock.io","https://blockscout.mainnet.fluence.dev","https://explorer.inkonchain.com","https://gnosis.blockscout.com","https://hashkey.blockscout.com","https://icbscan.io","https://immutable-mainnet.blockscout.com","https://explorer.evm.shimmer.network","https://explorer.evm.iota.org","https://explorer.kinto.xyz","https://phoenix.lightlink.io","https://matchscan.io","https://neon.blockscout.com","https://optimism.blockscout.com","https://zkevm.blockscout.com","https://polygon.blockscout.com","https://explorer.redstone.xyz","https://rootstock.blockscout.com","https://scroll.blockscout.com","https://sei.blockscout.com","https://www.shibariumscan.io","https://soneium.blockscout.com","https://stability.blockscout.com","https://www.storyscan.xyz","https://that.blockscout.com","https://unichain.blockscout.com","https://viction.blockscout.com","https://zetachain.blockscout.com","https://zilliqa-protomainnet.blockscout.com","https://zksync.blockscout.com","https://explorer.zora.energy"]'
