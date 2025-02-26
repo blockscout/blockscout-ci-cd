@@ -6,10 +6,7 @@ on:
     - cron: '0 */3 * * *'
 
 jobs:
-  autoscout-api-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Call E2E Env Matrix (API) Top 16
-        uses: ./.github/workflows/e2e-env-matrix-api-top-16.yml
-        with:
-          urls: ${{ fromJson(["https://parthenon.athenescan.io", "https://hyperliquid.cloud.blockscout.com"]) }}
+  tests:
+    uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_matrix_api.yaml@master
+    with:
+      urls: '["https://parthenon.athenescan.io", "https://hyperliquid.cloud.blockscout.com"]'

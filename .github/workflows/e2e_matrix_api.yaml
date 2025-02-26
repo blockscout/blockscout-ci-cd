@@ -1,7 +1,7 @@
 name: E2E Env Matrix (API) Top 16
 
 on:
-  push:
+#  push:
   schedule:
     - cron: '0 */3 * * *'
   workflow_call:
