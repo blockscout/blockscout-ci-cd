@@ -9,6 +9,8 @@ const path = require('path')
 const {execSync} = require('child_process')
 
 const LoadTestClientName = `zzz-dev-sepolia`
+const AllMainnets = `all-mainnets`
+const AllTestnets = `all-testnets`
 const TEST_DATA_DIR = `./data`
 const BASE = `appHToklbHSEswU8U`
 const TABLE = `tblqKw4KgJZxkDKOg`
@@ -38,17 +40,91 @@ const fetchTokenData = async (url, type) => {
     }
 }
 
+const fetchLoadTransactions = async (url) => {
+    const resp = await fetch(`${url}/api/v2/transactions`)
+    const data = await resp.json()
+    return data.items.map((d) => d.hash)
+}
+
+const fetchLoadBlocks = async (url) => {
+    const resp = await fetch(`${url}/api/v2/blocks`)
+    const data = await resp.json()
+    return data.items.map((d) => d.height)
+}
+
+const fetchLoadTokensERC20 = async (url) => {
+    const resp = await fetch(`${url}/api/v2/tokens?type=ERC-20`)
+    const data = await resp.json()
+    return data.items.map((d) => d.address)
+}
+
+const fetchLoadTokensERC721Instances = async (url, addresses) => {
+    const fetchInst = async (url, address) => {
+        const instResp = await fetch(`${url}/api/v2/tokens/${address}/instances`)
+        const instData = await instResp.json()
+        return instData.items.map((item) => item.id)
+    }
+    const insts = await Promise.all([
+        fetchInst(url, addresses[0]),
+        fetchInst(url, addresses[1]),
+        fetchInst(url, addresses[2]),
+    ])
+    return [
+        {
+            addr: addresses[0],
+            instances: insts[0],
+        },
+        {
+            addr: addresses[1],
+            instances: insts[1],
+        },
+        {
+            addr: addresses[2],
+            instances: insts[2],
+        }
+    ]
+}
+
+const fetchLoadTokensERC721 = async (url) => {
+    const resp = await fetch(`${url}/api/v2/tokens?type=ERC-721`)
+    const data = await resp.json()
+    const addresses = data.items.map((d) => d.address)
+    return await fetchLoadTokensERC721Instances(url, addresses)
+}
+
+const fetchLoadVerifiedContracts = async (url) => {
+    const resp = await fetch(`${url}/api/v2/smart-contracts`)
+    const data = await resp.json()
+    return data.items.map((d) => d.address.hash)
+}
+
 // Data generation
-const generateTestData = async (url, type) => {
+const generateTestData = async (url) => {
     try {
+        // token data and search query
         const results = await Promise.all([
             fetchTokenData(url, `ERC-721`),
             fetchTokenData(url, `ERC-1155`),
             fetchTokenData(url, `ERC-404`),
         ])
+        const loadResults = await Promise.all([
+            fetchLoadTransactions(url),
+            fetchLoadBlocks(url),
+            fetchLoadTokensERC20(url),
+            fetchLoadTokensERC721(url),
+            fetchLoadVerifiedContracts(url)
+        ])
+        // console.log(`results: ${JSON.stringify(loadResults, null, " ")}`)
         const fullData = {
-            Load: {},
-            API: {},
+            Load: {
+                txs: loadResults[0],
+                blocks: loadResults[1],
+                tokens: loadResults[2],
+                verifiedContracts: loadResults[3],
+            },
+            API: {
+                txs: loadResults[0]
+            },
             UI: {
                 search: {
                     query: results[0].name,
@@ -95,7 +171,7 @@ function urlToFilename(rawUrl) {
     }
 }
 
-function createTestDataFilesFromURLs(url, directory, data) {
+function createTestDataFilesFromURL(url, directory, data) {
     if (!fs.existsSync(directory)) {
         fs.mkdirSync(directory, {recursive: true})
     }
@@ -152,7 +228,7 @@ function runLoadTests(urls) {
     for (const url of urls) {
         try {
             const td = urlToFilename(url)
-            const outFileName = `${td}-${currentReleaseTag}`
+            const outFileName = `${td}-${currentReleaseTag}-v1-api`
             execSync(
                 `cd load/tests && ../bin_k6/k6-tsdb-darwin \
         --env BASE_URL="${url}" \
@@ -165,7 +241,7 @@ function runLoadTests(urls) {
         --tag testid="${outFileName}" \
         --log-output=stdout \
         --no-usage-report \
-        blockscout.js`,
+        blockscoutv2.js`,
                 {stdio: 'inherit', env: {...process.env, BLOCKSCOUT_URLS: urls}}
             )
         } catch (error) {
@@ -186,7 +262,9 @@ async function getVersions(records) {
 
             const data = await response.json()
             console.log(`${record.URL.padEnd(50)} ${data.backend_version.padEnd(20)}`)
+            // console.log(`"${record.URL}"`)
         } catch (error) {
+            // console.log(`"${record.URL}"`)
             console.log(c.red(`${record.URL.padEnd(50)} Error: ${error.message.padEnd(20)}`))
         }
     })
@@ -208,6 +286,7 @@ let currentReleaseTag
     const testnets = records.filter((record) => record["Is testnet"] === true)
     const clients = groupByClient(records)
     clients[LoadTestClientName] = [{Client: LoadTestClientName, URL: "https://eth-sepolia.k8s-dev.blockscout.com/"}]
+    clients["Fantom"] = [{Client: "Fantom", URL: "https://ftmscout.com"}]
     console.log(`Total of ${records.length} networks`)
     console.log(`Mainnets: ${mainnets.length} networks`)
     console.log(`Testnets: ${testnets.length} networks`)
@@ -233,7 +312,7 @@ let currentReleaseTag
         const url = process.argv[3]
         const resp = await generateTestData(url)
         console.log(c.green(`data generated for ${url}: ${JSON.stringify(resp, null, " ")}`))
-        await createTestDataFilesFromURLs(url, TEST_DATA_DIR, resp)
+        await createTestDataFilesFromURL(url, TEST_DATA_DIR, resp)
         process.exit(0)
     }
 

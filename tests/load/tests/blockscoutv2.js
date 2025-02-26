@@ -22,7 +22,6 @@ const session = defaultSession()
 
 export const options = {
     scenarios: {
-        // not yet released
         txInternalCurrentBlock: Object.assign({}, p5Seq(), { exec: `v2TXInternalCurrentBlock` }),
         v2gas: Object.assign({}, p5Seq(), { exec: `v2GasPriceOracle` }),
         v2txInternal: Object.assign({}, p5Seq(), { exec: `v2TXInternal` }),
