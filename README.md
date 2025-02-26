@@ -6,4 +6,9 @@
 [![Admin console](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_admin.yaml/badge.svg)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_admin.yaml)
 [![Autoscout](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_scoutcloud.yaml/badge.svg)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_scoutcloud.yaml)
 
+
+[![(API) AutoScout Envs](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_matrix_autoscout_api.yaml/badge.svg)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_matrix_autoscout_api.yaml)
+[![(API) Mainnets](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_matrix_mainnets_api.yaml/badge.svg)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_matrix_mainnets_api.yaml)
+[![(API) Testnets](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_matrix_testnets_api.yaml/badge.svg)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_matrix_testnets_api.yaml)
+
 This repo contains E2E and stress/load tests for Blockscout APIs
