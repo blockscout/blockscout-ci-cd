@@ -287,6 +287,10 @@ let currentReleaseTag
     const clients = groupByClient(records)
     clients[LoadTestClientName] = [{Client: LoadTestClientName, URL: "https://eth-sepolia.k8s-dev.blockscout.com/"}]
     clients["Fantom"] = [{Client: "Fantom", URL: "https://ftmscout.com"}]
+    clients["AutoScout"] = [
+        {Client: "Autoscout", URL: "https://parthenon.athenescan.io"},
+        {Client: "Autoscout", URL: "https://hyperliquid.cloud.blockscout.com"},
+    ]
     console.log(`Total of ${records.length} networks`)
     console.log(`Mainnets: ${mainnets.length} networks`)
     console.log(`Testnets: ${testnets.length} networks`)
