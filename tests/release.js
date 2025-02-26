@@ -271,10 +271,6 @@ async function getVersions(records) {
     await Promise.all(requests)
 }
 
-const dumpURLs = (clients) => {
-    fs.writeFileSync('urls.json', JSON.stringify(clients.map((c) => c.URL)))
-}
-
 let currentReleaseTag
 
 (async () => {
@@ -331,9 +327,13 @@ let currentReleaseTag
 
     if (process.argv[2] === 'generate_all') {
         for (const rec of records) {
-            const resp = await generateTestData(rec.URL)
-            console.log(c.green(`data generated for ${rec.URL}: ${JSON.stringify(resp, null, " ")}`))
-            await createTestDataFilesFromURL(rec.URL, TEST_DATA_DIR, resp)
+            try {
+                const resp = await generateTestData(rec.URL)
+                console.log(c.green(`data generated for ${rec.URL}: ${JSON.stringify(resp, null, " ")}`))
+                await createTestDataFilesFromURL(rec.URL, TEST_DATA_DIR, resp)
+            } catch (e) {
+                console.log(`error generating test data: ${e}`)
+            }
         }
         process.exit(0)
     }
@@ -356,7 +356,7 @@ let currentReleaseTag
     const testTypePrompt = new MultiSelect({
         name: 'testType',
         message: 'What needs to be tested?',
-        choices: ['API', 'UI', 'Load', 'Dump'],
+        choices: ['API', 'UI', 'Load'],
         hint: '(Use space to select, enter to confirm)'
     })
     const selectedEnvURL = await environmentPrompt.run()
