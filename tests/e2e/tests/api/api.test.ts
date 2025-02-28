@@ -3,7 +3,7 @@ import { LoadDataFile } from "@lib/File"
 import chalk from "chalk"
 import { shouldRunWithRelease } from "../common"
 
-test.describe.configure({ mode: `parallel` })
+test.describe.configure({ mode: `parallel`, retries: 3 })
 
 const contractsInfoURL = `https://contracts-info.services.blockscout.com`
 const adminURL = `https://admin-rs.services.blockscout.com`
