@@ -5,7 +5,7 @@ import chalk from "chalk"
 import { CommonPage } from "./Common"
 
 export class NewHomePage extends CommonPage {
-    SEARCH_BAR = `input >> nth=0`
+    SEARCH_BAR = `main >> input >> nth=0`
 
     SEARCH_ITEM = `section[role="dialog"] >> nth=1 >> div >> nth=`
 

@@ -39,9 +39,9 @@ export class CommonPage {
 
     NETWORK_MENU = `[aria-label="Network menu"]`
 
-    NETWORK_GROUP_MAINNETS = `text=mainnets`
+    NETWORK_GROUP_MAINNETS = `text=Mainnets`
 
-    NETWORK_GROUP_TESTNETS = `text=testnets`
+    NETWORK_GROUP_TESTNETS = `text=Testnets`
 
     NETWORK_GROUP_OTHER = `text=other`
 
@@ -121,7 +121,7 @@ export class CommonPage {
         await this.actions.verifyElementIsDisplayed(sel, err)
     }
 
-    async check_table_element(header: string, nth: number, text:string, err?: string): Promise<void> {
+    async check_table_element(header: string, nth: number, text: string, err?: string): Promise<void> {
         await this.actions.verifyElementIsDisplayed(this.div_right_of_with_text(header, nth, text), err)
     }
 
