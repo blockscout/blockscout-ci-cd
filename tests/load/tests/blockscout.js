@@ -56,7 +56,7 @@ export const v1AddrTxs = () => {
     group(`/api?module=account&action=txlist&address={}&startblock={}&endblock={}&page={}&offset={}&sort=asc&apikey={}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api?module=account&action=txlist&address=${randomItem(testData.addresses)}&startblock=${startBlock}&endblock=${endBlock}&page=${randomItem(pagination.pages)}&offset=${v1Offset}&sort=asc&apikey=${APIKey}`,
+            url: `/api?module=account&action=txlist&address=${randomItem(testData.tokens)}&startblock=${startBlock}&endblock=${endBlock}&page=${randomItem(pagination.pages)}&offset=${v1Offset}&sort=asc&apikey=${APIKey}`,
             params: {
                 tags: {
                     name: `Address TXs (v1)`,
@@ -72,7 +72,7 @@ export const v1AddrTokenTransfers = () => {
     group(`/api?module=account&action=tokentx&address={}&startblock={}&endblock={}&offset={}&page={}&sort=asc&apikey={}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api?module=account&action=tokentx&address=${randomItem(testData.addresses)}&startblock=${startBlock}&endblock=${endBlock}&offset=${v1Offset}&page=${randomItem(pagination.pages)}&sort=asc&apikey=${APIKey}`,
+            url: `/api?module=account&action=tokentx&address=${randomItem(testData.tokens)}&startblock=${startBlock}&endblock=${endBlock}&offset=${v1Offset}&page=${randomItem(pagination.pages)}&sort=asc&apikey=${APIKey}`,
             params: {
                 tags: {
                     name: `AddressTokenTransfers (v1)`,
@@ -89,7 +89,7 @@ export const v1GetLogs = () => {
         const block = randomItem(testData.blocks)
         const res = shoot(session, {
             method: `GET`,
-            url: `/api?module=logs&action=getLogs&fromBlock=${block}&toBlock=${block + 1}&address=${randomItem(testData.addresses)}&apikey=${APIKey}`,
+            url: `/api?module=logs&action=getLogs&fromBlock=${block}&toBlock=${block + 1}&address=${randomItem(testData.tokens)}&apikey=${APIKey}`,
             params: {
                 tags: {
                     name: `getLogs (backend)`,
@@ -105,7 +105,7 @@ export const v1TokenBalance = () => {
     group(`/api?module=account&action=tokenbalance&contractaddress={}&address={}&apikey={}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api?module=account&action=tokenbalance&contractaddress=${randomItem(testData.tokens)}&address=${randomItem(testData.addresses)}&apikey=${APIKey}`,
+            url: `/api?module=account&action=tokenbalance&contractaddress=${randomItem(testData.tokens)}&address=${randomItem(testData.tokens)}&apikey=${APIKey}`,
             params: {
                 tags: {
                     name: `tokenBalance (backend)`,
@@ -185,7 +185,7 @@ export const v1AccountAddrHash = () => {
     group(`account/api?module=account&action=txlist&address={}&page={}&offset={}&apikey={}ddress (backend)`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api?module=account&action=txlist&address=${randomItem(testData.addresses)}&page=${randomItem(pagination.pages)}&offset=${randomItem(pagination.offsets)}&apikey=${APIKey}`,
+            url: `/api?module=account&action=txlist&address=${randomItem(testData.tokens)}&page=${randomItem(pagination.pages)}&offset=${randomItem(pagination.offsets)}&apikey=${APIKey}`,
             params: {
                 tags: {
                     name: `accountAddress (backend)`,
@@ -201,7 +201,7 @@ export const v1AddrBalance = () => {
     group(`/api?module=account&action=balance&address={}&apikey={}`, () => {
         const res = shoot(session, {
             method: `GET`,
-            url: `/api?module=account&action=balance&address=${randomItem(testData.addresses)}&apikey=${APIKey}`,
+            url: `/api?module=account&action=balance&address=${randomItem(testData.tokens)}&apikey=${APIKey}`,
             params: {
                 tags: {
                     name: `addressBalance (backend)`,

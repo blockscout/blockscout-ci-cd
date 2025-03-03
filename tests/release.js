@@ -225,7 +225,7 @@ function runLoadTests(urls) {
   for (const url of urls) {
     try {
       const td = urlToFilename(url)
-      const outFileName = `${td}-${currentReleaseTag}-v1-api`
+      const outFileName = `${td}-${currentReleaseTag}`
       execSync(
         `cd load/tests && ../bin_k6/k6-tsdb-darwin \
         --env BASE_URL="${url}" \
