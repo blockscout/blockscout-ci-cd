@@ -1,0 +1,140 @@
+name: E2E ScoutCloud (Stage)
+
+on:
+  push:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      rpc_url:
+        description: 'RPC URL'
+        required: true
+        default: 'https://node-e2e.k8s-dev.blockscout.com/http'
+        type: string
+      server_size:
+        description: 'Server size'
+        required: true
+        default: 'small'
+        type: string
+      chain_type:
+        description: 'Chain type'
+        required: true
+        type: string
+      node_type:
+        description: 'Node type'
+        required: true
+        default: 'GETH'
+        type: string
+  workflow_call:
+    inputs:
+      rpc_url:
+        description: 'RPC URL'
+        required: true
+        default: 'https://sepolia.drpc.org'
+        type: string
+      server_size:
+        description: 'Server size'
+        required: true
+        default: 'small'
+        type: string
+      chain_type:
+        description: 'Chain type'
+        required: true
+        type: string
+      node_type:
+        description: 'Node type'
+        required: true
+        default: 'GETH'
+        type: string
+
+env:
+  SCOUTCLOUD_URL: ${{ secrets.STAGE_SCOUTCLOUD_URL }}
+  SCOUTCLOUD_TOKEN: ${{ secrets.STAGE_SCOUTCLOUD_TOKEN }}
+  SCOUTCLOUD_RPC_URL: ${{ inputs.rpc_url }}
+  SCOUTCLOUD_SERVER_SIZE: ${{ inputs.server_size }}
+  SCOUTCLOUD_NODE_TYPE: ${{ inputs.node_type }}
+
+  ENV: "scoutcloud"
+  PWDEBUG: 0
+  LOAD_AUTH_CTX: 0
+  LOAD_CONTRACTS_DATA: 0
+  ACCOUNT: 1
+  PROD: 1
+
+jobs:
+  e2e_tests:
+    name: Tests
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-20.04
+    environment:
+      name: Tests
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          repository: blockscout/blockscout-ci-cd
+          path: blockscout-ci-cd
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: v14.17.0
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Install deps
+        working-directory: blockscout-ci-cd/tests/e2e
+        run: npm ci
+      - name: Build contracts
+        working-directory: blockscout-ci-cd/tests/contracts
+        run: |
+          # gyp build from root
+          npm config set user 0
+          npm ci
+          npm run build
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+      - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+      - name: Set environment variables
+        run: |
+          echo "SCOUTCLOUD_RPC_URL=${{ inputs.rpc_url || 'https://node-e2e.k8s-dev.blockscout.com/http' }}" >> $GITHUB_ENV
+          echo "SCOUTCLOUD_SERVER_SIZE=${{ inputs.server_size || 'small' }}" >> $GITHUB_ENV
+          echo "SCOUTCLOUD_NODE_TYPE=${{ inputs.node_type || 'GETH' }}" >> $GITHUB_ENV
+      - name: Deploy and test ScoutCloud instance UI
+        working-directory: blockscout-ci-cd/tests/e2e
+        run: |
+          npx playwright install
+          npm run test:scoutcloud
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tests-results
+          path: blockscout-ci-cd/tests/e2e/test-results
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: state
+          path: blockscout-ci-cd/tests/e2e/state.json
+
+defaults:
+  run:
+    shell: bash

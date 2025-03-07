@@ -11,7 +11,7 @@ const urls = (process.env.BLOCKSCOUT_URL || ``).split(`,`)
 
 urls.forEach((url: string) => {
     const staticData = LoadDataFile(url).UI
-    test(`@Live @MainPage ${url} Main page components`, async ({ newHomePage }) => {
+    test(`@Live22 @MainPage ${url} Main page components`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         await newHomePage.checkIndexing()
@@ -20,7 +20,7 @@ urls.forEach((url: string) => {
         await newHomePage.checkDailyTransactions()
     })
 
-    test(`@Live @Blocks ${url} Check blocks`, async ({ context, newHomePage }) => {
+    test(`@Live22 @Blocks ${url} Check blocks`, async ({ context, newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(`${url}/blocks`)
         // TODO: make it header dependent
@@ -30,13 +30,13 @@ urls.forEach((url: string) => {
         await newHomePage.checkBlocks()
     })
 
-    test(`@Live @Tx ${url} Check transactions`, async ({ newHomePage }) => {
+    test(`@Live22 @Tx ${url} Check transactions`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(`${url}/txs`)
         await newHomePage.actions.verifyElementIsDisplayed(`text=/0x/`)
     })
 
-    test(`@Live @Search ${url} Check search`, async ({ newHomePage }) => {
+    test(`@Live22 @Search ${url} Check search`, async ({ newHomePage }) => {
         if (process.env.NO_TEST_DATA === `1`) {
             console.log(chalk.yellow(`Environment has no data, this test was skipped!`))
             return
@@ -46,7 +46,7 @@ urls.forEach((url: string) => {
         await newHomePage.search(staticData.search.query)
         await newHomePage.findInSearchItems(staticData.search.result)
     })
-    test(`@Live @Stats ${url} Check stats`, async ({ newHomePage }) => {
+    test(`@Live22 @Stats ${url} Check stats`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isStatsEnabled()) {
@@ -57,7 +57,7 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`Stats Services are OFF!`))
         }
     })
-    test(`@Live @VerifiedContracts ${url} Check verified contracts`, async ({ newHomePage }) => {
+    test(`@Live22 @VerifiedContracts ${url} Check verified contracts`, async ({ newHomePage }) => {
         if (process.env.NO_TEST_DATA === `1`) {
             console.log(chalk.yellow(`Environment has no data, this test was skipped!`))
             return
@@ -70,7 +70,7 @@ urls.forEach((url: string) => {
         await newHomePage.open_custom(`${url}/verified-contracts`)
         await newHomePage.checkVerifiedContractsStats()
     })
-    test(`@Live @ENS ${url} Check ENS`, async ({ newHomePage }) => {
+    test(`@Live22 @ENS ${url} Check ENS`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isENSEnabled()) {
@@ -81,7 +81,7 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`ENS Services are OFF!`))
         }
     })
-    test(`@Live @GasTracker ${url} Check gas tracker`, async ({ newHomePage }) => {
+    test(`@Live22 @GasTracker ${url} Check gas tracker`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isGasTrackerOn()) {
@@ -92,7 +92,7 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`Gas Tracker is OFF!`))
         }
     })
-    test(`@Live @Market ${url} Check market`, async ({ marketplace }) => {
+    test(`@Live22 @Market ${url} Check market`, async ({ marketplace }) => {
         await marketplace.checkRequests(marketplace.page)
         await marketplace.open(url)
         if (await marketplace.isOn()) {
@@ -102,7 +102,7 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`DApps Marketplace is OFF!`))
         }
     })
-    test(`@Live @UserOps ${url} Check user operations`, async ({ newHomePage }) => {
+    test(`@Live22 @UserOps ${url} Check user operations`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.UserOpsIsOn()) {
@@ -113,7 +113,7 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`User Operations are OFF!`))
         }
     })
-    test(`@Live @Blobs ${url} Check blobs`, async ({ newHomePage }) => {
+    test(`@Live22 @Blobs ${url} Check blobs`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(`${url}/txs`)
         if (await newHomePage.BlobIsOn()) {
@@ -127,14 +127,14 @@ urls.forEach((url: string) => {
             console.log(chalk.yellow(`Blob txns are OFF!`))
         }
     })
-    test(`@Live @ContractsRead ${url} Check read/write contract tabs`, async ({ newHomePage }) => {
+    test(`@Live22 @ContractsRead ${url} Check read/write contract tabs`, async ({ newHomePage }) => {
         // await newHomePage.checkRequests(newHomePage.page)
         if (await newHomePage.hasVerifiedContracts(url)) {
             await newHomePage.openFirstVerifiedContract(url)
             await newHomePage.checkContractReadTabs()
         }
     })
-    test(`@Live @ContractsCode ${url} Check contracts code tabs`, async ({ newHomePage }) => {
+    test(`@Live22 @ContractsCode ${url} Check contracts code tabs`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         if (await newHomePage.hasVerifiedContracts(url)) {
             await newHomePage.openFirstVerifiedContract(url)
@@ -142,7 +142,7 @@ urls.forEach((url: string) => {
             // await newHomePage.checkContractUMLDiagram()
         }
     })
-    test(`@Live @ERC-721 ${url} Check ERC-721 inventory tab`, async ({ newHomePage }) => {
+    test(`@Live22 @ERC-721 ${url} Check ERC-721 inventory tab`, async ({ newHomePage }) => {
         if (process.env.NO_TEST_DATA === `1`) {
             console.log(chalk.yellow(`Environment has no data, this test was skipped!`))
             return
@@ -157,7 +157,7 @@ urls.forEach((url: string) => {
         await newHomePage.open_custom(`${url}/token/${staticData.erc721.address}/instance/${staticData.erc721.instance}`)
         await newHomePage.checkInventoryERC721Element(staticData.erc721)
     })
-    test(`@Live @ERC-404 ${url} Check ERC-404 inventory tab`, async ({ newHomePage }) => {
+    test(`@Live22 @ERC-404 ${url} Check ERC-404 inventory tab`, async ({ newHomePage }) => {
         if (process.env.NO_TEST_DATA === `1`) {
             console.log(chalk.yellow(`Environment has no data, this test was skipped!`))
             return
@@ -172,7 +172,7 @@ urls.forEach((url: string) => {
         await newHomePage.open_custom(`${url}/token/${staticData.erc404.address}/instance/${staticData.erc404.instance}`)
         await newHomePage.checkInventoryERC404Element(staticData.erc404)
     })
-    test(`@Live @ERC-1155 ${url} Check ERC-1155 inventory tab`, async ({ newHomePage }) => {
+    test(`@Live22 @ERC-1155 ${url} Check ERC-1155 inventory tab`, async ({ newHomePage }) => {
         if (process.env.NO_TEST_DATA === `1`) {
             console.log(chalk.yellow(`Environment has no data, this test was skipped!`))
             return
@@ -187,7 +187,7 @@ urls.forEach((url: string) => {
         await newHomePage.open_custom(`${url}/token/${staticData.erc1155.address}/instance/${staticData.erc1155.instance}`)
         await newHomePage.checkInventoryERC1155Element(staticData.erc1155)
     })
-    test(`@Live @L2Deposits ${url} Check L1->L2 Deposits`, async ({ newHomePage }) => {
+    test(`@Live22 @L2Deposits ${url} Check L1->L2 Deposits`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isL1L2DepositsEnabled()) {
@@ -243,7 +243,7 @@ urls.forEach((url: string) => {
             expect(await row[6].textContent()).toMatch(/.*/)
         }
     })
-    test(`@Live @L2Withdrawals ${url} Check L1->L2 Withdrawals`, async ({ newHomePage }) => {
+    test(`@Live22 @L2Withdrawals ${url} Check L1->L2 Withdrawals`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isL1L2WithdrawalsEnabled()) {
@@ -301,7 +301,7 @@ urls.forEach((url: string) => {
             expect(await row[6].textContent()).toMatch(/ETH/)
         }
     })
-    test(`@Live @L2TxnBatches ${url} Check L1->L2 Txn batches`, async ({ newHomePage }) => {
+    test(`@Live22 @L2TxnBatches ${url} Check L1->L2 Txn batches`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isL1L2TxnBatchesEnabled()) {
@@ -358,7 +358,7 @@ urls.forEach((url: string) => {
             expect(await row[5].textContent()).toMatch(/Pending|0x.*/)
         }
     })
-    test(`@Live @L2Roots ${url} Check L1->L2 Output roots`, async ({ newHomePage }) => {
+    test(`@Live22 @L2Roots ${url} Check L1->L2 Output roots`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(url)
         if (await newHomePage.isL1L2OutputRootsEnabled()) {
@@ -376,7 +376,7 @@ urls.forEach((url: string) => {
         expect(await row[3].textContent()).toMatch(/0x.*/)
         expect(await row[4].textContent()).toMatch(/0x.*/)
     })
-    test(`@Live @L2Games ${url} Check L1->L2 Optimism dispute games`, async ({ newHomePage }) => {
+    test(`@Live22 @L2Games ${url} Check L1->L2 Optimism dispute games`, async ({ newHomePage }) => {
         if (url.includes(`optimism`)) {
             await newHomePage.checkRequests(newHomePage.page)
             await newHomePage.open_custom(`${url}/dispute-games`)
@@ -392,7 +392,7 @@ urls.forEach((url: string) => {
             expect(await row[6].textContent()).toMatch(/N\/A/)
         }
     })
-    test(`@Live @Accounts ${url} Check top accounts`, async ({ newHomePage }) => {
+    test(`@Live22 @Accounts ${url} Check top accounts`, async ({ newHomePage }) => {
         await newHomePage.checkRequests(newHomePage.page)
         await newHomePage.open_custom(`${url}/accounts`, { waitUntil: `load`, delay: 15000 })
         const header = await newHomePage.actions.page.locator(`table >> tr >> nth=0`).textContent()

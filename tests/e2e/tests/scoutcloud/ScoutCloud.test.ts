@@ -134,7 +134,8 @@ const getInstanceDeployments = async (r, instance) => {
 
 // eslint-disable-next-line no-shadow
 test(`@DeploymentCleanup Clean up all instances`, async ({ request }) => {
-    await forceDeleteInstances(request)
+    // await forceDeleteInstances(request)
+    await deleteAllInstances(request)
 })
 
 // eslint-disable-next-line no-shadow
