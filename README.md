@@ -4,6 +4,7 @@
 [![API](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_matrix_api.yaml/badge.svg)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_matrix_api.yaml)
 [![K8s](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_account.yaml/badge.svg)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_account.yaml)
 [![Autoscout](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_scoutcloud.yaml/badge.svg)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_scoutcloud.yaml)
+[![E2E ScoutCloud (Stage)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_scoutcloud_stage.yaml/badge.svg)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_scoutcloud_stage.yaml)
 
 
 [![(API) AutoScout Envs](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_matrix_autoscout_api.yaml/badge.svg)](https://github.com/blockscout/blockscout-ci-cd/actions/workflows/e2e_matrix_autoscout_api.yaml)
