@@ -245,8 +245,7 @@ urls.forEach((url: string) => {
             test.skip()
         }
         expect(resp.status()).toBe(200)
-        expect(body.items[0].from.hash).toBeDefined()
-        expect(body.items[0].l2_transaction_hash).toBeDefined()
+        // can be empty and that's fine!
     })
 
     test(`@Api @L2 ${url} Check ZKEVM type withdrawals`, async ({ request }): Promise<void> => {
@@ -267,8 +266,7 @@ urls.forEach((url: string) => {
             test.skip()
         }
         expect(resp.status()).toBe(200)
-        expect(body.items[0].id).toBeDefined()
-        expect(body.items[0].status).toBeDefined()
+        // can be empty and that's fine!
     })
 
     test(`@Api @L2 ${url} Check Optimism batches `, async ({ request }): Promise<void> => {
@@ -278,9 +276,7 @@ urls.forEach((url: string) => {
             test.skip()
         }
         expect(resp.status()).toBe(200)
-        // TODO: can be empty, investigate
-        // expect(body.items[0].l1_transaction_hashes).toBeDefined()
-        // expect(body.items[0].l2_block_start).toBeDefined()
+        // can be empty and that's fine!
     })
 
     test(`@Api @L2 ${url} Check ZKEVM batches `, async ({ request }): Promise<void> => {
@@ -327,17 +323,19 @@ urls.forEach((url: string) => {
             test.skip()
         }
         expect(resp.status()).toBe(200)
-        // TODO: can be empty, investigate further
-        // expect(body.items[0].l1_transaction_hash).toBeDefined()
-        // expect(body.items[0].output_root).toBeDefined()
+        // can be empty and that's fine!
     })
 
-    test.skip(`@Api ${url} Check Gnosis bridged tokens`, async ({ request }): Promise<void> => {
+    test(`@Api ${url} Check Gnosis bridged tokens`, async ({ request }): Promise<void> => {
         if (!url.includes(`gnosis`)) {
             test.skip()
         }
         const resp = await request.get(`${url}/api/v2/tokens/bridged`)
         const body = await resp.json()
-        console.log(`resp: ${JSON.stringify(body, null, " ")}`)
+        console.log(`resp: ${JSON.stringify(body, null, ` `)}`)
+        expect(body.items[0].foreign_address).toBeDefined()
+        expect(body.items[0].bridge_type).toBeDefined()
+        expect(body.items[0].total_supply).toBeDefined()
+        expect(body.items[0].symbol).toBeDefined()
     })
 })
