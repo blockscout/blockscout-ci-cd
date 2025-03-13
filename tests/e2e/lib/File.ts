@@ -97,3 +97,28 @@ export const LoadContracts = async (url: string, pages: number): Promise<any> =>
     }
     return data
 }
+
+export const LoadCoinBalances = async (url: string, addr: string, pages: number): Promise<any> => {
+    const r = await newReqCtx(url)
+    const data = {
+        items: [],
+    }
+    let pageParams = ``
+    let urlWithParams = ``
+    for (let i = 0; i < pages; i += 1) {
+        urlWithParams = `${url}/api/v2/addresses/${addr}/coin-balance-history?${pageParams}`
+        console.log(`url with params: ${urlWithParams}`)
+        // eslint-disable-next-line no-await-in-loop
+        const resp = await r.get(urlWithParams)
+        expect(resp.ok()).toBeTruthy()
+        expect(resp.status()).toBe(200)
+        // eslint-disable-next-line no-await-in-loop
+        const body = await resp.json()
+        if (body.next_page_params === null) {
+            return data
+        }
+        pageParams = paginationToQuery(body.next_page_params)
+        data.items.push(...body.items)
+    }
+    return data
+}

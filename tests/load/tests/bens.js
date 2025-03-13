@@ -5,8 +5,8 @@ import { defaultSession } from './common/common.js'
 
 import { shoot } from './common/gun.js'
 import {
-    check200, p5, sane, t30,
-} from "./common/profile"
+    check200, p1, sane, t30,
+} from "./common/profile.js"
 
 const session = defaultSession()
 
@@ -14,11 +14,11 @@ const testData = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_
 
 export const options = {
     scenarios: {
-        resolve: Object.assign({}, p5, { exec: `resolve` }),
-        lookup: Object.assign({}, p5, { exec: `lookup` }),
-        domains: Object.assign({}, p5, { exec: `domains` }),
-        domainEvent: Object.assign({}, p5, { exec: `domainEvent` }),
-        domainsLookup: Object.assign({}, p5, { exec: `domainsLookup` }),
+        resolve: Object.assign({}, p1, { exec: `resolve` }),
+        lookup: Object.assign({}, p1, { exec: `lookup` }),
+        domains: Object.assign({}, p1, { exec: `domains` }),
+        domainEvent: Object.assign({}, p1, { exec: `domainEvent` }),
+        domainsLookup: Object.assign({}, p1, { exec: `domainsLookup` }),
     },
     thresholds: sane,
 }

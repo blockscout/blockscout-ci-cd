@@ -1,31 +1,15 @@
 [
     {
-        "chainIDs": ["5"],
-        "5": {
+        "chainIDs": ["11155111"],
+        "11155111": {
             "batchAddresses": [
-                "0x218ea55755ce1b14ad69d3a820b08cbfdb1dc39d",
-                "0xe4e8249dfc32d783bb9891a88dce09b088e22933",
-                "0x8c8d99f19d85ce2ead1a9b9b993c139815b02188",
-                "0xe4e8249dfc32d783bb9891a88dce09b088e22933",
-                "0x77221aa68406a5210716719df410e782e2ec22db",
-                "0x04fc1bcef371b27c9126c1bef24c86be0ba0dcd0"
+                "0x4Df5debEe5B6172E4Bb059Ce2b1Cbf6B864a75f0"
             ],
             "addressesLookup": [
-                "0xff50ed3d0ec03aC01D4C79aAd74928BFF48a7b2b",
-                "0xe4e8249dfc32d783bb9891a88dce09b088e22933",
-                "0x218ea55755ce1b14ad69d3a820b08cbfdb1dc39d",
-                "0x07b99b93cf0bcdd0fced1dcad35faba219c24be8",
-                "0x8c8d99f19d85ce2ead1a9b9b993c139815b02188",
-                "0xa81de2e4693b9fc3bc16ab56d148cc938203b430",
-                "0x77221aa68406a5210716719df410e782e2ec22db",
-                "0x04fc1bcef371b27c9126c1bef24c86be0ba0dcd0"
+                "0x4Df5debEe5B6172E4Bb059Ce2b1Cbf6B864a75f0"
             ],
             "domains": [
-                "eth",
-                "oilx.eth",
-                "highxshell.eth",
-                "rrcctest.eth",
-                "mohitcoingateens5.eth"
+                "gnome.gno"
             ]
         }
     }

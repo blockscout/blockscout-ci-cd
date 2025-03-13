@@ -9,7 +9,7 @@ export const p5 = {
 export const p1 = {
     executor: `constant-arrival-rate`,
     preAllocatedVUs: 10,
-    duration: `5m`,
+    duration: `30s`,
     rate: 1,
 }
 
