@@ -9,7 +9,7 @@ on:
       rpc_url:
         description: 'RPC URL'
         required: true
-        default: 'https://node-e2e.k8s-dev.blockscout.com/http'
+        default: 'https://node-e2e.k8s-dev.blockscout.com/'
         type: string
       server_size:
         description: 'Server size'
