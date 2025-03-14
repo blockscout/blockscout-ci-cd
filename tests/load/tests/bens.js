@@ -5,7 +5,7 @@ import { defaultSession } from './common/common.js'
 
 import { shoot } from './common/gun.js'
 import {
-    check200, p1, sane, t30,
+    check200, p5, sane, t30,
 } from "./common/profile.js"
 
 const session = defaultSession()
@@ -14,11 +14,11 @@ const testData = new SharedArray(`users`, () => JSON.parse(open(__ENV.TEST_DATA_
 
 export const options = {
     scenarios: {
-        resolve: Object.assign({}, p1, { exec: `resolve` }),
-        lookup: Object.assign({}, p1, { exec: `lookup` }),
-        domains: Object.assign({}, p1, { exec: `domains` }),
-        domainEvent: Object.assign({}, p1, { exec: `domainEvent` }),
-        domainsLookup: Object.assign({}, p1, { exec: `domainsLookup` }),
+        resolve: Object.assign({}, p5, { exec: `resolve` }),
+        lookup: Object.assign({}, p5, { exec: `lookup` }),
+        domains: Object.assign({}, p5, { exec: `domains` }),
+        // domainEvent: Object.assign({}, p5, { exec: `domainEvent` }),
+        domainsLookup: Object.assign({}, p5, { exec: `domainsLookup` }),
     },
     thresholds: sane,
 }
@@ -48,7 +48,7 @@ export const resolve = () => {
 }
 
 export const lookup = () => {
-    group(`api/v1/{}/addresses:lookup?address={}&resolved_to=true&owned_by=false`, () => {
+    group(`/api/v1/{}/addresses:lookup?address={}&resolved_to=true&owned_by=false`, () => {
         const chainID = randomItem(testData.chainIDs)
         const data = testData[chainID]
         const res = shoot(session, {
@@ -65,7 +65,7 @@ export const lookup = () => {
 }
 
 export const domains = () => {
-    group(`api/v1/{}/domains/{}`, () => {
+    group(`/api/v1/{}/domains/{}`, () => {
         const chainID = randomItem(testData.chainIDs)
         const data = testData[chainID]
         const res = shoot(session, {
@@ -82,7 +82,7 @@ export const domains = () => {
 }
 
 export const domainEvent = () => {
-    group(`api/v1/{}/domains/{}/events`, () => {
+    group(`/api/v1/{}/domains/{}/events`, () => {
         const chainID = randomItem(testData.chainIDs)
         const data = testData[chainID]
         const res = shoot(session, {
@@ -99,7 +99,7 @@ export const domainEvent = () => {
 }
 
 export const domainsLookup = () => {
-    group(`api/v1/{}/domains:lookup?name={}`, () => {
+    group(`/api/v1/{}/domains:lookup?name={}`, () => {
         const chainID = randomItem(testData.chainIDs)
         const data = testData[chainID]
         const res = shoot(session, {
